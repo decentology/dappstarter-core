@@ -1,0 +1,47 @@
+body {
+    background-image: url('dapp.jpg'); /* Source: Pexels */
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.container {
+    margin-top: 100px;
+    background-color: #000;
+    opacity: 0.9;
+    color: #fff;
+    padding: 40px;
+}
+
+.top-50 {
+    margin-top: 50px;
+}
+
+h2 {
+    display: block;
+    width: 100%;
+}
+
+h5 {
+    color: #999999;
+}
+
+section {
+    margin-bottom: 50px;
+}
+
+.field {
+    font-weight: bold;
+    text-align: right;
+}
+
+.field-value {
+    color: #0e7fa8;
+}
+
+label.form {
+    font-size: 14px;
+    margin-right: 20px;
+}
+input {
+    margin-right: 30px;
+}

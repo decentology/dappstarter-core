@@ -1,0 +1,11 @@
+{
+	"localhost": {
+		"url": "http://localhost:7545",
+		"appAddress": "0x0874FbbFf83224f9F6Bc708643C55320e6dE8EA1",
+		"ipfs": {
+			"host": "ipfs.infura.io",
+			"protocol": "https",
+			"port": 5001
+		}
+	}
+}

@@ -1,0 +1,100 @@
+
+const Test = require('../config/testConfig.js');
+const bs58 = require('bs58');
+
+contract('Dapp Contract Tests', async (accounts) => {
+
+  var config;
+  before('setup contract', async () => {
+    config = await Test.Config(accounts);
+  });
+
+
+  it(`has correct initial active value`, async function () {
+
+    // Get operating status
+    let status = await config.dappContract.isActive.call();
+    assert.equal(status, true, "Incorrect initial operating status value");
+
+  });
+
+  it(`can block access to setStatus() for non-Contract Owner account`, async function () {
+
+      // Ensure that access is denied for non-Contract Owner account
+      let accessDenied = false;
+      try 
+      {
+          await config.dappContract.setStatus(false, { from: config.testAddresses[2] });
+      }
+      catch(e) {
+          accessDenied = true;
+      }
+      assert.equal(accessDenied, true, "Access not restricted to Contract Owner");
+            
+  });
+
+  it(`can allow access to setStatus() for Contract Owner account`, async function () {
+
+      // Ensure that access is allowed for Contract Owner account
+      let accessDenied = false;
+      try 
+      {
+          await config.dappContract.setStatus(false);
+      }
+      catch(e) {
+          accessDenied = true;
+      }
+      assert.equal(accessDenied, false, "Access not restricted to Contract Owner");
+      
+  });
+
+  it(`can block access to functions using requireIsActive when operating status is false`, async function () {
+
+      await config.dappContract.setStatus(false);
+      let reverted = false;
+      try 
+      {
+          await config.dappContract.addDocument('hello world');
+      }
+      catch(e) {
+          reverted = true;
+      }
+      await config.dappContract.setStatus(true); // Reset for subsequent tests
+
+      assert.equal(reverted, true, "Access not blocked for requireIsActive");      
+
+  });
+
+
+  // Document registration
+
+
+  it(`can add and fetch a document for own account`, async function () {
+
+    let multihash = getBytes32FromMultihash(config.testFolders[0]);
+    await config.dappContract.addDocument(multihash.digest, multihash.digest, multihash.hashFunction, multihash.digestLength, { from: config.accounts[1]});
+    let doc = await config.dappContract.getDocument.call(multihash.digest);
+    
+    assert.equal(doc.docId, multihash.digest, "Can add and fetch a document for own account");      
+
+  });
+
+  it(`can get all documents for an account`, async function () {
+
+    let docs = await config.dappContract.getDocumentsByOwner.call(config.accounts[1], { from: config.accounts[1]});
+    assert.isAbove(docs.length, 0, "Can get all documents for an account");      
+
+  });
+
+
+ function getBytes32FromMultihash(multihash) {
+      const decoded = bs58.decode(multihash);
+    
+      return {
+        digest: `0x${decoded.slice(2).toString('hex')}`,
+        hashFunction: decoded[0],
+        digestLength: decoded[1],
+      };
+    }
+
+});
