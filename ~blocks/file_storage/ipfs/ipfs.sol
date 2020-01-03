@@ -1,27 +1,16 @@
 pragma solidity  >=0.5.0;
 
-///{import
-import "../../DappLib.sol";
-///}import
+import "../../../contracts/DappLib.sol";
+///(import
+///)
 
-contract ipfs_documents {
-///{using
+contract file_storage__ipfs {
     using DappLib for uint256; // Allow DappLib(SafeMath) functions to be called for all uint256 types (similar to "prototype" in Javascript)
-///}using
-
-    /********************************************************************************************/
-    /*                                       IPFS DOCUMENTS                                     */
-    /********************************************************************************************/
-
-    constructor() public
-    {
-///{constructor
-
-///}constructor
-    }
-
-///{state
+///(using
     using DappLib for DappLib.Multihash;
+///)
+
+///(state
 
     struct IpfsDocument {
         bytes32 docId;                                              // Unique identifier -- multihash digest of file
@@ -38,18 +27,24 @@ contract ipfs_documents {
     mapping(uint256 => bytes32[IPFS_DOCS_PAGE_SIZE]) public ipfsDocsByPage;      // All docs organized by page   
 
     mapping(address => bytes32[]) public ipfsDocsByOwner;              // All docs for which an account is the owner
-///}state
+///)
 
-///{events
+///(events
     event AddIpfsDocument      // Event fired when doc is added
                     (
                         bytes32 indexed docId,
                         address indexed owner,
                         uint256 timestamp
                     );
-///}events
+///)
 
-///{functions
+    constructor() public
+    {
+///(initialize
+///)
+    }
+
+///(functions
     /**
     * @dev Adds a new IPFS doc
     *
@@ -140,6 +135,6 @@ contract ipfs_documents {
 
         return ipfsDocsByOwner[account];
     }
-///}functions
+///)
 
 }

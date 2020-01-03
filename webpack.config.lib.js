@@ -3,7 +3,7 @@ const path = require("path");
 module.exports = {
 
   entry: {
-    'DappClient': path.join(__dirname, "src/lib/dapp-client")
+    'DappLib': path.join(__dirname, "src/lib/dapp-lib")
   },
   output: {
     path: path.join(__dirname, "dist"),

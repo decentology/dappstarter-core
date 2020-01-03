@@ -1,7 +1,7 @@
 
 const DappContract = artifacts.require('Dapp');
-const BigNumber = require('bignumber.js');
-const IPFS = require('./ipfsConfig.js');
+const DappStateContract = artifacts.require('DappState');
+const bs58 = require('bs58');
 
 const Config = async function(accounts) {
     
@@ -27,19 +27,48 @@ const Config = async function(accounts) {
         "QmekUmdv161ctqWqxqdD1cp8tXrrT5HZzS3JvxbHmpD4RR"
     ]
 
-
-    let owner = accounts[0];
-
-    let dappContract = await DappContract.new();
+    let dappStateContract = await DappStateContract.new();
+    let dappContract = await DappContract.new(dappStateContract.address);
 
     
     return {
-        owner: owner,
+        owner: accounts[0],
+        admin1: accounts[1],
+        admin2: accounts[2],
+        admin3: accounts[3],
+        user1: accounts[4],
+        user2: accounts[5],
+        user3: accounts[6],
         accounts: accounts,
         testAddresses: testAddresses,
         testFolders: ipfsTestFolders,
         dappContract: dappContract,
-        ipfs: IPFS
+        dappStateContract: dappStateContract,
+        ipfs: IPFS,
+        getBytes32FromMultihash: (multihash) => {
+            const decoded = bs58.decode(multihash);
+        
+            return {
+            digest: `0x${decoded.slice(2).toString('hex')}`,
+            hashFunction: decoded[0],
+            digestLength: decoded[1],
+            };
+        },
+        getMultihashFromBytes32: (multihash) => {
+            const { digest, hashFunction, digestLength } = multihash;
+            if (digestLength === 0) return null;
+        
+            // cut off leading "0x"
+            const hashBytes = Buffer.from(digest.slice(2), 'hex');
+        
+            // prepend hashFunction and digest length
+            const multihashBytes = new (hashBytes.constructor)(2 + hashBytes.length);
+            multihashBytes[0] = hashFunction;
+            multihashBytes[1] = digestLength;
+            multihashBytes.set(hashBytes, 2);
+        
+            return bs58.encode(multihashBytes);
+        }
     }
 }
 

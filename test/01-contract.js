@@ -1,6 +1,7 @@
 
 const Test = require('../config/testConfig.js');
 const bs58 = require('bs58');
+const DappLib = require('../../lib/dapp-lib.js');
 
 contract('Dapp Contract Tests', async (accounts) => {
 
@@ -71,7 +72,7 @@ contract('Dapp Contract Tests', async (accounts) => {
 
   it(`can add and fetch a document for own account`, async function () {
 
-    let multihash = getBytes32FromMultihash(config.testFolders[0]);
+    let multihash = DappLib.getBytes32FromMultihash(config.testFolders[0]);
     await config.dappContract.addDocument(multihash.digest, multihash.digest, multihash.hashFunction, multihash.digestLength, { from: config.accounts[1]});
     let doc = await config.dappContract.getDocument.call(multihash.digest);
     
@@ -85,16 +86,5 @@ contract('Dapp Contract Tests', async (accounts) => {
     assert.isAbove(docs.length, 0, "Can get all documents for an account");      
 
   });
-
-
- function getBytes32FromMultihash(multihash) {
-      const decoded = bs58.decode(multihash);
-    
-      return {
-        digest: `0x${decoded.slice(2).toString('hex')}`,
-        hashFunction: decoded[0],
-        digestLength: decoded[1],
-      };
-    }
 
 });

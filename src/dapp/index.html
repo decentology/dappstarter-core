@@ -26,36 +26,31 @@
 
 
         <div class="row top-50">
-            <h2>Check Active Status</h2>
-            <btn class="btn btn-primary" id="active">Check</btn></p>
+            <h2>Generate Wallet</h2>
+            <btn class="btn btn-primary" id="wallet-test">Generate Wallet</btn>
         </div>
 
         <div class="row top-50">
-            <h2>Upload Document to IPFS</h2>
-            <label class="form">File</label> <input type="file" id="upload" multiple> <div id="progress"></div>
+            <h2>Upload Files to IPFS</h2>
+            <label class="form">Files</label> <input type="file" id="upload" multiple> <div id="progress"></div>
         </div>
     
         <div class="row top-50">
             <h2>Add Document</h2>
-            <p><label class="form">Owner</label> <input type="text" id="registrant" style="width: 500px"></p>
-            <p><label class="form">IPFS Hash</label> <input type="text" id="ipfshash" style="width: 500px"> <btn class="btn btn-primary" id="add-test">Add</btn></p>
+            <p><label class="form">User</label> <input type="text" id="user" style="width: 500px"></p>
+            <p><label class="form">IPFS Folder Hash</label> <input type="text" id="ipfsfolderhash" style="width: 500px"></p>
+            <p><label class="form">IPFS File Hash</label> <input type="text" id="ipfsdochash" style="width: 500px"> <btn class="btn btn-primary" id="register-test">Register</btn></p>
         </div>
         <div>
                 <p><b>Sample Account:</b></p>
-                <p id="sample-account"></p>
-            </div>
-
-
-        <div class="row top-50">
-            <h2>Get Document Detail</h2>
-            <label class="form">Document ID</label> <input type="text" id="docid" style="width: 650px"> <btn class="btn btn-primary" id="doc-test">Get Document</btn>
+                <p>0x0226DF61d33e41B90BE3b5Fd830bae303FcB66f5</p>
         </div>
 
         <div class="row top-50">
             <h2>Get Documents</h2>
             <label class="form">Owner</label> <input type="text" id="owner" style="width: 500px"> <btn class="btn btn-primary" id="docs-test">Get Documents</btn>
         </div>
-    
+
     </main>
 
 </body>
