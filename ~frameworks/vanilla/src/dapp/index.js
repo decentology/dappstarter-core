@@ -1,9 +1,9 @@
 
 import DOM from './dom';
-import DappLib from '../lib/dapp-lib';
+import DappLib from '../../../../src/lib/dapp-lib';
 
 import './dapp-starter.css';
-import './icon.png';
+import './img/icon.png';
 
 (async() => {
 

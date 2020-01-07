@@ -1,6 +1,6 @@
 
 const DappContract = artifacts.require('Dapp');
-const DappStateContract = artifacts.require('DappState');
+const DappMainContract = artifacts.require('DappMain');
 const bs58 = require('bs58');
 
 const Config = async function(accounts) {
@@ -27,8 +27,8 @@ const Config = async function(accounts) {
         "QmekUmdv161ctqWqxqdD1cp8tXrrT5HZzS3JvxbHmpD4RR"
     ]
 
-    let dappStateContract = await DappStateContract.new();
-    let dappContract = await DappContract.new(dappStateContract.address);
+    let dappMainContract = await DappMainContract.new();
+    let dappContract = await DappContract.new(dappMainContract.address);
 
     
     return {
@@ -43,7 +43,7 @@ const Config = async function(accounts) {
         testAddresses: testAddresses,
         testFolders: ipfsTestFolders,
         dappContract: dappContract,
-        dappStateContract: dappStateContract,
+        dappMainContract: dappMainContract,
         ipfs: IPFS,
         getBytes32FromMultihash: (multihash) => {
             const decoded = bs58.decode(multihash);

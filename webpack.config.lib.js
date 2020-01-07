@@ -1,43 +1,37 @@
 const path = require("path");
 
-module.exports = {
+module.exports = (env, argv) => {
 
-  entry: {
-    'DappLib': path.join(__dirname, "src/lib/dapp-lib")
-  },
-  output: {
-    path: path.join(__dirname, "dist"),
-    filename: "[name].min.js",
-    sourceMapFilename: "[name].min.js.map",
-    library: "[name]",
-    libraryExport: "default",
-    libraryTarget: "umd",
-    globalObject: "this"
-  },
- // externals: dependencies,
-  module: {
-    rules: [
-      {
+  return {
+    entry: {
+      'DappLib': path.join(__dirname, "src/lib/dapp-lib")
+    },
+    output: {
+      path: path.join(__dirname, (argv.mode === "development" ? "dist" : "prod")),
+      filename: "[name].min.js",
+      sourceMapFilename: "[name].min.js.map",
+      library: "[name]",
+      libraryExport: "default",
+      libraryTarget: "umd",
+      globalObject: "this"
+    },
+    module: {
+      rules: [{
         test: /\.(js|jsx)$/,
         use: "babel-loader",
         exclude: /node_modules/
-      }
-    ]
-  },
-  plugins: [
+      }]
+    },
+    plugins: [
 
-  ],
-  resolve: {
-    extensions: [".js"]
-  },
-  devServer: {
-    contentBase: path.join(__dirname, "dist"),
-    host: "0.0.0.0",
-    stats: "minimal"
-  },
-  node: {
-    fs: 'empty',
-    net: 'empty',
-    tls: 'empty'
+    ],
+    resolve: {
+      extensions: [".js"]
+    },
+    node: {
+      fs: 'empty',
+      net: 'empty',
+      tls: 'empty'
+    }
   }
 };

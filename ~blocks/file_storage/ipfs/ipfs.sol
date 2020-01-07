@@ -61,8 +61,8 @@ contract file_storage__ipfs {
                             uint8 digestLength
                         ) 
                         external 
-///$                        requireActive
-    {
+///$access_control:administrator_role                           requireContractAdmin
+{
         require(docId[0] != 0, "Invalid docId");                                // Prevent empty string for docId
         require(digest[0] != 0, "Invalid ipfsDoc folder digest");               // Prevent empty string for digest
         require(ipfsDocs[docId].timestamp == 0, "Document already exists");     // Prevent duplicate docIds
