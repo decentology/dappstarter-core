@@ -6,13 +6,18 @@ import "../../../contracts/DappLib.sol";
 
 
 contract access_control_administrator_role {
-    using DappLib for uint256; // Allow DappLib(SafeMath) functions to be called for all uint256 types (similar to "prototype" in Javascript)
+    using DappLib for uint256; 
 ///(using
 ///)
 
 ///(state
-    uint256 private authorizedAdminsCount = 1;                      // Track authorized admins count to prevent lockout
-    mapping(address => uint256) private authorizedAdmins;           // Admins authorized to manage contract           
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: ADMINISTRATOR ROLE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    // Track authorized admins count to prevent lockout
+    uint256 private authorizedAdminsCount = 1;                      
+
+    // Admins authorized to manage contract
+    mapping(address => uint256) private authorizedAdmins;                      
 ///)
 
 ///(events
@@ -21,22 +26,30 @@ contract access_control_administrator_role {
     constructor() public
     {
 ///(initialize
-        authorizedAdmins[msg.sender] = 1;       // Add account that deployed contract as an authorized admin
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: ADMINISTRATOR ROLE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
+        // Add account that deployed contract as an authorized admin
+        authorizedAdmins[msg.sender] = 1;       
 ///)
     }
 
 ///(modifiers
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: ADMINISTRATOR ROLE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
     /**
     * @dev Modifier that requires the function caller to be a contract admin
     */
     modifier requireContractAdmin()
     {
         require(isContractAdmin(msg.sender), "Caller is not a contract administrator");
+        // Modifiers require an "_" which indicates where the function body will be added
         _;
     }
 ///)
 
 ///(functions
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: ADMINISTRATOR ROLE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
     /**
     * @dev Adds a contract admin
     *

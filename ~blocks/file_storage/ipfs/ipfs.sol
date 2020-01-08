@@ -7,30 +7,46 @@ import "../../../contracts/DappLib.sol";
 contract file_storage__ipfs {
     using DappLib for uint256; // Allow DappLib(SafeMath) functions to be called for all uint256 types (similar to "prototype" in Javascript)
 ///(using
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FILE STORAGE: IPFS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
     using DappLib for DappLib.Multihash;
 ///)
 
 ///(state
 
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FILE STORAGE: IPFS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
     struct IpfsDocument {
-        bytes32 docId;                                              // Unique identifier -- multihash digest of file
-        uint256 timestamp;                                          // Registration timestamp
-        address owner;                                              // Owner of doc
-        DappLib.Multihash docRef;                                   // External Document reference
+        // Unique identifier -- multihash digest of file
+        bytes32 docId;    
+
+        // Registration timestamp                                          
+        uint256 timestamp;  
+
+        // Owner of document                                        
+        address owner;    
+
+        // External Document reference                                          
+        DappLib.Multihash docRef;                                   
     }
 
-    mapping(bytes32 => IpfsDocument) ipfsDocs;                            // All added docs
+    // All added documents
+    mapping(bytes32 => IpfsDocument) ipfsDocs;                            
 
     uint constant IPFS_DOCS_PAGE_SIZE = 50;
     uint256 public ipfsLastPage = 0;
 
-    mapping(uint256 => bytes32[IPFS_DOCS_PAGE_SIZE]) public ipfsDocsByPage;      // All docs organized by page   
+    // All documents organized by page
+    mapping(uint256 => bytes32[IPFS_DOCS_PAGE_SIZE]) public ipfsDocsByPage;         
 
-    mapping(address => bytes32[]) public ipfsDocsByOwner;              // All docs for which an account is the owner
+    // All documents for which an account is the owner
+    mapping(address => bytes32[]) public ipfsDocsByOwner;              
 ///)
 
 ///(events
-    event AddIpfsDocument      // Event fired when doc is added
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FILE STORAGE: IPFS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    // Event fired when doc is added
+    event AddIpfsDocument      
                     (
                         bytes32 indexed docId,
                         address indexed owner,
@@ -45,6 +61,8 @@ contract file_storage__ipfs {
     }
 
 ///(functions
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FILE STORAGE: IPFS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
     /**
     * @dev Adds a new IPFS doc
     *
@@ -63,9 +81,14 @@ contract file_storage__ipfs {
                         external 
 ///$access_control:administrator_role                           requireContractAdmin
 {
-        require(docId[0] != 0, "Invalid docId");                                // Prevent empty string for docId
-        require(digest[0] != 0, "Invalid ipfsDoc folder digest");               // Prevent empty string for digest
-        require(ipfsDocs[docId].timestamp == 0, "Document already exists");     // Prevent duplicate docIds
+        // Prevent empty string for docId
+        require(docId[0] != 0, "Invalid docId");  
+
+        // Prevent empty string for digest                             
+        require(digest[0] != 0, "Invalid ipfsDoc folder digest");            
+
+        // Prevent duplicate docIds   
+        require(ipfsDocs[docId].timestamp == 0, "Document already exists");     
 
         ipfsDocs[docId] = IpfsDocument({
                                     docId: docId,

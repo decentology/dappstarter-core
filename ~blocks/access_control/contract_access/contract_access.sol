@@ -5,12 +5,15 @@ import "../../../contracts/DappLib.sol";
 ///)
 
 contract access_control_contract_runstate {
-    using DappLib for uint256; // Allow DappLib(SafeMath) functions to be called for all uint256 types (similar to "prototype" in Javascript)
+    using DappLib for uint256; 
 ///(using
 ///)
 
 ///(state
-    mapping(address => uint256) private authorizedContracts;        // Contracts authorized to call this one           
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT ACCESS  <<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    // Contracts authorized to call this one 
+    mapping(address => uint256) private authorizedContracts;                  
 ///)
 
 ///(events
@@ -23,17 +26,22 @@ contract access_control_contract_runstate {
     }
 
 ///(modifiers
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT ACCESS  <<<<<<<<<<<<<<<<<<<<<<<<<<<*/
     /**
     * @dev Modifier that requires the calling contract to be authorized
     */
     modifier requireContractAuthorized()
     {
         require(isContractAuthorized(msg.sender), "Calling contract not authorized");
-        _;
+        // Modifiers require an "_" which indicates where the function body will be added
+        _;  
     }
 ///)
 
 ///(functions
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT ACCESS  <<<<<<<<<<<<<<<<<<<<<<<<<<<*/
     /**
     * @dev Authorizes a smart contract to call this contract
     *
@@ -45,7 +53,7 @@ contract access_control_contract_runstate {
                             ) 
                             public 
 ///$access_control:contract_runstate                            requireContractRunStateActive
-                            requireContractAdmin  // Administrator Role block is required to ensure only authorized individuals can pause contract
+                            requireContractAdmin  
     {
         require(account != address(0), "Invalid address");
 
@@ -63,7 +71,7 @@ contract access_control_contract_runstate {
                             ) 
                             external 
 ///$access_control:contract_runstate                            requireContractRunStateActive
-                            requireContractAdmin  // Administrator Role block is required to ensure only authorized individuals can pause contract
+                            requireContractAdmin
     {
         require(account != address(0), "Invalid address");
 

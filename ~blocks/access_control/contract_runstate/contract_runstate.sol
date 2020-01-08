@@ -10,7 +10,10 @@ contract access_control_contract_runstate {
 ///)
 
 ///(state
-    bool private contractRunState = true;          // Contract run state
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT RUN STATE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    // Contract run state
+    bool private contractRunState = true;          
 ///)
 
 ///(events
@@ -23,6 +26,8 @@ contract access_control_contract_runstate {
     }
 
 ///(modifiers
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT RUN STATE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
     /**
     * @dev Modifier that requires the "contractRunState" boolean variable to be "true"
     *      This is used on all state changing functions to pause the contract in 
@@ -31,11 +36,14 @@ contract access_control_contract_runstate {
     modifier requireContractRunStateActive() 
     {
         require(contractRunState, "Contract is currently not active");
-        _;  // All modifiers require an "_" which indicates where the function body will be added
+        // Modifiers require an "_" which indicates where the function body will be added
+        _; 
     }
 ///)
 
 ///(functions
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT RUN STATE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
     /**
     * @dev Get active status of contract
     *

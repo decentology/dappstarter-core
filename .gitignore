@@ -2,8 +2,7 @@
 logs
 *.log
 npm-debug.log*
-src/dapp/config.json
-src/server/config.json
+src/config.json
 prod/
 dist/
 
