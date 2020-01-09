@@ -28,7 +28,7 @@ Launch the Ganache GUI and create a new workspace with the following settings:
 
 ## Test Configuration
 
-`config/testConfig.js` contains settings used by test scripts
+`test-config.js` contains settings used by test scripts
 
 # Usage
 

@@ -1,5 +1,5 @@
 
-const Test = require('../config/testConfig.js');
+const Test = require('../test-config.js');
 const bs58 = require('bs58');
 const DappLib = require('../../lib/dapp-lib.js');
 

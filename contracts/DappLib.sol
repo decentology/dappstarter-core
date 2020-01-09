@@ -1,5 +1,6 @@
 pragma solidity  >=0.5.0;
 
+// Shared library for all contracts
 library DappLib {
 
 ///+library

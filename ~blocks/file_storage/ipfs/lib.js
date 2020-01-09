@@ -10,7 +10,7 @@ addIpfsDocument(ipfsFolderHash, ipfsFileHash, user, callback) {
     let folderHash = DappLib.getBytes32FromMultihash(ipfsFolderHash);
     let fileHash = DappLib.getBytes32FromMultihash(ipfsFileHash);
 
-    self.dappMainContract.methods
+    self.dappStateContract.methods
       .register(user, fileHash.digest, folderHash.digest, folderHash.hashFunction, folderHash.digestLength)
       .send({
         from: user,
@@ -23,7 +23,7 @@ addIpfsDocument(ipfsFolderHash, ipfsFileHash, user, callback) {
 
   getIpfsDocumentsByOwner(owner, callback) {
     let self = this;
-    self.dappMainContract.methods
+    self.dappStateContract.methods
       .getIpfsDocumentsByOwner(owner)
       .call({
         from: owner
@@ -36,7 +36,7 @@ addIpfsDocument(ipfsFolderHash, ipfsFileHash, user, callback) {
   getIpfsDocument(docId, callback) {
     let self = this;
 
-    self.dappMainContract.methods
+    self.dappStateContract.methods
       .getIpfsDocument(docId)
       .call({
         from: self.owner
@@ -62,7 +62,7 @@ addIpfsDocument(ipfsFolderHash, ipfsFileHash, user, callback) {
   onAddIpfsDocument(fromBlock, callback) {
     let self = this;
 
-    self.dappMainContractWs.events.AddIpfsDocument({
+    self.dappStateContractWs.events.AddIpfsDocument({
       fromBlock: fromBlock
     }, function (error, e) {
       if (error) {

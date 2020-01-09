@@ -18,7 +18,7 @@ contract asset_value_tracking__token{
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ASSET VALUE TRACKING: TOKEN  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
     string public name;
     string public symbol;
-    uint public decimals;
+    uint256 public decimals;
     
     // Token balance for each address
     mapping(address => uint256) balances;              
@@ -41,14 +41,14 @@ contract asset_value_tracking__token{
 ///(initialize
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ASSET VALUE TRACKING: TOKEN  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-        name = "";                ///@{ "name" : null }
-        symbol = "";              ///@{ "symbol" : null }
-        decimals = 0;             ///@{ "decimals" : null }
+        name = "_";             ///@{ "name" : "_" }
+        symbol = "_";           ///@{ "symbol" : "_" }
+        decimals = 9999999;     ///@{ "decimals" : 9999999 }
 
         // Multiplier to convert to smallest unit
         UNIT_MULTIPLIER = 10 ** uint256(decimals); 
 
-        uint256 supply = 0;       ///@{ "supply": null }
+        uint256 supply = 9999999;       ///@{ "supply": 9999999 }
 
         // Convert supply to smallest unit
         total = supply.mul(UNIT_MULTIPLIER);    

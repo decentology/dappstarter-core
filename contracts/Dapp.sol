@@ -1,23 +1,33 @@
 pragma solidity  >=0.5.0;
 
+import "./interfaces/IDappState.sol";
 import "./DappLib.sol";
 
 contract Dapp {
-    using DappLib for uint256; // Allow DappLib(SafeMath) functions to be called for all uint256 types (similar to "prototype" in Javascript)
+    // Allow DappLib(SafeMath) functions to be called for all uint256 types
+    // (similar to "prototype" in Javascript)
+    using DappLib for uint256;
 
-    DappMain state;
+    IDappState state;
 
     constructor 
                 (
-                    address dappMainContract
+                    address dappStateContract
                 )
                 public
     {
-        state = DappMain(dappMainContract);
+        state = IDappState(dappStateContract);
     }
-}
 
-// Add interfaces for functions to get/set state data here
-contract DappMain {
-
+    /**
+    * @dev Example function to demonstrate cross-contract call
+    *
+    */
+    function getStateContractOwner()
+                            external
+                            view
+                            returns(address)
+    {
+        return state.getContractOwner();
+    }
 }
