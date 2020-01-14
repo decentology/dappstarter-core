@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Routes from './components/Routes.jsx';
-import TopNavigation from './components/TopNavigation.jsx';
+import '../lib/components/top-navigation';
+import '../lib/components/page-footer';
 import SideNavigation from './components/SideNavigation.jsx';
-import Footer from './components/Footer.jsx';
 import ResultPanel from './components/ResultPanel.jsx';
 
 class App extends Component {
@@ -10,12 +10,12 @@ class App extends Component {
   render() {
     return (
         <div className="flexible-content">
-          <TopNavigation />
+          <top-navigation />
           <SideNavigation />
           <main id="content" className="p-5">
             <Routes />
           </main>
-          <Footer />
+          <page-footer />
           <ResultPanel />
         </div>
     );

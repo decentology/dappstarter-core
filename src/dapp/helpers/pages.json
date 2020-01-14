@@ -1,0 +1,14 @@
+[
+    {
+        "route": "/token",
+        "label": "Token"
+    },
+    {
+        "route": "/xyz",
+        "label": "XYZ"
+    },
+    {
+        "route": "/abc",
+        "label": "ABC"
+    }
+]

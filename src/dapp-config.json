@@ -1,0 +1,11 @@
+{
+	"http": "http://127.0.0.1:7545/",
+	"ws": "ws://127.0.0.1:7545/",
+	"dappStateContractAddress": "0x02Ffc0758f692a5F3C2631071bd09Ed1646b42E9",
+	"dappContractAddress": "0xED7816882A41b98b053F2dD1345f8fa0F0aE4349",
+	"ipfs": {
+		"host": "ipfs.infura.io",
+		"protocol": "https",
+		"port": 5001
+	}
+}

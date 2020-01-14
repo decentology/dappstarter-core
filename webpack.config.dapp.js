@@ -7,7 +7,8 @@ module.exports = (env, argv) => {
     entry: ['@babel/polyfill', path.join(__dirname, "src/dapp")],
     output: {
       path: path.join(__dirname, (argv.mode === "development" ? "dist/dapp" : "prod/dapp")),
-      filename: "bundle.js"
+      filename: "bundle.js",
+      publicPath: '/'
     },
     module: {
       rules: [{
@@ -55,7 +56,8 @@ module.exports = (env, argv) => {
     devServer: {
       contentBase: path.join(__dirname, "dapp"),
       port: 8000,
-      stats: "minimal"
+      stats: "minimal",
+      historyApiFallback: true
     }
   }
 }

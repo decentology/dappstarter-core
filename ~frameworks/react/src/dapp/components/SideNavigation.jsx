@@ -10,14 +10,9 @@ const SideNavigation = () => {
                 <img alt="DappStarter Logo" className="img-fluid" src={logo}/>
             </a>
             <MDBListGroup className="list-group-flush">
-                <NavLink exact={true} to="/ipfs" activeClassName="activeClass">
+                <NavLink exact={true} to="/token" activeClassName="activeClass">
                     <MDBListGroupItem>
-                        IPFS Storage
-                    </MDBListGroupItem>
-                </NavLink>
-                <NavLink to="/custom-token" activeClassName="activeClass">
-                    <MDBListGroupItem>
-                        Custom Token
+                        Token
                     </MDBListGroupItem>
                 </NavLink>
             </MDBListGroup>
