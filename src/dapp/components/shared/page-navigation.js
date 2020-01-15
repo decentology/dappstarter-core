@@ -9,7 +9,7 @@ export default class PageNavigation extends CustomElement {
     }
 
     getPages() {
-        return []; ///@{ "___page-list___": "[]"}
+        return [{ name: 'home', title: 'Home', route: '/'}].concat([]); ///@{ "___page-list___": "[]"}
     }
 
     async navigate(name) {

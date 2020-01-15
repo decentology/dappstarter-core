@@ -13,13 +13,14 @@ export default class TokenPage extends CustomElement {
         let content = 
 `
     <section>
-        <h2 class="mb-5">${self.category}: <strong>${self.title}</strong></h2>
+        <h5>${self.category}</h5>
+        <h2 class="mb-5"><strong>${self.title}</strong></h2>
 
         <action-card 
             action="Get Total Supply" 
             description="Get total supply of tokens"
             templateId="totalSupply"
-            onClick={() => { let self = this; self.props.showResultPanel(category, 'Get Total Supply'); }}
+            handler="() => { console.log('I am the handler for Total Supply'); }"
         >
         </action-card>
 
@@ -27,7 +28,7 @@ export default class TokenPage extends CustomElement {
             action="Get Balance" 
             description="Get token balance for current account"
             templateId="balance"
-            onClick={() => { this.props.showResultPanel(category, 'Get Balance'); }}
+            handler="() => { console.log('I am the handler for Balance'); }"
         >
         </action-card>
 
@@ -35,7 +36,7 @@ export default class TokenPage extends CustomElement {
             action="Get Balance for Account" 
             description="Get token balance for any account"
             templateId="balanceOf"
-            onClick={() => { this.props.showResultPanel(category, 'Get Balance for Account'); }}
+            handler="() => { console.log('I am the handler for Account Balance'); }"
         >
         </action-card>
 
@@ -43,7 +44,7 @@ export default class TokenPage extends CustomElement {
             action="Transfer" 
             description="Transfer tokens to another account"
             templateId="transfer"
-            onClick={() => { this.props.showResultPanel(category, 'Get Document Details'); }}
+            handler="() => { console.log('I am the handler for Transfer'); }"
         >
         </action-card>
         

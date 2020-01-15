@@ -10,6 +10,9 @@ export default class ActionCard extends CustomElement {
     static get ATTRIBUTE_TEMPLATE_ID() {
         return 'templateId'
     }
+    static get ATTRIBUTE_HANDLER() {
+        return 'handler'
+    }
 
     static get observedAttributes() {
         return ActionCard.attributes; 
@@ -18,7 +21,8 @@ export default class ActionCard extends CustomElement {
     static get attributes() {
         return [
             ActionCard.ATTRIBUTE_ACTION,
-            ActionCard.ATTRIBUTE_TEMPLATE_ID
+            ActionCard.ATTRIBUTE_TEMPLATE_ID,
+            ActionCard.ATTRIBUTE_HANDLER,
         ];
     }
 
@@ -44,7 +48,7 @@ export default class ActionCard extends CustomElement {
                         <h6>${self[ActionCard.ATTRIBUTE_DESCRIPTION]}</h6>
                     </div>
                     <div class="col-lg-4 text-right">
-                        <button class="btn-primary btn Ripple-parent">GO</button>
+                        <button id="button-${self[ActionCard.ATTRIBUTE_TEMPLATE_ID]}" class="btn-primary btn Ripple-parent">GO</button>
                     </div>
                 </div>
             </div>
@@ -56,6 +60,12 @@ export default class ActionCard extends CustomElement {
         let template = document.querySelector(`#${self[ActionCard.ATTRIBUTE_TEMPLATE_ID]}`);
         let templateContent = document.importNode(template.content, true);
         document.querySelector(`#${cardId}`).appendChild(templateContent);
+
+        if (self.handler) {
+            document.querySelector(`#button-${self[ActionCard.ATTRIBUTE_TEMPLATE_ID]}`).addEventListener('click', eval(self.handler));
+        }
+
+
     }
 
 }

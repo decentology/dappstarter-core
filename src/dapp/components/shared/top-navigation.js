@@ -25,7 +25,7 @@ export default class TopNavigation extends CustomElement {
         let self = this;
         let content = `
 <nav class="navbar-light scrolling-navbar navbar navbar-expand-md flexible-navbar" role="navigation">
-    <a aria-current="page" class="navbar-brand active" href="/">
+    <a class="navbar-brand active">
         <strong>DappStarter</strong>
     </a>
     <button type="button" class="navbar-toggler">
