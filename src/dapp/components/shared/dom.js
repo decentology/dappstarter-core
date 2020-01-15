@@ -1,61 +1,4 @@
-class CustomElement extends HTMLElement {
-
-    constructor(props, ...args) {
-        const self = super(...args);
-        
-        if (props) {
-            props.map((prop) => {
-                Object.defineProperty(self, prop, {
-                    get: function () {
-                        return self.getAttribute(prop);
-                    },
-                    set: function (new_value) {
-                        if (new_value) {
-                            self.setAttribute(prop, new_value);
-                        } else {
-                            self.removeAttribute(prop);
-                        }
-                    }
-                });
-            });    
-        }
-
-        self.rendered = false;
-    }
-
-
-    connectedCallback() {
-        let self = this;
-
-        self.innerHTML = '';
-        if (self.render) {
-            self.rendered = true;
-            self.render();
-        }
-    }
-
-    attributeChangedCallback(name, oldValue, newValue) {
-        let self = this;
-
-        if ((oldValue !== newValue) && (self.rendered)) {
-            self.innerHTML = '';
-            if (self.render) {
-                self.render();
-            }
-        }
-    }
-
-    disconnectedCallback() {
-        // console.log('disconnectedCallback');
-    }
-
-    adoptedCallback() {
-        // console.log('adoptedCallback');
-    }
-
-}
-
-class DOM {
+export default class DOM {
 
     static stringToHTML(str) {
         if (!str) {
@@ -68,6 +11,8 @@ class DOM {
 
     static a = (...args) => DOM.create(`a`, ...args);
     static div = (...args) => DOM.create(`div`, ...args);
+    static ul = (...args) => DOM.create(`ul`, ...args);
+    static li = (...args) => DOM.create(`li`, ...args);
     static h1 = (...args) => DOM.create(`h1`, ...args);
     static h2 = (...args) => DOM.create(`h2`, ...args);
     static h3 = (...args) => DOM.create(`h3`, ...args);
@@ -150,8 +95,4 @@ class DOM {
 
         return el;
     }
-}
-module.exports = {
-    CustomElement: CustomElement,
-    DOM: DOM
 }

@@ -1,6 +1,4 @@
-import {
-    CustomElement
-} from '../dapp-ui';
+import CustomElement from './custom-element';
 
 export default class PageFooter extends CustomElement {
 

@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
-import Routes from './components/Routes.jsx';
-import '../lib/components/top-navigation';
-import '../lib/components/page-footer';
-import SideNavigation from './components/SideNavigation.jsx';
+import '../dapp/components/shared/top-navigation';
+import '../dapp/components/shared/page-footer';
+import '../dapp/components/shared/page-navigation';
 import ResultPanel from './components/ResultPanel.jsx';
 
 class App extends Component {
   
   render() {
+   // let routes = new Routes();
     return (
         <div className="flexible-content">
           <top-navigation />
-          <SideNavigation />
+          <page-navigation />
           <main id="content" className="p-5">
-            <Routes />
           </main>
           <page-footer />
           <ResultPanel />

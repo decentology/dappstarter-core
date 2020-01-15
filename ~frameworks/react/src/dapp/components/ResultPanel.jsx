@@ -22,7 +22,7 @@ class ResultPanel extends Component {
 }
 
 const mapStateToProps = state => {
-    console.log('State', state);
+ //   console.log('State', state);
     return { ...state.resultPanel }
 };
   

@@ -1,20 +1,11 @@
-import {
-    CustomElement
-} from '../dapp-ui';
+import CustomElement from './custom-element';
+
 
 export default class ActionCard extends CustomElement {
 
-    static get ATTRIBUTE_CATEGORY() {
-        return 'category'
-    }
-    static get ATTRIBUTE_BLOCK() {
-        return 'block'
-    }
+
     static get ATTRIBUTE_ACTION() {
         return 'action'
-    }
-    static get ATTRIBUTE_DESCRIPTION() {
-        return 'description'
     }
     static get ATTRIBUTE_TEMPLATE_ID() {
         return 'templateId'
@@ -26,16 +17,13 @@ export default class ActionCard extends CustomElement {
 
     static get attributes() {
         return [
-            ActionCard.ATTRIBUTE_CATEGORY,
-            ActionCard.ATTRIBUTE_BLOCK,
             ActionCard.ATTRIBUTE_ACTION,
-            ActionCard.ATTRIBUTE_DESCRIPTION,
             ActionCard.ATTRIBUTE_TEMPLATE_ID
         ];
     }
 
     constructor(...args) {
-        const self = super(ActionCard.attributes, ...args);
+        super(ActionCard.attributes, ...args);
     }
 
     render() {

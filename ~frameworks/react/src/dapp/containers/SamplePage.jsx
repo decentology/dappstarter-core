@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { showResultPanel } from '../actions';
 import '../../lib/components/action-card.js';
 
-class TokenPage extends Component {
+class SamplePage extends Component {
 
   render() {
     let category = 'Asset Value Tracking';
