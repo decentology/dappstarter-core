@@ -6,6 +6,7 @@ export default class PageNavigation extends CustomElement {
 
     constructor(...args) {
         super(...args);
+        this.pageLoader = null;
     }
 
     getPages() {
@@ -20,24 +21,18 @@ export default class PageNavigation extends CustomElement {
         if (!pageItem) {
             return
         }
-        let content = DOM.elid('content');
-        content.innerHTML = '';
 
         window.history.pushState(null, pageItem.title, pageItem.route);
-        try {
-            await import(`../pages/${pageItem.name}-page.js`);
-            let pageContent = DOM.create(
-                `${pageItem.name}-page`, {
-                    title: pageItem.title
-                });
-            // Custom properties need to be set separately
-            pageContent.description = pageItem.description
-            pageContent.category = pageItem.category;
+        self.setPageLoader(pageItem);
+    }
 
-            content.appendChild(pageContent);
-        } catch (e) {
-            content.innerHTML = `Error loading content page for "${pageItem.title}"`;
+    setPageLoader(pageItem) {
+        let self = this;
+        if (!self.pageLoader) {
+            self.pageLoader = DOM.elid('page-loader');
         }
+
+        self.pageLoader.load(pageItem);
     }
 
     render() {
@@ -89,7 +84,7 @@ export default class PageNavigation extends CustomElement {
             ]
         );
         self.appendChild(content);
-
+        self.setPageLoader(contentPages[0]);
     }
 }
 

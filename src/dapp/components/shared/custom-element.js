@@ -49,10 +49,10 @@ export default class CustomElement extends HTMLElement {
 
     attributeChangedCallback(name, oldValue, newValue) {
         let self = this;
-
         if ((oldValue !== newValue) && (self.rendered)) {
-            self.innerHTML = '';
             if (self.render) {
+                self.innerHTML = '';
+                self.rendered = true;
                 self.render();
             }
         }
