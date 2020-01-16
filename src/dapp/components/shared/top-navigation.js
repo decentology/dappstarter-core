@@ -50,9 +50,9 @@ export default class TopNavigation extends CustomElement {
             <li class="nav-item">
                 <a class="nav-link navbar-link" rel="noopener noreferrer" href="https://github.com/trycrypto/dappstarter" target="_blank"><i class="fab fa-github mr-2"></i></a>
             </li>
-            <li class="nav-item">
+            <!--li class="nav-item">
                 <a class="btn peach-gradient nav-link Ripple-parent" rel="noopener noreferrer" href="https://demo.photoblock.org/" target="_blank">Sign in with PhotoBlock</a>
-            </li>
+            </li-->
         </ul>
     </div>
 </nav>

@@ -7,6 +7,11 @@ export default class Contract {
 
     }
 
+    // Testing
+    static balanceOf(account) {
+        console.log(account);
+    }
+
     initialize(callback) {
         let self = this;
         self.dappClient.blockchain.getAccounts((error, accounts) => {

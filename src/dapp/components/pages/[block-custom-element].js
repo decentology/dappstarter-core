@@ -1,5 +1,2 @@
-import {
-    CustomElement
-} from '../shared/dapp-ui';
-
+import CustomElement from '../shared/custom-element';
 ///+page

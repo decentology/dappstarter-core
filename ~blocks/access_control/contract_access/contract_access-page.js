@@ -1,5 +1,4 @@
 ///(page
-
 import '../shared/action-card.js';
 
 export default class ContractAccessPage extends CustomElement {

@@ -40,7 +40,6 @@ export default class CustomElement extends HTMLElement {
     connectedCallback() {
         let self = this;
 
-        self.innerHTML = '';
         if (self.render) {
             self.rendered = true;
             self.render();
@@ -59,7 +58,7 @@ export default class CustomElement extends HTMLElement {
     }
 
     disconnectedCallback() {
-        // console.log('disconnectedCallback');
+        //console.log('disconnectedCallback');
     }
 
     adoptedCallback() {

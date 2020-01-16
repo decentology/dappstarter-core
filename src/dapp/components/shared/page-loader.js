@@ -22,7 +22,6 @@ export default class PageLoader extends CustomElement {
         super(PageLoader.attributes, ...args);
     }
 
-
     async load(pageItem) {
         let self = this;
         self.innerHTML = '';
@@ -32,32 +31,31 @@ export default class PageLoader extends CustomElement {
         self.description = pageItem.description;
         self.category = pageItem.category;
 
-        
+        let pageContent = null
         try {
             await import(`../pages/${self.name}-page.js`);
-            let pageContent = DOM.create(
+            pageContent = DOM.create(
                 `${self.name}-page`, {
                     title: self.title
                 });
             // Custom properties need to be set separately
             pageContent.description = self.description
             pageContent.category = self.category;
-            let content = DOM.create(
-                                        'main',
-                                        {
-                                            id: 'content',
-                                            className: 'p-5'
-                                        },
-                                        [
-                                            pageContent
-                                        ]
-                                    )
-            self.appendChild(content);
         } catch (e) {
             console.log(e);
-            self.innerHTML = `<main class="p-5">Error loading content page for "${self.title}"</main>`;
+            pageContent = DOM.div(`Error loading content page for "${self.title}"`);
         }
-
+        let content = DOM.create(
+            'main',
+            {
+                id: 'content',
+                className: 'p-5'
+            },
+            [
+                pageContent
+            ]
+        )
+        self.appendChild(content);
     }
 }
 
