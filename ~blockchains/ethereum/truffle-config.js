@@ -1,6 +1,7 @@
 const HDWalletProvider = require("@truffle/hdwallet-provider")
 
 let devUrl = 'http://127.0.0.1:7545/';
+let mnemonic = 'PLACEHOLDER';   ///@{ "___test-mnemonic___": "PLACEHOLDER"}
 let testAccounts = null;  ///@{ "___test-accounts___": "null"}
 
 module.exports = {
