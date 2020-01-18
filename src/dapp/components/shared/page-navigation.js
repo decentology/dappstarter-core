@@ -15,11 +15,10 @@ export default class PageNavigation extends CustomElement {
 
     async navigate(name) {
         let self = this;
-
         let contentPages = self.getPages();
         let pageItem = contentPages.find(item => item.name === name);
         if (!pageItem) {
-            return
+            return;
         }
 
         window.history.pushState(null, pageItem.title, pageItem.route);
@@ -36,7 +35,6 @@ export default class PageNavigation extends CustomElement {
     }
 
     render() {
-
         let self = this;
         let listId = 'item-list';
         let listItems = [];
@@ -63,7 +61,7 @@ export default class PageNavigation extends CustomElement {
             },
             [
                 DOM.a({
-                        href: 'https://www.trycrypto.com/dappstarter',
+                        href: 'https://www.trycrypto.com/dappstarter?utm_source=dapp',
                         className: 'logo-wrapper waves-effect'
                     },
                     [
@@ -80,7 +78,18 @@ export default class PageNavigation extends CustomElement {
                         className: 'list-group list-group-flush'
                     },
                     listItems
-                )
+                ),
+                DOM.a({
+                    href: 'https://www.trycrypto.com/dappstarter?utm_source=dapp',
+                    target: '_new'
+                },
+                [
+                    DOM.img({
+                        src: 'https://dappstarter.trycrypto.com/trycrypto-logo-1024.png?r=ds',
+                        className: 'text-center fixed-bottom mb-3',
+                        style: 'margin-left:55px;max-width:160px;'
+                    })
+                ])
             ]
         );
         self.appendChild(content);

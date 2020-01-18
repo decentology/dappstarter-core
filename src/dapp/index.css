@@ -103,7 +103,16 @@ main {
   margin-left: 270px;
 }
 
-@media (max-width: 1199.98px) {
+.card-body {
+  padding: 0;
+}
+
+home-page .card-body, 
+action-card .card-body article {
+  padding: 1.25rem
+}
+
+@media (max-width: 1000px) {
   .sidebar-fixed {
     display: none;
   }
@@ -122,15 +131,9 @@ main {
     margin-left: 0px;
   }
   
-  .card.cascading-admin-card {
-    margin-top: 2.5rem;
-  } 
 }
 
 @media (max-width: 576px) { 
-  .card.cascading-admin-card {
-    margin-top: 2.5rem;
-  }
 
   #breadcrumb{
     flex-direction: column;

@@ -3,7 +3,7 @@ class token {
 ///(functions
 
 
-    static async decimals(account, data) {
+    static async _decimals(account, data) {
         return await Blockchain.get(
                 DappLib.DAPP_STATE_CONTRACT,
                 'decimals', 
@@ -13,31 +13,31 @@ class token {
 
     static async totalSupply(account, data) {
 
-            let decimals = await DappLib.decimals(account);
+            let decimals = await DappLib._decimals(account);
             let units = new BN(10).pow(new BN(decimals));
             let supply = await Blockchain.get(
                                 DappLib.DAPP_STATE_CONTRACT,
                                 'totalSupply', 
                                 account
             );
-            return new BN(supply).div(units).toString(10);
+            return DappLib.formatNumber(new BN(supply).div(units).toString(10));
     }
 
     static async balance(account) {
 
-        let decimals = await DappLib.decimals(account);
+        let decimals = await DappLib._decimals(account);
         let units = new BN(10).pow(new BN(decimals));
         let balance = await Blockchain.get(
                             DappLib.DAPP_STATE_CONTRACT,
                             'balance', 
                             account
         );
-        return new BN(balance).div(units).toString(10);
+        return DappLib.formatNumber(new BN(balance).div(units).toString(10));
     }
 
     static async balanceOf(account, data) {
 
-        let decimals = await DappLib.decimals(account);
+        let decimals = await DappLib._decimals(account);
         let units = new BN(10).pow(new BN(decimals));
         let balance = await Blockchain.get(
                             DappLib.DAPP_STATE_CONTRACT,
@@ -45,13 +45,13 @@ class token {
                             account,
                             data.account
         );
-        return new BN(balance).div(units).toString(10);
+        return DappLib.formatNumber(new BN(balance).div(units).toString(10));
     }
 
 
     static async transfer(account, data) {
 
-        let decimals = await DappLib.decimals(account);
+        let decimals = await DappLib._decimals(account);
         let units = new BN(10).pow(new BN(decimals));
         await Blockchain.post(
                     DappLib.DAPP_STATE_CONTRACT,
@@ -61,7 +61,7 @@ class token {
                     new BN(data.amount).mul(units).toString(10)
         );
 
-        return '👍🏼';
+        return 'Transaction posted';
     }
 
 

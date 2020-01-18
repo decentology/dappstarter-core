@@ -78,9 +78,7 @@ export default class DOM {
                     if (propName in el) {
                         const value = textOrPropsOrChild[propName];
 
-                        if (propName === `style`) {
-                            DOM.setStyles(el, value);
-                        } else if (value) {
+                        if (value) {
                             el[propName] = value;
                         }
                     } else {

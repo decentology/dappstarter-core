@@ -28,8 +28,7 @@ export default class HomePage extends CustomElement {
             </div>
           </div>
           <!--/.First row-->
-      
-          <hr class="extra-margins">
+
       
           <!--Second row-->
           <div class="row">

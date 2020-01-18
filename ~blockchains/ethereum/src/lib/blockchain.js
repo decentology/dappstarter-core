@@ -28,19 +28,19 @@ export default class Blockchain {
         });
     }
 
-    static async get(contract, method, account, ...data) {
+    static async get(contract, action, account, ...data) {
         let blockchain = await Blockchain.init();
         let options = Object.assign({}, {
             from: typeof account === 'string' ? account : blockchain.accounts[account]
         });
-        return await blockchain[contract].methods[method](...data).call(options);
+        return await blockchain[contract].methods[action](...data).call(options);
     }
 
-    static async post(contract, method, account, ...data) {
+    static async post(contract, action, account, ...data) {
         let blockchain = await Blockchain.init();
         let options = Object.assign({}, {
             from: typeof account === 'string' ? account : blockchain.accounts[account]
         });
-        return await blockchain[contract].methods[method](...data).send(options);
+        return await blockchain[contract].methods[action](...data).send(options);
     }
 }

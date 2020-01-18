@@ -1,5 +1,13 @@
 export default class CustomElement extends HTMLElement {
 
+    static get METHOD_GET() {
+        return 'get'
+    }
+
+    static get METHOD_POST() {
+        return 'post'
+    }
+
     static get ATTRIBUTE_CATEGORY() {
         return 'category'
     }
@@ -14,6 +22,7 @@ export default class CustomElement extends HTMLElement {
         ];
     }
 
+    // Creates getters and setters for all custom attributes
     constructor(props, ...args) {
         const self = super(...args);
         
