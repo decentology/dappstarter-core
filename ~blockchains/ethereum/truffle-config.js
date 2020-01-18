@@ -1,6 +1,7 @@
-var HDWalletProvider = require("truffle-hdwallet-provider");
+const HDWalletProvider = require("@truffle/hdwallet-provider")
 
 let devUrl = 'http://127.0.0.1:7545/';
+let testAccounts = null;  ///@{ "___test-accounts___": "null"}
 
 module.exports = {
   networks: {
@@ -8,7 +9,7 @@ module.exports = {
       url: devUrl,
       provider: function() {
         return new HDWalletProvider(
-                                      'pottery movie angle day assault faculty banana rural lyrics hammer believe learn', 
+                                      testAccounts,
                                       devUrl,           // provider url
                                       0,                // address index
                                       25,               // number of addresses
