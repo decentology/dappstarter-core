@@ -31,25 +31,25 @@ export default class ActionCard extends CustomElement {
 
     static content(me) {
         return `
-<div class="card">
-<div class="white-text card-header blue-gradient">
-    <h5>${ me[ActionCard.ATTRIBUTE_METHOD] === ActionCard.METHOD_POST ? '🖋' : '👓'}  ${me.title}</h5>
-</div>
-<div class="card-body">
-    ${me.innerHTML}
-    <div id="result-${me.action}"></div>
-</div>
-<div class="rounded-bottom grey lighten-2 pt-2 pb-2 pr-2">
-    <div class="row pl-2 pr-2">
-        <div class="col-lg-8 d-flex align-items-center">
-            <h6>${me[ActionCard.ATTRIBUTE_DESCRIPTION]}</h6>
-        </div>
-        <div class="col-lg-4 text-right">
-            <button id="button-${me[ActionCard.ATTRIBUTE_ACTION]}" class="${me[ActionCard.ATTRIBUTE_METHOD] === ActionCard.METHOD_POST ? 'btn-warning btn-deep-orange' : 'btn-info'} btn Ripple-parent">${ (me[ActionCard.ATTRIBUTE_METHOD] ? me[ActionCard.ATTRIBUTE_METHOD] : 'Go').toUpperCase()}</button>
+    <div class="card">
+    <div class="white-text card-header blue-gradient">
+        <h5>${ me[ActionCard.ATTRIBUTE_METHOD] === ActionCard.METHOD_POST ? '🖋' : '👓'}  ${me.title}</h5>
+    </div>
+    <div class="card-body">
+        ${me.innerHTML}
+        <div id="result-${me.action}"></div>
+    </div>
+    <div class="rounded-bottom grey lighten-2 pt-2 pb-2 pr-2">
+        <div class="row pl-2 pr-2">
+            <div class="col-lg-8 d-flex align-items-center">
+                <h6>${me[ActionCard.ATTRIBUTE_DESCRIPTION]}</h6>
+            </div>
+            <div class="col-lg-4 text-right">
+                <button id="button-${me[ActionCard.ATTRIBUTE_ACTION]}" class="${me[ActionCard.ATTRIBUTE_METHOD] === ActionCard.METHOD_POST ? 'btn-warning btn-deep-orange' : 'btn-info'} btn Ripple-parent">${ (me[ActionCard.ATTRIBUTE_METHOD] ? me[ActionCard.ATTRIBUTE_METHOD] : 'Go').toUpperCase()}</button>
+            </div>
         </div>
     </div>
-</div>
-</div>
+    </div>
 `
     }
 
@@ -57,7 +57,7 @@ export default class ActionCard extends CustomElement {
     render() {
         let self = this;
         self.innerHTML = ActionCard.content(self); 
-
+        self.className = 'col-lg-8 col-md-10 col-sm-12 mb-5';
         if (self.action) {
             document.querySelector(`#button-${self[ActionCard.ATTRIBUTE_ACTION]}`).addEventListener('click', async () => {
 

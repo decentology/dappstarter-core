@@ -10,7 +10,6 @@ import App from './App.jsx';
 import * as reducers from './reducers';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router } from 'react-router-dom';
-import './assets/img/dappstarter.png';
 
 const app = combineReducers(reducers);
 const store = compose(window.devToolsExtension ? window.devToolsExtension() : f => f)(createStore)(app);

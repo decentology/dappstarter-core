@@ -22,7 +22,6 @@ export default class TokenPage extends CustomElement {
             action="totalSupply"
             method="${TokenPage.METHOD_GET}"
             fields=""
-            class="col-md-8 col-sm-12 mb-5"
         ></action-card>
 
         <action-card 
@@ -31,8 +30,6 @@ export default class TokenPage extends CustomElement {
             action="balance"
             method="${TokenPage.METHOD_GET}"
             fields=""             
-            class="col-md-8 col-sm-12 mb-5"
-
         ></action-card>
 
         <action-card 
@@ -41,7 +38,6 @@ export default class TokenPage extends CustomElement {
             action="balanceOf"
             method="${TokenPage.METHOD_GET}"
             fields="account"            
-            class="col-md-8 col-sm-12 mb-5"
             >
             <article>
                 <div class="input-group mb-3">
@@ -59,7 +55,6 @@ export default class TokenPage extends CustomElement {
             action="transfer"
             method="${TokenPage.METHOD_POST}"
             fields="to amount"            
-            class="col-md-8 col-sm-12 mb-5"
             >
             <article>        
                 <div class="input-group mb-3">

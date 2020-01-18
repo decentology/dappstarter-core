@@ -6,8 +6,7 @@ import '../dapp/components/shared/page-loader';
 import '../dapp/components/pages/home-page';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
-import 'mdbreact/dist/css/mdb.css';
-import './assets/img/dappstarter.png';
+import 'mdbootstrap/css/mdb.min.css';
 import './index.css';
 
 DOM.elid('root').appendChild(
