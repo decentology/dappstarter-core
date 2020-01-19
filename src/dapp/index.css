@@ -9,7 +9,7 @@ body{
   background-color: #EDEDEE;
 }
 
-a{
+a {
   color: inherit;
 }
 
@@ -107,9 +107,16 @@ main {
   padding: 0;
 }
 
-home-page .card-body, 
-action-card .card-body article {
+.card-body-padded {
   padding: 1.25rem
+}
+
+.test {
+  background-color: purple;
+}
+
+.card-body-padded:last-child {
+  margin-bottom: 0;
 }
 
 @media (max-width: 1000px) {

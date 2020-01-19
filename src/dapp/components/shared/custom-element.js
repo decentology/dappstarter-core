@@ -1,5 +1,6 @@
 export default class CustomElement extends HTMLElement {
 
+
     static get METHOD_GET() {
         return 'get'
     }
@@ -8,6 +9,7 @@ export default class CustomElement extends HTMLElement {
         return 'post'
     }
 
+    
     static get ATTRIBUTE_CATEGORY() {
         return 'category'
     }
@@ -60,7 +62,6 @@ export default class CustomElement extends HTMLElement {
         if ((oldValue !== newValue) && (self.rendered)) {
             if (self.render) {
                 self.innerHTML = '';
-                self.rendered = true;
                 self.render();
             }
         }

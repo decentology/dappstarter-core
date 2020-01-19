@@ -1,4 +1,5 @@
 ///(page
+import '../widgets/page-widget.js';
 import '../shared/action-card.js';
 import DappLib from '../../../lib/dapp-lib';
 
@@ -13,19 +14,9 @@ export default class IpfsPage extends CustomElement {
 
         let content = 
 `
-    <section>
-        <h5>${self.category}</h5>
-        <h2 class="mb-5"><strong>${self.title}</strong></h2>
-        <div class="row">
-            <action-card 
-                title="Add Document" 
-                description="Upload document to IPFS and add hash to contract"
-                action="addIpfsDocument"
-                method="post"
-                fields="file"            
-                class="col-md-8 col-sm-12 mb-5"
-                >
-                <article>        
+        <page-widget title="${self.title}" category="${self.category}">
+            <action-card title="Add Document" description="Upload document to IPFS and add hash to contract"
+                action="addIpfsDocument" method="post" fields="file">
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Upload</span>
@@ -35,10 +26,8 @@ export default class IpfsPage extends CustomElement {
                             <label class="custom-file-label">Choose file</label>
                         </div>
                     </div>
-                </article>
             </action-card>        
-        </div>
-      </section>
+        </page-widget>
 `
         self.innerHTML = content;
         self.handleUpload();
@@ -55,7 +44,6 @@ export default class IpfsPage extends CustomElement {
             for (let f = 0; f < domFiles.length; f++) {
                 files.push(domFiles[f]);
             }
-            console.log('Files', files);
             let result = await DappLib.ipfsUpload(files,
                 (bytes) => {
                     console.log(bytes);

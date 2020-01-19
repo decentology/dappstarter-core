@@ -3,7 +3,7 @@ import DappContract from '../../build/contracts/Dapp.json';
 import Config from '../dapp-config.json';
 import Web3 from 'web3';
 
-// Ethereum
+// Klaytn
 export default class Blockchain {
 
     static init() {
@@ -13,7 +13,9 @@ export default class Blockchain {
         }
 
         return new Promise((resolve, reject) => {
+            console.log(web3Obj);
             web3Obj.http.eth.getAccounts((error, accounts) => {
+                console.log('Blockchain init accounts', accounts)
                 if (error) {
                     return reject(error);
                 } else {

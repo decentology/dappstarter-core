@@ -39,11 +39,17 @@ export default class PageNavigation extends CustomElement {
         let listId = 'item-list';
         let listItems = [];
         let contentPages = self.getPages();
+        let startPage = contentPages[0];
         contentPages.map((pageItem) => {
+            let active = false;
+            if (location.href.endsWith(pageItem.route)) {
+                startPage = pageItem;
+                active = true;
+            }
             listItems.push(
                 DOM.a([
                     DOM.li({
-                            className: 'list-group-item',
+                            className: 'list-group-item' + (active ? ' active' : ''),
                             onclick: (e) => {
                                 document.querySelector('#' + listId).childNodes.forEach((node) => node.className = '');
                                 e.target.parentNode.className = 'active';
@@ -93,7 +99,7 @@ export default class PageNavigation extends CustomElement {
             ]
         );
         self.appendChild(content);
-        self.setPageLoader(contentPages[0]);
+        self.setPageLoader(startPage);
     }
 }
 

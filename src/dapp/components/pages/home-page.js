@@ -42,7 +42,7 @@ export default class HomePage extends CustomElement {
                   alt="Card image cap">
       
                 <!--Card content-->
-                <div class="card-body">
+                <div class="card-body-padded">
                   <!--Title-->
                   <h4 class="card-title">FAQ</h4>
                   <!--Text-->
@@ -66,7 +66,7 @@ export default class HomePage extends CustomElement {
                   alt="Card image cap">
       
                 <!--Card content-->
-                <div class="card-body">
+                <div class="card-body-padded">
                   <!--Title-->
                   <h4 class="card-title">Guides</h4>
                   <!--Text-->
@@ -91,7 +91,7 @@ export default class HomePage extends CustomElement {
                   alt="Card image cap">
       
                 <!--Card content-->
-                <div class="card-body">
+                <div class="card-body-padded">
                   <!--Title-->
                   <h4 class="card-title">Docs</h4>
                   <!--Text-->
