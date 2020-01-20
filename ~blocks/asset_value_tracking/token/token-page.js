@@ -2,6 +2,7 @@
 import '../shared/action-card.js';
 import '../widgets/page-widget.js';
 import '../widgets/account-widget.js';
+import '../widgets/number-widget.js';
 
 export default class TokenPage extends CustomElement {
 
@@ -40,16 +41,13 @@ export default class TokenPage extends CustomElement {
                 title="Transfer" description="Transfer tokens to another account"
                 action="transfer" method="${TokenPage.METHOD_POST}" fields="to amount">
 
-                    <account-widget class="mb-3"
+                    <account-widget
                         field="to" label="To" placeholder="Recipient's account address">
                     </account-widget>
 
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Amount</span>
-                        </div>
-                        <input type="text" data-field="amount" class="form-control" placeholder="Amount">
-                    </div>
+                    <number-widget
+                        field="amount" label="Amount" placeholder="Number of tokens to transfer">
+                    </number-widget>
                 
             </action-card>
         </page-widget>

@@ -3,64 +3,85 @@ class token {
 ///(functions
 
 
-    static async _decimals(account, data) {
-        return await DappLib.get(
-                DappLib.DAPP_STATE_CONTRACT,
-                'decimals', 
-                account
+    static async _decimals(caller, data) {
+        let result = await DappLib.get(
+                                    DappLib.DAPP_STATE_CONTRACT,
+                                    'decimals', 
+                                    caller
+                            );
+        return result.callData
+    }
+
+    static async totalSupply(caller, data) {
+
+        let decimals = await DappLib._decimals(caller);
+        let units = new BN(10).pow(new BN(decimals));
+        let result = await DappLib.get(
+                            DappLib.DAPP_STATE_CONTRACT,
+                            'totalSupply', 
+                            caller
         );
+        let supply = result.callData;
+        return {
+            type: DappLib.DAPP_RESULT_BIG_NUMBER,
+            label: 'Total Supply',
+            result: new BN(supply).div(units)
+        }
     }
 
-    static async totalSupply(account, data) {
+    static async balance(caller) {
 
-            let supply = await DappLib.get(
-                                DappLib.DAPP_STATE_CONTRACT,
-                                'totalSupply', 
-                                account
-            );
-            let decimals = await DappLib._decimals(account);
-            let units = new BN(10).pow(new BN(decimals));
-            return DappLib.formatNumber(new BN(supply).div(units).toString(10));
-    }
-
-    static async balance(account) {
-
-        let balance = await DappLib.get(
+        let decimals = await DappLib._decimals(caller);
+        let units = new BN(10).pow(new BN(decimals));
+        let result = await DappLib.get(
                             DappLib.DAPP_STATE_CONTRACT,
                             'balance', 
-                            account
+                            caller
         );
-        let decimals = await DappLib._decimals(account);
-        let units = new BN(10).pow(new BN(decimals));
-        return DappLib.formatNumber(new BN(balance).div(units).toString(10));
+        let balance = result.callData;
+        return {
+            type: DappLib.DAPP_RESULT_BIG_NUMBER,
+            label: 'Account Balance for ' + DappLib.formatAccount(result.callAccount),
+            result: new BN(balance).div(units)
+        }
     }
 
-    static async balanceOf(account, data) {
+    static async balanceOf(caller, data) {
 
-        let balance = await DappLib.get(
+        let decimals = await DappLib._decimals(caller);
+        let units = new BN(10).pow(new BN(decimals));
+        let result = await DappLib.get(
                             DappLib.DAPP_STATE_CONTRACT,
                             'balanceOf', 
-                            account,
+                            caller,
                             data.account
         );
-        let decimals = await DappLib._decimals(account);
-        let units = new BN(10).pow(new BN(decimals));
-        return DappLib.formatNumber(new BN(balance).div(units).toString(10));
+        let balance = result.callData;
+        return {
+            type: DappLib.DAPP_RESULT_BIG_NUMBER,
+            label: DappLib.formatAccount(result.callAccount) + ' Account Balance',
+            result: new BN(balance).div(units)
+        }
     }
 
 
-    static async transfer(account, data) {
+    static async transfer(caller, data) {
 
-        let decimals = await DappLib._decimals(account);
+        let decimals = await DappLib._decimals(caller);
         let units = new BN(10).pow(new BN(decimals));
         let amount = new BN(data.amount).mul(units); //.toString(10)
-        return await DappLib.post(
-                    DappLib.DAPP_STATE_CONTRACT,
-                    'transfer', 
-                    account,
-                    data.to,
-                    amount
-        );
+        let result = await DappLib.post(
+                                    DappLib.DAPP_STATE_CONTRACT,
+                                    'transfer', 
+                                    caller,
+                                    data.to,
+                                    amount
+                        );
+        return {
+            type: DappLib.DAPP_RESULT_TX_HASH,
+            label: 'Transaction Hash',
+            result: result.callData.transactionHash
+        }                        
     }
 
 

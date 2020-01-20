@@ -1,6 +1,8 @@
 import DappLib from '../../../lib/dapp-lib';
 import CustomElement from './custom-element';
-import Wait from '../widgets/wait-widget';
+import WaitWidget from '../widgets/wait-widget';
+
+import DOM from './dom';
 
 export default class ActionCard extends CustomElement {
 
@@ -27,13 +29,15 @@ export default class ActionCard extends CustomElement {
 
     constructor(...args) {
         super(ActionCard.attributes, ...args);
+        self.clicked = false;
     }
 
     static content(me) {
         return `
     <div class="card">
-    <div class="white-text card-header blue-gradient">
-        <h5>${ me[ActionCard.ATTRIBUTE_METHOD] === ActionCard.METHOD_POST ? '🖋' : '👓'}  ${me.title}</h5>
+    <div class="white-text card-header blue-gradient d-flex justify-content-between align-items-center">
+        <h5>${me.title}</h5>
+        <span class="text-right circle-icon">${ me[ActionCard.ATTRIBUTE_METHOD] === ActionCard.METHOD_POST ? '🖋' : '👓'}</span>
     </div>
     <div class="${ me.innerHTML.indexOf('<') > -1 ? 'card-body-padded' : 'card-body'}" id="card-body-${me.action}">
         ${me.innerHTML}
@@ -60,41 +64,66 @@ export default class ActionCard extends CustomElement {
         if (self.action) {
             document.querySelector(`#button-${self[ActionCard.ATTRIBUTE_ACTION]}`).addEventListener('click', async () => {
 
+                 if (self.clicked === true) { return; }
+
                 // Remove prior results or error messages
                 self.querySelectorAll(`#card-result-${self.action}`).forEach(e => e.parentNode.removeChild(e));
 
-                // Capture values of all fields of interest
-                let values = {};
-                let fields = self.fields.split(' ');
-                let validFields = 0;
-                fields.map((field) => {
-                    if (field) {
-                        validFields++;
-                        let fieldElement = self.querySelector(`[data-field=${field}]`);
-                        if (fieldElement) {
-                            values[field] = fieldElement.value;
-                        }    
-                    }
-                });   
                 if (DappLib[self.action]) {
+
+                    self.clicked = true;
                     self.querySelector('wait-widget').waiting = true;
+                        // Capture values of all fields of interest
+                    let values = {};
+                    let fields = self.fields.split(' ');
+                    let validFields = 0;
+                    fields.map((field) => {
+                        if (field) {
+                            validFields++;
+                            let fieldElement = self.querySelector(`[data-field=${field}]`);
+                            if (fieldElement) {
+                                values[field] = fieldElement.value;
+                            }    
+                        }
+                    });   
+
                     let cardBody = document.getElementById(`card-body-${self.action}`);
                     let resultClass = validFields > 0 ? '' : 'm-3';
-                    console.log(fields, fields.length, resultClass);
                     try {
-                        let account = 0;
-                        let data = await DappLib[self.action].call(null, account, values);
-                        cardBody.innerHTML += `<div id="card-result-${self.action}" class="${resultClass} mt-3"> 👍🏼 <strong>Result:</strong> ${data}</div>`;
+                        // TODO: Should be dynamic based on user signed in
+                        let account = 0; // Index of test account
+                        let retVal = await DappLib[self.action].call(null, account, values);
+                        let data = '';
+                        switch(retVal.type) {
+                            case DappLib.DAPP_RESULT_BIG_NUMBER:
+                                data = DappLib.formatNumber(retVal.result.toString(10));
+                                break;
+                            case DappLib.DAPP_RESULT_TX_HASH:
+                                data = DappLib.formatTxHash(retVal.result);
+                                break;    
+                        }
+                        let resultElement = DOM.div({
+                                                id: `card-result-${self.action}`,
+                                                className: `${resultClass} mt-3 text-success`
+                                            });
+                        resultElement.innerHTML = ' 👍🏼 ' + retVal.label + ': ' + data;
+                        cardBody.appendChild(resultElement);
                     }
                     catch(e) {
                         if (e.message.indexOf('run Out of Gas') > -1) {
 
                             e.message = 'Can\'t access the blockchain. Check that access to it isn\'t blocked. During development this error usually means your test blockchain is not running or has test accounts that don\'t match the accounts in your development configuration.';                            
                         }
-                        cardBody.innerHTML += `<div id="card-result-${self.action}" class="${resultClass} mt-3"> 😖 <strong>${e.name}:</strong> ${e.message}</div>`;
+                        let errorElement = DOM.div({
+                                                id: `card-result-${self.action}`,
+                                                className: `${resultClass} mt-3 text-danger`
+                                            });
+                        errorElement.innerHTML = ' 😖 ' + e.name + ': ' + e.message
+                        cardBody.appendChild(errorElement);
                     }
                     finally {
                         self.querySelector('wait-widget').waiting = false;
+                        self.clicked = false;
                     }
                 } else {
                     console.error('😕 Action not found');
@@ -103,6 +132,7 @@ export default class ActionCard extends CustomElement {
         }
     }
 
+ 
 }
 
 customElements.define('action-card', ActionCard);

@@ -1,6 +1,6 @@
 import CustomElement from '../shared/custom-element';
 
-export default class AccountWidget extends CustomElement {
+export default class NumberWidget extends CustomElement {
     
     static get ATTRIBUTE_FIELD() {
         return 'field'
@@ -13,21 +13,20 @@ export default class AccountWidget extends CustomElement {
     }
 
     static get observedAttributes() {
-        return AccountWidget.attributes; 
+        return NumberWidget.attributes; 
     }
 
     static get attributes() {
         return [
-            AccountWidget.ATTRIBUTE_FIELD,
-            AccountWidget.ATTRIBUTE_LABEL,
-            AccountWidget.ATTRIBUTE_PLACEHOLDER
+            NumberWidget.ATTRIBUTE_FIELD,
+            NumberWidget.ATTRIBUTE_LABEL,
+            NumberWidget.ATTRIBUTE_PLACEHOLDER
         ];
     }
 
     constructor(...args) {
-        super(AccountWidget.attributes, ...args);
+        super(NumberWidget.attributes, ...args);
     }
-
 
     render() {
         let self = this;
@@ -48,4 +47,4 @@ export default class AccountWidget extends CustomElement {
 }
 
 
-customElements.define('account-widget', AccountWidget);
+customElements.define('number-widget', NumberWidget);
