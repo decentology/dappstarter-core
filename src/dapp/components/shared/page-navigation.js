@@ -47,9 +47,12 @@ export default class PageNavigation extends CustomElement {
                 active = true;
             }
             listItems.push(
-                DOM.a([
+                DOM.a({
+                    className: (active ? ' active' : '')
+                },
+                [
                     DOM.li({
-                            className: 'list-group-item' + (active ? ' active' : ''),
+                            className: 'list-group-item',
                             onclick: (e) => {
                                 document.querySelector('#' + listId).childNodes.forEach((node) => node.className = '');
                                 e.target.parentNode.className = 'active';

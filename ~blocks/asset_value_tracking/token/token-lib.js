@@ -25,7 +25,8 @@ class token {
         return {
             type: DappLib.DAPP_RESULT_BIG_NUMBER,
             label: 'Total Supply',
-            result: new BN(supply).div(units)
+            result: new BN(supply).div(units),
+            hint: null
         }
     }
 
@@ -42,7 +43,8 @@ class token {
         return {
             type: DappLib.DAPP_RESULT_BIG_NUMBER,
             label: 'Account Balance for ' + DappLib.formatAccount(result.callAccount),
-            result: new BN(balance).div(units)
+            result: new BN(balance).div(units),
+            hint: null
         }
     }
 
@@ -60,7 +62,8 @@ class token {
         return {
             type: DappLib.DAPP_RESULT_BIG_NUMBER,
             label: DappLib.formatAccount(result.callAccount) + ' Account Balance',
-            result: new BN(balance).div(units)
+            result: new BN(balance).div(units),
+            hint: null
         }
     }
 
@@ -80,7 +83,8 @@ class token {
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
-            result: result.callData.transactionHash
+            result: result.callData.transactionHash,
+            hint: `Verify transfer by using "Balance for Account" to check the balance of ${DappLib.formatAccount(data.to)}.`
         }                        
     }
 

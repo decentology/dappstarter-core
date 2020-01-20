@@ -35,7 +35,7 @@ export default class PageLoader extends CustomElement {
         try {
             await import(`../pages/${self.name}-page.js`);
             pageContent = DOM.create(
-                `${self.name}-page`, {
+                `${self.name.replace('_','-')}-page`, {
                     title: self.title
                 });
             // Custom properties need to be set separately

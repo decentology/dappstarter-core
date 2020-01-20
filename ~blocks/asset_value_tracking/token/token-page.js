@@ -19,17 +19,17 @@ export default class TokenPage extends CustomElement {
 
             <action-card 
                 title="Total Supply" description="Get total supply of tokens"
-                action="totalSupply" method="${TokenPage.METHOD_GET}" fields="">
+                action="totalSupply" method="${CustomElement.METHOD_GET}" fields="">
             </action-card>
 
             <action-card 
                 title="Balance" description="Get token balance for current account"
-                action="balance" method="${TokenPage.METHOD_GET}" fields="">
+                action="balance" method="${CustomElement.METHOD_GET}" fields="">
             </action-card>
 
             <action-card 
                 title="Balance for Account" description="Get token balance for any account"
-                action="balanceOf" method="${TokenPage.METHOD_GET}" fields="account">
+                action="balanceOf" method="${CustomElement.METHOD_GET}" fields="account">
 
                     <account-widget 
                         field="account" label="Account" placeholder="Account address">
@@ -39,7 +39,7 @@ export default class TokenPage extends CustomElement {
 
             <action-card 
                 title="Transfer" description="Transfer tokens to another account"
-                action="transfer" method="${TokenPage.METHOD_POST}" fields="to amount">
+                action="transfer" method="${CustomElement.METHOD_POST}" fields="to amount">
 
                     <account-widget
                         field="to" label="To" placeholder="Recipient's account address">

@@ -51,6 +51,23 @@ contract access_control_administrator_role {
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: ADMINISTRATOR ROLE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
     /**
+    * @dev Checks if an account is an admin
+    *
+    * @param account Address of the account to check
+    */
+    function isContractAdmin
+                            (
+                                address account
+                            ) 
+                            public 
+                            view
+                            returns(bool) 
+    {
+        return authorizedAdmins[account] == 1;
+    }
+
+
+    /**
     * @dev Adds a contract admin
     *
     * @param account Address of the admin to add
@@ -64,6 +81,7 @@ contract access_control_administrator_role {
                             requireContractAdmin
     {
         require(account != address(0), "Invalid address");
+        require(authorizedAdmins[account] < 1, "Account is already an administrator");
 
         authorizedAdmins[account] = 1;
         authorizedAdminsCount++;
@@ -89,21 +107,6 @@ contract access_control_administrator_role {
         authorizedAdminsCount--;
     }
 
-    /**
-    * @dev Checks if an account is an admin
-    *
-    * @param account Address of the account to check
-    */
-    function isContractAdmin
-                            (
-                                address account
-                            ) 
-                            public 
-                            view
-                            returns(bool) 
-    {
-        return authorizedAdmins[account] == 1;
-    }
 ///)
 
 }

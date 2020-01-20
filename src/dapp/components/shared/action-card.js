@@ -96,11 +96,15 @@ export default class ActionCard extends CustomElement {
                         let data = '';
                         switch(retVal.type) {
                             case DappLib.DAPP_RESULT_BIG_NUMBER:
-                                data = DappLib.formatNumber(retVal.result.toString(10));
+                                data = DappLib.formatNumber(retVal.result.toString(10), retVal.hint);
                                 break;
                             case DappLib.DAPP_RESULT_TX_HASH:
-                                data = DappLib.formatTxHash(retVal.result);
+                                data = DappLib.formatTxHash(retVal.result, retVal.hint);
                                 break;    
+                            case DappLib.DAPP_RESULT_BOOLEAN:
+                                data = DappLib.formatBoolean(retVal.result, retVal.hint);
+                                break;    
+    
                         }
                         let resultElement = DOM.div({
                                                 id: `card-result-${self.action}`,
@@ -118,7 +122,7 @@ export default class ActionCard extends CustomElement {
                                                 id: `card-result-${self.action}`,
                                                 className: `${resultClass} mt-3 text-danger`
                                             });
-                        errorElement.innerHTML = ' 😖 ' + e.name + ': ' + e.message
+                        errorElement.innerHTML = ' 😖 ' + e.name + ': ' + e.message;
                         cardBody.appendChild(errorElement);
                     }
                     finally {
