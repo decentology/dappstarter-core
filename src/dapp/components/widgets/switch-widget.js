@@ -30,8 +30,8 @@ export default class SwitchWidget extends CustomElement {
         let content = `
         <div class="input-group">
             <div class="custom-control custom-switch">
-                <input type="checkbox" data-field="${self.field}" class="custom-control-input">
-                <label class="custom-control-label">${self.label}</label>
+                <input type="checkbox" data-field="${self.field}" class="custom-control-input" id="switch-${self.field}">
+                <label class="custom-control-label" for="switch-${self.field}">${self.label}</label>
             </div>
         </div>
 `

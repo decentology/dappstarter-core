@@ -20,7 +20,6 @@ class contractrunstate {
     }
 
     static async setContractRunState(caller, data) {
-
         let result = await DappLib.post(
                                     DappLib.DAPP_STATE_CONTRACT,
                                     'setContractRunState', 

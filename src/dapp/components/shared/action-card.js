@@ -88,7 +88,11 @@ export default class ActionCard extends CustomElement {
                             validFields++;
                             let fieldElement = self.querySelector(`[data-field=${field}]`);
                             if (fieldElement) {
-                                values[field] = fieldElement.value;
+                                if (fieldElement.type === 'checkbox') {
+                                    values[field] = fieldElement.checked;
+                                } else {
+                                    values[field] = fieldElement.value;
+                                }
                             }    
                         }
                     });   
