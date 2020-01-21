@@ -37,7 +37,7 @@ export default class ContractAccessPage extends CustomElement {
             </action-card>
 
             <action-card 
-                title="Remove Contract Admin" description="Deauthorize a contract"
+                title="Deauthorize Contract" description="Deauthorize a contract"
                 action="deauthorizeContract" method="${CustomElement.METHOD_POST}" fields="account">
 
                     <account-widget
