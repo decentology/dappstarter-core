@@ -4,12 +4,11 @@ class administratorrole {
 
 
 
-    static async isContractAdmin(caller, data) {
+    static async isContractAdmin(data) {
 
-        let result = await DappLib.get(
-                            DappLib.DAPP_STATE_CONTRACT,
+        let result = await Blockchain.get(
+                            { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
                             'isContractAdmin', 
-                            caller,
                             data.account
         );
         return {
@@ -20,12 +19,11 @@ class administratorrole {
         }
     }
 
-    static async addContractAdmin(caller, data) {
+    static async addContractAdmin(data) {
 
-        let result = await DappLib.post(
-                                    DappLib.DAPP_STATE_CONTRACT,
+        let result = await Blockchain.post(
+                                    { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
                                     'addContractAdmin', 
-                                    caller,
                                     data.account
                         );
         return {
@@ -36,12 +34,11 @@ class administratorrole {
         }                        
     }
 
-    static async removeContractAdmin(caller, data) {
+    static async removeContractAdmin(data) {
 
-        let result = await DappLib.post(
-                                    DappLib.DAPP_STATE_CONTRACT,
+        let result = await Blockchain.post(
+                                    { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
                                     'removeContractAdmin', 
-                                    caller,
                                     data.account
                         );
         return {
@@ -52,12 +49,11 @@ class administratorrole {
         }                        
     }
 
-    static async removeLastContractAdmin(caller, data) {
+    static async removeLastContractAdmin(data) {
 
-        let result = await DappLib.post(
-                                    DappLib.DAPP_STATE_CONTRACT,
+        let result = await Blockchain.post(
+                                    { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
                                     'removeLastContractAdmin', 
-                                    caller,
                                     data.account
                         );
         return {

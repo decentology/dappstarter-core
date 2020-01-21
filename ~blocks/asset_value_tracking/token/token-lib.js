@@ -3,23 +3,21 @@ class token {
 ///(functions
 
 
-    static async _decimals(caller, data) {
-        let result = await DappLib.get(
-                                    DappLib.DAPP_STATE_CONTRACT,
-                                    'decimals', 
-                                    caller
+    static async _decimals() {
+        let result = await Blockchain.get(
+                                    { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
+                                    'decimals' 
                             );
         return result.callData
     }
 
-    static async totalSupply(caller, data) {
+    static async totalSupply(data) {
 
-        let decimals = await DappLib._decimals(caller);
+        let decimals = await DappLib._decimals();
         let units = new BN(10).pow(new BN(decimals));
-        let result = await DappLib.get(
-                            DappLib.DAPP_STATE_CONTRACT,
+        let result = await Blockchain.get(
+                            { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
                             'totalSupply', 
-                            caller
         );
         let supply = result.callData;
         return {
@@ -30,14 +28,13 @@ class token {
         }
     }
 
-    static async balance(caller) {
+    static async balance() {
 
-        let decimals = await DappLib._decimals(caller);
+        let decimals = await DappLib._decimals();
         let units = new BN(10).pow(new BN(decimals));
-        let result = await DappLib.get(
-                            DappLib.DAPP_STATE_CONTRACT,
-                            'balance', 
-                            caller
+        let result = await Blockchain.get(
+                            { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
+                            'balance'
         );
         let balance = result.callData;
         return {
@@ -48,14 +45,13 @@ class token {
         }
     }
 
-    static async balanceOf(caller, data) {
+    static async balanceOf(data) {
 
-        let decimals = await DappLib._decimals(caller);
+        let decimals = await DappLib._decimals();
         let units = new BN(10).pow(new BN(decimals));
-        let result = await DappLib.get(
-                            DappLib.DAPP_STATE_CONTRACT,
+        let result = await Blockchain.get(
+                            { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
                             'balanceOf', 
-                            caller,
                             data.account
         );
         let balance = result.callData;
@@ -68,15 +64,14 @@ class token {
     }
 
 
-    static async transfer(caller, data) {
+    static async transfer(data) {
 
-        let decimals = await DappLib._decimals(caller);
+        let decimals = await DappLib._decimals();
         let units = new BN(10).pow(new BN(decimals));
         let amount = new BN(data.amount).mul(units); //.toString(10)
-        let result = await DappLib.post(
-                                    DappLib.DAPP_STATE_CONTRACT,
+        let result = await Blockchain.post(
+                                    { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
                                     'transfer', 
-                                    caller,
                                     data.to,
                                     amount
                         );

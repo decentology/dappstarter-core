@@ -4,12 +4,11 @@ class contractrunstate {
 
 
 
-    static async isContractRunStateActive(caller, data) {
+    static async isContractRunStateActive(data) {
 
-        let result = await DappLib.get(
-                            DappLib.DAPP_STATE_CONTRACT,
-                            'isContractRunStateActive', 
-                            caller
+        let result = await Blockchain.get(
+                            { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
+                            'isContractRunStateActive'
         );
         return {
             type: DappLib.DAPP_RESULT_BOOLEAN,
@@ -19,11 +18,10 @@ class contractrunstate {
         }
     }
 
-    static async setContractRunState(caller, data) {
-        let result = await DappLib.post(
-                                    DappLib.DAPP_STATE_CONTRACT,
+    static async setContractRunState(data) {
+        let result = await Blockchain.post(
+                                    { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
                                     'setContractRunState', 
-                                    caller,
                                     data.mode
                         );
         return {

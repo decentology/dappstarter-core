@@ -4,12 +4,11 @@ class contractaccess {
 
 
 
-    static async isContractAuthorized(caller, data) {
+    static async isContractAuthorized(data) {
 
-        let result = await DappLib.get(
-                            DappLib.DAPP_STATE_CONTRACT,
+        let result = await Blockchain.get(
+                            { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
                             'isContractAuthorized', 
-                            caller,
                             data.account
         );
         return {
@@ -20,12 +19,11 @@ class contractaccess {
         }
     }
 
-    static async authorizeContract(caller, data) {
+    static async authorizeContract(data) {
 
-        let result = await DappLib.post(
-                                    DappLib.DAPP_STATE_CONTRACT,
+        let result = await Blockchain.post(
+                                    { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
                                     'authorizeContract', 
-                                    caller,
                                     data.account
                         );
         return {
@@ -36,12 +34,11 @@ class contractaccess {
         }                        
     }
 
-    static async deauthorizeContract(caller, data) {
+    static async deauthorizeContract(data) {
 
-        let result = await DappLib.post(
-                                    DappLib.DAPP_STATE_CONTRACT,
+        let result = await Blockchain.post(
+                                    { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
                                     'deauthorizeContract', 
-                                    caller,
                                     data.account
                         );
         return {

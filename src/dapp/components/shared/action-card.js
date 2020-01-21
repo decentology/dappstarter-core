@@ -100,20 +100,17 @@ export default class ActionCard extends CustomElement {
                     let cardBody = document.getElementById(`card-body-${self.action}`);
                     let resultClass = validFields > 0 ? '' : 'm-3';
                     try {
-                        // TODO: Should be dynamic based on user signed in
-                        let account = 0; // Index of test account
-
-                        let retVal = await DappLib[self.action].call(null, account, values);
+                        let retVal = await DappLib[self.action].call(null, values);
                         let data = '';
                         switch(retVal.type) {
                             case DappLib.DAPP_RESULT_BIG_NUMBER:
-                                data = DappLib.formatNumber(retVal.result.toString(10), retVal.hint);
+                                data = DappLib.formatNumber(retVal.result.toString(10));
                                 break;
                             case DappLib.DAPP_RESULT_TX_HASH:
-                                data = DappLib.formatTxHash(retVal.result, retVal.hint);
+                                data = DappLib.formatTxHash(retVal.result);
                                 break;    
                             case DappLib.DAPP_RESULT_BOOLEAN:
-                                data = DappLib.formatBoolean(retVal.result, retVal.hint);
+                                data = DappLib.formatBoolean(retVal.result);
                                 break;    
     
                         }
@@ -121,13 +118,13 @@ export default class ActionCard extends CustomElement {
                                                 id: `card-result-${self.action}`,
                                                 className: `${resultClass} mt-3 text-success`
                                             });
-                        resultElement.innerHTML = ' 👍🏼 ' + retVal.label + ': ' + data;
+                        resultElement.innerHTML = ' 👍🏼 ' + retVal.label + ': ' + data + DappLib.formatHint(retVal.hint);
                         cardBody.appendChild(resultElement);
 
                         // Wire-up clipboard copy
                         new ClipboardJS('.copy-target', {
                             text: function(trigger) {
-                                return trigger.getAttribute('title');
+                                return trigger.getAttribute('data-copy');
                             }
                         });
                     }
