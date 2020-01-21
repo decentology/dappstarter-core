@@ -1,6 +1,7 @@
 'use strict';
 import Blockchain from './blockchain';
 import BN from 'bn.js';   // Required for injected code
+import config from '../dapp-config.json';
 
 ///+import
 
@@ -28,7 +29,7 @@ export default class DappLib {
   * @dev Calls a read-only smart contract function
   */
   static async get(contract, action, account, ...data) {
-    let blockchain = await Blockchain.init();
+    let blockchain = await Blockchain.init(config);
     let caller = typeof account === 'string' ? account : blockchain.accounts[account];
     let options = Object.assign({}, {
         from: caller
@@ -45,7 +46,7 @@ export default class DappLib {
   * @dev Calls a writeable smart contract function
   */
   static async post(contract, action, account, ...data) {
-      let blockchain = await Blockchain.init();
+      let blockchain = await Blockchain.init(config);
       let caller = typeof account === 'string' ? account : blockchain.accounts[account];
       let options = Object.assign({}, {
           from: caller
