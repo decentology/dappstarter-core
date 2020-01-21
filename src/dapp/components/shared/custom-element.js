@@ -9,7 +9,6 @@ export default class CustomElement extends HTMLElement {
         return 'post'
     }
 
-    
     static get ATTRIBUTE_CATEGORY() {
         return 'category'
     }

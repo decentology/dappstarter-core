@@ -48,7 +48,7 @@ export default class PageNavigation extends CustomElement {
             }
             listItems.push(
                 DOM.a({
-                    className: (active ? ' active' : '')
+                    className: (active ? 'active' : '')
                 },
                 [
                     DOM.li({

@@ -1,4 +1,4 @@
-const Test = require('../test-config.js');
+const Test = require('./test-config.js');
 const BN = web3.utils.BN;
 
 contract('Dapp Cross-contract Tests', async (accounts) => {

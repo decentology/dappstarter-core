@@ -1,6 +1,6 @@
 'use strict';
 import Blockchain from './blockchain';
-import BN from "bn.js";   // Required for injected code
+import BN from 'bn.js';   // Required for injected code
 
 ///+import
 
@@ -69,15 +69,15 @@ export default class DappLib {
   static formatNumber(n, hint) {
     var parts = n.toString().split(".");
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return `<strong class="p-1 blue-grey-text number" style="font-size:1.1rem;">${parts.join(".")}</strong>${DappLib.formatHint(hint)}`;
+    return `<strong class="p-1 blue-grey-text number copy-target" style="font-size:1.1rem;cursor:copy;" title="${n}">${parts.join(".")}</strong>${DappLib.formatHint(hint)}`;
   }
 
   static formatAccount(a, hint) {
-      return `<strong class="green accent-1 p-1 blue-grey-text number" title="${a}">${a.substr(0,6)}...${a.substr(a.length-4, 4)}</strong>${DappLib.formatHint(hint)}`;
+      return `<strong class="green accent-1 p-1 blue-grey-text number copy-target" style="cursor:copy;" title="${a}">${a.substr(0,6)}...${a.substr(a.length-4, 4)}</strong>${DappLib.formatHint(hint)}`;
   }
 
   static formatTxHash(a, hint) {
-    return `<strong class="teal lighten-5 p-1 blue-grey-text number" title="${a}">${a.substr(0,6)}...${a.substr(a.length-4, 4)}</strong>${DappLib.formatHint(hint)}`;
+    return `<strong class="teal lighten-5 p-1 blue-grey-text number copy-target" style="cursor:copy;" title="${a}">${a.substr(0,6)}...${a.substr(a.length-4, 4)}</strong>${DappLib.formatHint(hint)}`;
   }
 
   static formatBoolean(a, hint) {

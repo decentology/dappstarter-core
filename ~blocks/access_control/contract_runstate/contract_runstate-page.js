@@ -14,7 +14,7 @@ export default class ContractRunStatePage extends CustomElement {
 
         let content = 
 `
-        <page-widget title="${self.title}" category="${self.category}">
+        <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
 
             <action-card 
                 title="Is Contract Run State Active" description="Check if contract run state is active"

@@ -14,7 +14,7 @@ export default class AdministratorRolePage extends CustomElement {
 
         let content = 
 `
-        <page-widget title="${self.title}" category="${self.category}">
+        <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
 
             <action-card 
                 title="Is Contract Admin" description="Check if an account is a contract administrator"
@@ -45,12 +45,26 @@ export default class AdministratorRolePage extends CustomElement {
                     </account-widget>
                 
             </action-card>
+
+            <action-card 
+                title="Remove Last Contract Admin" description="Remove an account as a contract administrator"
+                action="removeLastContractAdmin" method="${CustomElement.METHOD_POST}" fields="account">
+
+                    <h6 class="red accent-4 mb-3 p-4 text-white">
+                        This transaction will remove the last remaining administrator. Any functions that use requireContractAdmin() will fail, 
+                        effectively making this a fully decentralized contract. This action is irreversible. Proceed with caution.
+                    </h6>
+
+                    <account-widget
+                        field="account" label="Account" placeholder="Account address of administrator to remove">
+                    </account-widget>
+                
+            </action-card>
         </page-widget>
 `
         self.innerHTML = content;
     }
 }
-
 
 customElements.define('administrator-role-page', AdministratorRolePage);
 ///)

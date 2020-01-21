@@ -15,7 +15,7 @@ export default class TokenPage extends CustomElement {
 
         let content = 
 `
-        <page-widget title="${self.title}" category="${self.category}">
+        <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
 
             <action-card 
                 title="Total Supply" description="Get total supply of tokens"

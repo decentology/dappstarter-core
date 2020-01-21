@@ -1,6 +1,8 @@
 import DappLib from '../../../lib/dapp-lib';
 import CustomElement from './custom-element';
 import WaitWidget from '../widgets/wait-widget';
+import SvgIcons from '../widgets/svg-icons';
+import ClipboardJS from 'clipboard';
 
 import DOM from './dom';
 
@@ -15,6 +17,9 @@ export default class ActionCard extends CustomElement {
     static get ATTRIBUTE_FIELDS() {
         return 'fields'
     }
+    static get ATTRIBUTE_CONFIRM() {
+        return 'confirm'
+    }
     static get observedAttributes() {
         return ActionCard.attributes; 
     }
@@ -23,7 +28,8 @@ export default class ActionCard extends CustomElement {
         return [
             ActionCard.ATTRIBUTE_ACTION,
             ActionCard.ATTRIBUTE_METHOD,
-            ActionCard.ATTRIBUTE_FIELDS
+            ActionCard.ATTRIBUTE_FIELDS,
+            ActionCard.ATTRIBUTE_CONFIRM
         ];
     }
 
@@ -35,9 +41,9 @@ export default class ActionCard extends CustomElement {
     static content(me) {
         return `
     <div class="card">
-    <div class="white-text card-header blue-gradient d-flex justify-content-between align-items-center">
+    <div class="white-text card-header aqua-gradient d-flex justify-content-between align-items-center">
         <h5>${me.title}</h5>
-        <span class="text-right circle-icon">${ me[ActionCard.ATTRIBUTE_METHOD] === ActionCard.METHOD_POST ? '🖋' : '👓'}</span>
+        <span class="text-right circle-icon">${ me[ActionCard.ATTRIBUTE_METHOD] === ActionCard.METHOD_POST ? SvgIcons.readWrite : SvgIcons.readOnly }</span>
     </div>
     <div class="${ me.innerHTML.indexOf('<') > -1 ? 'card-body-padded' : 'card-body'}" id="card-body-${me.action}">
         ${me.innerHTML}
@@ -48,7 +54,7 @@ export default class ActionCard extends CustomElement {
                 <wait-widget size="50" title="${me[ActionCard.ATTRIBUTE_DESCRIPTION]}" waiting-title="Waiting for transaction"></wait-widget>
             </div>
             <div class="col-lg-4 text-right">
-                <button id="button-${me[ActionCard.ATTRIBUTE_ACTION]}" class="${me[ActionCard.ATTRIBUTE_METHOD] === ActionCard.METHOD_POST ? 'btn-warning btn-deep-orange' : 'btn-info'} btn Ripple-parent">${ (me[ActionCard.ATTRIBUTE_METHOD] ? me[ActionCard.ATTRIBUTE_METHOD] : 'Go').toUpperCase()}</button>
+                <button id="button-${me[ActionCard.ATTRIBUTE_ACTION]}" class="${me[ActionCard.ATTRIBUTE_METHOD].indexOf(ActionCard.METHOD_POST) > -1 ? (me[ActionCard.ATTRIBUTE_METHOD] === ActionCard.METHOD_POST ? 'btn-warning btn-deep-orange' : 'btn-danger') : 'btn-info'} btn Ripple-parent">${ (me[ActionCard.ATTRIBUTE_METHOD] ? me[ActionCard.ATTRIBUTE_METHOD] : 'Go').toUpperCase()}</button>
             </div>
         </div>
     </div>
@@ -92,6 +98,7 @@ export default class ActionCard extends CustomElement {
                     try {
                         // TODO: Should be dynamic based on user signed in
                         let account = 0; // Index of test account
+
                         let retVal = await DappLib[self.action].call(null, account, values);
                         let data = '';
                         switch(retVal.type) {
@@ -112,17 +119,23 @@ export default class ActionCard extends CustomElement {
                                             });
                         resultElement.innerHTML = ' 👍🏼 ' + retVal.label + ': ' + data;
                         cardBody.appendChild(resultElement);
+
+                        // Wire-up clipboard copy
+                        new ClipboardJS('.copy-target', {
+                            text: function(trigger) {
+                                return trigger.getAttribute('title');
+                            }
+                        });
                     }
                     catch(e) {
                         if (e.message.indexOf('run Out of Gas') > -1) {
-
                             e.message = 'Can\'t access the blockchain. Check that access to it isn\'t blocked. During development this error usually means your test blockchain is not running or has test accounts that don\'t match the accounts in your development configuration.';                            
                         }
                         let errorElement = DOM.div({
                                                 id: `card-result-${self.action}`,
-                                                className: `${resultClass} mt-3 text-danger`
+                                                className: `${resultClass} mt-3 text-danger overflow-scroll`
                                             });
-                        errorElement.innerHTML = ' 😖 ' + e.name + ': ' + e.message;
+                        errorElement.innerHTML = ' 😖 ' + e.message;
                         cardBody.appendChild(errorElement);
                     }
                     finally {
@@ -136,6 +149,7 @@ export default class ActionCard extends CustomElement {
         }
     }
 
+    
  
 }
 

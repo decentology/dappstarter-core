@@ -14,7 +14,7 @@ export default class IpfsPage extends CustomElement {
 
         let content = 
 `
-        <page-widget title="${self.title}" category="${self.category}">
+        <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
             <action-card title="Add Document" description="Upload document to IPFS and add hash to contract"
                 action="addIpfsDocument" method="post" fields="file">
                     <div class="input-group mb-3">

@@ -107,6 +107,26 @@ contract access_control_administrator_role {
         authorizedAdminsCount--;
     }
 
+    /**
+    * @dev Removes the last admin fully decentralizing the contract
+    *
+    * @param account Address of the admin to remove
+    */
+    function removeLastContractAdmin
+                            (
+                                address account
+                            ) 
+                            external 
+///$access_control:contract_runstate                            requireContractRunStateActive
+                            requireContractAdmin
+    {
+        require(account != address(0), "Invalid address");
+        require(authorizedAdminsCount == 1, "Not the last admin");
+
+        delete authorizedAdmins[account];
+        authorizedAdminsCount--;
+    }
+
 ///)
 
 }

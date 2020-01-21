@@ -52,6 +52,21 @@ class administratorrole {
         }                        
     }
 
+    static async removeLastContractAdmin(caller, data) {
+
+        let result = await DappLib.post(
+                                    DappLib.DAPP_STATE_CONTRACT,
+                                    'removeLastContractAdmin', 
+                                    caller,
+                                    data.account
+                        );
+        return {
+            type: DappLib.DAPP_RESULT_TX_HASH,
+            label: 'Transaction Hash',
+            result: result.callData.transactionHash,
+            hint: `Verify that all functions that require an administrator no longer work."`
+        }                        
+    }
 
 ///)
 

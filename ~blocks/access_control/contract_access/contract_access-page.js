@@ -14,7 +14,7 @@ export default class ContractAccessPage extends CustomElement {
 
         let content = 
 `
-        <page-widget title="${self.title}" category="${self.category}">
+        <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
 
             <action-card 
                 title="Is Contract Authorized" description="Check if a contract is authorized"

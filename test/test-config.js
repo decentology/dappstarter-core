@@ -34,8 +34,7 @@ const Config = async function(accounts) {
         ],
         accounts: accounts,
         testAddresses: [
-            // These test addresses are useful when you need
-            //  to add random accounts in test scripts
+            // These test addresses are useful when you need to add random accounts in test scripts
             "0xb1ac66b49fdc369879123332f2cdd98caad5f75a",
             "0x0d27a7c9850f71d7ef71ffbe0155122e83d9455d",
             "0x88477a8dc34d60c40b160e9e3b1721341b63c453",
@@ -52,12 +51,17 @@ const Config = async function(accounts) {
             protocol: 'https',
             port: 5001
         },
-        ipfsTestFolders: [
-            "QmewJEnfbftDvFT75BAtoLH2AA1auUi5wbS6pncGHnskKo",
-            "Qmb5m6GV3SVQawc1AUXAsLYvp7noQLA6taKfuJhpaZf18f",
-            "QmZ3tKt6f5nPStM8dYaxhnrX6cBayxL3frucaRo8z4vvcU",
-            "QmbMREn4Vrtyz4Xge79igsap6zJk7vaH7YFc2P9nhuNm9q",
-            "QmekUmdv161ctqWqxqdD1cp8tXrrT5HZzS3JvxbHmpD4RR"
+        ipfsTestFiles: [
+            "QmaWf4HjxvCH5W8Cm8AoFkSNwPUTr3VMZ3uXp8Szoqun53",
+            "QmTrjnQTaUfEEoJ8DgsDG2A8AqsiN5bSV62q98tWkZMU2D",
+            "QmSn26zrUd5CbuNoBPwGhPrktLv94rPiZxNmkHx5smTYj3",
+            "QmTy9aLjFxV8sDK7GEp8uR1zC8ukq3NrV6aSNxjvBTTcqu",
+            "QmWJU1FQghgi69VSDpEunEwemPDFqmBvXzp8b9DxKHP7QQ",
+            "QmYT1ejAMbG2fP7AMdH2Pi2QpQRxQXBUC3CbENzpY2icok",
+            "QmQJh3yLX9z6dmKbFhCyGsZrUEtRXeurcDG39eXbkwQG7C",
+            "QmWRYExBZgZ67R43jW2vfwL3Hio78JaR7Vq3ouiJTsZ6qw",
+            "QmWwPLQVVJizkwwiqPcknBUnRH359TfbusHpVGZtWNGMxu",
+            "QmbtFKnBuyUmRoFh9EueP2r6agYpwGJwG4VBikQ4wwjGAY"
         ]
     }
 }
