@@ -17,8 +17,8 @@ export default class ActionCard extends CustomElement {
     static get ATTRIBUTE_FIELDS() {
         return 'fields'
     }
-    static get ATTRIBUTE_CONFIRM() {
-        return 'confirm'
+    static get ATTRIBUTE_MESSAGE() {
+        return 'message'
     }
     static get observedAttributes() {
         return ActionCard.attributes; 
@@ -29,7 +29,7 @@ export default class ActionCard extends CustomElement {
             ActionCard.ATTRIBUTE_ACTION,
             ActionCard.ATTRIBUTE_METHOD,
             ActionCard.ATTRIBUTE_FIELDS,
-            ActionCard.ATTRIBUTE_CONFIRM
+            ActionCard.ATTRIBUTE_MESSAGE
         ];
     }
 
@@ -51,7 +51,7 @@ export default class ActionCard extends CustomElement {
     <div class="rounded-bottom grey lighten-2 pt-2 pb-2 pr-2">
         <div class="row pl-2 pr-2">
             <div class="col-lg-8 d-flex align-items-center">
-                <wait-widget size="50" title="${me[ActionCard.ATTRIBUTE_DESCRIPTION]}" waiting-title="Waiting for transaction"></wait-widget>
+                <wait-widget size="50" title="${me[ActionCard.ATTRIBUTE_DESCRIPTION]}" waiting-title="${me[ActionCard.ATTRIBUTE_MESSAGE] || 'Waiting for transaction'}"></wait-widget>
             </div>
             <div class="col-lg-4 text-right">
                 <button id="button-${me[ActionCard.ATTRIBUTE_ACTION]}" class="${me[ActionCard.ATTRIBUTE_METHOD].indexOf(ActionCard.METHOD_POST) > -1 ? (me[ActionCard.ATTRIBUTE_METHOD] === ActionCard.METHOD_POST ? 'btn-warning btn-deep-orange' : 'btn-danger') : 'btn-info'} btn Ripple-parent">${ (me[ActionCard.ATTRIBUTE_METHOD] ? me[ActionCard.ATTRIBUTE_METHOD] : 'Go').toUpperCase()}</button>
@@ -90,6 +90,8 @@ export default class ActionCard extends CustomElement {
                             if (fieldElement) {
                                 if (fieldElement.type === 'checkbox') {
                                     values[field] = fieldElement.checked;
+                                } else if (fieldElement.type === 'uploader') {
+                                    values[field] = fieldElement.files;
                                 } else {
                                     values[field] = fieldElement.value;
                                 }
@@ -112,13 +114,32 @@ export default class ActionCard extends CustomElement {
                             case DappLib.DAPP_RESULT_BOOLEAN:
                                 data = DappLib.formatBoolean(retVal.result);
                                 break;    
+                            case DappLib.DAPP_RESULT_HASH_ARRAY:
+                                data = DappLib.formatArray(
+                                                                retVal.result,
+                                                                ['TxHash', 'IpfsHash', 'Text-10-5'],
+                                                                ['Transaction', 'IPFS URL', 'Doc Id'],
+                                                                ['transactionHash', 'ipfsHash', 'docId']
+                                                            );
+                                break;
+                            case DappLib.DAPP_RESULT_ARRAY:
+                                data = DappLib.formatArray(
+                                                                retVal.result,
+                                                                retVal.formatter ? retVal.formatter : ['Text'],
+                                                                null,
+                                                                null
+                                                            );
+                                break;
+                            case DappLib.DAPP_RESULT_OBJECT:
+                                data = DappLib.formatObject(retVal.result);
+                                break;
     
                         }
                         let resultElement = DOM.div({
                                                 id: `card-result-${self.action}`,
                                                 className: `${resultClass} mt-3 text-success`
                                             });
-                        resultElement.innerHTML = ' 👍🏼 ' + retVal.label + ': ' + data + DappLib.formatHint(retVal.hint);
+                        resultElement.innerHTML = ' 👍🏼 ' + (Array.isArray(retVal.result) ? 'Result' : retVal.label) + ': ' + data + DappLib.formatHint(retVal.hint);
                         cardBody.appendChild(resultElement);
 
                         // Wire-up clipboard copy

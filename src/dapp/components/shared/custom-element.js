@@ -26,6 +26,7 @@ export default class CustomElement extends HTMLElement {
     // Creates getters and setters for all custom attributes
     constructor(props, ...args) {
         const self = super(...args);
+        self.uniqueId = Math.random().toString(36).substr(2, 9);
         
         let allProps = CustomElement.attributes.concat(props);
         allProps.map((prop) => {

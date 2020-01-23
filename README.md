@@ -12,19 +12,22 @@ In order to develop and build My Dapp, the following pre-requisites must be inst
 * [Ganache v2.0.0](https://truffleframework.com/ganache) - for Ethereum
 * [Solidity v0.5.11](https://www.npmjs.com/package/solc) - for Ethereum, Klaytn, Harmony
 
-# Installation
-
-Using a terminal (or command prompt), change to the folder containing the project files and type: `npm install`
-
-# Configuration
-
 ## Ganache Settings (for Ethereum only; skip for other blockchains)
 
-Launch the Ganache GUI and create a new workspace with the following settings:
-- Workspace Name: *my-dapp*
+Download and install the Ganache GUI, then create a new workspace with the following settings:
+- Workspace Name: *dapp-starter*
 - Port Number: *7545*
 - Network ID: *5777*
-- Mnemonic: *depth grow catalog fitness vocal bulb coin toss harsh twenty mistake upon*
+- Mnemonic: Copy the text (12 words) between the single quotes on line 4 of ./truffle-config.js
+            
+# Installation
+
+Using a terminal (or command prompt), change to the folder containing the project files and type: `npm start`
+This will fetch all required dependencies, compile and then deploy the contract. If you encounter any problems
+at this step, visit [https://support.trycrypto.com](https://support.trycrypto.com) for help.
+
+
+# Configuration
 
 ## Test Configuration
 
@@ -34,19 +37,11 @@ Launch the Ganache GUI and create a new workspace with the following settings:
 
 ## Smart Contract
 
-`truffle compile` to compile contracts/*.sol files
-
-`truffle compile --reset` to force compile contracts/*.sol files
-
-`truffle test ./test/01-contract.js` to compile smart contracts and run test script (shortcut `npm run test`)
-
-`truffle migrate` to deploy smart contracts and regenerate dapp and server configuration files
-
-`truffle migrate --reset` to force deploy smart contracts and regenerate dapp and server configuration files
+`npm start` to install dependencies, compile contracts/*.sol files and deploy them
 
 ## Dapp
 
-Run the dapp in a separate terminal. You *must* run `truffle migrate` for dapp to see most recent smart contract changes.
+Run the dapp in a separate terminal. You *must* run `npm start` or `npm deploy` first for dapp to see most recent smart contract changes.
 
 `npm run dapp` runs the dapp on http://localhost:8000 using webpack dev server
 
@@ -54,7 +49,7 @@ Run the dapp in a separate terminal. You *must* run `truffle migrate` for dapp t
 
 ## Server
 
-Run the server in a separate terminal. You *must* run `truffle migrate` for server to see most recent smart contract changes.
+Run the server in a separate terminal. You *must* run `npm start` or `npm deploy` first for dapp to see most recent smart contract changes.
 
 `npm run server` runs NodeJs server app on port 3000 with Express
 

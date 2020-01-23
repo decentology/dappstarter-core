@@ -1,15 +1,19 @@
 class administratorrole {
 
 ///(functions
-
-
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: ADMINISTRATOR ROLE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
     static async isContractAdmin(data) {
 
-        let result = await Blockchain.get(
-                            { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
-                            'isContractAdmin', 
-                            data.account
+        let result = await Blockchain.get({
+                config: config,
+                contract: DappLib.DAPP_STATE_CONTRACT,
+                params: {
+                    from: null
+                }
+            },
+            'isContractAdmin',
+            data.account
         );
         return {
             type: DappLib.DAPP_RESULT_BOOLEAN,
@@ -21,47 +25,62 @@ class administratorrole {
 
     static async addContractAdmin(data) {
 
-        let result = await Blockchain.post(
-                                    { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
-                                    'addContractAdmin', 
-                                    data.account
-                        );
+        let result = await Blockchain.post({
+                config: config,
+                contract: DappLib.DAPP_STATE_CONTRACT,
+                params: {
+                    from: null
+                }
+            },
+            'addContractAdmin',
+            data.account
+        );
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
             result: result.callData.transactionHash,
             hint: `Verify ${DappLib.formatAccount(data.account)} is an administrator by using "Is Contract Admin."`
-        }                        
+        }
     }
 
     static async removeContractAdmin(data) {
 
-        let result = await Blockchain.post(
-                                    { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
-                                    'removeContractAdmin', 
-                                    data.account
-                        );
+        let result = await Blockchain.post({
+                config: config,
+                contract: DappLib.DAPP_STATE_CONTRACT,
+                params: {
+                    from: null
+                }
+            },
+            'removeContractAdmin',
+            data.account
+        );
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
             result: result.callData.transactionHash,
             hint: `Verify ${DappLib.formatAccount(data.account)} is no longer an administrator by using "Is Contract Admin."`
-        }                        
+        }
     }
 
     static async removeLastContractAdmin(data) {
 
-        let result = await Blockchain.post(
-                                    { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
-                                    'removeLastContractAdmin', 
-                                    data.account
-                        );
+        let result = await Blockchain.post({
+                config: config,
+                contract: DappLib.DAPP_STATE_CONTRACT,
+                params: {
+                    from: null
+                }
+            },
+            'removeLastContractAdmin',
+            data.account
+        );
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
             result: result.callData.transactionHash,
             hint: `Verify that all functions that require an administrator no longer work."`
-        }                        
+        }
     }
 
 ///)

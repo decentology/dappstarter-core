@@ -8,14 +8,14 @@
   "license": "Restricted",
   "scripts": {
     "start": "npm install && npm run deploy",
-    "deploy": "truffle compile && truffle migrate --reset --verbose-rpc && npm run dapp",
+    "deploy": "truffle compile && truffle migrate --reset --verbose-rpc",
     "test": "truffle test",
-    "lib": "webpack --mode development --config webpack.config.lib.js",
     "dapp": "npm run lib && webpack-dev-server --mode development --config webpack.config.dapp.js",
     "server": "rm -rf ./build/server && npm run lib && webpack --mode development --config webpack.config.server.js",
-    "lib:prod": "webpack --mode production --config webpack.config.lib.js",
+    "lib": "webpack --mode development --config webpack.config.lib.js",
     "dapp:prod": "npm run lib:prod && webpack --mode production  --config webpack.config.dapp.js",
-    "server:prod": "rm -rf ./build/server && npm run lib:prod && webpack --mode production --config webpack.config.server.js"
+    "server:prod": "rm -rf ./build/server && npm run lib:prod && webpack --mode production --config webpack.config.server.js",
+    "lib:prod": "webpack --mode production --config webpack.config.lib.js"
   },
   "authors": [
     "Nik Kalyani <nik@trycrypto.com> https://www.trycrypto.com"
@@ -42,7 +42,6 @@
   },
   "dependencies": {
     "bn.js": "5.0.0",
-    "bs58": "4.0.1",
     "clipboard": "2.0.4"
   }
 }

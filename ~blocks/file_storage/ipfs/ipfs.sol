@@ -16,8 +16,10 @@ contract file_storage__ipfs {
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FILE STORAGE: IPFS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
     struct IpfsDocument {
-        // Unique identifier -- multihash digest of file
+        // Unique identifier -- defaults to multihash digest of file
         bytes32 docId;    
+
+        bytes32 label;
 
         // Registration timestamp                                          
         uint256 timestamp;  
@@ -36,7 +38,7 @@ contract file_storage__ipfs {
     uint256 public ipfsLastPage = 0;
 
     // All documents organized by page
-    mapping(uint256 => bytes32[IPFS_DOCS_PAGE_SIZE]) public ipfsDocsByPage;         
+    mapping(uint256 => bytes32[]) public ipfsDocsByPage;         
 
     // All documents for which an account is the owner
     mapping(address => bytes32[]) public ipfsDocsByOwner;              
@@ -67,6 +69,7 @@ contract file_storage__ipfs {
     * @dev Adds a new IPFS doc
     *
     * @param docId Unique identifier (multihash digest of doc audio)
+    * @param label Short, descriptive label for document
     * @param digest Digest of folder with doc binary and metadata
     * @param hashFunction Function used for generating doc folder hash
     * @param digestLength Length of doc folder hash
@@ -74,13 +77,14 @@ contract file_storage__ipfs {
     function addIpfsDocument
                         (
                             bytes32 docId,
+                            bytes32 label,
                             bytes32 digest,
                             uint8 hashFunction,
                             uint8 digestLength
                         ) 
                         external 
 ///$access_control:administrator_role                           requireContractAdmin
-{
+    {
         // Prevent empty string for docId
         require(docId[0] != 0, "Invalid docId");  
 
@@ -92,6 +96,7 @@ contract file_storage__ipfs {
 
         ipfsDocs[docId] = IpfsDocument({
                                     docId: docId,
+                                    label: label,
                                     timestamp: now,
                                     owner: msg.sender,
                                     docRef: DappLib.Multihash({
@@ -105,8 +110,7 @@ contract file_storage__ipfs {
         if (ipfsDocsByPage[ipfsLastPage].length == IPFS_DOCS_PAGE_SIZE) {
             ipfsLastPage++;
         }
-
-        ipfsDocsByPage[ipfsLastPage][ipfsDocsByPage[ipfsLastPage].length] = docId;
+        ipfsDocsByPage[ipfsLastPage].push(docId);
 
         emit AddIpfsDocument(docId, msg.sender, ipfsDocs[docId].timestamp);
     }
@@ -124,6 +128,7 @@ contract file_storage__ipfs {
                     view
                     returns(
                                 bytes32 docId, 
+                                bytes32 label,
                                 uint256 timestamp, 
                                 address owner, 
                                 bytes32 docDigest,
@@ -133,6 +138,7 @@ contract file_storage__ipfs {
     {
         IpfsDocument memory ipfsDoc = ipfsDocs[id];
         docId = ipfsDoc.docId;
+        label = ipfsDoc.label;
         timestamp = ipfsDoc.timestamp;
         owner = ipfsDoc.owner;
         docDigest = ipfsDoc.docRef.digest;

@@ -1,81 +1,74 @@
 ///(page
 import '../widgets/page-widget.js';
 import '../shared/action-card.js';
+import '../widgets/text-widget.js';
+import '../widgets/number-widget.js';
+import '../widgets/account-widget.js';
+import UploadWidget from '../widgets/upload-widget.js';
+import '@uppy/core/dist/style.css';
+import '@uppy/dashboard/dist/style.css';
+
 import DappLib from '../../../lib/dapp-lib';
 
 export default class IpfsPage extends CustomElement {
 
     constructor(...args) {
         super([], ...args);
+        this.mode = 'single'; ///@{ "mode": "single" }
+        this.files = [];
     }
 
     render() {
         let self = this;
-
-        let content = 
-`
+        let content =
+            `
         <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
-            <action-card title="Add Document" description="Upload document to IPFS and add hash to contract"
-                action="addIpfsDocument" method="post" fields="file">
-                    <div class="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Upload</span>
-                        </div>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" data-field="file">
-                            <label class="custom-file-label">Choose file</label>
-                        </div>
-                    </div>
-            </action-card>        
+            <action-card 
+                title="Add Document" description="Upload document to IPFS and add hash to contract"
+                action="addIpfsDocument" method="${CustomElement.METHOD_POST}" fields="files label mode"
+                message="Waiting for IPFS upload and smart contract transaction">
+                    <text-widget
+                        field="label" label="Label" 
+                        placeholder="Description">
+                    </text-widget>
+
+                    <upload-widget data-field="files"
+                        field="file" label="File${ self.mode !== 'single' ? 's' : '' }" 
+                        placeholder="Select file${ self.mode !== 'single' ? 's' : '' }" 
+                        multiple="${ self.mode !== 'single' ? 'true' : 'false' }">
+                    </upload-widget>
+                    <input type="hidden" data-field="mode" value="${self.mode}" style="display:none;"></input>
+            </action-card>
+
+            <action-card 
+                title="IPFS Document" description="Get IPFS document using its ID"
+                action="getIpfsDocument" method="${CustomElement.METHOD_GET}" fields="id">
+
+                <number-widget 
+                    field="id" label="Doc ID" placeholder="Document ID">
+                </number-widget>
+            </action-card>
+
+            <action-card 
+                title="Get Documents by Owner" description="Get all IPFS documents for any account"
+                action="getIpfsDocumentsByOwner" method="${CustomElement.METHOD_GET}" fields="account">
+
+                    <account-widget 
+                        field="account" label="Account" placeholder="Account address">
+                    </account-widget>
+
+            </action-card>
+
         </page-widget>
 `
         self.innerHTML = content;
-        self.handleUpload();
-    }
-
-
-    handleUpload() {
-
-        document.querySelector('input[data-field=file]').addEventListener('change', async (target) => {
-
-        
-            let domFiles = target.srcElement.files;
-            let files = [];
-            for (let f = 0; f < domFiles.length; f++) {
-                files.push(domFiles[f]);
-            }
-            let result = await DappLib.ipfsUpload(files,
-                (bytes) => {
-                    console.log(bytes);
-                });
-                
-            let ipfs = DappLib.ipfsGateway();
-
-            if (result.folder) {
-                let fileResults = [];
-                fileResults.push({
-                    label: 'Folder',
-                    value: `${ipfs.protocol}://${ipfs.host}/ipfs/${result.folder}`
-                })
-                result.files.map((file, index) => {
-                    fileResults.push({
-                        label: `File #${index}`,
-                        value: `${file.path} – ${ipfs.protocol}://${ipfs.host}/ipfs/${file.hash}`
-                    })
-                });
-                console.log('IPFS Upload Result', '', fileResults);
-
-            } else {
-                console.log('IPFS Upload Result', '', [{
-                    label: 'URL',
-                    value: 'Upload failed'
-                }]);
-            }
+        self.querySelector('upload-widget').addEventListener(UploadWidget.EVENT_FILES_CHANGED, (e) => {
+            // Could do something here
+            // let files = e.detail.files;
         });
     }
-  
-}
 
+}
 
 customElements.define('ipfs-page', IpfsPage);
 ///)

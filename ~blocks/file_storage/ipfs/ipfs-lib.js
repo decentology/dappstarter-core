@@ -1,173 +1,215 @@
 ///(import
 import ipfsClient from 'ipfs-http-client';
-import Config from '../dapp-config.json';
+import bs58 from 'bs58';
 ///)
 
+class ipfs {
+
 ///(functions
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FILE STORAGE: IPFS  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
-static ipfsGateway() {
-  return Config.ipfs;
-}
+    static async addIpfsDocument(data) {
 
-static async ipfsUpload(files, progressCallback) {
-  let ipfs = ipfsClient(Config.ipfs);
+        let folder = data.mode === 'folder';
+ 
+        if (data.mode === 'single') {
+            data.files = data.files.slice(0, 1);
+        }
+        // Push files to IPFS
+        let ipfsResult = await DappLib.ipfsUpload(data.files, folder, (bytes) => {
+           // console.log(bytes);
+        });
+        let results = [];
+        for(let f=0; f<ipfsResult.length; f++) {
+            let file = ipfsResult[f];
+            file.docId = file.digest.substr(0, 32);
 
-  let filesToUpload = [];
-  files.map((file) => {
-    filesToUpload.push({
-      path: file.name,
-      content: file
-    })
-  });
-  const options = {
-    wrapWithDirectory: true,
-    pin: true,
-    progress: (bytes) => {
-      progressCallback(bytes);
-    }
-  }
-  let result = {
-    folder: null,
-    files: []
-  }
+            let result = await Blockchain.post({
+                    config: config,
+                    contract: DappLib.DAPP_STATE_CONTRACT,
+                    params: {
+                        from: null,
+                        gas: 2000000
+                    }
+                },
+                'addIpfsDocument',
+                DappLib.fromAscii(file.docId, 32),
+                DappLib.fromAscii(data.label || file.path, 32),
+                DappLib.fromAscii(file.digest, 32),
+                file.hashFunction,
+                file.digestLength
+            );
 
-  let response = await ipfs.add(filesToUpload, options);
-
-  // CID of wrapping directory is returned last
-  if (response.length && (response.length > 0)) {
-    result.folder = response[response.length - 1].hash;
-    for (let f = 0; f < response.length - 1; f++) {
-      result.files.push(response[f]);
-    }
-  }
-  return result;
-}
-
-static addIpfsDocument(ipfsFolderHash, ipfsFileHash, user, callback) {
-  let self = this;
-
-  let folderHash = DappLib.getBytes32FromMultihash(ipfsFolderHash);
-  let fileHash = DappLib.getBytes32FromMultihash(ipfsFileHash);
-
-  self.dappStateContract.methods
-    .register(user, fileHash.digest, folderHash.digest, folderHash.hashFunction, folderHash.digestLength)
-    .send({
-      from: user,
-      gas: 1000000
-    }, (error, result) => {
-      callback(error, result, fileHash.digest);
-    });
-}
-
-
-getIpfsDocumentsByOwner(owner, callback) {
-  let self = this;
-  self.dappStateContract.methods
-    .getIpfsDocumentsByOwner(owner)
-    .call({
-      from: owner
-    }, (error, result) => {
-      callback(error, result);
-    });
-
-}
-
-getIpfsDocument(docId, callback) {
-  let self = this;
-
-  self.dappStateContract.methods
-    .getIpfsDocument(docId)
-    .call({
-      from: self.owner
-    }, (error, result) => {
-      if (error) {
-        callback(error);
-      } else {
-
-        let multihash = {
-          digest: result.audioDigest,
-          hashFunction: result.audioHashFunction,
-          digestLength: result.audioDigestLength
+            results.push({
+                transactionHash: result.callData.transactionHash,
+                ipfsHash: file.hash,
+                docId: file.docId
+            });
         }
 
-        result.ipfsHash = DappLib.getMultihashFromBytes32(multihash);
+        return {
+            type: DappLib.DAPP_RESULT_HASH_ARRAY,
+            result: results
+        }
+    }
 
-        callback(error, result);
-      }
-    });
-}
+    static async getIpfsDocument(data) {
+
+        let result = await Blockchain.get({
+                config: config,
+                contract: DappLib.DAPP_STATE_CONTRACT,
+                params: {
+                    from: null
+                }
+            },
+            'getIpfsDocument',
+            DappLib.fromAscii(data.id, 32)
+        );
+        if (result.callData) {
+            result.callData.docMultihash = DappLib._encodeMultihash({
+                                                digest: result.callData.docDigest,
+                                                hashFunction: Number(result.callData.docHashFunction),
+                                                digestLength: Number(result.callData.docDigestLength)
+                                        });
+        }
+        return {
+            type: DappLib.DAPP_RESULT_OBJECT,
+            label: 'Document Information',
+            result: result.callData
+        }
+    }
+
+    static async getIpfsDocumentsByOwner(data) {
+
+        let result = await Blockchain.get({
+                config: config,
+                contract: DappLib.DAPP_STATE_CONTRACT,
+                params: {
+                    from: null
+                }
+            },
+            'getIpfsDocumentsByOwner',
+            data.account
+        );
+        if (result.callData && Array.isArray(result.callData)) {
+            for(let i=0; i< result.callData.length; i++) {
+                result.callData[i] = DappLib.toAscii(result.callData[i]);
+            }
+        }
+        return {
+            type: DappLib.DAPP_RESULT_ARRAY,
+            label: 'Documents',
+            result: result.callData,
+            formatter: ['Text-20-5']
+        }
+    }
+
+    static async ipfsUpload(files, wrapWithDirectory, progressCallback) {
+
+        let ipfs = ipfsClient(config.ipfs);
+        let filesToUpload = [];
+        files.map((file) => {
+            filesToUpload.push({
+                path: file.name,
+                content: file
+            })
+        });
+        const options = {
+            wrapWithDirectory: wrapWithDirectory,
+            pin: true,
+            progress: progressCallback
+        }
+        let result = [];
+
+        let response = await ipfs.add(filesToUpload, options);
+
+        if (response.length && (response.length > 0)) {
+            if (wrapWithDirectory) {
+                // CID of wrapping directory is returned last
+                let folder = response[response.length - 1];
+                result.push(Object.assign({ }, folder, DappLib._decodeMultihash(folder.hash)));
+            } else {
+                for (let f = 0; f < response.length; f++) {
+                    let file = response[f];
+                    result.push(Object.assign({ }, file, DappLib._decodeMultihash(file.hash)));
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Partition multihash string into object representing multihash
+     * // https://github.com/saurfang/ipfs-multihash-on-solidity/blob/master/src/multihash.js
+     * @param {string} multihash A base58 encoded multihash string
+     * @returns {Multihash}
+     */
+    static _decodeMultihash(multihash) {
+        const decoded = bs58.decode(multihash);
+
+        return {
+            digest: `0x${decoded.slice(2).toString('hex')}`,
+            hashFunction: decoded[0],
+            digestLength: decoded[1],
+        };
+    }
+
+    /**
+     * Encode a multihash structure into base58 encoded multihash string
+     * // https://github.com/saurfang/ipfs-multihash-on-solidity/blob/master/src/multihash.js
+     * @param {Multihash} multihash
+     * @returns {(string|null)} base58 encoded multihash string
+     */
+    static _encodeMultihash(encodedMultihash) {
+        const {
+            digest,
+            hashFunction,
+            digestLength
+        } = encodedMultihash;
+        if (digestLength === 0) return null;
+
+        // cut off leading "0x"
+        const hashBytes = Buffer.from(digest.slice(2), 'hex');
+
+        // prepend hashFunction and digest length
+        const multihashBytes = new(hashBytes.constructor)(2 + hashBytes.length);
+        multihashBytes[0] = hashFunction;
+        multihashBytes[1] = digestLength;
+        multihashBytes.set(hashBytes, 2);
+
+        return bs58.encode(multihashBytes);
+    }
+
+///)
 
 
 onAddIpfsDocument(fromBlock, callback) {
-  let self = this;
+    let self = this;
 
-  self.dappStateContractWs.events.AddIpfsDocument({
-    fromBlock: fromBlock
-  }, function (error, e) {
-    if (error) {
-      callback(error, null);
-    } else {
-      self.getIpfsDocument(e.returnValues.docId, (error, docDetail) => {
-
+    self.dappStateContractWs.events.AddIpfsDocument({
+        fromBlock: fromBlock
+    }, function (error, e) {
         if (error) {
-          callback(error);
+            callback(error, null);
         } else {
-          let docInfo = {
-            docId: docDetail.docId,
-            registrant: docDetail.registrant,
-            url: `${self.options.ipfsGateway.protocol}://${self.options.ipfsGateway.host}/ipfs/${docDetail.ipfsHash}`
-          }
-          callback(error, docInfo);
+            self.getIpfsDocument(e.returnValues.docId, (error, docDetail) => {
+
+                if (error) {
+                    callback(error);
+                } else {
+                    let docInfo = {
+                        docId: docDetail.docId,
+                        registrant: docDetail.registrant,
+                        url: `${self.options.ipfsGateway.protocol}://${self.options.ipfsGateway.host}/ipfs/${docDetail.ipfsHash}`
+                    }
+                    callback(error, docInfo);
+                }
+
+            });
+            // Decode at https://www.rapidtables.com/convert/number/hex-to-ascii.html
         }
-
-      });
-      // Decode at https://www.rapidtables.com/convert/number/hex-to-ascii.html
-    }
-  });
+    });
 }
 
 
-/**
- * Partition multihash string into object representing multihash
- * // https://github.com/saurfang/ipfs-multihash-on-solidity/blob/master/src/multihash.js
- * @param {string} multihash A base58 encoded multihash string
- * @returns {Multihash}
- */
-static getBytes32FromMultihash(multihash) {
-  const decoded = bs58.decode(multihash);
-
-  return {
-    digest: `0x${decoded.slice(2).toString('hex')}`,
-    hashFunction: decoded[0],
-    digestLength: decoded[1],
-  };
 }
-
-/**
- * Encode a multihash structure into base58 encoded multihash string
- * // https://github.com/saurfang/ipfs-multihash-on-solidity/blob/master/src/multihash.js
- * @param {Multihash} multihash
- * @returns {(string|null)} base58 encoded multihash string
- */
-static getMultihashFromBytes32(multihash) {
-  const {
-    digest,
-    hashFunction,
-    digestLength
-  } = multihash;
-  if (digestLength === 0) return null;
-
-  // cut off leading "0x"
-  const hashBytes = Buffer.from(digest.slice(2), 'hex');
-
-  // prepend hashFunction and digest length
-  const multihashBytes = new(hashBytes.constructor)(2 + hashBytes.length);
-  multihashBytes[0] = hashFunction;
-  multihashBytes[1] = digestLength;
-  multihashBytes.set(hashBytes, 2);
-
-  return bs58.encode(multihashBytes);
-}
-
-
-///)

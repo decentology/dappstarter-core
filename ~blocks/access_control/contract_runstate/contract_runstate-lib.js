@@ -1,14 +1,18 @@
 class contractrunstate {
 
 ///(functions
-
-
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT RUN STATE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
     static async isContractRunStateActive(data) {
 
-        let result = await Blockchain.get(
-                            { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
-                            'isContractRunStateActive'
+        let result = await Blockchain.get({
+                config: config,
+                contract: DappLib.DAPP_STATE_CONTRACT,
+                params: {
+                    from: null
+                }
+            },
+            'isContractRunStateActive'
         );
         return {
             type: DappLib.DAPP_RESULT_BOOLEAN,
@@ -19,19 +23,23 @@ class contractrunstate {
     }
 
     static async setContractRunState(data) {
-        let result = await Blockchain.post(
-                                    { config: config, contract: DappLib.DAPP_STATE_CONTRACT, params : { from: null } },
-                                    'setContractRunState', 
-                                    data.mode
-                        );
+        let result = await Blockchain.post({
+                config: config,
+                contract: DappLib.DAPP_STATE_CONTRACT,
+                params: {
+                    from: null
+                }
+            },
+            'setContractRunState',
+            data.mode
+        );
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
             result: result.callData.transactionHash,
             hint: `Verify contract run state is ${data.mode ? 'active' : 'inactive'} by calling contract functions that use requireContractRunStateActive().`
-        }                        
+        }
     }
-
 
 ///)
 
