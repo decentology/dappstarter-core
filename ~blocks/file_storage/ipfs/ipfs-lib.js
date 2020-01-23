@@ -34,7 +34,7 @@ class ipfs {
                 },
                 'addIpfsDocument',
                 DappLib.fromAscii(file.docId, 32),
-                DappLib.fromAscii(data.label || file.path, 32),
+                DappLib.fromAscii(data.label || '', 32),
                 DappLib.fromAscii(file.digest, 32),
                 file.hashFunction,
                 file.digestLength
@@ -66,11 +66,14 @@ class ipfs {
             DappLib.fromAscii(data.id, 32)
         );
         if (result.callData) {
-            result.callData.docMultihash = DappLib._encodeMultihash({
-                                                digest: result.callData.docDigest,
-                                                hashFunction: Number(result.callData.docHashFunction),
-                                                digestLength: Number(result.callData.docDigestLength)
-                                        });
+            result.callData.docDigest = DappLib.toAscii(result.callData.docDigest);
+            // result.callData.docMultihash = DappLib._encodeMultihash({
+            //                                     digest: result.callData.docDigest,
+            //                                     hashFunction: Number(result.callData.docHashFunction),
+            //                                     digestLength: Number(result.callData.docDigestLength)
+            //                             });
+            result.callData.docId = DappLib.toAscii(result.callData.docId);
+            result.callData.label = DappLib.toAscii(result.callData.label);
         }
         return {
             type: DappLib.DAPP_RESULT_OBJECT,
