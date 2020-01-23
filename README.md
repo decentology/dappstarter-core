@@ -26,13 +26,6 @@ Using a terminal (or command prompt), change to the folder containing the projec
 This will fetch all required dependencies, compile and then deploy the contract. If you encounter any problems
 at this step, visit [https://support.trycrypto.com](https://support.trycrypto.com) for help.
 
-
-# Configuration
-
-## Test Configuration
-
-`test-config.js` contains settings used by test scripts
-
 # Usage
 
 ## Smart Contract
@@ -45,14 +38,22 @@ Run the dapp in a separate terminal. You *must* run `npm start` or `npm deploy` 
 
 `npm run dapp` runs the dapp on http://localhost:8000 using webpack dev server
 
-`npm run dapp:prod` generates dapp bundle for production using webpack
-
 ## Server
 
 Run the server in a separate terminal. You *must* run `npm start` or `npm deploy` first for dapp to see most recent smart contract changes.
 
 `npm run server` runs NodeJs server app on port 3000 with Express
 
+## Testing
+
+`test-config.js` contains settings used by test scripts
+
+Run tests using `npm test [test file]` (example: npm test ./test/_dapp-tests.js)
+
+## Production Builds
+
+This beta of DappStarter should not be used in production. That said, here are the scripts for generating production builds:
+
+`npm run dapp:prod` generates dapp bundle for production using webpack
+
 `npm run server:prod` generates NodeJs server bundle for production using webpack
-
-
