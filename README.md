@@ -18,7 +18,7 @@ Download and install the Ganache GUI, then create a new workspace with the follo
 - Workspace Name: *dapp-starter*
 - Port Number: *7545*
 - Network ID: *5777*
-- Mnemonic: Copy the text (12 words) between the single quotes on line 4 of ./truffle-config.js
+- Mnemonic: *[]* ///@{ "___test-mnemonic___": "[]"}
             
 # Installation
 
