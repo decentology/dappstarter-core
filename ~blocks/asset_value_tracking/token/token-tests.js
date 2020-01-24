@@ -8,7 +8,7 @@
         let supply = await config.dappStateContract.totalSupply.call();
         assert.equal(supply.eq(initialSupply), true, "Incorrect total supply");
     } catch (e) {
-        console.log(`${e.name}: ${e.message}`);
+       // console.log(`${e.name}: ${e.message}`);
     }
     });
 
@@ -17,7 +17,7 @@
         let balance = await config.dappStateContract.balanceOf.call(config.owner);
         assert.equal(balance.eq(initialSupply), true, "Incorrect balance");
     } catch (e) {
-        console.log(`${e.name}: ${e.message}`);
+       // console.log(`${e.name}: ${e.message}`);
     }
 
     });
@@ -40,7 +40,7 @@
         assert.equal(balanceNewSource.eq(balanceOldSource.sub(transferAmount)), true, "Incorrect source new balance value");
         assert.equal(balanceNewTarget.eq(balanceOldTarget.add(transferAmount)), true, "Incorrect target balance value");
     } catch (e) {
-        console.log(`${e.name}: ${e.message}`);
+       // console.log(`${e.name}: ${e.message}`);
     }
 
 
@@ -60,7 +60,7 @@
 
         assert.equal(allowance.eq(transferAmount), true, "Incorrect transfer allowance value");
     } catch (e) {
-        console.log(`${e.name}: ${e.message}`);
+       // console.log(`${e.name}: ${e.message}`);
     }
 
 
@@ -89,7 +89,7 @@
         assert.equal(targetNewBalance.eq(targetOldBalance.add(transferAmount)), true, "Incorrect target new balance value");
         assert.equal(newAllowance.eq(oldAllowance.sub(transferAmount)), true, "Incorrect new allowance value");
     } catch (e) {
-        console.log(`${e.name}: ${e.message}`);
+       // console.log(`${e.name}: ${e.message}`);
     }
 
 
@@ -117,7 +117,7 @@
         assert.equal(sourceNewBalance.eq(sourceOldBalance), true, "Incorrect source new balance value");
         assert.equal(targetNewBalance.eq(targetOldBalance), true, "Incorrect target new balance value");
     } catch (e) {
-        console.log(`${e.name}: ${e.message}`);
+       // console.log(`${e.name}: ${e.message}`);
     }
 
     });
