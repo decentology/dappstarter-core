@@ -22,7 +22,7 @@ class ipfs {
         let results = [];
         for(let f=0; f<ipfsResult.length; f++) {
             let file = ipfsResult[f];
-            file.docId = file.digest.substr(0, 32);
+            file.docId = file.digest.substr(2, 16);
 
             let result = await Blockchain.post({
                     config: config,
@@ -35,7 +35,7 @@ class ipfs {
                 'addIpfsDocument',
                 DappLib.fromAscii(file.docId, 32),
                 DappLib.fromAscii(data.label || '', 32),
-                DappLib.fromAscii(file.digest, 32),
+                file.digest,
                 file.hashFunction,
                 file.digestLength
             );
@@ -66,13 +66,13 @@ class ipfs {
             DappLib.fromAscii(data.id, 32)
         );
         if (result.callData) {
-            result.callData.docDigest = DappLib.toAscii(result.callData.docDigest);
-            // result.callData.docMultihash = DappLib._encodeMultihash({
-            //                                     digest: result.callData.docDigest,
-            //                                     hashFunction: Number(result.callData.docHashFunction),
-            //                                     digestLength: Number(result.callData.docDigestLength)
-            //                             });
             result.callData.docId = DappLib.toAscii(result.callData.docId);
+            result.callData.docMultihash = DappLib._encodeMultihash({
+                                                digest: result.callData.docDigest,
+                                                hashFunction: Number(result.callData.docHashFunction),
+                                                digestLength: Number(result.callData.docDigestLength)
+                                        });
+            result.callData.docUrl = DappLib.formatIpfsHash(result.callData.docMultihash);
             result.callData.label = DappLib.toAscii(result.callData.label);
         }
         return {
@@ -143,9 +143,7 @@ class ipfs {
 
     /**
      * Partition multihash string into object representing multihash
-     * // https://github.com/saurfang/ipfs-multihash-on-solidity/blob/master/src/multihash.js
-     * @param {string} multihash A base58 encoded multihash string
-     * @returns {Multihash}
+     * https://github.com/saurfang/ipfs-multihash-on-solidity/blob/master/src/multihash.js
      */
     static _decodeMultihash(multihash) {
         const decoded = bs58.decode(multihash);
@@ -159,9 +157,7 @@ class ipfs {
 
     /**
      * Encode a multihash structure into base58 encoded multihash string
-     * // https://github.com/saurfang/ipfs-multihash-on-solidity/blob/master/src/multihash.js
-     * @param {Multihash} multihash
-     * @returns {(string|null)} base58 encoded multihash string
+     * https://github.com/saurfang/ipfs-multihash-on-solidity/blob/master/src/multihash.js
      */
     static _encodeMultihash(encodedMultihash) {
         const {

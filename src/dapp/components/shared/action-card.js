@@ -93,7 +93,7 @@ export default class ActionCard extends CustomElement {
                                 } else if (fieldElement.type === 'uploader') {
                                     values[field] = fieldElement.files;
                                 } else {
-                                    values[field] = fieldElement.value;
+                                    values[field] = fieldElement.value || '';
                                 }
                             }    
                         }

@@ -15,10 +15,10 @@ In order to develop and build My Dapp, the following pre-requisites must be inst
 ## Ganache Settings (for Ethereum only; skip for other blockchains)
 
 Download and install the Ganache GUI, then create a new workspace with the following settings:
-- Workspace Name: *dapp-starter*
-- Port Number: *7545*
-- Network ID: *5777*
-- Mnemonic: *[]* ///@{ "___test-mnemonic___": "[]"}
+- Workspace Name: dapp-starter
+- Port Number: 7545
+- Network ID: 5777
+- Mnemonic: [] ///@{ "___test-mnemonic___": "[]"}
             
 # Installation
 

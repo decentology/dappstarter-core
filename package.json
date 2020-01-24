@@ -7,8 +7,7 @@
   },
   "license": "Restricted",
   "scripts": {
-    "start": "npm install && npm run deploy",
-    "deploy": "truffle compile && truffle migrate --reset --verbose-rpc",
+    "start": "truffle compile && truffle migrate --reset --verbose-rpc",
     "test": "truffle test",
     "dapp": "npm run lib && webpack-dev-server --mode development --config webpack.config.dapp.js",
     "server": "rm -rf ./build/server && npm run lib && webpack --mode development --config webpack.config.server.js",

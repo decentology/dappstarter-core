@@ -99,7 +99,6 @@ export default class DappLib {
                 });
             }
         }
-
         return DappLib.formatArray(data, formatters, labels, keys);
     }
 
@@ -120,20 +119,21 @@ export default class DappLib {
             for(let d=0; d<dataFormatters.length; d++) {
                 let text = dataKeys && dataKeys[d] ? item[dataKeys[d]] : item;
                 let copyText =  dataKeys && dataKeys[d] ? item[dataKeys[d]] : item;
-                let formatter = 'format' + dataFormatters[d];
-                if (formatter.startsWith('formatText')) {
-                    let formatterFrags = formatter.split('-');
-                    if (formatterFrags.length === 3) {
-                        text = DappLib.toCondensed(text, Number(formatterFrags[1]), Number(formatterFrags[2]));
-                    } else if (formatterFrags.length === 2) {
-                        text = DappLib.toCondensed(text, Number(formatterFrags[1]));
-                    }
-                    formatter = formatterFrags[0];    
-                }
+
                 if (text.startsWith('<')) {
                     output += (d == 0 ? '<th scope="row">' : '<td>') + text + (d == 0 ? '</th>' : '</td>');
                 } else {
-                    output += (d == 0 ? '<th scope="row">' : '<td>') + DappLib[formatter](text, copyText) + (d == 0 ? '</th>' : '</td>');                    
+                    let formatter = 'format' + dataFormatters[d];
+                    if (formatter.startsWith('formatText')) {
+                        let formatterFrags = formatter.split('-');
+                        if (formatterFrags.length === 3) {
+                            text = DappLib.toCondensed(text, Number(formatterFrags[1]), Number(formatterFrags[2]));
+                        } else if (formatterFrags.length === 2) {
+                            text = DappLib.toCondensed(text, Number(formatterFrags[1]));
+                        }
+                        formatter = formatterFrags[0];    
+                    }
+                    output += (d == 0 ? '<th scope="row">' : '<td>') + DappLib[formatter](text, copyText) + (d == 0 ? '</th>' : '</td>');                        
                 }
             }    
             output += '</tr>';
@@ -149,9 +149,16 @@ export default class DappLib {
     }
 
     static fromAscii(str, padding) {
+
+console.log('FromAscii', str, padding);
+        if (str.startsWith('0x') || !padding) {
+            return str;
+        }
+
         if (str.length > padding) {
             str = str.substr(0, padding);
         }
+
         var hex = '0x';
         for (var i = 0; i < str.length; i++) {
             var code = str.charCodeAt(i);
