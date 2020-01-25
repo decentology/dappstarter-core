@@ -41,11 +41,13 @@ export default class DappLib {
     static getTransactionHash(t) {
         if (!t) { return ''; }
         let value = '';
-        if (typeof t === 'string') {                // Ethereum
+        if (typeof t === 'string') {                
             value = t;
         } else if (typeof t === 'object') {    
 
-            if (t.hasOwnProperty('transaction')) {
+            if (t.hasOwnProperty('transactionHash')) {
+                    value = t.transactionHash;       // Ethereum                
+            } else if (t.hasOwnProperty('transaction')) {
                 if (t.transaction.id) {
                     value = t.transaction.id;       // Harmony
                 }
