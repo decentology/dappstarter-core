@@ -29,8 +29,8 @@ export default class Blockchain {
         return {
             callAccount: env.params.from,
             callData: await blockchain[env.contract]
-                .methods[action](...data)
-                .call(env.params)
+                                .methods[action](...data)
+                                .call(env.params)
         }
     }
 
@@ -43,8 +43,8 @@ export default class Blockchain {
         return {
             callAccount: env.params.from,
             callData: await blockchain[env.contract]
-                .methods[action](...data)
-                .send(env.params)
+                                .methods[action](...data)
+                                .send(env.params)
         }
     }
 

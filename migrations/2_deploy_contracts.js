@@ -4,6 +4,11 @@ const fs = require('fs');
 
 module.exports = function(deployer, network) {
 
+    let httpUrl = deployer.networks[network].url;
+    let wsUrl = '';
+    if (httpUrl) {
+        wsUrl = httpUrl.replace('http', 'ws');
+    }
     deployer
     .deploy(DappStateContract)
     .then(() => {
@@ -11,8 +16,8 @@ module.exports = function(deployer, network) {
     })
     .then(() => {
         let config = {
-            http: deployer.networks[network].url,
-            ws: deployer.networks[network].url.replace('http', 'ws'),
+            http: httpUrl,
+            ws: wsUrl,
             dappStateContractAddress: DappStateContract.address,
             dappContractAddress: DappContract.address,
             ipfs: {

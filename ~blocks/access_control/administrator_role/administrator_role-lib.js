@@ -38,7 +38,7 @@ class administratorrole {
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
-            result: result.callData.transactionHash,
+            result: DappLib.getTransactionHash(result.callData),
             hint: `Verify ${DappLib.formatAccount(data.account)} is an administrator by using "Is Contract Admin."`
         }
     }
@@ -58,7 +58,7 @@ class administratorrole {
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
-            result: result.callData.transactionHash,
+            result: DappLib.getTransactionHash(result.callData),
             hint: `Verify ${DappLib.formatAccount(data.account)} is no longer an administrator by using "Is Contract Admin."`
         }
     }
@@ -78,7 +78,7 @@ class administratorrole {
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
-            result: result.callData.transactionHash,
+            result: DappLib.getTransactionHash(result.callData),
             hint: `Verify that all functions that require an administrator no longer work."`
         }
     }

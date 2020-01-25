@@ -36,7 +36,7 @@ class contractrunstate {
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
-            result: result.callData.transactionHash,
+            result: DappLib.getTransactionHash(result.callData),
             hint: `Verify contract run state is ${data.mode ? 'active' : 'inactive'} by calling contract functions that use requireContractRunStateActive().`
         }
     }

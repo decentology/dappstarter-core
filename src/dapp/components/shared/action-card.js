@@ -103,6 +103,7 @@ export default class ActionCard extends CustomElement {
                     let resultClass = validFields > 0 ? '' : 'm-3';
                     try {
                         let retVal = await DappLib[self.action].call(null, values);
+                        //console.log('Last call and result: ', self.action, retVal);
                         let data = '';
                         switch(retVal.type) {
                             case DappLib.DAPP_RESULT_BIG_NUMBER:

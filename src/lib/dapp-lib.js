@@ -38,6 +38,24 @@ export default class DappLib {
         return 'object'
     }
 
+    static getTransactionHash(t) {
+        if (!t) { return ''; }
+        let value = '';
+        if (typeof t === 'string') {                // Ethereum
+            value = t;
+        } else if (typeof t === 'object') {    
+
+            if (t.hasOwnProperty('transaction')) {
+                if (t.transaction.id) {
+                    value = t.transaction.id;       // Harmony
+                }
+            } else {
+                value = JSON.stringify(t);
+            }
+        }
+        return value;
+    }
+
     static formatHint(hint) {
         if (hint) {
             return `<p class="mt-3 grey-text"><strong>Hint:</strong> ${hint}</p>`;
@@ -57,7 +75,8 @@ export default class DappLib {
     }
 
     static formatTxHash(a) {
-        return `<strong class="teal lighten-5 p-1 blue-grey-text number copy-target" title="${a}">${DappLib.toCondensed(a, 6, 4)}</strong>${ DappLib.addClippy(a)}`;
+        let value = DappLib.getTransactionHash(a);
+        return `<strong class="teal lighten-5 p-1 blue-grey-text number copy-target" title="${value}">${DappLib.toCondensed(value, 6, 4)}</strong>${ DappLib.addClippy(value)}`;
     }
 
     static formatIpfsHash(a) {
@@ -150,7 +169,6 @@ export default class DappLib {
 
     static fromAscii(str, padding) {
 
-console.log('FromAscii', str, padding);
         if (str.startsWith('0x') || !padding) {
             return str;
         }
@@ -184,7 +202,8 @@ console.log('FromAscii', str, padding);
     };
 
     static toCondensed(s, begin, end) {
-        if (s.length <= begin + end) {
+        if (!s) { return; }
+        if (s.length && s.length <= begin + end) {
             return s;
         } else {
             if (end) {

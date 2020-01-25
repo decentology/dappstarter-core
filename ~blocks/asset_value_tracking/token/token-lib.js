@@ -102,7 +102,7 @@ class token {
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
-            result: result.callData.transactionHash,
+            result: DappLib.getTransactionHash(result.callData),
             hint: `Verify transfer by using "Balance for Account" to check the balance of ${DappLib.formatAccount(data.to)}.`
         }
     }

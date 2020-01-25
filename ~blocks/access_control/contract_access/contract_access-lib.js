@@ -38,7 +38,7 @@ class contractaccess {
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
-            result: result.callData.transactionHash,
+            result: DappLib.getTransactionHash(result.callData),
             hint: `Verify ${DappLib.formatAccount(data.account)} is authorized by using "Is Contract Authorized."`
         }
     }
@@ -58,7 +58,7 @@ class contractaccess {
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
-            result: result.callData.transactionHash,
+            result: DappLib.getTransactionHash(result.callData),
             hint: `Verify ${DappLib.formatAccount(data.account)} is no longer authorized by using "Is Contract Authorized."`
         }
     }
