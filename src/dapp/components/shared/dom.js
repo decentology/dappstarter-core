@@ -30,6 +30,10 @@ export default class DOM {
         return document.getElementById(id);
     }
 
+    static el(name) {
+        return document.querySelector(name);
+    }
+
     static appendText(el, text) {
         const textNode = document.createTextNode(text);
         el.appendChild(textNode);

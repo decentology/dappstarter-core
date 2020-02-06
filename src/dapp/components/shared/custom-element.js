@@ -1,5 +1,20 @@
 export default class CustomElement extends HTMLElement {
 
+    static get UI_READ() {
+        return 'read'
+    }
+
+    static get UI_WRITE() {
+        return 'write'
+    }
+
+    static get UI_ADMIN_READ() {
+        return 'admin_read'
+    }
+
+    static get UI_ADMIN_WRITE() {
+        return 'admin_write'
+    }
 
     static get METHOD_GET() {
         return 'get'
@@ -26,7 +41,7 @@ export default class CustomElement extends HTMLElement {
     // Creates getters and setters for all custom attributes
     constructor(props, ...args) {
         const self = super(...args);
-        self.uniqueId = Math.random().toString(36).substr(2, 9);
+        self.uniqueId = 'x' + Math.random().toString(36).substr(2, 9);
         
         let allProps = CustomElement.attributes.concat(props);
         allProps.map((prop) => {

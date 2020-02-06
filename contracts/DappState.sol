@@ -55,25 +55,67 @@ contract DappState is IDappState {
 
 ///+functions
 
+//  Example functions that demonstrate how to call into this contract that holds state from
+//  another contract. Look in ~/interfaces/IDappState.sol for the interface definitions and
+//  in Dapp.sol for the actual calls into this contract.
+
     /**
     * @dev This is an EXAMPLE function that illustrates how functions in this contract can be
-    *      called securely from another contract. Using the Contract Access block will enable
-    *      you to make your contract more secure by restricting which external contracts can
-    *      call functions in this contract.
-    *
+    *      called securely from another contract to READ state data. Using the Contract Access 
+    *      block will enable you to make your contract more secure by restricting which external
+    *      contracts can call functions in this contract.
     */
     function getContractOwner()
                                 external
                                 view
                                 returns(address)
     {
-        // NOTE: If a contract is calling this function, then msg.sender will be the address
+        return contractOwner;
+    }
+
+    uint256 counter;    // This is an example variable used only to demonstrate calling
+                        // a function that writes state from an external contract. It and
+                        // "incrementCounter" and "getCounter" functions can (should?) be deleted.
+    /**
+    * @dev This is an EXAMPLE function that illustrates how functions in this contract can be
+    *      called securely from another contract to WRITE state data. Using the Contract Access 
+    *      block will enable you to make your contract more secure by restricting which external
+    *       contracts can call functions in this contract.
+    */
+    function incrementCounter
+                            (
+                                uint256 increment
+                            )
+                            external
+                            // Enable the modifier below if using the Contract Access feature
+                            // requireContractAuthorized
+    {
+        // NOTE: If another contract is calling this function, then msg.sender will be the address
         //       of the calling contract and NOT the address of the user who initiated the
         //       transaction. It is possible to get the address of the user, but this is 
         //       spoofable and therefore not recommended.
         
-        return contractOwner;
+        require(increment > 0 && increment < 10, "Invalid increment value");
+        counter = counter.add(increment);   // Demonstration of using SafeMath to add to a number
+                                            // While verbose, using SafeMath everywhere that you
+                                            // add/sub/div/mul will ensure your contract does not
+                                            // have weird overflow bugs.
     }
+
+    /**
+    * @dev This is an another EXAMPLE function that illustrates how functions in this contract can be
+    *      called securely from another contract to READ state data. Using the Contract Access 
+    *      block will enable you to make your contract more secure by restricting which external
+    *      contracts can call functions in this contract.
+    */
+    function getCounter()
+                                external
+                                view
+                                returns(uint256)
+    {
+        return counter;
+    }
+
 }   
 
 

@@ -20,9 +20,23 @@ module.exports = {
                 0, // address index
                 10, // number of addresses
                 true, // share nonce
-                `m/44'/60'/0'/0/` // wallet HD path
+                `m/44'/889'/0'/0/` // wallet HD path
             ),
             network_id: '*'
+        },
+        tomotestnet: {
+            uri: "https://testnet.tomochain.com",
+            provider: () => new HDWalletProvider(
+                testAccounts,
+                "https://testnet.tomochain.com", 
+                0, // address index
+                10, // number of addresses
+                true, // share nonce
+                `m/44'/889'/0'/0/` // wallet HD path
+            ),
+            network_id: '89',
+            gas: 2000000,
+            gasPrice: 10000000000000
         }
     },
     compilers: {

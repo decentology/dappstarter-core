@@ -1,4 +1,8 @@
-///(page
+///(page-loader-import
+import '../pages/ipfs-page.js';
+///)
+
+///(page-pre-content
 import '../widgets/page-widget.js';
 import '../shared/action-card.js';
 import '../widgets/text-widget.js';
@@ -20,9 +24,41 @@ export default class IpfsPage extends CustomElement {
 
     render() {
         let self = this;
-        let content =
-            `
-        <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
+
+        let uiHtml = {
+            [CustomElement.UI_READ]: '',
+            [CustomElement.UI_WRITE]: '',
+            [CustomElement.UI_ADMIN]: ''
+
+        }
+
+///)
+///(ui-read
+            uiHtml[CustomElement.UI_READ] =
+`
+            <action-card 
+                title="Get Document" description="Get IPFS document using its ID"
+                action="getIpfsDocument" method="${CustomElement.METHOD_GET}" fields="id">
+
+                <number-widget 
+                    field="id" label="Doc ID" placeholder="Document ID">
+                </number-widget>
+            </action-card>
+
+            <action-card 
+                title="Get Documents by Owner" description="Get all IPFS documents for any account"
+                action="getIpfsDocumentsByOwner" method="${CustomElement.METHOD_GET}" fields="account">
+
+                    <account-widget 
+                        field="account" label="Account" placeholder="Account address">
+                    </account-widget>
+
+            </action-card>
+`
+///)
+///(ui-write
+            uiHtml[CustomElement.UI_WRITE] =
+`
             <action-card 
                 title="Add Document" description="Upload document to IPFS and add hash to contract"
                 action="addIpfsDocument" method="${CustomElement.METHOD_POST}" fields="files label mode"
@@ -40,32 +76,27 @@ export default class IpfsPage extends CustomElement {
                     <input type="hidden" data-field="mode" value="${self.mode}" style="display:none;"></input>
             </action-card>
 
-            <action-card 
-                title="IPFS Document" description="Get IPFS document using its ID"
-                action="getIpfsDocument" method="${CustomElement.METHOD_GET}" fields="id">
+`
 
-                <number-widget 
-                    field="id" label="Doc ID" placeholder="Document ID">
-                </number-widget>
-            </action-card>
-
-            <action-card 
-                title="Get Documents by Owner" description="Get all IPFS documents for any account"
-                action="getIpfsDocumentsByOwner" method="${CustomElement.METHOD_GET}" fields="account">
-
-                    <account-widget 
-                        field="account" label="Account" placeholder="Account address">
-                    </account-widget>
-
-            </action-card>
-
+///)
+///(ui-admin
+///)
+///(page-post-content
+        let content =
+            `
+        <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
+            ${uiHtml[CustomElement.UI_READ]}
+            ${uiHtml[CustomElement.UI_WRITE]}
+            ${uiHtml[CustomElement.UI_ADMIN]}
         </page-widget>
+        <panel-widget id="resultPanel"></panel-widget>
+
 `
         self.innerHTML = content;
-        self.querySelector('upload-widget').addEventListener(UploadWidget.EVENT_FILES_CHANGED, (e) => {
-            // Could do something here
-            // let files = e.detail.files;
-        });
+        // self.querySelector('upload-widget').addEventListener(UploadWidget.EVENT_FILES_CHANGED, (e) => {
+        //     //Could do something here
+        //     //let files = e.detail.files;
+        // });
     }
 
 }

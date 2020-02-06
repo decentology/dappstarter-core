@@ -17,8 +17,7 @@ export default class TopNavigation extends CustomElement {
     }
 
     constructor(...args) {
-        const self = super(TopNavigation.attributes, ...args);
-        self.collapse = false;
+        super(TopNavigation.attributes, ...args);
     }
 
     render() {
@@ -31,7 +30,7 @@ export default class TopNavigation extends CustomElement {
     <button type="button" class="navbar-toggler">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="navbar-collapse" style="">
+    <div class="navbar-collapse collapse" style="">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a rel="noopener noreferrer" class="nav-link Ripple-parent" href="https://www.trycrypto.com/dappstarter" target="_blank">About</a>
@@ -66,7 +65,6 @@ export default class TopNavigation extends CustomElement {
                 self.querySelector('.navbar-collapse').classList.remove('collapse');
             }
         });
-
     }
 }
 

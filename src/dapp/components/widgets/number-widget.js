@@ -44,6 +44,12 @@ export default class NumberWidget extends CustomElement {
         }
         self.innerHTML = content;
     }
+
+    value() {
+        let self = this;
+        return self.querySelector(`[data-field=${self.field}]`).value;
+    }
+    
 }
 
 

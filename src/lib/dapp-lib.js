@@ -1,7 +1,7 @@
 'use strict';
 import Blockchain from './blockchain';
 import BN from 'bn.js'; // Required for injected code
-import config from '../dapp-config.json';
+import dappConfig from '../dapp-config.json';
 import SvgIcons from '../dapp/components/widgets/svg-icons';
 
 ///+import
@@ -9,6 +9,64 @@ import SvgIcons from '../dapp/components/widgets/svg-icons';
 export default class DappLib {
 
 ///+functions
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> EXAMPLES  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+
+    // These example functions demonstrate cross-contract calling
+
+    static async getStateContractOwner() {
+
+        let result = await Blockchain.get({
+                config: DappLib.getConfig(),
+                contract: DappLib.DAPP_CONTRACT,
+                params: {
+                }
+            },
+            'getStateContractOwner',
+        ); 
+        let owner = result.callData;
+        return {
+            type: DappLib.DAPP_RESULT_ACCOUNT,
+            label: 'Contract Owner',
+            result: owner,
+            unitResult: null,
+            hint: null
+        }
+    }
+
+    static async getStateCounter() {
+
+        let result = await Blockchain.get({
+                config: DappLib.getConfig(),
+                contract: DappLib.DAPP_CONTRACT,
+                params: {
+                }
+            },
+            'getStateCounter',
+        );         
+        return result;
+    }
+
+    static async incrementStateCounter(data) {
+
+        let result = await Blockchain.post({
+                config: DappLib.getConfig(),
+                contract: DappLib.DAPP_CONTRACT,
+                params: {
+                }
+            },
+            'incrementStateCounter',
+            data.increment
+        );
+        return {
+            type: DappLib.DAPP_RESULT_TX_HASH,
+            label: 'Transaction Hash',
+            result: DappLib.getTransactionHash(result.callData),
+            hint: ''
+        }
+    }
+
+
+
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DAPP LIBRARY  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
     static get DAPP_STATE_CONTRACT() {
@@ -20,6 +78,10 @@ export default class DappLib {
 
     static get DAPP_RESULT_BIG_NUMBER() {
         return 'big-number'
+    }
+
+    static get DAPP_RESULT_ACCOUNT() {
+        return 'account'
     }
 
     static get DAPP_RESULT_TX_HASH() {
@@ -38,13 +100,16 @@ export default class DappLib {
         return 'object'
     }
 
+    static get DAPP_RESULT_ERROR() {
+        return 'error'
+    }
+
     static getTransactionHash(t) {
         if (!t) { return ''; }
         let value = '';
         if (typeof t === 'string') {                
             value = t;
         } else if (typeof t === 'object') {    
-
             if (t.hasOwnProperty('transactionHash')) {
                     value = t.transactionHash;       // Ethereum                
             } else if (t.hasOwnProperty('transaction')) {
@@ -214,6 +279,66 @@ export default class DappLib {
                 return `${s.substr(0, begin)}...`;
             }
         }
+    }
+
+    static getConfig() {
+        return dappConfig;
+    }
+
+    // Return value of this function is used to dynamically re-define getConfig()
+    // for use during testing. With this approach, even though getConfig() is static
+    // it returns the correct contract addresses as its definition is re-written
+    // before each test run. Look for the following line in test scripts to see it done:
+    //  DappLib.getConfig = Function(`return ${ JSON.stringify(DappLib.getTestConfig(testDappStateContract, testDappContract, testAccounts))}`);
+    static getTestConfig(testDappStateContract, testDappContract, testAccounts) {
+
+        return Object.assign(
+            {}, 
+            dappConfig,
+            {
+                dappStateContractAddress: testDappStateContract.address,
+                dappContractAddress: testDappContract.address,
+                accounts: testAccounts,
+                owner: testAccounts[0],
+                admins: [
+                    testAccounts[1],
+                    testAccounts[2],
+                    testAccounts[3]
+                ],
+                users: [
+                    testAccounts[4],
+                    testAccounts[5],
+                    testAccounts[6],
+                    testAccounts[7],
+                    testAccounts[8]
+                ],
+                testAddresses: [
+                    // These test addresses are useful when you need to add random accounts in test scripts
+                    "0xb1ac66b49fdc369879123332f2cdd98caad5f75a",
+                    "0x0d27a7c9850f71d7ef71ffbe0155122e83d9455d",
+                    "0x88477a8dc34d60c40b160e9e3b1721341b63c453",
+                    "0x2880e2c501a70f7db1691a0e2722cf6a8a9c9009",
+                    "0x0226df61d33e41b90be3b5fd830bae303fcb66f5",
+                    "0x60a4dff3d25f4e5a5480fb91d550b0efc0e9dbb3",
+                    "0xa2f52a2060841cc4eb4892c0234d2c6b6dcf1ea9",
+                    "0x71b9b9bd7b6f72d7c0841f38fa7cdb840282267d",
+                    "0x7f54a3318b2a728738cce36fc7bb1b927281c24e",
+                    "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
+                ],
+                ipfsTestFiles: [
+                    "QmaWf4HjxvCH5W8Cm8AoFkSNwPUTr3VMZ3uXp8Szoqun53",
+                    "QmTrjnQTaUfEEoJ8DgsDG2A8AqsiN5bSV62q98tWkZMU2D",
+                    "QmSn26zrUd5CbuNoBPwGhPrktLv94rPiZxNmkHx5smTYj3",
+                    "QmTy9aLjFxV8sDK7GEp8uR1zC8ukq3NrV6aSNxjvBTTcqu",
+                    "QmWJU1FQghgi69VSDpEunEwemPDFqmBvXzp8b9DxKHP7QQ",
+                    "QmYT1ejAMbG2fP7AMdH2Pi2QpQRxQXBUC3CbENzpY2icok",
+                    "QmQJh3yLX9z6dmKbFhCyGsZrUEtRXeurcDG39eXbkwQG7C",
+                    "QmWRYExBZgZ67R43jW2vfwL3Hio78JaR7Vq3ouiJTsZ6qw",
+                    "QmWwPLQVVJizkwwiqPcknBUnRH359TfbusHpVGZtWNGMxu",
+                    "QmbtFKnBuyUmRoFh9EueP2r6agYpwGJwG4VBikQ4wwjGAY"
+                ]
+            }
+        );
     }
 
 }

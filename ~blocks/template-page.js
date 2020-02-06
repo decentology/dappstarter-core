@@ -1,4 +1,4 @@
-///(page
+///(page-content
 import '../shared/action-card.js';
 
 export default class TemplatePage extends CustomElement {

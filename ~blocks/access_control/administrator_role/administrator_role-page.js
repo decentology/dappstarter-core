@@ -1,4 +1,8 @@
-///(page
+///(page-loader-import
+import '../pages/administrator_role-page.js';
+///)
+
+///(page-pre-content
 import '../shared/action-card.js';
 import '../widgets/page-widget.js';
 import '../widgets/account-widget.js';
@@ -12,11 +16,22 @@ export default class AdministratorRolePage extends CustomElement {
     render() {
         let self = this;
 
-        let content = 
-`
-        <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
+        let uiHtml = {
+            [CustomElement.UI_READ]: '',
+            [CustomElement.UI_WRITE]: '',
+            [CustomElement.UI_ADMIN]: ''
+        }
+///)
+///(ui-read
+///)
+///(ui-write
+///)
+///(ui-admin
 
-            <action-card 
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: ADMINISTRATOR ROLE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
+        uiHtml[CustomElement.UI_ADMIN] += 
+`
+            <action-card
                 title="Is Contract Admin" description="Check if an account is a contract administrator"
                 action="isContractAdmin" method="${CustomElement.METHOD_GET}" fields="account">
 
@@ -46,7 +61,7 @@ export default class AdministratorRolePage extends CustomElement {
                 
             </action-card>
 
-            <action-card 
+            <action-card
                 title="Remove Last Contract Admin" description="Remove an account as a contract administrator"
                 action="removeLastContractAdmin" method="${CustomElement.METHOD_POST}" fields="account">
 
@@ -60,7 +75,18 @@ export default class AdministratorRolePage extends CustomElement {
                     </account-widget>
                 
             </action-card>
+            <div class="col-12 m-5"></div>
+`
+///)
+///(page-post-content
+        let content = 
+`
+        <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
+            ${uiHtml[CustomElement.UI_READ]}
+            ${uiHtml[CustomElement.UI_WRITE]}
+            ${uiHtml[CustomElement.UI_ADMIN]}
         </page-widget>
+        <panel-widget id="resultPanel"></panel-widget>
 `
         self.innerHTML = content;
     }

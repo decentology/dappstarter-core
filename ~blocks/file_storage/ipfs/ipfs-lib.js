@@ -25,7 +25,7 @@ class ipfs {
             file.docId = file.digest.substr(2, 16);
 
             let result = await Blockchain.post({
-                    config: config,
+                    config: DappLib.getConfig(),
                     contract: DappLib.DAPP_STATE_CONTRACT,
                     params: {
                         from: null,
@@ -56,7 +56,7 @@ class ipfs {
     static async getIpfsDocument(data) {
 
         let result = await Blockchain.get({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
                     from: null
@@ -85,7 +85,7 @@ class ipfs {
     static async getIpfsDocumentsByOwner(data) {
 
         let result = await Blockchain.get({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
                     from: null

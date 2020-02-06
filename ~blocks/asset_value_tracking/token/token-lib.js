@@ -3,12 +3,12 @@ class token {
 ///(functions
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ASSET VALUE TRACKING: TOKEN  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
-    static async _decimals() {
+    static async _decimals(data) {
         let result = await Blockchain.get({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
-                    from: null
+                    from: data.from
                 }
             },
             'decimals'
@@ -16,37 +16,46 @@ class token {
         return result.callData
     }
 
+    static async _toSmallestUnit(amount, data) {
+        let decimals = await DappLib._decimals(data);
+        let units = new BN(10).pow(new BN(decimals));
+        return new BN(amount).mul(units);
+    }
+
+    static async _fromSmallestUnit(amount, data) {
+        let decimals = await DappLib._decimals(data);
+        let units = new BN(10).pow(new BN(decimals));
+        return new BN(amount).div(units);
+    }
+
     static async totalSupply(data) {
 
-        let decimals = await DappLib._decimals();
-        let units = new BN(10).pow(new BN(decimals));
         let result = await Blockchain.get({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
-                    from: null
+                    from: data.from
                 }
             },
             'totalSupply',
-        );
+        ); 
         let supply = result.callData;
         return {
             type: DappLib.DAPP_RESULT_BIG_NUMBER,
             label: 'Total Supply',
-            result: new BN(supply).div(units),
+            result: new BN(supply),
+            unitResult: await DappLib._fromSmallestUnit(supply, data),
             hint: null
         }
     }
 
-    static async balance() {
+    static async balance(data) {
 
-        let decimals = await DappLib._decimals();
-        let units = new BN(10).pow(new BN(decimals));
         let result = await Blockchain.get({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
-                    from: null
+                    from: data.from
                 }
             },
             'balance'
@@ -55,20 +64,19 @@ class token {
         return {
             type: DappLib.DAPP_RESULT_BIG_NUMBER,
             label: 'Account Balance for ' + DappLib.formatAccount(result.callAccount),
-            result: new BN(balance).div(units),
+            result: new BN(balance),
+            unitResult: await DappLib._fromSmallestUnit(balance, data),
             hint: null
         }
     }
 
     static async balanceOf(data) {
 
-        let decimals = await DappLib._decimals();
-        let units = new BN(10).pow(new BN(decimals));
         let result = await Blockchain.get({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
-                    from: null
+                    from: data.from
                 }
             },
             'balanceOf',
@@ -78,21 +86,22 @@ class token {
         return {
             type: DappLib.DAPP_RESULT_BIG_NUMBER,
             label: DappLib.formatAccount(result.callAccount) + ' Account Balance',
-            result: new BN(balance).div(units),
+            result: new BN(balance),
+            unitResult: await DappLib._fromSmallestUnit(balance, data),
             hint: null
         }
     }
 
     static async transfer(data) {
 
-        let decimals = await DappLib._decimals();
+        let decimals = await DappLib._decimals(data);
         let units = new BN(10).pow(new BN(decimals));
-        let amount = new BN(data.amount).mul(units); //.toString(10)
+        let amount = new BN(data.amount).mul(units);
         let result = await Blockchain.post({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
-                    from: null
+                    from: data.from
                 }
             },
             'transfer',

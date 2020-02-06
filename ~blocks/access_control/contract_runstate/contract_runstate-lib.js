@@ -6,7 +6,7 @@ class contractrunstate {
     static async isContractRunStateActive(data) {
 
         let result = await Blockchain.get({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
                     from: null
@@ -24,7 +24,7 @@ class contractrunstate {
 
     static async setContractRunState(data) {
         let result = await Blockchain.post({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
                     from: null

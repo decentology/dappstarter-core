@@ -6,7 +6,7 @@ class administratorrole {
     static async isContractAdmin(data) {
 
         let result = await Blockchain.get({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
                     from: null
@@ -26,7 +26,7 @@ class administratorrole {
     static async addContractAdmin(data) {
 
         let result = await Blockchain.post({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
                     from: null
@@ -46,7 +46,7 @@ class administratorrole {
     static async removeContractAdmin(data) {
 
         let result = await Blockchain.post({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
                     from: null
@@ -66,7 +66,7 @@ class administratorrole {
     static async removeLastContractAdmin(data) {
 
         let result = await Blockchain.post({
-                config: config,
+                config: DappLib.getConfig(),
                 contract: DappLib.DAPP_STATE_CONTRACT,
                 params: {
                     from: null

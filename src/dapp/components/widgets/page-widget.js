@@ -25,6 +25,7 @@ export default class PageWidget extends CustomElement {
 `
         self.innerHTML = content;
     }
+
 }
 
 

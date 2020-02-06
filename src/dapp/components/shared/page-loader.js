@@ -1,6 +1,6 @@
 import DOM from './dom';
 import CustomElement from './custom-element';
-
+///+page-loader-import
 export default class PageLoader extends CustomElement {
    
 
@@ -33,7 +33,7 @@ export default class PageLoader extends CustomElement {
 
         let pageContent = null
         try {
-            await import(`../pages/${self.name}-page.js`);
+            //await import(`../pages/${self.name}-page.js`);
             pageContent = DOM.create(
                 `${self.name.replace('_','-')}-page`, {
                     title: self.title

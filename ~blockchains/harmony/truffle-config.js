@@ -1,21 +1,29 @@
-const { TruffleProvider } = require('@harmony-js/core');
+require('@babel/register');
+({
+    ignore: /node_modules/
+});
+require('@babel/polyfill');
 
-let devUrl = 'https://api.s0.b.hmny.io/';
+const {
+    TruffleProvider
+} = require('@harmony-js/core');
+
 let mnemonic = 'urge clog right example dish drill card maximum mix bachelor section select';
+let devUri = 'https://api.s0.b.hmny.io/';
 
 module.exports = {
 
     networks: {
         development: {
+            uri: devUri,
             network_id: '2',
             provider: () => {
                 const truffleProvider = new TruffleProvider(
-                    devUrl, {
+                    uri, {
                         memonic: mnemonic
                     }, {
                         shardID: 0,
-                        chainId: 2,
-                        chainType: 'eth'
+                        chainId: 2
                     }, {
                         gasLimit: 3321900,
                         gasPrice: 1000000000

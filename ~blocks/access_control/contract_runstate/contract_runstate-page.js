@@ -1,7 +1,12 @@
-///(page
+///(page-loader-import
+import '../pages/contract_runstate-page.js';
+///)
+
+///(page-pre-content
 import '../shared/action-card.js';
 import '../widgets/page-widget.js';
 import '../widgets/switch-widget.js';
+import DappLib from '../../../lib/dapp-lib';
 
 export default class ContractRunStatePage extends CustomElement {
 
@@ -9,17 +14,26 @@ export default class ContractRunStatePage extends CustomElement {
         super([], ...args);
     }
 
-    render() {
+    async render() {
         let self = this;
 
-        let content = 
+        let uiHtml = {
+            [CustomElement.UI_READ]: '',
+            [CustomElement.UI_WRITE]: '',
+            [CustomElement.UI_ADMIN]: ''
+        }
+///)
+///(ui-read
+///)
+///(ui-write
+///)
+///(ui-admin
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT RUN STATE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
+        uiHtml[CustomElement.UI_ADMIN] += 
 `
-        <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
-
             <action-card 
                 title="Is Contract Run State Active" description="Check if contract run state is active"
                 action="isContractRunStateActive" method="${CustomElement.METHOD_GET}" fields="">
-
             </action-card>
 
             <action-card 
@@ -31,13 +45,27 @@ export default class ContractRunStatePage extends CustomElement {
                     </switch-widget>
                 
             </action-card>
-
-        </page-widget>
+            <div class="col-12 m-5"></div>
 `
+///)
+///(page-post-content
+        let content = 
+`
+        <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
+            ${uiHtml[CustomElement.UI_READ]}
+            ${uiHtml[CustomElement.UI_WRITE]}
+            ${uiHtml[CustomElement.UI_ADMIN]}
+        </page-widget>
+        <panel-widget id="resultPanel"></panel-widget>
+
+`
+        // Set 'Run State' switch value to correct state
+        let currentRunState = Boolean((await DappLib.isContractRunStateActive()).result);
         self.innerHTML = content;
+
+        self.querySelector('[data-field=mode]').checked = currentRunState;
     }
 }
-
 
 customElements.define('contract-runstate-page', ContractRunStatePage);
 ///)
