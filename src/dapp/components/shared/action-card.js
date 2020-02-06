@@ -21,6 +21,9 @@ export default class ActionCard extends CustomElement {
     static get ATTRIBUTE_RETURN() {
         return 'return'
     }
+    static get ATTRIBUTE_TARGET() {
+        return 'target'
+    }
     static get observedAttributes() {
         return ActionCard.attributes; 
     }
@@ -31,7 +34,8 @@ export default class ActionCard extends CustomElement {
             ActionCard.ATTRIBUTE_METHOD,
             ActionCard.ATTRIBUTE_FIELDS,
             ActionCard.ATTRIBUTE_MESSAGE,
-            ActionCard.ATTRIBUTE_RETURN
+            ActionCard.ATTRIBUTE_RETURN,
+            ActionCard.ATTRIBUTE_TARGET
         ];
     }
 
@@ -92,8 +96,13 @@ export default class ActionCard extends CustomElement {
                         existing.forEach(el => el.setAttribute('style', 'opacity:0.5;'));
                         self.querySelector(`#card-body-${self.action}`).append(e.detail.node);
                     } else {
-                        resultPanel.prepend(e.detail.node);
-                        resultPanel.open();        
+                        if (self.target) {
+                            let targetPanel = document.getElementById(self.target);
+                            targetPanel.append(e.detail.node);
+                        } else {
+                            resultPanel.append(e.detail.node);
+                            resultPanel.open();            
+                        }
                     }    
                 }
             });

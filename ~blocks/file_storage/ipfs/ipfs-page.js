@@ -62,6 +62,7 @@ export default class IpfsPage extends CustomElement {
             <action-card 
                 title="Add Document" description="Upload document to IPFS and add hash to contract"
                 action="addIpfsDocument" method="${CustomElement.METHOD_POST}" fields="files label mode"
+                target="card-body-addIpfsDocument"
                 message="Waiting for IPFS upload and smart contract transaction">
                     <text-widget
                         field="label" label="Label" 

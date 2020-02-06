@@ -147,6 +147,7 @@ export default class DappLib {
     }
 
     static formatIpfsHash(a) {
+        let config = DappLib.getConfig();
         let url = `${config.ipfs.protocol}://${config.ipfs.host}/ipfs/${a}`;
         return `<strong class="teal lighten-5 p-1 black-text number copy-target" title="${url}"><a href="${url}" target="_new">${a.substr(0,6)}...${a.substr(a.length-4, 4)}</a></strong>${ DappLib.addClippy(a)}`;
     }

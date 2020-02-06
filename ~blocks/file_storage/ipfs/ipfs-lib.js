@@ -11,12 +11,13 @@ class ipfs {
     static async addIpfsDocument(data) {
 
         let folder = data.mode === 'folder';
- 
+        let config = DappLib.getConfig();
+
         if (data.mode === 'single') {
             data.files = data.files.slice(0, 1);
         }
         // Push files to IPFS
-        let ipfsResult = await DappLib.ipfsUpload(data.files, folder, (bytes) => {
+        let ipfsResult = await DappLib.ipfsUpload(config, data.files, folder, (bytes) => {
            // console.log(bytes);
         });
         let results = [];
@@ -25,7 +26,7 @@ class ipfs {
             file.docId = file.digest.substr(2, 16);
 
             let result = await Blockchain.post({
-                    config: DappLib.getConfig(),
+                    config: config,
                     contract: DappLib.DAPP_STATE_CONTRACT,
                     params: {
                         from: null,
@@ -107,7 +108,7 @@ class ipfs {
         }
     }
 
-    static async ipfsUpload(files, wrapWithDirectory, progressCallback) {
+    static async ipfsUpload(config, files, wrapWithDirectory, progressCallback) {
 
         let ipfs = ipfsClient(config.ipfs);
         let filesToUpload = [];
