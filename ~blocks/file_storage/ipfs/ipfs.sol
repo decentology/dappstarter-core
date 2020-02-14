@@ -68,7 +68,7 @@ contract file_storage__ipfs {
     /**
     * @dev Adds a new IPFS doc
     *
-    * @param docId Unique identifier (multihash digest of doc audio)
+    * @param docId Unique identifier (multihash digest of doc)
     * @param label Short, descriptive label for document
     * @param digest Digest of folder with doc binary and metadata
     * @param hashFunction Function used for generating doc folder hash

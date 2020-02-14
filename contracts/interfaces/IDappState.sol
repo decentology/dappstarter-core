@@ -1,4 +1,5 @@
 pragma solidity  >=0.5.0;
+pragma experimental ABIEncoderV2;
 
 /********************************************************************************************/
 /*  This contract is the interface for DappState.sol functions used in Dapp.sol             */

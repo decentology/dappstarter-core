@@ -19,12 +19,8 @@ module.exports = function(deployer, network) {
                 httpUri: httpUri,
                 wsUri: wsUri,
                 dappStateContractAddress: DappStateContract.address,
-                dappContractAddress: DappContract.address,
-                ipfs: {
-                    host: 'ipfs.infura.io',
-                    protocol: 'https',
-                    port: 5001
-                }
+                dappContractAddress: DappContract.address
+///+config                
             }
 
             // On each deployment, a configuration file is created so dapp and API can access the latest contract code

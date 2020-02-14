@@ -112,12 +112,20 @@ export default class ActionButton extends CustomElement {
                 case DappLib.DAPP_RESULT_BOOLEAN:
                     formatted = DappLib.formatBoolean(retVal.result);
                     break;
-                case DappLib.DAPP_RESULT_HASH_ARRAY:
+                case DappLib.DAPP_RESULT_IPFS_HASH_ARRAY:
                     formatted = DappLib.formatArray(
                         retVal.result,
                         ['TxHash', 'IpfsHash', 'Text-10-5'],
                         ['Transaction', 'IPFS URL', 'Doc Id'],
                         ['transactionHash', 'ipfsHash', 'docId']
+                    );
+                    break;
+                case DappLib.DAPP_RESULT_SIA_HASH_ARRAY:
+                    formatted = DappLib.formatArray(
+                        retVal.result,
+                        ['TxHash', 'SiaHash', 'Text-10-5'],
+                        ['Transaction', 'Sia URL', 'Doc Id'],
+                        ['transactionHash', 'docId', 'docId']
                     );
                     break;
                 case DappLib.DAPP_RESULT_ARRAY:

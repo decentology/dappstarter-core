@@ -88,8 +88,12 @@ export default class DappLib {
         return 'tx-hash'
     }
 
-    static get DAPP_RESULT_HASH_ARRAY() {
-        return 'hash-array'
+    static get DAPP_RESULT_IPFS_HASH_ARRAY() {
+        return 'ipfs-hash-array'
+    }
+
+    static get DAPP_RESULT_SIA_HASH_ARRAY() {
+        return 'sia-hash-array'
     }
 
     static get DAPP_RESULT_ARRAY() {
@@ -144,12 +148,6 @@ export default class DappLib {
     static formatTxHash(a) {
         let value = DappLib.getTransactionHash(a);
         return `<strong class="teal lighten-5 p-1 blue-grey-text number copy-target" title="${value}">${DappLib.toCondensed(value, 6, 4)}</strong>${ DappLib.addClippy(value)}`;
-    }
-
-    static formatIpfsHash(a) {
-        let config = DappLib.getConfig();
-        let url = `${config.ipfs.protocol}://${config.ipfs.host}/ipfs/${a}`;
-        return `<strong class="teal lighten-5 p-1 black-text number copy-target" title="${url}"><a href="${url}" target="_new">${a.substr(0,6)}...${a.substr(a.length-4, 4)}</a></strong>${ DappLib.addClippy(a)}`;
     }
 
     static formatBoolean(a) {
@@ -325,19 +323,8 @@ export default class DappLib {
                     "0x71b9b9bd7b6f72d7c0841f38fa7cdb840282267d",
                     "0x7f54a3318b2a728738cce36fc7bb1b927281c24e",
                     "0x81b7E08F65Bdf5648606c89998A9CC8164397647"
-                ],
-                ipfsTestFiles: [
-                    "QmaWf4HjxvCH5W8Cm8AoFkSNwPUTr3VMZ3uXp8Szoqun53",
-                    "QmTrjnQTaUfEEoJ8DgsDG2A8AqsiN5bSV62q98tWkZMU2D",
-                    "QmSn26zrUd5CbuNoBPwGhPrktLv94rPiZxNmkHx5smTYj3",
-                    "QmTy9aLjFxV8sDK7GEp8uR1zC8ukq3NrV6aSNxjvBTTcqu",
-                    "QmWJU1FQghgi69VSDpEunEwemPDFqmBvXzp8b9DxKHP7QQ",
-                    "QmYT1ejAMbG2fP7AMdH2Pi2QpQRxQXBUC3CbENzpY2icok",
-                    "QmQJh3yLX9z6dmKbFhCyGsZrUEtRXeurcDG39eXbkwQG7C",
-                    "QmWRYExBZgZ67R43jW2vfwL3Hio78JaR7Vq3ouiJTsZ6qw",
-                    "QmWwPLQVVJizkwwiqPcknBUnRH359TfbusHpVGZtWNGMxu",
-                    "QmbtFKnBuyUmRoFh9EueP2r6agYpwGJwG4VBikQ4wwjGAY"
                 ]
+///+test
             }
         );
     }

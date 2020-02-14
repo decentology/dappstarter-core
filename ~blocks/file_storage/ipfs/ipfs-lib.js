@@ -49,7 +49,7 @@ class ipfs {
         }
 
         return {
-            type: DappLib.DAPP_RESULT_HASH_ARRAY,
+            type: DappLib.DAPP_RESULT_IPFS_HASH_ARRAY,
             result: results
         }
     }
@@ -142,6 +142,12 @@ class ipfs {
         return result;
     }
 
+    static formatIpfsHash(a) {
+        let config = DappLib.getConfig();
+        let url = `${config.ipfs.protocol}://${config.ipfs.host}/ipfs/${a}`;
+        return `<strong class="teal lighten-5 p-1 black-text number copy-target" title="${url}"><a href="${url}" target="_new">${a.substr(0,6)}...${a.substr(a.length-4, 4)}</a></strong>${ DappLib.addClippy(a)}`;
+    }
+
     /**
      * Partition multihash string into object representing multihash
      * https://github.com/saurfang/ipfs-multihash-on-solidity/blob/master/src/multihash.js
@@ -182,6 +188,20 @@ class ipfs {
 
 ///)
 
+///(test
+                ,ipfsTestFiles: [
+                    "QmaWf4HjxvCH5W8Cm8AoFkSNwPUTr3VMZ3uXp8Szoqun53",
+                    "QmTrjnQTaUfEEoJ8DgsDG2A8AqsiN5bSV62q98tWkZMU2D",
+                    "QmSn26zrUd5CbuNoBPwGhPrktLv94rPiZxNmkHx5smTYj3",
+                    "QmTy9aLjFxV8sDK7GEp8uR1zC8ukq3NrV6aSNxjvBTTcqu",
+                    "QmWJU1FQghgi69VSDpEunEwemPDFqmBvXzp8b9DxKHP7QQ",
+                    "QmYT1ejAMbG2fP7AMdH2Pi2QpQRxQXBUC3CbENzpY2icok",
+                    "QmQJh3yLX9z6dmKbFhCyGsZrUEtRXeurcDG39eXbkwQG7C",
+                    "QmWRYExBZgZ67R43jW2vfwL3Hio78JaR7Vq3ouiJTsZ6qw",
+                    "QmWwPLQVVJizkwwiqPcknBUnRH359TfbusHpVGZtWNGMxu",
+                    "QmbtFKnBuyUmRoFh9EueP2r6agYpwGJwG4VBikQ4wwjGAY"
+                ]
+///)
 
 onAddIpfsDocument(fromBlock, callback) {
     let self = this;
