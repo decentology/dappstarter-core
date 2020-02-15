@@ -36,9 +36,20 @@ class contractrunstate {
         return {
             type: DappLib.DAPP_RESULT_TX_HASH,
             label: 'Transaction Hash',
-            result: DappLib.getTransactionHash(result.callData),
+            result: DappLib.getTransactionHash(result.callData),    
             hint: `Verify contract run state is ${data.mode ? 'active' : 'inactive'} by calling contract functions that use requireContractRunStateActive().`
         }
+    }
+
+    static async onContractRunStateChange(callback) {
+        let params = {};
+        // {
+        //     fromBlock: 0,
+        //     filter: { 
+        //         mode: true
+        //     }
+        // }
+        DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'ChangeContractRunState', params, callback);
     }
 
 ///)

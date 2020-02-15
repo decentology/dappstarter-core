@@ -76,6 +76,13 @@ export default class DappLib {
         return 'dappContract'
     }
 
+    static get DAPP_STATE_CONTRACT_WS() {
+        return 'dappStateContractWs'
+    }
+    static get DAPP_CONTRACT_WS() {
+        return 'dappContractWs'
+    }
+
     static get DAPP_RESULT_BIG_NUMBER() {
         return 'big-number'
     }
@@ -106,6 +113,19 @@ export default class DappLib {
 
     static get DAPP_RESULT_ERROR() {
         return 'error'
+    }
+
+    static async addEventHandler(contract, event, params, callback) {
+            Blockchain.handleEvent({
+                config: DappLib.getConfig(),
+                contract: contract,
+                params: params || {}
+            }, 
+            event, 
+            (error, result) => {
+                                callback(error, DappLib.getObjectNamedProperties(result));
+                            }
+            );
     }
 
     static getTransactionHash(t) {
@@ -227,7 +247,17 @@ export default class DappLib {
         return output;
     }
 
-
+    static getObjectNamedProperties(a) {
+        let reg = new RegExp('^\\d+$'); // only digits
+        let newObj = {};
+        for(let key in a) {
+            if (!reg.test(key)) {
+                newObj[key] = a[key];
+            }
+        }
+        return newObj;
+    }
+    
     static addClippy(data) {
         let icon = SvgIcons.clippy;
         return icon.replace('<svg ', `<svg data-copy="${data}" `)

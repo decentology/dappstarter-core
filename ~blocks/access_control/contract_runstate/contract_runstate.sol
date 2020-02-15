@@ -17,8 +17,16 @@ contract access_control_contract_runstate {
 ///)
 
 ///(events
-///)
 
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT RUN STATE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    // Event fired when status is changed
+    event ChangeContractRunState      
+                    (
+                        bool indexed mode,
+                        address indexed account,
+                        uint256 timestamp
+                    );
+///)
     constructor() public
     {
 ///(initialize
@@ -70,7 +78,10 @@ contract access_control_contract_runstate {
                     // **** WARNING: Adding requireContractRunStateActive modifier will result in contract lockout ****
                     requireContractAdmin  // Administrator Role block is required to ensure only authorized individuals can pause contract
     {
+        require(mode != contractRunState, "Run state is already set to the same value");
         contractRunState = mode;
+
+        emit ChangeContractRunState(mode, msg.sender, now);
     }
                         
 ///)

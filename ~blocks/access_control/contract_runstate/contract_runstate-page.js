@@ -12,6 +12,13 @@ export default class ContractRunStatePage extends CustomElement {
 
     constructor(...args) {
         super([], ...args);
+        DappLib.onContractRunStateChange((error, result) => {
+            if (error) {
+                console.log('Runstate Event Error', error);
+            } else {
+                console.log('Runstate Event Result', result);
+            }
+        });
     }
 
     async render() {
