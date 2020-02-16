@@ -196,7 +196,7 @@ class ipfs {
     static serverEvent() {
 ///(server-event
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FILE STORAGE: SIA  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'AddIpfsDocument', {}, (result) => {
+DappLib.onAddIpfsDocument((result) => {
         console.log(result);
 });
 ///)

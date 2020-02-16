@@ -130,11 +130,11 @@ class token {
     static serverEvent() {
 ///(server-event
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ASSET VALUE TRACKING: TOKEN  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'Approval', {}, (result) => {
+DappLib.onApproval((result) => {
         console.log(result);
 });
 
-DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'Transfer', {}, (result) => {
+DappLib.onTransfer((result) => {
     console.log(result);
 });
 ///)

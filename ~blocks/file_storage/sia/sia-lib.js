@@ -129,7 +129,7 @@ class sia {
     static serverEvent() {
 ///(server-event
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FILE STORAGE: SIA  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'AddSiaDocument', {}, (result) => {
+DappLib.onAddSiaDocument((result) => {
         console.log(result);
 });
 ///)

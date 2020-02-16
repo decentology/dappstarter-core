@@ -57,7 +57,7 @@ class contractrunstate {
     static serverEvent() {
 ///(server-event
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT RUN STATE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
-DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'ChangeContractRunState', {}, (result) => {
+DappLib.onContractRunStateChange((result) => {
     console.log(result);
 });
 ///)
