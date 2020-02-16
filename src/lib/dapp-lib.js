@@ -3,6 +3,7 @@ import Blockchain from './blockchain';
 import BN from 'bn.js'; // Required for injected code
 import dappConfig from '../dapp-config.json';
 import SvgIcons from '../dapp/components/widgets/svg-icons';
+import ClipboardJS from 'clipboard';
 
 ///+import
 
@@ -123,7 +124,21 @@ export default class DappLib {
             }, 
             event, 
             (error, result) => {
-                                callback(error, DappLib.getObjectNamedProperties(result));
+                                if (error) {
+                                    callback({
+                                        event: event,
+                                        type: DappLib.DAPP_RESULT_ERROR,
+                                        label: 'Error Message',
+                                        result: error
+                                    });    
+                                } else {
+                                    callback({
+                                        event: event,
+                                        type: DappLib.DAPP_RESULT_OBJECT,
+                                        label: 'Event ' + event,
+                                        result: DappLib.getObjectNamedProperties(result)
+                                    });    
+                                }
                             }
             );
     }
@@ -222,9 +237,8 @@ export default class DappLib {
         h.map((item) => {
             output += '<tr>';
             for(let d=0; d<dataFormatters.length; d++) {
-                let text = dataKeys && dataKeys[d] ? item[dataKeys[d]] : item;
+                let text = String(dataKeys && dataKeys[d] ? item[dataKeys[d]] : item);
                 let copyText =  dataKeys && dataKeys[d] ? item[dataKeys[d]] : item;
-
                 if (text.startsWith('<')) {
                     output += (d == 0 ? '<th scope="row">' : '<td>') + text + (d == 0 ? '</th>' : '</td>');
                 } else {
@@ -245,6 +259,73 @@ export default class DappLib {
         })
         output += '</tbody></table>';
         return output;
+    }
+
+    static getFormattedResultNode(retVal, key) {
+
+        let returnKey = 'result';
+        if (key && (key !== null) && (key !== 'null') && (typeof(key) === 'string')) {
+            returnKey = key;
+        }
+        let formatted = '';
+        switch (retVal.type) {
+            case DappLib.DAPP_RESULT_BIG_NUMBER:
+                formatted = DappLib.formatNumber(retVal[returnKey].toString(10));
+                break;
+            case DappLib.DAPP_RESULT_TX_HASH:
+                formatted = DappLib.formatTxHash(retVal[returnKey]);
+                break;
+            case DappLib.DAPP_RESULT_ACCOUNT:
+                formatted = DappLib.formatAccount(retVal[returnKey]);
+                break;
+            case DappLib.DAPP_RESULT_BOOLEAN:
+                formatted = DappLib.formatBoolean(retVal[returnKey]);
+                break;
+            case DappLib.DAPP_RESULT_IPFS_HASH_ARRAY:
+                formatted = DappLib.formatArray(
+                    retVal[returnKey],
+                    ['TxHash', 'IpfsHash', 'Text-10-5'],
+                    ['Transaction', 'IPFS URL', 'Doc Id'],
+                    ['transactionHash', 'ipfsHash', 'docId']
+                );
+                break;
+            case DappLib.DAPP_RESULT_SIA_HASH_ARRAY:
+                formatted = DappLib.formatArray(
+                    retVal[returnKey],
+                    ['TxHash', 'SiaHash', 'Text-10-5'],
+                    ['Transaction', 'Sia URL', 'Doc Id'],
+                    ['transactionHash', 'docId', 'docId']
+                );
+                break;
+            case DappLib.DAPP_RESULT_ARRAY:
+                formatted = DappLib.formatArray(
+                    retVal[returnKey],
+                    retVal.formatter ? retVal.formatter : ['Text'],
+                    null,
+                    null
+                );
+                break;
+            case DappLib.DAPP_RESULT_OBJECT:
+                formatted = DappLib.formatObject(retVal[returnKey]);
+                break;
+            default:
+                formatted = retVal[returnKey];
+                break;
+        }
+
+        let resultNode = document.createElement('div');
+        resultNode.className = `note note-${retVal.type === DappLib.DAPP_RESULT_ERROR ? 'danger' : 'success'} m-3`; 
+        let closeMarkup = '<div onclick="this.parentNode.parentNode.removeChild(this.parentNode)" title="Dismiss" class="text-right mb-1 mr-2" style="cursor:pointer;">X</div>';    
+        resultNode.innerHTML = closeMarkup + `${retVal.type === DappLib.DAPP_RESULT_ERROR ? '😖' : '👍🏼'} ` + (Array.isArray(retVal[returnKey]) ? 'Result' : retVal.label) + ': ' + formatted + DappLib.formatHint(retVal.hint);
+
+        // Wire-up clipboard copy
+        new ClipboardJS('.copy-target', {
+            text: function (trigger) {
+                return trigger.getAttribute('data-copy');
+            }
+        });
+
+        return resultNode;
     }
 
     static getObjectNamedProperties(a) {

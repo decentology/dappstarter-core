@@ -7,11 +7,13 @@ import '../shared/action-card.js';
 import '../widgets/page-widget.js';
 import '../widgets/account-widget.js';
 import '../widgets/number-widget.js';
+import DappLib from '../../../lib/dapp-lib';
 
 export default class TokenPage extends CustomElement {
 
     constructor(...args) {
         super([], ...args);
+        this.eventHandlerRegistered = false;
     }
 
     render() {
@@ -80,6 +82,21 @@ export default class TokenPage extends CustomElement {
         <panel-widget id="resultPanel"></panel-widget>
 `
         self.innerHTML = content;
+
+        if (!self.eventHandlerRegistered) {
+            self.eventHandlerRegistered = true;
+            DappLib.onApproval((result) => {
+                let resultPanel = self.querySelector('#resultPanel');
+                resultPanel.append(DappLib.getFormattedResultNode(result));
+                resultPanel.open();
+            });    
+            DappLib.onTransfer((result) => {
+                let resultPanel = self.querySelector('#resultPanel');
+                resultPanel.append(DappLib.getFormattedResultNode(result));
+                resultPanel.open();
+            });    
+        }
+
     }
 } 
 

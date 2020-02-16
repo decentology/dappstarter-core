@@ -142,6 +142,11 @@ class ipfs {
         return result;
     }
 
+    static async onAddIpfsDocument(callback) {
+        let params = {};
+        DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'AddIpfsDocument', params, callback);
+    }
+
     static formatIpfsHash(a) {
         let config = DappLib.getConfig();
         let url = `${config.ipfs.protocol}://${config.ipfs.host}/ipfs/${a}`;
@@ -188,6 +193,15 @@ class ipfs {
 
 ///)
 
+    static serverEvent() {
+///(server-event
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FILE STORAGE: SIA  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'AddIpfsDocument', {}, (result) => {
+        console.log(result);
+});
+///)
+    }
+
 ///(test
                 ,ipfsTestFiles: [
                     "QmaWf4HjxvCH5W8Cm8AoFkSNwPUTr3VMZ3uXp8Szoqun53",
@@ -202,34 +216,6 @@ class ipfs {
                     "QmbtFKnBuyUmRoFh9EueP2r6agYpwGJwG4VBikQ4wwjGAY"
                 ]
 ///)
-
-onAddIpfsDocument(fromBlock, callback) {
-    let self = this;
-
-    self.dappStateContractWs.events.AddIpfsDocument({
-        fromBlock: fromBlock
-    }, function (error, e) {
-        if (error) {
-            callback(error, null);
-        } else {
-            self.getIpfsDocument(e.returnValues.docId, (error, docDetail) => {
-
-                if (error) {
-                    callback(error);
-                } else {
-                    let docInfo = {
-                        docId: docDetail.docId,
-                        registrant: docDetail.registrant,
-                        url: `${self.options.ipfsGateway.protocol}://${self.options.ipfsGateway.host}/ipfs/${docDetail.ipfsHash}`
-                    }
-                    callback(error, docInfo);
-                }
-
-            });
-            // Decode at https://www.rapidtables.com/convert/number/hex-to-ascii.html
-        }
-    });
-}
 
 
 }

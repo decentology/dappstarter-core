@@ -1,6 +1,5 @@
 import DappLib from '../../../lib/dapp-lib';
 import CustomElement from './custom-element';
-import ClipboardJS from 'clipboard';
 
 export default class ActionButton extends CustomElement {
 
@@ -90,81 +89,23 @@ export default class ActionButton extends CustomElement {
             }
         });
 
-        let closeMarkup = '<div onclick="this.parentNode.parentNode.removeChild(this.parentNode)" title="Dismiss" class="text-right mb-1 mr-2" style="cursor:pointer;">X</div>';
         try {
-            
             //console.log('Last call, values: ', self.action, values);
             let retVal = await DappLib[self.action].call(null, values);
-
-            let formatted = '';
-            switch (retVal.type) {
-                case DappLib.DAPP_RESULT_BIG_NUMBER:
-                    formatted = self.return ?
-                                        DappLib.formatNumber(retVal[self.return].toString(10)) :
-                                        DappLib.formatNumber(retVal.result.toString(10));
-                    break;
-                case DappLib.DAPP_RESULT_TX_HASH:
-                    formatted = DappLib.formatTxHash(retVal.result);
-                    break;
-                case DappLib.DAPP_RESULT_ACCOUNT:
-                    formatted = DappLib.formatAccount(retVal.result);
-                    break;
-                case DappLib.DAPP_RESULT_BOOLEAN:
-                    formatted = DappLib.formatBoolean(retVal.result);
-                    break;
-                case DappLib.DAPP_RESULT_IPFS_HASH_ARRAY:
-                    formatted = DappLib.formatArray(
-                        retVal.result,
-                        ['TxHash', 'IpfsHash', 'Text-10-5'],
-                        ['Transaction', 'IPFS URL', 'Doc Id'],
-                        ['transactionHash', 'ipfsHash', 'docId']
-                    );
-                    break;
-                case DappLib.DAPP_RESULT_SIA_HASH_ARRAY:
-                    formatted = DappLib.formatArray(
-                        retVal.result,
-                        ['TxHash', 'SiaHash', 'Text-10-5'],
-                        ['Transaction', 'Sia URL', 'Doc Id'],
-                        ['transactionHash', 'docId', 'docId']
-                    );
-                    break;
-                case DappLib.DAPP_RESULT_ARRAY:
-                    formatted = DappLib.formatArray(
-                        retVal.result,
-                        retVal.formatter ? retVal.formatter : ['Text'],
-                        null,
-                        null
-                    );
-                    break;
-                case DappLib.DAPP_RESULT_OBJECT:
-                    formatted = DappLib.formatObject(retVal.result);
-                    break;
-            }
-
-            let resultNode = document.createElement('div');
-            resultNode.className = `note note-success m-3`;     
-            resultNode.innerHTML = closeMarkup + '👍🏼 ' + (Array.isArray(retVal.result) ? 'Result' : retVal.label) + ': ' + formatted + DappLib.formatHint(retVal.hint);
-
-            // Wire-up clipboard copy
-            new ClipboardJS('.copy-target', {
-                text: function (trigger) {
-                    return trigger.getAttribute('data-copy');
-                }
-            });
+            let resultNode = DappLib.getFormattedResultNode(retVal, self.return);
             self.fireClickEvent(retVal, resultNode);
 
-        } catch (e) {
+        } catch(e) {
             if (e.message.indexOf('run Out of Gas') > -1) {
                 e.message = 'Can\'t access the blockchain. Check that access to it isn\'t blocked. During development this error usually means your test blockchain is not running or has test accounts that don\'t match the accounts in your development configuration.';
             }
-            let resultNode = document.createElement('div');
-            resultNode.className = `note note-danger m-3`;     
-            resultNode.innerHTML =  closeMarkup + '😖 ' + e.message;
-
-            self.fireClickEvent({ type: DappLib.DAPP_RESULT_ERROR, result: e }, resultNode);
+            let retVal = { type: DappLib.DAPP_RESULT_ERROR, label: 'Error Message', result: e };
+            let resultNode = DappLib.getFormattedResultNode(retVal);
+            self.fireClickEvent(retVal, resultNode);            
         } finally {
             self.render();
         }
+
     }
 
     fireClickEvent(data, node) {

@@ -43,15 +43,24 @@ class contractrunstate {
 
     static async onContractRunStateChange(callback) {
         let params = {};
+        DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'ChangeContractRunState', params, callback);
         // {
         //     fromBlock: 0,
         //     filter: { 
         //         mode: true
         //     }
         // }
-        DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'ChangeContractRunState', params, callback);
     }
 
 ///)
+
+    static serverEvent() {
+///(server-event
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT RUN STATE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
+DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'ChangeContractRunState', {}, (result) => {
+    console.log(result);
+});
+///)
+    }
 
 }

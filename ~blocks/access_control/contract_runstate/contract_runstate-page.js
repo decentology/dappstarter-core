@@ -12,13 +12,7 @@ export default class ContractRunStatePage extends CustomElement {
 
     constructor(...args) {
         super([], ...args);
-        DappLib.onContractRunStateChange((error, result) => {
-            if (error) {
-                console.log('Runstate Event Error', error);
-            } else {
-                console.log('Runstate Event Result', result);
-            }
-        });
+        this.eventHandlerRegistered = false;
     }
 
     async render() {
@@ -71,6 +65,15 @@ export default class ContractRunStatePage extends CustomElement {
         self.innerHTML = content;
 
         self.querySelector('[data-field=mode]').checked = currentRunState;
+
+        if (!self.eventHandlerRegistered) {
+            self.eventHandlerRegistered = true;
+            DappLib.onContractRunStateChange((result) => {
+                let resultPanel = self.querySelector('#resultPanel');
+                resultPanel.append(DappLib.getFormattedResultNode(result));
+                resultPanel.open();
+            });    
+        }
     }
 }
 

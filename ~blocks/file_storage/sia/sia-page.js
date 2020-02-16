@@ -11,7 +11,6 @@ import '../widgets/account-widget.js';
 import UploadWidget from '../widgets/upload-widget.js';
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
-
 import DappLib from '../../../lib/dapp-lib';
 
 export default class SiaPage extends CustomElement {
@@ -20,6 +19,7 @@ export default class SiaPage extends CustomElement {
         super([], ...args);
         this.mode = 'single'; ///@{ "mode": "single" }
         this.files = [];
+        this.eventHandlerRegistered = false;
     }
 
     render() {
@@ -98,6 +98,16 @@ export default class SiaPage extends CustomElement {
         //     //Could do something here
         //     //let files = e.detail.files;
         // });
+
+        if (!self.eventHandlerRegistered) {
+            self.eventHandlerRegistered = true;
+            DappLib.onAddSiaDocument((result) => {
+                let resultPanel = self.querySelector('#resultPanel');
+                resultPanel.append(DappLib.getFormattedResultNode(result));
+                resultPanel.open();
+            });    
+        }
+
     }
 
 }

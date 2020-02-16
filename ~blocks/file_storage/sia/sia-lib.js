@@ -86,6 +86,11 @@ class sia {
     }
 
 
+    static async onAddSiaDocument(callback) {
+        let params = {};
+        DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'AddSiaDocument', params, callback);
+    }
+
     static async siaUpload(config, files, wrapWithDirectory) {
 
         // wrapWithDirectory is not supported
@@ -121,6 +126,15 @@ class sia {
 
 ///)
 
+    static serverEvent() {
+///(server-event
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> FILE STORAGE: SIA  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'AddSiaDocument', {}, (result) => {
+        console.log(result);
+});
+///)
+    }
+    
 ///(test
                 ,siaTestFiles: [
                     "bAAxym_7nhgJ2ik4bigtaAijSE6MPlcxxaPi3Am6860izw",
@@ -135,34 +149,5 @@ class sia {
                     "rABpV_5o0NVE1bweOL0M-ne2TZe60lXIRLQyhn-Hc9FX5g"
                 ]
 ///)
-
-onAddSiaDocument(fromBlock, callback) {
-    let self = this;
-
-    self.dappStateContractWs.events.AddSiaDocument({
-        fromBlock: fromBlock
-    }, function (error, e) {
-        if (error) {
-            callback(error, null);
-        } else {
-            self.getSiaDocument(e.returnValues.docId, (error, docDetail) => {
-
-                if (error) {
-                    callback(error);
-                } else {
-                    let docInfo = {
-                        docId: docDetail.docId,
-                        registrant: docDetail.registrant,
-                        url: `${self.options.siaGateway.protocol}://${self.options.siaGateway.host}/sia/${docDetail.hash}`
-                    }
-                    callback(error, docInfo);
-                }
-
-            });
-            // Decode at https://www.rapidtables.com/convert/number/hex-to-ascii.html
-        }
-    });
-}
-
 
 }

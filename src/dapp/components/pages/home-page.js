@@ -19,7 +19,7 @@ export default class HomePage extends CustomElement {
 
                         <h5 class="mt-3">Your Dapp canvas is ready, and the world is waiting for you to create something amazing.</h5>
                         
-                        <img class="m-3" src="${canvas}" alt="Blank canvas" />
+                        <img class="mt-3 mb-3 img-fluid" src="${canvas}" alt="Blank canvas" />
                     
                         <p class="m-3">Register for DappStarter's free "Blockchain Bootcamp" for greater insights on dapp development.</p>
                         

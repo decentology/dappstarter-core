@@ -1,6 +1,7 @@
 import express from 'express';
+import DappLib from '../lib/dapp-lib';
 
-// Server code is not available in this beta release of DappStarter
+///+server-event
 
 const app = express();
 app.get('/api', (req, res) => {

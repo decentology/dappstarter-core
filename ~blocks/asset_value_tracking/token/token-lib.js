@@ -116,6 +116,27 @@ class token {
         }
     }
 
-///)
+    static async onApproval(callback) {
+        let params = {};
+        DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'Approval', params, callback);
+    }
 
+    static async onTransfer(callback) {
+        let params = {};
+        DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'Transfer', params, callback);
+    }
+
+///)
+    static serverEvent() {
+///(server-event
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ASSET VALUE TRACKING: TOKEN  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'Approval', {}, (result) => {
+        console.log(result);
+});
+
+DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'Transfer', {}, (result) => {
+    console.log(result);
+});
+///)
+    }
 }
