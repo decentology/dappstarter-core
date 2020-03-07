@@ -63,7 +63,7 @@ export default class PanelWidget extends CustomElement {
                 display: none;
                 box-sizing: border-box;
                 transform: translateX(100%);
-                z-index: 1000;
+                z-index: 9999;
             }
 
             .slide-menu,
@@ -79,18 +79,16 @@ export default class PanelWidget extends CustomElement {
 
             .slide-menu__control {
                 display: block;
-                width: 40px;
+                width: 20px;
                 height: 46px;
-                line-height: 40px;
+                line-height: 46px;
                 position: absolute;
-                top: 50%;
-                left: -40px;
+                top: 0;
+                left: -20px;
                 z-index: 1001;
-                border-top-left-radius: 10px;
-                border-bottom-left-radius: 10px;
                 color: #ffffff;
                 text-align: center;
-                font-size: 40px;
+                font-size: 20px;
                 cursor: pointer;
             }
 

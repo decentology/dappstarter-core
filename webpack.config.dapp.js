@@ -59,7 +59,8 @@ module.exports = (env, argv) => {
       contentBase: path.join(__dirname, 'dapp'),
       port: 8000,
       stats: 'minimal',
-      historyApiFallback: true
+      historyApiFallback: true,
+      open: true
     }
   }
 }

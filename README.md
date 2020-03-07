@@ -27,7 +27,7 @@ the gear icon and complete these configuration steps:
 
 - Accounts & Keys Tab: Mnemonic (field with 12 or more words): Copy/paste the words below.
 
-  [] ///@{ "___test-mnemonic___": "[]"}
+  ### [] ///@{ "___test-mnemonic___": "[]"}
 
   These keywords are used to auto-generate accounts with private keys for development. If the keywords in "truffle-config.js" (which are
   the same as above) and Ganache don't match, you will not be able to deploy your Smart Contracts to Ganache.

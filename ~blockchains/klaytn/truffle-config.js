@@ -4,7 +4,7 @@ require('@babel/register');
 });
 require('@babel/polyfill');
 
-const HDWalletProvider = require('truffle-hdwallet-provider-klaytn');
+const HDWalletProvider = require('./src/lib/hdwalletprovider');
 
 let mnemonic = 'PLACEHOLDER'; ///@{ "___test-mnemonic___": "PLACEHOLDER"}
 let testAccounts = null; ///@{ "___test-accounts___": "null"}
