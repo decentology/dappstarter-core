@@ -19,6 +19,8 @@ In order to develop and build My Dapp, the following pre-requisites must be inst
 Using a terminal (or command prompt), change to the folder containing the project files and type: `npm install` This will fetch all required dependencies. The process will take 1-3 minutes and while it is in progress you can move on to the next step.
 
 ///(language:solidity
+Note: You may see some npm warnings about "web3-bzz" after dependencies are installed. These can be ignored as the associated code is never invoked.
+
 ## Ganache Settings (for Ethereum only; skip for other blockchains)
 
 Launch the Ganache GUI, then create a new workspace with any name of your choice. Once the workspace is active, click the gear icon and complete these configuration steps:
