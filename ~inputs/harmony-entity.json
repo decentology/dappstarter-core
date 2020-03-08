@@ -1,0 +1,8 @@
+{
+    "blocks": {
+        "/blockchain/harmony": true,
+        "/blockchain/harmony/solidity": true,
+        "/category/collection/entity": true,
+        "/framework/vanilla": true
+    }
+}
