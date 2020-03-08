@@ -20,70 +20,73 @@
     "targets": {
         "*": {
             "/~languages/solidity/contracts/DappState.sol": {
-                "processor": "merge",
+                "processor": "merge-blocks",
                 "path": "${categoryRoot}/${category}/${name}/solidity/${name}.sol"
             },
             "/~languages/solidity/contracts/DappLib.sol": {
-                "processor": "merge",
+                "processor": "merge-blocks",
                 "path": "${categoryRoot}/${category}/${name}/solidity/${name}-lib.sol"
             },
             "/~languages/solidity/test/[block-tests].js": {
-                "processor": "block-file",
+                "processor": "file-blocks",
                 "path": "${categoryRoot}/${category}/${name}/solidity/${name}-tests.js",
                 "sequence": false
             },
+            
             "/~languages/solidity/migrations/2_deploy_contracts.js": {
-                "processor": "merge",
+                "processor": "merge-blocks",
                 "path": "${categoryRoot}/${category}/${name}/${name}-config.js"
             },
             "/~languages/solidity/truffle-config.js": {
-                "processor": "customize",
+                "processor": "copy-file",
                 "context": "blockchain",
                 "actions": [
                     "accounts"
                 ]
             },
+            "/README.md": {
+                "processor": "filter"
+            },
+            "/.babelrc": {
+                "processor": "filter"
+            },
+
             "/src/lib/dapp-lib.js": {
-                "processor": "merge",
+                "processor": "merge-blocks",
                 "path": "${categoryRoot}/${category}/${name}/${name}-lib.js"
             },
             "/src/server/server.js": {
-                "processor": "merge",
+                "processor": "merge-blocks",
                 "path": "${categoryRoot}/${category}/${name}/${name}-lib.js"
             },
             "/src/dapp/components/shared/page-loader.js": {
-                "processor": "merge",
+                "processor": "merge-blocks",
                 "path": "${categoryRoot}/${category}/${name}/${name}-page.js"
             },
             "/src/dapp/components/pages/[block-pages].js": {
-                "processor": "block-file",
+                "processor": "file-blocks",
                 "path": "${categoryRoot}/${category}/${name}/${name}-page.js",
                 "sequence": false
             },
             "/src/dapp/components/pages/admin-page.js": {
-                "processor": "merge",
+                "processor": "merge-blocks",
                 "path": "${categoryRoot}/${category}/${name}/${name}-page.js"
             },
             "/src/dapp/[client-app]": {
-                "processor": "copy",
+                "processor": "copy-folder",
                 "context": "framework"
             },
             "/src/dapp/components/shared/page-navigation.js": {
                 "processor": "replace-parameters"
             },
-            "/README.md": {
-                "processor": "replace-parameters"
-            },
+
+
             "/src/lib/[blockchain]": {
-                "processor": "copy",
+                "processor": "copy-folder",
                 "context": "blockchain"
             },
-            "/.babelrc": {
-                "processor": "filter",
-                "context": "framework"
-            },
             "/package.json": {
-                "processor": "json-merge",
+                "processor": "merge-json",
                 "framework": {
                     "*": {},
                     "react": {
