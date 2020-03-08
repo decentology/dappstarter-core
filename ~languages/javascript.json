@@ -1,0 +1,24 @@
+{
+    "name": "javascript",
+    "title": "Javascript",
+    "description": "",
+    "imageUrl": "",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "blockchains": [
+        "nuls",
+        "near"
+    ],
+    "interface": {
+        "hidden": false,
+        "enabled": false,
+        "children": "none"
+    },
+    "targets": {
+        "*": {},
+        "nuls": {},
+        "near": {}
+    }
+}

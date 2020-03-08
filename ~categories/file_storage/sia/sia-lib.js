@@ -96,8 +96,7 @@ class sia {
         // wrapWithDirectory is not supported
 
         let result = [];
-        let apiUrl = `${config.sia.protocol}://${config.sia.host}/api/skyfile`;
-
+        let apiUrl = `${config.sia.protocol}://${config.sia.host}/skynet/skyfile`;
         for(let f=0; f<files.length; f++) {
             
             let formData = new FormData();

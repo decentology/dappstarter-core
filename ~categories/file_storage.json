@@ -1,0 +1,27 @@
+{
+    "name": "file_storage",
+    "title": "File Storage",
+    "description": "Storing data on a blockchain is expensive so developers usually store a pointer to the data, called a hash, on the blockchain.",
+    "imageUrl": "",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "interface": {
+        "hidden": false,
+        "enabled": true,
+        "children": "single"
+    },
+    "blockchains": [
+        "ethereum",
+        "harmony",
+        "klaytn"
+    ],
+    "languages": [
+        "solidity"
+    ],
+    "children": [
+        "ipfs",
+        "sia"
+    ]
+}

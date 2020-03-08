@@ -1,0 +1,15 @@
+{
+    "name": "react",
+    "title": "React",
+    "description": "Build front-end with React",
+    "imageUrl": "https://trycrypto.blob.core.windows.net/dappstarter/site/React.js_logo-512.png",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "interface": {
+        "hidden": false,
+        "enabled": true,
+        "children": "none"
+    }
+}

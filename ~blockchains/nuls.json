@@ -1,0 +1,19 @@
+{
+    "name": "nuls",
+    "title": "NULS",
+    "description": "",
+    "imageUrl": "https://uploads-ssl.webflow.com/5dea4f8b31edea3328b9a0f6/5e26f87f6f517b4892ab41f9_nuls.png",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "metadata": {
+        "developer_experience": "easy for Java developers",
+        "different": "microservices blockchain with staking consensus mechanism"
+    },
+    "interface": {
+        "hidden": false,
+        "enabled": false,
+        "children": "single"
+    }
+}

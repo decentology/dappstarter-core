@@ -1,0 +1,86 @@
+[
+    {
+        "name": "blockchains",
+        "title": "Blockchains",
+        "description": "Blockchains are the underlying technology for the decentralized web. If you aren't familiar with  the decentralized web, it's a good idea to <a href='https://trycrypto.com'>get some familiarity with how it works before you start.</a> There are numerous public and private blockchains (we will support many of them soon).",
+        "imageUrl": "",
+        "help": {
+            "title": "How to choose a blockchain.",
+            "url": "https://trycrypto.com"
+        },
+        "interface": {
+            "hidden": false,
+            "enabled": true,
+            "children": "single"
+        },
+        "children": [
+            "ethereum",
+            "harmony",
+            "klaytn",
+            "hyperledger",
+            "quorum"
+        ]
+    },
+    {
+        "name": "languages",
+        "title": "Languages",
+        "description": "Different blockchains use different languages. Some blockchains use one language while others use several languages.",
+        "imageUrl": "",
+        "help": {
+            "title": "Learn more about languages used for each blockchain.",
+            "url": "https://trycrypto.com"
+        },
+        "interface": {
+            "hidden": false,
+            "enabled": true,
+            "children": "single"
+        },
+        "children": [
+            "solidity",
+            "javascript"
+        ]
+    },
+    {
+        "name": "frameworks",
+        "title": "Frameworks",
+        "description": "The UI of your dapp is composed using Material Design for Bootstrap. Choose which flavor of MDBootstrap you’d like to use (or choose vanilla JS).",
+        "imageUrl": "",
+        "help": {
+            "title": "Learn more about building a front-end for your dapp.",
+            "url": "https://trycrypto.com"
+        },
+        "interface": {
+            "hidden": false,
+            "enabled": true,
+            "children": "single"
+        },
+        "children": [
+            "vanilla",
+            "react",
+            "vue",
+            "angular"
+        ]
+    },
+    {
+        "name": "categories",
+        "title": "Feature Categories",
+        "description": "",
+        "imageUrl": "",
+        "help": {
+            "title": "",
+            "url": ""
+        },
+        "interface": {
+            "hidden": false,
+            "enabled": true,
+            "children": "multiple"
+        },
+        "children": [
+            "access_control",
+            "asset_value_tracking",
+            "file_storage",
+            "authentication",
+            "collection"
+        ]
+    }
+]

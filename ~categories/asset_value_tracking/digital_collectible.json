@@ -1,0 +1,29 @@
+{
+    "name": "digital_collectible",
+    "title": "Digital Collectible",
+    "description": "Create a token for tracking unique assets associated with your dapp.",
+    "imageUrl": "",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "interface": {
+        "hidden": false,
+        "enabled": false,
+        "children": "form"
+    },
+    "parameters": [
+        {
+            "name": "name",
+            "type": "string",
+            "title": "Collectible Name",
+            "placeholder": "e.g. Tree",
+            "default": "Collectible",
+            "required": true,
+            "minLength": 3,
+            "maxLength": 30,
+            "description": "Limit: 30 characters"
+        }
+    ],
+    "dependencies": {}
+}

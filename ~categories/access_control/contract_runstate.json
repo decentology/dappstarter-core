@@ -1,0 +1,21 @@
+{
+    "name": "contract_runstate",
+    "title": "Contract Run State",
+    "description": "Ability to pause operation of your smart contract.",
+    "imageUrl": "",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "interface": {
+        "hidden": false,
+        "enabled": true,
+        "children": "form"
+    },
+    "children": [],
+    "dependencies": {
+        "access_control": [
+            "administrator_role"
+        ]
+    }
+}

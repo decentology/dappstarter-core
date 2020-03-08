@@ -1,0 +1,17 @@
+{
+    "name": "administrator_role",
+    "title": "Administrator Role",
+    "description": "Define accounts that can perform certain admin functions.",
+    "imageUrl": "",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "interface": {
+        "hidden": false,
+        "enabled": true,
+        "children": "form"
+    },
+    "children": [],
+    "dependencies": {}
+}

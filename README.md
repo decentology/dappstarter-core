@@ -14,14 +14,11 @@ In order to develop and build My Dapp, the following pre-requisites must be inst
 
 # Installation
 
-Using a terminal (or command prompt), change to the folder containing the project files and type: `npm install`
-This will fetch all required dependencies. The process will take 1-3 minutes and while it is in progress 
-you can move on to the next step.
+Using a terminal (or command prompt), change to the folder containing the project files and type: `npm install` This will fetch all required dependencies. The process will take 1-3 minutes and while it is in progress you can move on to the next step.
 
 ## Ganache Settings (for Ethereum only; skip for other blockchains)
 
-Launch the Ganache GUI, then create a new workspace with any name of your choice. Once the workspace is active, click 
-the gear icon and complete these configuration steps:
+Launch the Ganache GUI, then create a new workspace with any name of your choice. Once the workspace is active, click the gear icon and complete these configuration steps:
 
 - Workspace Tab: Truffle Projects: Select "Add Project" and select "truffle-config.js" from the same folder as this README.md file
 
@@ -29,15 +26,13 @@ the gear icon and complete these configuration steps:
 
   ### [] ///@{ "___test-mnemonic___": "[]"}
 
-  These keywords are used to auto-generate accounts with private keys for development. If the keywords in "truffle-config.js" (which are
-  the same as above) and Ganache don't match, you will not be able to deploy your Smart Contracts to Ganache.
+  These keywords are used to auto-generate accounts with private keys for development. If the keywords in "truffle-config.js" (which are the same as above) and Ganache don't match, you will not be able to deploy your Smart Contracts to Ganache.
 
 - Server Tab: Check that "Port Number" is "7545" and "Network ID = 5777"
            
 # Build, Deploy and Test
 
-Using a terminal (or command prompt), change to the folder containing the project files and type: `npm start`
-This will run the "deploy" and "dapp" scripts which compile and deploy the Smart Contracts, then build and run the client-side dapp. 
+Using a terminal (or command prompt), change to the folder containing the project files and type: `npm start` This will run the "deploy" and "dapp" scripts which compile and deploy the Smart Contracts, then build and run the client-side dapp. 
 
 To view your dapp, open your browser to http://localhost:8000
 
