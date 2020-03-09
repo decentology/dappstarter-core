@@ -1,0 +1,17 @@
+{
+    "name": "myblock",
+    "title": "My Block",
+    "description": "",
+    "imageUrl": "",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "interface": {
+        "hidden": true,
+        "enabled": false,
+        "children": "form"
+    },
+    "children": [],
+    "dependencies": {}
+}
