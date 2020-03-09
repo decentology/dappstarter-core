@@ -4,7 +4,7 @@ This project is for the blockchain application My Dapp. It contains code for the
 
 # Pre-requisites
 
-In order to develop and build My Dapp, the following pre-requisites must be installed:
+In order to develop and build "My Dapp," the following pre-requisites must be installed:
 
 * [Visual Studio Code](https://code.visualstudio.com/download) (or any IDE for editing Javascript)
 * [NodeJS v10.x](https://nodejs.org/en/download/)
