@@ -111,9 +111,9 @@
                 "blockchain": {
                     "*": {
                         "scripts": {
-                            "deploy": "truffle compile && truffle migrate --reset",
-                            "deploy-verbose": "truffle compile && truffle migrate --reset --verbose-rpc",
-                            "test": "truffle test"
+                            "deploy": "npx truffle compile && npx truffle migrate --reset",
+                            "deploy-verbose": "npx truffle compile && npx truffle migrate --reset --verbose-rpc",
+                            "test": "npx truffle test"
                         }
                     },
                     "ethereum": {
