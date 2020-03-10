@@ -1,5 +1,5 @@
-import CustomElement from '../shared/custom-element';
-import canvas from '../../assets/img/canvas.jpg';
+import CustomElement from '../components/shared/custom-element';
+import canvas from '../assets/img/canvas.jpg';
 
 export default class HomePage extends CustomElement {
 

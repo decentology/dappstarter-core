@@ -1,7 +1,7 @@
-import CustomElement from '../shared/custom-element';
-import '../widgets/panel-widget.js';
-import '../shared/action-card.js';
-import '../widgets/page-widget.js';
+import CustomElement from '../components/shared/custom-element';
+import '../components/widgets/panel-widget.js';
+import '../components/shared/action-card.js';
+import '../components/widgets/page-widget.js';
 
 export default class AdminPage extends CustomElement {
 

@@ -1,11 +1,11 @@
 ///(page-loader-import
-import '../pages/myblock-page.js';
+import '../../pages/myblock-page.js';
 ///)
 
 ///(page-pre-content
-import '../widgets/page-widget.js';
-import '../shared/action-card.js';
-import DappLib from '../../../lib/dapp-lib';
+import '../components/widgets/page-widget.js';
+import '../components/shared/action-card.js';
+import DappLib from '../../lib/dapp-lib';
 
 export default class MyBlockPage extends CustomElement {
 

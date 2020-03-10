@@ -63,12 +63,12 @@
                 "processor": "merge-blocks",
                 "path": "${categoryRoot}/${category}/${name}/${name}-page.js"
             },
-            "/src/dapp/components/pages/[block-pages].js": {
+            "/src/dapp/pages/[block-pages].js": {
                 "processor": "file-blocks",
                 "path": "${categoryRoot}/${category}/${name}/${name}-page.js",
                 "sequence": false
             },
-            "/src/dapp/components/pages/admin-page.js": {
+            "/src/dapp/pages/admin-page.js": {
                 "processor": "merge-blocks",
                 "path": "${categoryRoot}/${category}/${name}/${name}-page.js"
             },
@@ -104,7 +104,7 @@
                         "devDependencies": {
                             "mdbootstrap": "^4.14.0",
                             "@fortawesome/fontawesome-free": "^5.11.2",
-                            "bootstrap-css-only": "4.3.1"
+                            "bootstrap-css-only": "^4.3.1"
                         }
                     }
                 },

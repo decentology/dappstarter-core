@@ -3,9 +3,9 @@ import '../dapp/components/shared/top-navigation';
 import '../dapp/components/shared/page-footer';
 import '../dapp/components/shared/page-navigation';
 import '../dapp/components/shared/page-loader';
-import '../dapp/components/pages/home-page';
-import '../dapp/components/pages/dapp-page';
-import '../dapp/components/pages/admin-page';
+import '../dapp/pages/home-page';
+import '../dapp/pages/dapp-page';
+import '../dapp/pages/admin-page';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';

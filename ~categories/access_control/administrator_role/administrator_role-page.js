@@ -1,11 +1,11 @@
 ///(page-loader-import
-import '../pages/administrator_role-page.js';
+import '../../pages/administrator_role-page.js';
 ///)
 
 ///(page-pre-content
-import '../shared/action-card.js';
-import '../widgets/page-widget.js';
-import '../widgets/account-widget.js';
+import '../components/shared/action-card.js';
+import '../components/widgets/page-widget.js';
+import '../components/widgets/account-widget.js';
 
 export default class AdministratorRolePage extends CustomElement {
 

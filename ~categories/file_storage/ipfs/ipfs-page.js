@@ -1,17 +1,17 @@
 ///(page-loader-import
-import '../pages/ipfs-page.js';
+import '../../pages/ipfs-page.js';
 ///)
 
 ///(page-pre-content
-import '../widgets/page-widget.js';
-import '../shared/action-card.js';
-import '../widgets/text-widget.js';
-import '../widgets/number-widget.js';
-import '../widgets/account-widget.js';
-import UploadWidget from '../widgets/upload-widget.js';
+import '../components/widgets/page-widget.js';
+import '../components/shared/action-card.js';
+import '../components/widgets/text-widget.js';
+import '../components/widgets/number-widget.js';
+import '../components/widgets/account-widget.js';
+import UploadWidget from '../components/widgets/upload-widget.js';
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
-import DappLib from '../../../lib/dapp-lib';
+import DappLib from '../../lib/dapp-lib';
 
 export default class IpfsPage extends CustomElement {
 

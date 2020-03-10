@@ -1,12 +1,12 @@
 ///(page-loader-import
-import '../pages/contract_runstate-page.js';
+import '../../pages/contract_runstate-page.js';
 ///)
 
 ///(page-pre-content
-import '../shared/action-card.js';
-import '../widgets/page-widget.js';
-import '../widgets/switch-widget.js';
-import DappLib from '../../../lib/dapp-lib';
+import '../components/shared/action-card.js';
+import '../components/widgets/page-widget.js';
+import '../components/widgets/switch-widget.js';
+import DappLib from '../../lib/dapp-lib';
 
 export default class ContractRunStatePage extends CustomElement {
 

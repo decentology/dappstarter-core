@@ -1,13 +1,13 @@
 ///(page-loader-import
-import '../pages/token-page.js';
+import '../../pages/token-page.js';
 ///)
 
 ///(page-pre-content
-import '../shared/action-card.js';
-import '../widgets/page-widget.js';
-import '../widgets/account-widget.js';
-import '../widgets/number-widget.js';
-import DappLib from '../../../lib/dapp-lib';
+import '../components/shared/action-card.js';
+import '../components/widgets/page-widget.js';
+import '../components/widgets/account-widget.js';
+import '../components/widgets/number-widget.js';
+import DappLib from '../../lib/dapp-lib';
 
 export default class TokenPage extends CustomElement {
 

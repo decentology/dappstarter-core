@@ -1,9 +1,9 @@
-import DappLib from '../../../lib/dapp-lib';
-import CustomElement from '../shared/custom-element';
-import DOM from '../shared/dom';
-import '../shared/action-card.js';
-import '../widgets/number-widget.js';
-import ActionButton from '../shared/action-button';
+import DappLib from '../../lib/dapp-lib';
+import CustomElement from '../components/shared/custom-element';
+import DOM from '../components/shared/dom';
+import '../components/shared/action-card.js';
+import '../components/widgets/number-widget.js';
+import ActionButton from '../components/shared/action-button';
 
 export default class DappPage extends CustomElement {
 
