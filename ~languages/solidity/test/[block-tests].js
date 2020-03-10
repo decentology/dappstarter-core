@@ -21,6 +21,8 @@ contract('Dapp Contract Tests', async (testAccounts) => {
 
         // Call the re-written function to get the test config values
         config = DappLib.getConfig();
+        config.testDappStateContract = testDappStateContract;
+        config.testDappContract = testDappContract;
     });
 
 ///+test
