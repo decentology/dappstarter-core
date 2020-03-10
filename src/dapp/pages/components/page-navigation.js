@@ -1,5 +1,5 @@
-import CustomElement from './custom-element';
-import DOM from './dom';
+import CustomElement from '../../../lib/components/shared/custom-element';
+import DOM from '../../../lib/components/shared/dom';
 import logo from "../../../dapp/assets/img/dappstarter.png";
 
 export default class PageNavigation extends CustomElement {

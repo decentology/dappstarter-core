@@ -1,5 +1,5 @@
-import DOM from './dom';
-import CustomElement from './custom-element';
+import DOM from '../../../lib/components/shared/dom';
+import CustomElement from '../../../lib/components/shared/custom-element';
 ///+page-loader-import
 export default class PageLoader extends CustomElement {
    

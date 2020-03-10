@@ -1,9 +1,9 @@
 import DappLib from '../../lib/dapp-lib';
-import CustomElement from '../components/shared/custom-element';
-import DOM from '../components/shared/dom';
-import '../components/shared/action-card.js';
-import '../components/widgets/number-widget.js';
-import ActionButton from '../components/shared/action-button';
+import CustomElement from '../../lib/components/shared/custom-element';
+import DOM from '../../lib/components/shared/dom';
+import '../../lib/components/shared/action-card.js';
+import '../../lib/components/widgets/number-widget.js';
+import ActionButton from '../../lib/components/shared/action-button';
 
 export default class DappPage extends CustomElement {
 
@@ -30,14 +30,16 @@ export default class DappPage extends CustomElement {
                 </div>
             </div>
             <div class="row mt-3">
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <action-card 
                         id="card-contractOwner"
                         title="State Contract Owner" description="Makes a cross-contract call to get account of state contract owner"
                         action="getStateContractOwner" method="${CustomElement.METHOD_GET}" fields="">
                     </action-card>
                 </div>
-                <div class="col-md-5 p-3">
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6 p-3">
                     <h4>Counter value from contract: <span id="counter" class="text-primary"></span></h4>
                     <div class="mt-4" id="my-form">
                         <number-widget field="increment" label="Increment Counter:" placeholder="Enter 1 to 9">

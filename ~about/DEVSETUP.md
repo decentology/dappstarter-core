@@ -19,18 +19,16 @@ In order to develop and test the scaffold for DappStarter you need to have a spe
 
 Due to the multiple blockchains, languages and feature blocks in one place in this repo, it isn't intended to be used for development. In fact, you don't even need to ever run "npm install" for this project.
 
-You will need to open three instances of your code editor in order to develop.
+You will need to open two instances of your code editor in order to develop.
 
    a. This repo. We'll call this editor "Scaffold."
 
-   b. The "DappStarter - Hypergrep" repo. We'll call this editor "Hypergrep."
-
-   c. The "(root)/output/stage-dapp" folder. We'll call this editor "Project."
+   b. The "(root)/output/stage-dapp" folder. We'll call this editor "Project."
 
    The basic Scaffold Feature Development Workflow (SFDW) is as follows:
 
    - Make changes in Scaffold
-   - Generate output using a test script in Hypergrep
+   - Generate output using a test script
    - Deploy and test the generated output in Project
    - Rinse and repeat
 
@@ -42,7 +40,7 @@ When starting SFDW for a new feature, here's the process you should follow:
 
 2) In Scaffold, add a new test input JSON file in "~inputs" which contains the minimal configuration necessary to test your feature. It is often easiest to copy and modify an existing test input. Each line in the input represents a choice made by the user in the DappStarter UI.
 
-3) If your test input is "eth-widget.json," use `npm run test stage eth-widget` in Hypergrep. This should produce new output in Project. It's a good idea to delete all the contents of Project before running a test so you can verify that the output is working correctly.
+3) If your test input is "eth-widget.json," use `node generate stage eth-widget` in Hypergrep. This should produce new output in Project. It's a good idea to delete all the contents of Project before running a test so you can verify that the output is working correctly.
 
 Pro tip: When deleting the contents of Project, skip the "node_modules" folder (unless you are changing dependencies). This will save time as you can skip the dependency installation time sink.
 

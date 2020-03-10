@@ -1,7 +1,7 @@
-import CustomElement from '../shared/custom-element';
+import CustomElement from '../../../lib/components/shared/custom-element';
 import '@grubersjoe/slide-menu/dist/slide-menu.js';
 
-export default class PanelWidget extends CustomElement {
+export default class PagePanel extends CustomElement {
     
     constructor(...args) {
         super(...args);
@@ -115,4 +115,4 @@ export default class PanelWidget extends CustomElement {
 }
 
 
-customElements.define('panel-widget', PanelWidget);
+customElements.define('page-panel', PagePanel);

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import '../dapp/components/shared/top-navigation';
-import '../dapp/components/shared/page-footer';
-import '../dapp/components/shared/page-navigation';
-import '../dapp/components/shared/page-loader';
+import './pages/components/top-navigation';
+import './pages/components/page-footer';
+import './pages/components/page-navigation';
+import './pages/components/page-loader';
 import '../dapp/pages/home-page';
 import '../dapp/pages/dapp-page';
 import '../dapp/pages/admin-page';
-import ResultPanel from './components/ResultPanel.jsx';
 
 class App extends Component {
   
@@ -18,7 +17,6 @@ class App extends Component {
           <page-navigation />
           <page-loader id="page-loader" />
           <page-footer />
-          <ResultPanel />
         </div>
     );
   }

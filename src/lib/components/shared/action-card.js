@@ -1,4 +1,4 @@
-import DappLib from '../../../lib/dapp-lib';
+import DappLib from '../../dapp-lib';
 import CustomElement from './custom-element';
 import ActionButton from './action-button';
 import SvgIcons from '../widgets/svg-icons';

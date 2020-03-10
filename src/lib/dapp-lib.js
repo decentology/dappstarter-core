@@ -2,7 +2,7 @@
 import Blockchain from './blockchain';
 import BN from 'bn.js'; // Required for injected code
 import dappConfig from '../dapp-config.json';
-import SvgIcons from '../dapp/components/widgets/svg-icons';
+import SvgIcons from './components/widgets/svg-icons';
 import ClipboardJS from 'clipboard';
 
 ///+import

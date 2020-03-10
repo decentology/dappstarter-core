@@ -1,4 +1,4 @@
-import CustomElement from './custom-element';
+import CustomElement from '../../../lib/components/shared/custom-element';
 
 export default class TopNavigation extends CustomElement {
 

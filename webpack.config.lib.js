@@ -1,10 +1,11 @@
 const path = require("path");
+const glob = require("glob");
 
 module.exports = (env, argv) => {
 
   return {
     entry: {
-      'DappLib': path.join(__dirname, "src/lib/dapp-lib")
+      'DappLib': glob.sync("./src/lib/**/*.js")
     },
     output: {
       path: path.join(__dirname, (argv.mode === "development" ? "dist" : "prod")),

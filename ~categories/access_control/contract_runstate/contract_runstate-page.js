@@ -3,9 +3,9 @@ import '../../pages/contract_runstate-page.js';
 ///)
 
 ///(page-pre-content
-import '../components/shared/action-card.js';
-import '../components/widgets/page-widget.js';
-import '../components/widgets/switch-widget.js';
+import '../../lib/components/shared/action-card.js';
+import './components/page-body.js';
+import '../../lib/components/widgets/switch-widget.js';
 import DappLib from '../../lib/dapp-lib';
 
 export default class ContractRunStatePage extends CustomElement {
@@ -52,12 +52,12 @@ export default class ContractRunStatePage extends CustomElement {
 ///(page-post-content
         let content = 
 `
-        <page-widget title="${self.title}" category="${self.category}" description="${self.description}">
+        <page-body title="${self.title}" category="${self.category}" description="${self.description}">
             ${uiHtml[CustomElement.UI_READ]}
             ${uiHtml[CustomElement.UI_WRITE]}
             ${uiHtml[CustomElement.UI_ADMIN]}
-        </page-widget>
-        <panel-widget id="resultPanel"></panel-widget>
+        </page-body>
+        <page-panel id="resultPanel"></page-panel>
 
 `
         // Set 'Run State' switch value to correct state

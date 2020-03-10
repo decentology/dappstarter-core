@@ -1,6 +1,6 @@
-import CustomElement from '../shared/custom-element';
+import CustomElement from '../../../lib/components/shared/custom-element';
 
-export default class PageWidget extends CustomElement {
+export default class PageBody extends CustomElement {
     
     constructor(...args) {
         super([], ...args);
@@ -29,4 +29,4 @@ export default class PageWidget extends CustomElement {
 }
 
 
-customElements.define('page-widget', PageWidget);
+customElements.define('page-widget', PageBody);

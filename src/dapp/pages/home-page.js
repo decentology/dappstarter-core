@@ -1,4 +1,4 @@
-import CustomElement from '../components/shared/custom-element';
+import CustomElement from '../../lib/components/shared/custom-element';
 import canvas from '../assets/img/canvas.jpg';
 
 export default class HomePage extends CustomElement {
@@ -21,10 +21,8 @@ export default class HomePage extends CustomElement {
                         
                         <img class="mt-3 mb-3 img-fluid" src="${canvas}" alt="Blank canvas" />
                     
-                        <p class="m-3">Register for DappStarter's free "Blockchain Bootcamp" for greater insights on dapp development.</p>
+                        <p class="m-3">Visit <a href="https://www.trycrypto.com" target="_new" rel="nofollow">TryCrypto.com</a> for more insights on dapp development.</p>
                         
-                        <a target="_blank" href="https://www.trycrypto.com/dappstarter" class="btn btn-primary"
-                        rel="nofollow"><i class="fas fa-graduation-cap fa-2x left"></i> Register</a>
                     </div>
                 </div>
             </div>

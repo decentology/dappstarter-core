@@ -1,7 +1,7 @@
-import CustomElement from '../components/shared/custom-element';
-import '../components/widgets/panel-widget.js';
-import '../components/shared/action-card.js';
-import '../components/widgets/page-widget.js';
+import CustomElement from '../../lib/components/shared/custom-element';
+import './components/page-panel.js';
+import '../../lib/components/shared/action-card.js';
+import './components/page-body.js';
 
 export default class AdminPage extends CustomElement {
 
@@ -22,10 +22,10 @@ export default class AdminPage extends CustomElement {
 
         let content = 
 `
-        <page-widget title="${self.title}" category="" description="Contract administrative features">
+        <page-body title="${self.title}" category="" description="Contract administrative features">
             ${uiHtml[CustomElement.UI_ADMIN]}
-        </page-widget>
-        <panel-widget id="resultPanel"></panel-widget>
+        </page-body>
+        <page-panel id="resultPanel"></page-panel>
 
 `
         self.innerHTML = content;

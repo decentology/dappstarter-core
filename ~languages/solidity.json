@@ -59,7 +59,7 @@
                 "processor": "merge-blocks",
                 "path": "${categoryRoot}/${category}/${name}/${name}-lib.js"
             },
-            "/src/dapp/components/shared/page-loader.js": {
+            "/src/dapp/pages/components/page-loader.js": {
                 "processor": "merge-blocks",
                 "path": "${categoryRoot}/${category}/${name}/${name}-page.js"
             },
@@ -76,7 +76,7 @@
                 "processor": "copy-folder",
                 "context": "framework"
             },
-            "/src/dapp/components/shared/page-navigation.js": {
+            "/src/dapp/pages/components/page-navigation.js": {
                 "processor": "replace-parameters"
             },
 
@@ -149,15 +149,7 @@
                     "file_storage:ipfs": {
                         "devDependencies": {
                             "ipfs-http-client": "41.0.0",
-                            "@uppy/core": "1.7.1",
-                            "@uppy/dashboard": "1.5.2",
                             "bs58": "4.0.1"
-                        }
-                    },
-                    "file_storage:sia": {
-                        "devDependencies": {
-                            "@uppy/core": "1.7.1",
-                            "@uppy/dashboard": "1.5.2"
                         }
                     }
                 }
