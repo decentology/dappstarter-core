@@ -1,11 +1,11 @@
-import DOM from '../dapp/components/shared/dom';
-import '../dapp/components/shared/top-navigation';
-import '../dapp/components/shared/page-footer';
-import '../dapp/components/shared/page-navigation';
-import '../dapp/components/shared/page-loader';
-import '../dapp/pages/home-page';
-import '../dapp/pages/dapp-page';
-import '../dapp/pages/admin-page';
+import DOM from '../lib/components/shared/dom';
+import './pages/components/top-navigation';
+import './pages/components/page-footer';
+import './pages/components/page-navigation';
+import './pages/components/page-loader';
+import './pages/home-page';
+import './pages/dapp-page';
+import './pages/admin-page';
 
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
