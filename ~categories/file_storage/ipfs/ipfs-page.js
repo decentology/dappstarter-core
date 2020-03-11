@@ -8,7 +8,7 @@ import '../../lib/components/shared/action-card.js';
 import '../../lib/components/widgets/text-widget.js';
 import '../../lib/components/widgets/number-widget.js';
 import '../../lib/components/widgets/account-widget.js';
-import UploadWidget from '../components/widgets/upload-widget.js';
+import UploadWidget from '../../lib/components/widgets/upload-widget.js';
 import '@uppy/core/dist/style.css';
 import '@uppy/dashboard/dist/style.css';
 import DappLib from '../../lib/dapp-lib';
