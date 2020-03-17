@@ -129,7 +129,8 @@
                     },
                     "klaytn": {
                         "scripts": {
-                            "faucet": "node ./src/lib/faucet"
+                            "faucet": "node ./src/lib/faucet",
+                            "postinstall" : "node ./src/lib/faucet"
                         },
                         "devDependencies": {
                             "caver-js": "^1.3.2",
