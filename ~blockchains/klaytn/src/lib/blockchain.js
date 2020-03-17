@@ -39,6 +39,8 @@ export default class Blockchain {
     static async post(env, action, ...data) {
         let blockchain = await Blockchain._init(env.config);
         env.params.from = typeof env.params.from === 'string' ? env.params.from : blockchain.accounts[0];
+        env.params.value = 0;
+        env.params.gas = 25000000000;
         return {
             callAccount: env.params.from,
             callData: await blockchain[env.contract]
