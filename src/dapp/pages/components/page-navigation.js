@@ -13,13 +13,9 @@ export default class PageNavigation extends CustomElement {
 
     getPages() {
         let staticPages = [{
-            name: 'home',
-            title: 'Home',
-            route: '/'
-        }, {
             name: 'dapp',
             title: 'My Dapp',
-            route: '/dapp'
+            route: '/'
         }, {
             name: 'admin',
             title: 'Dapp Admin',
@@ -114,7 +110,7 @@ export default class PageNavigation extends CustomElement {
                         id: self.listId,
                         className: 'list-group list-group-flush'
                     },
-                    listItems.slice(0, 2)
+                    listItems.slice(0, 1)
                 ),
 
                 // Remove the block between //BEGIN //END below to remove feature blocks from navigation
@@ -127,22 +123,10 @@ export default class PageNavigation extends CustomElement {
                     id: self.listId + '-blocks',
                     className: 'list-group list-group-flush'
                 },
-                listItems.slice(2)
+                listItems.slice(1)
                 ),
                 // END: Feature Blocks
 
-
-                DOM.a({
-                    href: 'https://www.trycrypto.com/dappstarter?utm_source=dapp',
-                    target: '_new'
-                },
-                [
-                    DOM.img({
-                        src: 'https://dappstarter.trycrypto.com/trycrypto-logo-1024.png?r=ds',
-                        className: 'text-center fixed-bottom mb-3',
-                        style: 'margin-left:55px;max-width:160px;'
-                    })
-                ])
             ]
         );
         let handle = DOM.div({

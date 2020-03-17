@@ -81,7 +81,7 @@ class token {
             },
             'balanceOf',
             data.account
-        );
+        );            
         let balance = result.callData;
         return {
             type: DappLib.DAPP_RESULT_BIG_NUMBER,

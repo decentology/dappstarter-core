@@ -32,6 +32,17 @@ export default class TopNavigation extends CustomElement {
     </button>
     <div class="navbar-collapse collapse" style="">
         <ul class="navbar-nav mr-auto">
+            <!--li class="nav-item">
+                <a class="nav-link Ripple-parent" id="home-link" ref="/">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown">Test</a>
+                <div class="dropdown-menu dropdown-primary" id="test-link">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+           </li-->            
             <li class="nav-item">
                 <a rel="noopener noreferrer" class="nav-link Ripple-parent" href="https://www.trycrypto.com/dappstarter" target="_blank">About</a>
             </li>

@@ -13,7 +13,7 @@
     },
     "interface": {
         "hidden": false,
-        "enabled": false,
+        "enabled": true,
         "children": "single"
     }
 }

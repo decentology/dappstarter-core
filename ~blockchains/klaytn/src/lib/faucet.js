@@ -7,6 +7,8 @@ let devUri = TruffleConfig.networks.development.uri;
 let faucetUri = 'https://api-baobab.wallet.klaytn.com/faucet/run';
 let testAccounts = TruffleConfig.networks.development.provider().addresses;
 
+// Scope: https://baobab.scope.klaytn.com
+
 let caver = new Caver(devUri);
 
 // We want to keep accounts loaded with test Klay so we fire and forget requests to the faucet
@@ -24,9 +26,9 @@ testAccounts.map((account, index) => {
                         console.error(error);
                     }
                     console.log(`${account} statusCode ${index}: ${res.statusCode}`);
-                    // if (index === testAccounts.length - 1) {
-                    //     process.exit(0);
-                    // }
+                    if (index === testAccounts.length - 1) {
+                        process.exit(0);
+                    }
                 })
             } else {
                 if (index === testAccounts.length - 1) {

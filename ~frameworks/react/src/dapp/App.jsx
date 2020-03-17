@@ -3,7 +3,6 @@ import './pages/components/top-navigation';
 import './pages/components/page-footer';
 import './pages/components/page-navigation';
 import './pages/components/page-loader';
-import '../dapp/pages/home-page';
 import '../dapp/pages/dapp-page';
 import '../dapp/pages/admin-page';
 

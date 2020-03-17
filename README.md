@@ -18,7 +18,7 @@ In order to develop and build "My Dapp," the following pre-requisites must be in
 
 Using a terminal (or command prompt), change to the folder containing the project files and type: `npm install` This will fetch all required dependencies. The process will take 1-3 minutes and while it is in progress you can move on to the next step.
 
-///(language:solidity
+///(blockchain:ethereum
 Note: You may see some npm warnings about "web3-bzz" after dependencies are installed. These can be ignored as the associated code is never invoked.
 
 ## Ganache Settings (for Ethereum only; skip for other blockchains)

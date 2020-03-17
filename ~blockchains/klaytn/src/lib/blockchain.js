@@ -1,21 +1,20 @@
 import DappStateContract from '../../build/contracts/DappState.json';
 import DappContract from '../../build/contracts/Dapp.json';
-import Web3 from 'web3';
+import Caver from 'caver-js';
 
 // Ethereum
 export default class Blockchain {
 
     static async _init(config) {
-        let web3Obj = {
-            http: new Web3(new Web3.providers.HttpProvider(config.httpUri)),
-            ws: new Web3(new Web3.providers.WebsocketProvider(config.wsUri))
+        let caverObj = {
+            http: new Caver(new Caver.providers.HttpProvider(config.httpUri)),
+            ws: new Caver(new Caver.providers.WebsocketProvider(config.wsUri))
         }
-
-        let accounts = config.accounts || await web3Obj.http.eth.getAccounts();
-
+        
+        let accounts = config.accounts || await caverObj.http.klay.getAccounts();
         return {
-            dappStateContract: new web3Obj.http.eth.Contract(DappStateContract.abi, config.dappStateContractAddress),
-            dappContract: new web3Obj.http.eth.Contract(DappContract.abi, config.dappContractAddress),
+            dappStateContract: new caverObj.http.klay.Contract(DappStateContract.abi, config.dappStateContractAddress),
+            dappContract: new caverObj.http.klay.Contract(DappContract.abi, config.dappContractAddress),
             accounts: accounts
         }
     }
@@ -45,6 +44,25 @@ export default class Blockchain {
             callData: await blockchain[env.contract]
                                 .methods[action](...data)
                                 .send(env.params)
+        }
+    }
+
+    static async handleEvent(env, event, callback) {
+        //TODO
+        return;
+        let blockchain = await Blockchain._init(env.config);
+        env.params.fromBlock = typeof env.params.fromBlock === 'number' ? env.params.fromBlock : blockchain.lastBlock + 1;
+        if (blockchain[env.contract].events[event]) {
+            blockchain[env.contract].events[event](env.params, (error, result) => {
+                let eventInfo = Object.assign({
+                                                id: result.id,
+                                                blockNumber: result.blockNumber
+                                            }, result.returnValues);
+
+                callback(error, eventInfo);
+            });
+        } else {
+            throw(`Contract "${env.contract}" does not contain event "${event}"`);
         }
     }
 

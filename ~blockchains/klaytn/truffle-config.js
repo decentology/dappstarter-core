@@ -15,7 +15,7 @@ module.exports = {
         development: {
             uri: devUri,
             provider: () => new HDWalletProvider(
-                testAccounts,
+                mnemonic,
                 devUri, // provider url
                 0, // address index
                 10, // number of addresses

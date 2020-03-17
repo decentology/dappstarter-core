@@ -133,6 +133,7 @@
                         },
                         "devDependencies": {
                             "caver-js": "^1.3.2",
+                            "axios": "^0.19.2",
                             "@truffle/hdwallet-provider": "1.0.32",
                             "web3": "1.2.6"
                         }
