@@ -29,4 +29,4 @@ export default class PageBody extends CustomElement {
 }
 
 
-customElements.define('page-widget', PageBody);
+customElements.define('page-body', PageBody);
