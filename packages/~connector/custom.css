@@ -1,0 +1,8 @@
+#red-ui-header {
+    background-color: #E2E8F0;
+}
+
+#red-ui-header .button {
+    border-left: 0;
+    border-right: 0;
+}

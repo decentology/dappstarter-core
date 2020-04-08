@@ -1,0 +1,163 @@
+<script>
+    (function () {
+        _node = null;
+        _funcNames = [];
+
+        function cleanUp() {
+            document.getElementById('abiFile').removeEventListener('change', onFileEventHandler);
+        }
+
+        function onFileEventHandler(event) {
+            // console.log('EventHandler', event);
+            let reader = new FileReader();
+            reader.onload = (readerEvent) => {
+                processAbi(JSON.parse(readerEvent.target.result).abi)
+            }
+            reader.readAsText(event.target.files[0]);
+        }
+
+        function processAbi(abi) {
+            _node.abi = abi;
+            let funcs = abi.filter(x => x.type == 'function');
+            let funcNames = funcs.map(x => x.name);
+            _funcNames = funcNames;
+
+            let select = document.getElementById('node-input-contractFunction');
+            funcNames.forEach(name => {
+                let option = document.createElement('option');
+                option.value = name;
+                option.innerText = name;
+                select.appendChild(option);
+            });
+        }
+
+        function loadFunctionSelection(node) {
+            if (node.availableFunctions != null) {
+                let select = document.getElementById('node-input-contractFunction');
+                let selectedName = node.contractFunction;
+                node.availableFunctions.forEach(name => {
+                    let option = document.createElement('option');
+                    option.value = name;
+                    option.innerText = name;
+                    if (name == selectedName) {
+                        option.selected = true;
+                    }
+                    select.appendChild(option);
+                });
+            }
+        }
+
+        RED.nodes.registerType('dapp-transaction', {
+            category: 'function',
+            color: '#a6bbcf',
+            defaults: {
+                op1: {
+                    value: "",
+                    validate: RED.validators.typedInput("op1type")
+                },
+                op1type: {
+                    value: "val"
+                },
+                name: {
+                    value: ''
+                },
+                contractAddress: {
+                    value: RED.settings.dappTransactionContract,
+                    required: true
+                },
+                abi: {
+                    value: RED.settings.dappTransactionAbi
+                },
+                availableFunctions: {
+                    value: [],
+                    required: true
+                },
+                contractFunction: {
+                    value: '',
+                    required: true
+                },
+                privateKey: {
+                    value: RED.settings.dappTransactionPrivateKey,
+                    required: true
+                },
+            },
+            inputs: 1,
+            outputs: 1,
+            icon: 'ethjs.png',
+            label: function () {
+                return this.name || 'dapp-transaction';
+            },
+            oneditprepare: function () {
+                _node = this;
+                let abiFile = document.getElementById('abiFile');
+                processAbi(RED.settings.dappTransactionAbi);
+                abiFile.addEventListener('change', onFileEventHandler)
+                loadFunctionSelection(this);
+
+                if (this.op1type === 'val') {
+                    $("#node-input-op1type").val('str');
+                }
+                var optionNothing = {
+                    value: "nul",
+                    label: this._("trigger.output.nothing"),
+                    hasValue: false
+                };
+                var optionPayload = {
+                    value: "pay",
+                    label: this._("trigger.output.existing"),
+                    hasValue: false
+                };
+                $("#node-input-op1").typedInput({
+                    default: 'str',
+                    typeField: $("#node-input-op1type"),
+                    types: ['flow', 'global', 'str', 'num', 'bool', 'json', 'bin', 'date',
+                        'env',
+                        optionPayload,
+                        optionNothing
+                    ]
+                });
+            },
+            oneditsave: function () {
+                let node = this;
+                if (_funcNames.length) {
+                    node.availableFunctions = _funcNames;
+                }
+
+                cleanUp();
+            },
+            oneditcancel: () => {
+                cleanUp();
+            }
+        })
+    })();
+</script>
+
+<script type="text/html" data-template-name="dapp-transaction">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-privateKey"><i class="fa fa-user-secret"></i> Private Key</label>
+        <input type="password" id="node-input-privateKey" placeholder="Private Key">
+    </div>
+    <div class="form-row">
+        <label for="node-input-abi"><i class="fa fa-file-code-o"></i> Contract ABI</label>
+        <input id='abiFile' type="file" id="node-input-abi" placeholder="Contract ABI">
+    </div>
+    <div class="form-row">
+        <label for="node-input-contractAddress"><i class="fa fa-address-card-o"></i> Contract</label>
+        <input type="text" id="node-input-contractAddress" placeholder="Contract Address">
+    </div>
+    <div class="form-row">
+        <label for="node-input-contractFunction"><i class="fa fa-tasks"></i> Function</label>
+        <select id="node-input-contractFunction" style="width:260px">
+            <option />
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-op1"><i class="fa fa-envelope"></i> Send</label>
+        <input type="hidden" id="node-input-op1type">
+        <input style="width: 70%" type="text" id="node-input-op1">
+    </div>
+</script>

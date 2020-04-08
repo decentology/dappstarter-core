@@ -1,0 +1,137 @@
+<script>
+    (function () {
+        let _node = null;
+        let _publicEventNames = [];
+        ['https://www.unpkg.com/web3@1.2.6/dist/web3.min.js'].forEach((src) => {
+            let script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.async = false,
+                script.src = src;
+            document.head.appendChild(script);
+        });
+
+        function onFileEventHandler(event) {
+            // console.log('EventHandler', event);
+            let reader = new FileReader();
+            reader.onload = (readerEvent) => {
+
+                processAbi(JSON.parse(readerEvent.target.result))
+            }
+            reader.readAsText(event.target.files[0]);
+        }
+
+        function loadEventSelection(node) {
+            if (node.availableEvents != null) {
+                let select = document.getElementById('node-input-eventName');
+                let selectedName = node.eventName;
+                node.availableEvents.forEach(name => {
+                    let option = document.createElement('option');
+                    option.value = name;
+                    option.innerText = name;
+                    if (name == selectedName) {
+                        option.selected = true;
+                    }
+                    select.appendChild(option);
+                });
+            }
+        }
+
+        function processAbi(abi) {
+            let abiData = abi?.abi || abi;
+            _node.abi = abiData;
+            let events = abiData.filter(x => x.type == 'event');
+            let eventNames = events.map(x => x.name);
+            _publicEventNames = eventNames;
+
+            let select = document.getElementById('node-input-eventName');
+            eventNames.forEach(name => {
+                let option = document.createElement('option');
+                option.value = name;
+                option.innerText = name;
+                select.appendChild(option);
+            });
+        }
+
+        function cleanUp() {
+            document.getElementById('abiFile').removeEventListener('change', onFileEventHandler);
+        }
+
+        RED.nodes.registerType('dapp-connector', {
+            category: 'function',
+            color: '#a6bbcf',
+            defaults: {
+                name: {
+                    value: ""
+                },
+                contractAddress: {
+                    value: RED.settings.dappConnectorContract,
+                    required: true
+                },
+                availableEvents: {
+                    value: []
+                },
+                abi: {
+                    value: RED.settings.dappConnectorAbi
+                },
+                rawr: {
+                    value: RED.settings.dappConnectorRawr
+                },
+               eventName: {
+                    value: "",
+                    required: true
+                }
+            },
+            outputs: 1,
+            icon: 'ethjs.png',
+            label: function () {
+                return this.name || "dapp-connector";
+            },
+            oneditprepare: function () {
+                _node = this;
+                let config = this._config;
+                processAbi(RED.settings.dappConnectorAbi);
+                let abiFile = document.getElementById('abiFile');
+                abiFile.addEventListener('change', onFileEventHandler)
+                loadEventSelection(this);
+            },
+            oneditsave: function () {
+                let node = this;
+                if (_publicEventNames.length) {
+                    node.availableEvents = _publicEventNames;
+                }
+
+                cleanUp();
+            },
+            oneditcancel: () => {
+                cleanUp();
+            }
+        });
+
+    })();
+</script>
+
+
+<script type="text/html" data-template-name="dapp-connector">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-contractAddress"><i class="fa fa-address-card-o"></i> Contract</label>
+        <input type="text" id="node-input-contractAddress" placeholder="Contract Address">
+    </div>
+    <div class="form-row">
+        <label for="node-input-abi"><i class="fa fa-file-code-o"></i> Contract ABI</label>
+        <input id='abiFile' type="file" id="node-input-abi" placeholder="Contract ABI">
+    </div>
+    <div class="form-row">
+        <label for="node-input-eventName"><i class="fa fa-tasks"></i> Event Name</label>
+        <select id="node-input-eventName" style="width:260px">
+            <option />
+        </select>
+    </div>
+</script>
+
+<script type="text/html" data-help-name="dapp-connector">
+    <p>DappConnector bridges existing data to blockchains</p>
+</script>

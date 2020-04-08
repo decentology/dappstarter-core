@@ -1,4 +1,4 @@
-const Hypergrep = require("../hypergrep/src/hypergrep");
+const Hypergrep = require("../dappstarter-hypergrep/src/hypergrep");
 
 if (process.argv.length < 4) {
   console.log('Syntax: node generate (dev | stage) (input file)');
