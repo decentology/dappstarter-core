@@ -34,7 +34,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "dev": "craco start",
+    "dev": "wait-on ../dapplib/src/dapp-config.json && craco start",
     "build": "craco build",
     "build:styles": "postcss ./src/tailwind.css -o src/styles.css",
     "prebuild": "yarn build:styles",
@@ -62,6 +62,7 @@
     "@types/lodash": "^4.14.149",
     "autoprefixer": "^9.7.4",
     "postcss-cli": "^7.1.0",
-    "tailwindcss": "^1.2.0"
+    "tailwindcss": "^1.2.0",
+    "wait-on": "^4.0.2"
   }
 }

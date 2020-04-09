@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "dev": "nest start --exec ts-node-dev --watch",
+    "dev": "wait-on ../dapplib/src/dapp-config.json && nest start --exec ts-node-dev --watch",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -53,7 +53,8 @@
     "ts-node": "^8.6.2",
     "ts-node-dev": "^1.0.0-pre.44",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.8.3"
+    "typescript": "^3.8.3",
+    "wait-on": "^4.0.2"
   },
   "jest": {
     "moduleFileExtensions": [

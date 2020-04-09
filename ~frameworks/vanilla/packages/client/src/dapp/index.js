@@ -1,8 +1,8 @@
 import DOM from '../lib/components/shared/dom';
 import './pages/components/top-navigation';
-import './pages/components/page-navigation';
 import './pages/components/page-loader';
 import './pages/dapp-page';
+import './index';
 
 DOM.elid('root').appendChild(
     DOM.div({

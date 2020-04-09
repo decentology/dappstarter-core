@@ -69,7 +69,6 @@
         "blockchain": {
           "*": {
             "scripts": {
-              "postinstall": "truffle compile",
               "dev": "run-p ganache deploy",
               "deploy": "wait-on tcp:7545 && truffle compile && truffle migrate --reset",
               "ganache": "node scripts/ganache.js",

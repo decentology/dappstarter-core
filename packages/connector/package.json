@@ -11,7 +11,7 @@
   "private": "true",
   "scripts": {
     "start": "supervisor -- packages/node_modules/node-red/red.js --settings settings.js",
-    "dev": "npm run build && npm run start",
+    "dev": "wait-on ../dapplib/src/dapp-config.json && npm run build && npm run start",
     "test": "grunt",
     "build": "grunt build",
     "docs": "grunt docs"
@@ -113,7 +113,8 @@
     "sinon": "1.17.7",
     "stoppable": "^1.1.0",
     "supertest": "3.4.2",
-    "supervisor": "^0.12.0"
+    "supervisor": "^0.12.0",
+    "wait-on": "^4.0.2"
   },
   "engines": {
     "node": ">=8"
