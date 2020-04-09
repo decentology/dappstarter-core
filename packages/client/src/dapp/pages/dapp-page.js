@@ -1,5 +1,4 @@
 import DappLib from "@dappstarter/dapplib";
-import CustomElement from "../../lib/components/shared/custom-element";
 import DOM from "../../lib/components/shared/dom";
 import "../../lib/components/shared/action-card.js";
 import "../../lib/components/widgets/number-widget.js";

@@ -1,9 +1,8 @@
-import DappStateContract from '../../build/contracts/DappState.json';
-import DappContract from '../../build/contracts/Dapp.json';
+const DappStateContract = require("../../build/contracts/DappState.json");
+const DappContract = require("../../build/contracts/Dapp.json");
+const { Harmony } = require('@harmony-js/core');
 
-import { Harmony } from '@harmony-js/core';
-
-export default class Blockchain {
+module.exports = class Blockchain {
     // Harmony
 
     static async _init(config) {

@@ -1,6 +1,6 @@
 ///(import
-import ipfsClient from 'ipfs-http-client';
-import bs58 from 'bs58';
+const ipfsClient = require( 'ipfs-http-client');
+const bs58 = require( 'bs58');
 ///)
 
 class ipfs {

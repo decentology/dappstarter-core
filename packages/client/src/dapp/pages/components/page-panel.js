@@ -1,4 +1,3 @@
-import CustomElement from "../../../lib/components/shared/custom-element";
 import "@grubersjoe/slide-menu/dist/slide-menu.js";
 import { LitElement, html, customElement, property } from "lit-element";
 @customElement("page-panel")

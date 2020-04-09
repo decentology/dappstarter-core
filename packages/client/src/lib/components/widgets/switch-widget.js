@@ -1,47 +1,45 @@
-import CustomElement from '../shared/custom-element';
+import { LitElement, html, customElement, property } from "lit-element";
 
-export default class SwitchWidget extends CustomElement {
-    
-    static get ATTRIBUTE_FIELD() {
-        return 'field'
+@customElement("switch-widget")
+export default class SwitchWidget extends LitElement {
+  @property({ type: String })
+  field = "";
+
+  @property({ type: String })
+  label = "";
+
+  createRenderRoot() {
+    return this;
+  }
+
+  constructor(args) {
+    super(args);
+    console.log('Switch');
+
+  }
+
+  render() {
+    this.style.display = "block";
+    if (this.nextSibling) {
+      this.classList.add("mb-3");
     }
-    static get ATTRIBUTE_LABEL() {
-        return 'label'
-    }
-
-    static get observedAttributes() {
-        return SwitchWidget.attributes; 
-    }
-
-    static get attributes() {
-        return [
-            SwitchWidget.ATTRIBUTE_FIELD,
-            SwitchWidget.ATTRIBUTE_LABEL
-        ];
-    }
-
-    constructor(...args) {
-        super(SwitchWidget.attributes, ...args);
-    }
-
-
-    render() {
-        let self = this;
-        let content = `
-        <div class="input-group">
-            <div class="custom-control custom-switch">
-                <input type="checkbox" data-field="${self.field}" class="custom-control-input" id="switch-${self.field}">
-                <label class="custom-control-label" for="switch-${self.field}">${self.label}</label>
-            </div>
+    return html`
+      <div class="input-group">
+        <div class="custom-control custom-switch">
+          <input
+            type="checkbox"
+            data-field="${this.field}"
+            class="custom-control-input"
+            id="switch-${this.field}"
+          />
+          <label class="custom-control-label" for="switch-${this.field}"
+            >${this.label}</label
+          >
         </div>
-`
-        self.style.display = 'block';
-        if (self.nextSibling) {
-            self.classList.add('mb-3')
-        }
-        self.innerHTML = content;
-    }
+      </div>
+    `;
+  }
+  value() {
+    return this.querySelector(`[data-field=${this.field}]`).checked;
+  }
 }
-
-
-customElements.define('switch-widget', SwitchWidget);

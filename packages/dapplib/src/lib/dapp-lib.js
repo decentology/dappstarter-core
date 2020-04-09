@@ -1,13 +1,12 @@
 'use strict';
-import Blockchain from './blockchain';
-import BN from 'bn.js'; // Required for injected code
-import dappConfig from '../dapp-config.json';
-import SvgIcons from './components/widgets/svg-icons';
-import ClipboardJS from 'clipboard';
+const Blockchain = require( './blockchain');
+const dappConfig = require( '../dapp-config.json');
+const ClipboardJS = require( 'clipboard');
+const SvgIcons = require( './components/widgets/svg-icons');
 
 ///+import
 
-export default class DappLib {
+module.exports = class DappLib {
 
 ///+functions
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> EXAMPLES  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/

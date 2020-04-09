@@ -1,56 +1,42 @@
-import CustomElement from '../shared/custom-element';
+import { LitElement, html, customElement, property } from "lit-element";
+@customElement('number-widget')
+export default class NumberWidget extends LitElement {
+  @property()
+  field;
+  @property()
+  label;
+  @property()
+  placeholder;
 
-export default class NumberWidget extends CustomElement {
-    
-    static get ATTRIBUTE_FIELD() {
-        return 'field'
-    }
-    static get ATTRIBUTE_LABEL() {
-        return 'label'
-    }
-    static get ATTRIBUTE_PLACEHOLDER() {
-        return 'placeholder'
-    }
+  createRenderRoot() {
+    return this;
+  }
 
-    static get observedAttributes() {
-        return NumberWidget.attributes; 
-    }
+  constructor(args) {
+    super(args);
+  }
 
-    static get attributes() {
-        return [
-            NumberWidget.ATTRIBUTE_FIELD,
-            NumberWidget.ATTRIBUTE_LABEL,
-            NumberWidget.ATTRIBUTE_PLACEHOLDER
-        ];
-    }
+  render() {
+    let content = html`
+      <div class="input-group flex mb-3">
+        <label
+          class="bg-gray-200 p-2 block rounded rounded-r-none text-gray-500"
+          >${this.label}</label
+        >
+        <input
+          type="text"
+          data-field="${this.field}"
+          class="shadow-inner appearance-none border rounded w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          placeholder="${this.placeholder}"
+        />
+      </div>
+    `;
+    return content;
+  }
 
-    constructor(...args) {
-        super(NumberWidget.attributes, ...args);
-    }
-
-    render() {
-        let self = this;
-        let content = `
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <span class="input-group-text">${self.label}</span>
-            </div>
-            <input type="text" data-field="${self.field}" class="form-control number" placeholder="${self.placeholder}">
-        </div>
-`
-        self.style.display = 'block';
-        if (self.nextSibling) {
-            self.classList.add('mb-3')
-        }
-        self.innerHTML = content;
-    }
-
-    value() {
-        let self = this;
-        return self.querySelector(`[data-field=${self.field}]`).value;
-    }
-    
+  value() {
+    return this.querySelector(`[data-field=${this.field}]`).value;
+  }
 }
 
 
-customElements.define('number-widget', NumberWidget);

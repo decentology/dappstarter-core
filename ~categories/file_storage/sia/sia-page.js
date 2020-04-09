@@ -1,3 +1,4 @@
+///(page-post-content
 import "./components/page-panel.js";
 import "./components/page-body.js";
 import "../../lib/components/shared/action-card.js";
@@ -85,3 +86,4 @@ export default class SiaPage extends LitElement {
     return content;
   }
 }
+///)

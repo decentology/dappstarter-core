@@ -1,9 +1,9 @@
-import DappStateContract from '../../build/contracts/DappState.json';
-import DappContract from '../../build/contracts/Dapp.json';
-import Web3 from 'web3';
+const DappStateContract = require("../../build/contracts/DappState.json");
+const DappContract = require("../../build/contracts/Dapp.json");
+const Web3 = require("web3");
 
 // Ethereum
-export default class Blockchain {
+module.exports = class Blockchain {
 
     static async _init(config) {
         let web3Obj = {

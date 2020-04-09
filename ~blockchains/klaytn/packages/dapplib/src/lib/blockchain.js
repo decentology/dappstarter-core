@@ -1,9 +1,10 @@
-import DappStateContract from '../../build/contracts/DappState.json';
-import DappContract from '../../build/contracts/Dapp.json';
-import Caver from 'caver-js';
+const DappStateContract = require("../../build/contracts/DappState.json");
+const DappContract = require("../../build/contracts/Dapp.json");
+const Web3 = require("web3");
+const Caver = require('caver-js');
 
 // Ethereum
-export default class Blockchain {
+module.exports = class Blockchain {
 
     static async _init(config) {
         let caverObj = {

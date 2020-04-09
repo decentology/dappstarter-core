@@ -15,25 +15,24 @@
   },
   "targets": {
     "*": {
-      "/~languages/solidity/contracts/DappState.sol": {
+      "/~languages/solidity/packages/dapplib/contracts/DappState.sol": {
         "processor": "merge-blocks",
         "path": "${categoryRoot}/${category}/${name}/solidity/${name}.sol"
       },
-      "/~languages/solidity/contracts/DappLib.sol": {
+      "/~languages/solidity/packages/dapplib/contracts/DappLib.sol": {
         "processor": "merge-blocks",
         "path": "${categoryRoot}/${category}/${name}/solidity/${name}-lib.sol"
       },
-      "/~languages/solidity/test/[block-tests].js": {
+      "/~languages/solidity/packages/dapplib/test/[block-tests].js": {
         "processor": "file-blocks",
         "path": "${categoryRoot}/${category}/${name}/solidity/${name}-tests.js",
         "sequence": false
       },
-
-      "/~languages/solidity/migrations/2_deploy_contracts.js": {
+      "/~languages/solidity/packages/dapplib/migrations/2_deploy_contracts.js": {
         "processor": "merge-blocks",
         "path": "${categoryRoot}/${category}/${name}/${name}-config.js"
       },
-      "/~languages/solidity/truffle-config.js": {
+      "/~languages/solidity/packages/dapplib/truffle-config.js": {
         "processor": "copy-file",
         "context": "blockchain",
         "actions": ["accounts"]
@@ -60,7 +59,6 @@
       "/packages/client/src/dapp/pages/components/top-navigation.js": {
         "processor": "replace-parameters"
       },
-
       "/packages/dapplib/src/lib/[blockchain]": {
         "processor": "copy-folder",
         "context": "blockchain"

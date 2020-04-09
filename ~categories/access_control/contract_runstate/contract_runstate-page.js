@@ -1,3 +1,4 @@
+///(page-post-content
 import "./components/page-panel.js";
 import "../../lib/components/shared/action-card.js";
 import "./components/page-body.js";
@@ -63,3 +64,4 @@ export default class ContractRunStatePage extends LitElement {
     `;
   }
 }
+///)

@@ -1,4 +1,3 @@
-import CustomElement from "../../../lib/components/shared/custom-element";
 import { LitElement, html, customElement, property } from "lit-element";
 @customElement('top-navigation')
 export default class TopNavigation extends LitElement {

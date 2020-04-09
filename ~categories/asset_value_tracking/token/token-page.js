@@ -1,3 +1,4 @@
+///(page-post-content
 import "../../lib/components/shared/action-card.js";
 import "./components/page-body.js";
 import "../../lib/components/widgets/account-widget.js";
@@ -103,3 +104,4 @@ export default class TokenPage extends LitElement {
     return content;
   }
 }
+///)
