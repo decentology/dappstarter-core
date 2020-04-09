@@ -36,16 +36,16 @@ export default class TokenPage extends LitElement {
   render() {
     let content = html`
       <page-body
-        title="${self.title}"
-        category="${self.category}"
-        description="${self.description}"
+        title="${this.title}"
+        category="${this.category}"
+        description="${this.description}"
       >
         <action-card
           id="card-totalSupply"
           title="Total Supply"
           description="Get total supply of tokens"
           action="totalSupply"
-          method="${CustomElement.METHOD_GET}"
+          method="get"
           fields=""
           return="unitResult"
         >
@@ -55,7 +55,7 @@ export default class TokenPage extends LitElement {
           title="Balance"
           description="Get token balance for current account"
           action="balance"
-          method="${CustomElement.METHOD_GET}"
+          method="get"
           fields=""
           return="unitResult"
         >
@@ -65,7 +65,7 @@ export default class TokenPage extends LitElement {
           title="Balance for Account"
           description="Get token balance for any account"
           action="balanceOf"
-          method="${CustomElement.METHOD_GET}"
+          method="get"
           fields="account"
           return="unitResult"
         >
@@ -80,7 +80,7 @@ export default class TokenPage extends LitElement {
           title="Transfer"
           description="Transfer tokens to another account"
           action="transfer"
-          method="${CustomElement.METHOD_POST}"
+          method="post"
           fields="to amount"
         >
           <account-widget

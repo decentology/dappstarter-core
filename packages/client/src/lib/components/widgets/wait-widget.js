@@ -1,6 +1,7 @@
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
-import { LitElement, html, property } from "lit-element";
+import { LitElement, html, customElement, property } from "lit-element";
 
+@customElement('wait-widget')
 export default class WaitWidget extends LitElement {
   @property({ type: String })
   waiting = "";
@@ -133,4 +134,3 @@ export default class WaitWidget extends LitElement {
   }
 }
 
-customElements.define("wait-widget", WaitWidget);
