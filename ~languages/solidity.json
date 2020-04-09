@@ -44,7 +44,6 @@
       "/packages/client/.babelrc": {
         "processor": "filter"
       },
-
       "/packages/dapplib/src/lib/dapp-lib.js": {
         "processor": "merge-blocks",
         "path": "${categoryRoot}/${category}/${name}/${name}-lib.js"
