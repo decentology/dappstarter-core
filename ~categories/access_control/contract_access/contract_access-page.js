@@ -1,82 +1,78 @@
-///(page-loader-import
-import '../../pages/contract_access-page.js';
-///)
+import "./components/page-panel.js";
+import "../../lib/components/shared/action-card.js";
+import "./components/page-body.js";
+import "../../lib/components/widgets/account-widget.js";
+import { LitElement, html, customElement, property } from "lit-element";
 
-///(page-pre-content
-import '../../lib/components/shared/action-card.js';
-import './components/page-body.js';
-import '../../lib/components/widgets/account-widget.js';
+@customElement("contract-access-page")
+export default class ContractAccessPage extends LitElement {
+  @property()
+  title;
+  @property()
+  category;
+  @property()
+  description;
 
-export default class ContractAccessPage extends CustomElement {
+  createRenderRoot() {
+    return this;
+  }
 
-    constructor(...args) {
-        super([], ...args);
-    }
+  render() {
+    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT ACCESS  <<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
-    render() {
-        let self = this;
-
-        let uiHtml = {
-            [CustomElement.UI_READ]: '',
-            [CustomElement.UI_WRITE]: '',
-            [CustomElement.UI_ADMIN]: ''
-        }
-///)
-///(ui-read
-///)
-///(ui-write
-///)
-///(ui-admin
-
-/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT ACCESS  <<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-        uiHtml[CustomElement.UI_ADMIN] += 
-`
-        <action-card 
-            title="Is Contract Authorized" description="Check if a contract is authorized"
-            action="isContractAuthorized" method="${CustomElement.METHOD_GET}" fields="account">
-
-            <account-widget 
-                field="account" label="Contract" placeholder="Contract address">
-            </account-widget>
-
+    let content = html`
+      <page-body
+        title="${this.title}"
+        category="${this.category}"
+        description="${this.description}"
+      >
+        <action-card
+          title="Is Contract Authorized"
+          description="Check if a contract is authorized"
+          action="isContractAuthorized"
+          method="get"
+          fields="account"
+        >
+          <account-widget
+            field="account"
+            label="Contract"
+            placeholder="Contract address"
+          >
+          </account-widget>
         </action-card>
 
-        <action-card 
-            title="Authorize Contract" description="Authorize a contract (functions must check using requireContractAuthorized()"
-            action="authorizeContract" method="${CustomElement.METHOD_POST}" fields="account">
-
-            <account-widget
-                field="account" label="Contract" placeholder="Account address of contract to authorize">
-            </account-widget>
-        
+        <action-card
+          title="Authorize Contract"
+          description="Authorize a contract. Functions must check using <code class='italic bg-orange-200 pr-1 pl-1'>requireContractAuthorized()</code>"
+          action="authorizeContract"
+          method="post"
+          fields="account"
+        >
+          <account-widget
+            field="account"
+            label="Contract"
+            placeholder="Account address of contract to authorize"
+          >
+          </account-widget>
         </action-card>
 
-        <action-card 
-            title="Deauthorize Contract" description="Deauthorize a contract"
-            action="deauthorizeContract" method="${CustomElement.METHOD_POST}" fields="account">
-
-                <account-widget
-                    field="account" label="Account" placeholder="Account address of contract to deauthorize">
-                </account-widget>
-            
-        </action-card>        
-        <div class="col-12 m-5"></div>
-
-`
-///)
-///(page-post-content
-        let content = 
-`
-        <page-body title="${self.title}" category="${self.category}" description="${self.description}">
-            ${uiHtml[CustomElement.UI_READ]}
-            ${uiHtml[CustomElement.UI_WRITE]}
-            ${uiHtml[CustomElement.UI_ADMIN]}
-        </page-body>
-        <page-panel id="resultPanel"></page-panel>
-`
-        self.innerHTML = content;
-    }
+        <action-card
+          title="Deauthorize Contract"
+          description="Deauthorize a contract"
+          action="deauthorizeContract"
+          method="post"
+          fields="account"
+        >
+          <account-widget
+            field="account"
+            label="Account"
+            placeholder="Account address of contract to deauthorize"
+          >
+          </account-widget>
+        </action-card>
+      </page-body>
+      <page-panel id="resultPanel"></page-panel>
+    `;
+    return content;
+  }
 }
-
-customElements.define('contract-access-page', ContractAccessPage);
-///)

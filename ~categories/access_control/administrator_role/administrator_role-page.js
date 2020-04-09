@@ -1,96 +1,110 @@
-///(page-loader-import
-import '../../pages/administrator_role-page.js';
-///)
+import "./components/page-panel.js";
+import "../../lib/components/shared/action-card.js";
+import "./components/page-body.js";
+import "../../lib/components/widgets/account-widget.js";
+import { LitElement, html, customElement, property } from "lit-element";
 
-///(page-pre-content
-import '../../lib/components/shared/action-card.js';
-import './components/page-body.js';
-import '../../lib/components/widgets/account-widget.js';
+@customElement("administrator-role-page")
+export default class AdministratorRolePage extends LitElement {
+  @property()
+  category;
+  @property()
+  description;
+  @property()
+  get;
+  @property()
+  post;
+  @property()
+  title;
+  @property()
+  category;
+  @property()
+  description;
 
-export default class AdministratorRolePage extends CustomElement {
+  createRenderRoot() {
+    return this;
+  }
 
-    constructor(...args) {
-        super([], ...args);
-    }
+  
+  render() {
+    /*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: ADMINISTRATOR ROLE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
-    render() {
-        let self = this;
+    let content = html`
+      <page-body
+        title="${this.title}"
+        category="${this.category}"
+        description="${this.description}"
+      >
+        <action-card
+          title="Is Contract Admin"
+          description="Check if an account is a contract administrator"
+          action="isContractAdmin"
+          method="get"
+          fields="account"
+        >
+          <account-widget
+            field="account"
+            label="Account"
+            placeholder="Account address"
+          >
+          </account-widget>
+        </action-card>
 
-        let uiHtml = {
-            [CustomElement.UI_READ]: '',
-            [CustomElement.UI_WRITE]: '',
-            [CustomElement.UI_ADMIN]: ''
-        }
-///)
-///(ui-read
-///)
-///(ui-write
-///)
-///(ui-admin
+        <action-card
+          title="Add Contract Admin"
+          description="Add an account as a contract administrator"
+          action="addContractAdmin"
+          method="post"
+          fields="account"
+        >
+          <account-widget
+            field="account"
+            label="Account"
+            placeholder="Account address of administrator to add"
+          >
+          </account-widget>
+        </action-card>
 
-/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: ADMINISTRATOR ROLE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
-        uiHtml[CustomElement.UI_ADMIN] += 
-`
-            <action-card
-                title="Is Contract Admin" description="Check if an account is a contract administrator"
-                action="isContractAdmin" method="${CustomElement.METHOD_GET}" fields="account">
+        <action-card
+          title="Remove Contract Admin"
+          description="Remove an account as a contract administrator"
+          action="removeContractAdmin"
+          method="post"
+          fields="account"
+        >
+          <account-widget
+            field="account"
+            label="Account"
+            placeholder="Account address of administrator to remove"
+          >
+          </account-widget>
+        </action-card>
 
-                    <account-widget 
-                        field="account" label="Account" placeholder="Account address">
-                    </account-widget>
+        <action-card
+          title="Remove Last Contract Admin"
+          description="Remove an account as a contract administrator"
+          action="removeLastContractAdmin"
+          method="post"
+          fields="account"
+        >
+          <h6 class="bg-red-700 mb-3 p-4 text-white">
+            This transaction will remove the last remaining administrator. Any
+            functions that use requireContractAdmin() will fail, effectively
+            making this a fully decentralized contract. This action is
+            irreversible. Proceed with caution.
+          </h6>
 
-            </action-card>
+          <account-widget
+            field="account"
+            label="Account"
+            placeholder="Account address of administrator to remove"
+          >
+          </account-widget>
+        </action-card>
+      </page-body>
+      <page-panel id="resultPanel"></page-panel>
+    `;
 
-            <action-card 
-                title="Add Contract Admin" description="Add an account as a contract administrator"
-                action="addContractAdmin" method="${CustomElement.METHOD_POST}" fields="account">
-
-                    <account-widget
-                        field="account" label="Account" placeholder="Account address of administrator to add">
-                    </account-widget>
-                
-            </action-card>
-
-            <action-card 
-                title="Remove Contract Admin" description="Remove an account as a contract administrator"
-                action="removeContractAdmin" method="${CustomElement.METHOD_POST}" fields="account">
-
-                    <account-widget
-                        field="account" label="Account" placeholder="Account address of administrator to remove">
-                    </account-widget>
-                
-            </action-card>
-
-            <action-card
-                title="Remove Last Contract Admin" description="Remove an account as a contract administrator"
-                action="removeLastContractAdmin" method="${CustomElement.METHOD_POST}" fields="account">
-
-                    <h6 class="red accent-4 mb-3 p-4 text-white">
-                        This transaction will remove the last remaining administrator. Any functions that use requireContractAdmin() will fail, 
-                        effectively making this a fully decentralized contract. This action is irreversible. Proceed with caution.
-                    </h6>
-
-                    <account-widget
-                        field="account" label="Account" placeholder="Account address of administrator to remove">
-                    </account-widget>
-                
-            </action-card>
-            <div class="col-12 m-5"></div>
-`
-///)
-///(page-post-content
-        let content = 
-`
-        <page-body title="${self.title}" category="${self.category}" description="${self.description}">
-            ${uiHtml[CustomElement.UI_READ]}
-            ${uiHtml[CustomElement.UI_WRITE]}
-            ${uiHtml[CustomElement.UI_ADMIN]}
-        </page-body>
-        <page-panel id="resultPanel"></page-panel>
-`
-        self.innerHTML = content;
-    }
+    return content;
+  }
 }
-
-customElements.define('administrator-role-page', AdministratorRolePage);
-///)

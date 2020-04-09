@@ -1,81 +1,65 @@
-///(page-loader-import
-import '../../pages/contract_runstate-page.js';
-///)
+import "./components/page-panel.js";
+import "../../lib/components/shared/action-card.js";
+import "./components/page-body.js";
+import "../../lib/components/widgets/switch-widget.js";
+import DappLib from "@dappstarter/dapplib";
+import { LitElement, html, customElement, property } from "lit-element";
 
-///(page-pre-content
-import '../../lib/components/shared/action-card.js';
-import './components/page-body.js';
-import '../../lib/components/widgets/switch-widget.js';
-import DappLib from '../../lib/dapp-lib';
+@customElement("contract-runstate-page")
+export default class ContractRunStatePage extends LitElement {
+  @property()
+  title;
+  @property()
+  category;
+  @property()
+  description;
 
-export default class ContractRunStatePage extends CustomElement {
+  createRenderRoot() {
+    return this;
+  }
 
-    constructor(...args) {
-        super([], ...args);
-        this.eventHandlerRegistered = false;
+  constructor(args) {
+    super(args);
+
+    this.eventHandlerRegistered = false;
+    if (!this.eventHandlerRegistered) {
+      this.eventHandlerRegistered = true;
+      DappLib.onContractRunStateChange(result => {
+        let resultPanel = this.querySelector("#resultPanel");
+        resultPanel.prepend(DappLib.getFormattedResultNode(result));
+        resultPanel.open();
+      });
     }
+  }
 
-    async render() {
-        let self = this;
+  render() {
+    /*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT RUN STATE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    return html`
+      <page-body
+        title="${this.title}"
+        category="${this.category}"
+        description="${this.description}"
+      >
+        <action-card
+          title="Is Contract Run State Active"
+          description="Check if contract run state is active"
+          action="isContractRunStateActive"
+          method="get"
+        >
+        </action-card>
 
-        let uiHtml = {
-            [CustomElement.UI_READ]: '',
-            [CustomElement.UI_WRITE]: '',
-            [CustomElement.UI_ADMIN]: ''
-        }
-///)
-///(ui-read
-///)
-///(ui-write
-///)
-///(ui-admin
-/*>>>>>>>>>>>>>>>>>>>>>>>>>>> ACCESS CONTROL: CONTRACT RUN STATE  <<<<<<<<<<<<<<<<<<<<<<<<<<*/
-        uiHtml[CustomElement.UI_ADMIN] += 
-`
-            <action-card 
-                title="Is Contract Run State Active" description="Check if contract run state is active"
-                action="isContractRunStateActive" method="${CustomElement.METHOD_GET}" fields="">
-            </action-card>
-
-            <action-card 
-                title="Set Contract Run State" description="Set contract run state to active or inactive"
-                action="setContractRunState" method="${CustomElement.METHOD_POST}" fields="mode">
-
-                    <switch-widget
-                        field="mode" label="Contract Run State" placeholder="">
-                    </switch-widget>
-                
-            </action-card>
-            <div class="col-12 m-5"></div>
-`
-///)
-///(page-post-content
-        let content = 
-`
-        <page-body title="${self.title}" category="${self.category}" description="${self.description}">
-            ${uiHtml[CustomElement.UI_READ]}
-            ${uiHtml[CustomElement.UI_WRITE]}
-            ${uiHtml[CustomElement.UI_ADMIN]}
-        </page-body>
-        <page-panel id="resultPanel"></page-panel>
-
-`
-        // Set 'Run State' switch value to correct state
-        let currentRunState = Boolean((await DappLib.isContractRunStateActive()).result);
-        self.innerHTML = content;
-
-        self.querySelector('[data-field=mode]').checked = currentRunState;
-
-        if (!self.eventHandlerRegistered) {
-            self.eventHandlerRegistered = true;
-            DappLib.onContractRunStateChange((result) => {
-                let resultPanel = self.querySelector('#resultPanel');
-                resultPanel.append(DappLib.getFormattedResultNode(result));
-                resultPanel.open();
-            });    
-        }
-    }
+        <action-card
+          title="Set Contract Run State"
+          description="Set contract run state to active or inactive"
+          action="setContractRunState"
+          method="post"
+          fields="mode"
+        >
+          <switch-widget field="mode" label="Contract Run State" placeholder="">
+          </switch-widget>
+        </action-card>
+      </page-body>
+      <page-panel id="resultPanel"></page-panel>
+    `;
+  }
 }
-
-customElements.define('contract-runstate-page', ContractRunStatePage);
-///)

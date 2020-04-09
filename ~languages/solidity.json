@@ -41,7 +41,7 @@
       "/README.md": {
         "processor": "filter"
       },
-      "/.babelrc": {
+      "/packages/client/.babelrc": {
         "processor": "filter"
       },
 

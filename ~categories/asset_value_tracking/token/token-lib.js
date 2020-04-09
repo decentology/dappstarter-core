@@ -127,16 +127,4 @@ class token {
     }
 
 ///)
-    static serverEvent() {
-///(server-event
-/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ASSET VALUE TRACKING: TOKEN  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-DappLib.onApproval((result) => {
-        console.log(result);
-});
-
-DappLib.onTransfer((result) => {
-    console.log(result);
-});
-///)
-    }
 }
