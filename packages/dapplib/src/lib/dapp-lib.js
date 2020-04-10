@@ -313,7 +313,7 @@ module.exports = class DappLib {
         }
 
         let resultNode = document.createElement('div');
-        resultNode.className = `note note-${retVal.type === DappLib.DAPP_RESULT_ERROR ? 'danger' : 'success'} m-3`; 
+        resultNode.className = `note ${retVal.type === DappLib.DAPP_RESULT_ERROR ? 'bg-red-400' : 'bg-green-400'} m-3 p-3`; 
         let closeMarkup = '<div class="float-right" onclick="this.parentNode.parentNode.removeChild(this.parentNode)" title="Dismiss" class="text-right mb-1 mr-2" style="cursor:pointer;">X</div>';    
         resultNode.innerHTML = closeMarkup + `${retVal.type === DappLib.DAPP_RESULT_ERROR ? '☹️' : '👍️'} ` + (Array.isArray(retVal[returnKey]) ? 'Result' : retVal.label) + ': ' + formatted + DappLib.formatHint(retVal.hint);
         // Wire-up clipboard copy
