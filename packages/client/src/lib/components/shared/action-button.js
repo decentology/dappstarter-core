@@ -1,4 +1,4 @@
-import DappLib from "@dappstarter/dapplib";
+import DappLib from "@trycrypto/dappstarter-dapplib";
 import { LitElement, html, customElement, property } from "lit-element";
 @customElement("action-button")
 export default class ActionButton extends LitElement {

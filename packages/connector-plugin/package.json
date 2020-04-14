@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "name": "@dappstarter/connector-plugin",
+    "name": "@trycrypto/dappstarter-connector-plugin",
     "node-red": {
         "nodes": {
             "dapp-connector": "dapp-connector.js",
@@ -8,7 +8,7 @@
         }
     },
     "dependencies": {
-        "@dappstarter/dapplib": "^0.1.0",
+        "@trycrypto/dappstarter-dapplib": "^0.1.0",
         "node-red": "^1.0.3",
         "rxjs": "^6.5.4",
         "web3": "^1.2.6"

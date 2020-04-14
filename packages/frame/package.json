@@ -1,11 +1,11 @@
 {
-  "name": "@dappstarter/frame",
+  "name": "@trycrypto/dappstarter-frame",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@craco/craco": "^5.6.3",
-    "@dappstarter/client": "^0.1.0",
-    "@dappstarter/dapplib": "^0.1.0",
+    "@trycrypto/dappstarter-client": "^0.1.0",
+    "@trycrypto/dappstarter-dapplib": "^0.1.0",
     "@emotion/core": "^10.0.27",
     "@emotion/styled": "^10.0.27",
     "@fortawesome/fontawesome-free": "^5.13.0",

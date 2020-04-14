@@ -46,26 +46,26 @@ If you encounter any problems at this step, visit [https://support.trycrypto.com
 
 ## Smart Contract
 
-`lerna run deploy --scope=@dappstarter/dapplib --stream` to compile contracts/*.sol files, deploy them to the blockchain. 
+`lerna run deploy --scope=@trycrypto/dappstarter-dapplib --stream` to compile contracts/*.sol files, deploy them to the blockchain. 
 
 ## Dapp
 
 Run the dapp in a separate terminal. You *must* have run `npm run deploy` for the dapp to see most recent smart contract changes.
 
-`lerna run dev --scope=@dappstarter/client --stream` runs the dapp on http://localhost:5001 using webpack dev server
+`lerna run dev --scope=@trycrypto/dappstarter-client --stream` runs the dapp on http://localhost:5001 using webpack dev server
 
 ## Server
 
 Run the server in a separate terminal. You *must* have run `npm run deploy` for the dapp to see most recent smart contract changes.
 
-`lerna run dev --scope=@dappstarter/server --stream` runs NodeJS server app on port 5002 with NestJS
+`lerna run dev --scope=@trycrypto/dappstarter-server --stream` runs NodeJS server app on port 5002 with NestJS
 
 ///(language:solidity
 ## Testing
 
 `test-config.js` contains settings used by test scripts
 
-Run tests using `lerna run test [test file] --scope=@dappstarter/dapplib --stream`
+Run tests using `lerna run test [test file] --scope=@trycrypto/dappstarter-dapplib --stream`
 ///)
 ## Production Builds
 

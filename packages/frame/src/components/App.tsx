@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import clsx from 'clsx'
 import { find, keys } from 'lodash'
-const truffleConfig = require('@dappstarter/dapplib/truffle-config')
-const manifest = require('@dappstarter/dapplib/manifest.json')
+const truffleConfig = require('@trycrypto/dappstarter-dapplib/truffle-config')
+const manifest = require('@trycrypto/dappstarter-dapplib/manifest.json')
 
 enum View {
   Client,

@@ -1,4 +1,4 @@
-import DappLib from "@dappstarter/dapplib";
+import DappLib from "@trycrypto/dappstarter-dapplib";
 import SvgIcons from "../widgets/svg-icons";
 import "../widgets/wait-widget";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";

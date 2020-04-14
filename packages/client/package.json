@@ -1,5 +1,5 @@
 {
-  "name": "@dappstarter/client",
+  "name": "@trycrypto/dappstarter-client",
   "version": "0.1.0",
   "description": "Dapp scaffolding created with DappStarter",
   "directories": {
@@ -49,7 +49,7 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
-    "@dappstarter/dapplib": "^0.1.0",
+    "@trycrypto/dappstarter-dapplib": "^0.1.0",
     "@grubersjoe/slide-menu": "1.2.3",
     "@truffle/hdwallet-provider": "1.0.32",
     "@uppy/core": "^1.7.1",

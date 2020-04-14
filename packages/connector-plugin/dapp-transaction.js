@@ -2,9 +2,9 @@ const Web3 = require("web3");
 const { readFileSync } = require("fs");
 const { join } = require("path");
 const { promisify } = require("util");
-const dappConfig = require("@dappstarter/dapplib/src/dapp-config.json");
-const truffleConfig = require("@dappstarter/dapplib/truffle-config");
-const dappStateAbi = require("@dappstarter/dapplib/build/contracts/DappState.json")
+const dappConfig = require("@trycrypto/dappstarter-dapplib/src/dapp-config.json");
+const truffleConfig = require("@trycrypto/dappstarter-dapplib/truffle-config");
+const dappStateAbi = require("@trycrypto/dappstarter-dapplib/build/contracts/DappState.json")
   .abi;
 module.exports = function(RED) {
   _contract = null;
