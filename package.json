@@ -1,6 +1,6 @@
 {
-  "name": "root",
-  "private": true,
+  "name": "@trycrypto/dappstarter-hypergen",
+  "version": "1.0.0",
   "scripts": {
     "dev": "lerna run dev --no-sort --stream --parallel"
   },
