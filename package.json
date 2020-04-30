@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
+    "bootstrap": "lerna boostrap",
     "dev": "lerna run dev --no-sort --stream --parallel"
   },
   "devDependencies": {
