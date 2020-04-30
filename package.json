@@ -1,6 +1,5 @@
 {
   "name": "@trycrypto/dappstarter-hypergen",
-  "private": true,
   "version": "1.0.0",
   "scripts": {
     "bootstrap": "lerna boostrap",
