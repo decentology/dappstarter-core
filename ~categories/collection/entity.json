@@ -21,7 +21,9 @@
             "default": "Item",
             "minLength": 3,
             "maxLength": 20,
-            "description": "Limit: 30 characters"
+            "description": "Limit: 30 characters",
+            "required": true
+
         },
         {
             "name": "plural",
@@ -31,8 +33,14 @@
             "default": "Items",
             "minLength": 3,
             "maxLength": 20,
-            "description": "Limit: 30 characters"
+            "description": "Limit: 30 characters",
+            "required": true
+
         }
     ],
-    "dependencies": {}
+    "dependencies": {
+        "access_control": [
+            "administrator_role"
+        ]
+    }
 }

@@ -12,16 +12,39 @@ contract access_control_contract_runstate {
 ///(state
     struct EntityData {
         bool exists;
+        bytes32 id;
+        address creator;
         bytes32 textInfo;
         uint256 numericInfo;
     }
 
-    mapping(address => EntityData) entities;              // Store some data
-    address[] entityList;                                   // Entity lookup
+    mapping(bytes32 => EntityData) entities;              // Store some data
+    bytes32[] public entityList;                                   // Entity lookup
+
+    mapping(address => bytes32[]) public entitiesByCreator; 
+
+    mapping(uint256 => bytes32[]) public entitiesByPage;   
+    uint constant ENTITIES_DOCS_PAGE_SIZE = 50;
+    uint256 public entitiesLastPage = 0;
+
 ///)
 
 ///(events
-    event EntityAdd(address indexed entity, bytes32 indexed textInfo, uint256 numericInfo);
+    event EntityAdd
+                    (
+                        bytes32 indexed id, 
+                        address indexed entity, 
+                        bytes32 indexed textInfo, 
+                        uint256 numericInfo
+                    );
+
+    event EntityUpdate
+                    (
+                        bytes32 indexed id, 
+                        address indexed entity, 
+                        bytes32 indexed textInfo, 
+                        uint256 numericInfo
+                    );
 ///)
 
     constructor() public
@@ -41,7 +64,7 @@ contract access_control_contract_runstate {
                                 ) 
                                 external 
                                 view 
-                                returns(address[] memory) 
+                                returns(bytes32[] memory) 
     {
         /*
             Source: https://medium.codylamson.com/how-to-paginate-smart-contract-array-returns-cd6227479aa3
@@ -54,11 +77,11 @@ contract access_control_contract_runstate {
 
         // Return emptry array if already empty or index is out of bounds
         if ((entityList.length == 0) || (index > entityList.length.sub(1))) {
-            return new address[](0);
+            return new bytes32[](0);
         }
 
         // Create fixed length array because we cannot push to array in memory
-        address[] memory entityPage = new address[](resultsPerPage);
+        bytes32[] memory entityPage = new bytes32[](resultsPerPage);
 
         
         uint256 returnCounter = 0; 
@@ -67,7 +90,7 @@ contract access_control_contract_runstate {
             if (index < (entityList.length.sub(1))) {
                 entityPage[returnCounter] = entityList[index];
             } else {
-                entityPage[returnCounter] = address(0);
+                entityPage[returnCounter] = bytes32(0);
             }
 
             returnCounter++;
@@ -76,35 +99,102 @@ contract access_control_contract_runstate {
         return entityPage;
     }
 
-    function getEntityData
+    function getEntityCount
                         (
-                            address entity
                         ) 
                         external 
                         view 
-                        returns(bytes32, uint256) 
+                        returns(
+                            uint256 entityCount
+                        )
+
+
     {
-        return (entities[entity].textInfo, entities[entity].numericInfo);
+         entityCount = entityList.length;
     }    
 
-    function setEntityData
+
+    function getEntity
                         (
+                            bytes32 id
+                        ) 
+                        external 
+                        view 
+                        returns(
+                            address creator, 
+                            bytes32 textInfo, 
+                            uint256 numericInfo
+                        )
+
+
+    {
+         creator = entities[id].creator;
+         textInfo = entities[id].textInfo;
+         numericInfo = entities[id].numericInfo;
+    }    
+
+    function getEntitiesByCreator
+                        (
+                            address account
+                        )
+                        external
+                        view
+                        returns(bytes32[] memory)
+    {
+        require(account != address(0), "Invalid account");
+
+        return entitiesByCreator[account];
+    }
+
+    function getMyEntities
+                        (
+                        )
+                        external
+                        view
+                        returns(bytes32[] memory)
+    {
+
+        return entitiesByCreator[msg.sender];
+    }
+
+
+
+    function setEntity
+                        (
+                            bytes32 id,
                             bytes32 textInfo,
                             uint256 numericInfo   
                         ) 
                         external 
+                        requireContractAdmin
     {
-        if (!entities[msg.sender].exists) {
-            entityList.push(msg.sender);
-            emit EntityAdd(msg.sender, textInfo, numericInfo);
+        require(id[0] != 0, "entity Id cannot be empty");
+
+        // bytes32 id = keccak256(abi.encodePacked(msg.sender, now, textInfo));
+        if (!entities[id].exists) {
+            require(textInfo[0] != 0, "textInfo cannot be empty");
+
+            entityList.push(id);
+            entitiesByCreator[msg.sender].push(id);
+
+            if (entitiesByPage[entitiesLastPage].length == ENTITIES_DOCS_PAGE_SIZE) {
+                entitiesLastPage++;
+            }
+            entitiesByPage[entitiesLastPage].push(id);
+            emit EntityAdd(id, msg.sender, textInfo, numericInfo);
+        }else {
+            emit EntityUpdate(id, msg.sender, textInfo, numericInfo);
         }
 
-        entities[msg.sender] = EntityData({
+        entities[id] = EntityData({
                                 exists: true,
+                                id: id,
+                                creator: msg.sender,
                                 textInfo: textInfo,
                                 numericInfo: numericInfo
                             });
     }
+
 ///)
 
 }

@@ -1,0 +1,10 @@
+{
+    "blocks": {
+        "/blockchain/ethereum": true,
+        "/blockchain/ethereum/solidity": true,
+        "/category/collection/entity": true,
+        "/category/collection/entity/singular": "jury",
+        "/category/collection/entity/plural": "juries",
+        "/framework/react": true
+    }
+}
