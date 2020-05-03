@@ -14,8 +14,8 @@ contract access_control_contract_runstate {
         bool exists;
         bytes32 id;
         address creator;
-        bytes32 textInfo;
-        uint256 numericInfo;
+        bytes32 title;
+        uint256 count;
     }
 
     mapping(bytes32 => EntityData) entities;              // Store some data
@@ -34,16 +34,16 @@ contract access_control_contract_runstate {
                     (
                         bytes32 indexed id, 
                         address indexed entity, 
-                        bytes32 indexed textInfo, 
-                        uint256 numericInfo
+                        bytes32 indexed title, 
+                        uint256 count
                     );
 
     event EntityUpdate
                     (
                         bytes32 indexed id, 
                         address indexed entity, 
-                        bytes32 indexed textInfo, 
-                        uint256 numericInfo
+                        bytes32 indexed title, 
+                        uint256 count
                     );
 ///)
 
@@ -122,15 +122,15 @@ contract access_control_contract_runstate {
                         view 
                         returns(
                             address creator, 
-                            bytes32 textInfo, 
-                            uint256 numericInfo
+                            bytes32 title, 
+                            uint256 count
                         )
 
 
     {
          creator = entities[id].creator;
-         textInfo = entities[id].textInfo;
-         numericInfo = entities[id].numericInfo;
+         title = entities[id].title;
+         count = entities[id].count;
     }    
 
     function getEntitiesByCreator
@@ -162,17 +162,17 @@ contract access_control_contract_runstate {
     function setEntity
                         (
                             bytes32 id,
-                            bytes32 textInfo,
-                            uint256 numericInfo   
+                            bytes32 title,
+                            uint256 count   
                         ) 
                         external 
                         requireContractAdmin
     {
         require(id[0] != 0, "entity Id cannot be empty");
 
-        // bytes32 id = keccak256(abi.encodePacked(msg.sender, now, textInfo));
+        // bytes32 id = keccak256(abi.encodePacked(msg.sender, now, title));
         if (!entities[id].exists) {
-            require(textInfo[0] != 0, "textInfo cannot be empty");
+            require(title[0] != 0, "title cannot be empty");
 
             entityList.push(id);
             entitiesByCreator[msg.sender].push(id);
@@ -181,17 +181,17 @@ contract access_control_contract_runstate {
                 entitiesLastPage++;
             }
             entitiesByPage[entitiesLastPage].push(id);
-            emit EntityAdd(id, msg.sender, textInfo, numericInfo);
+            emit EntityAdd(id, msg.sender, title, count);
         }else {
-            emit EntityUpdate(id, msg.sender, textInfo, numericInfo);
+            emit EntityUpdate(id, msg.sender, title, count);
         }
 
         entities[id] = EntityData({
                                 exists: true,
                                 id: id,
                                 creator: msg.sender,
-                                textInfo: textInfo,
-                                numericInfo: numericInfo
+                                title: title,
+                                count: count
                             });
     }
 

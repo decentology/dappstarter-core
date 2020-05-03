@@ -18,8 +18,8 @@ class entity {
             ); 
 
             if (result.callData) {
-                result.callData.textInfo = DappLib.toAscii(result.callData.textInfo);
-                result.callData.numericInfo = (new BN(result.callData.numericInfo)).toString(10);
+                result.callData.title = DappLib.toAscii(result.callData.title);
+                result.callData.count = (new BN(result.callData.count)).toString(10);
             }
             return {
                 type: DappLib.DAPP_RESULT_OBJECT,
@@ -116,8 +116,8 @@ class entity {
                 },
                 'setEntity',
                 DappLib.fromAscii(id, 32),
-                DappLib.fromAscii(data.textInfo, 32),
-                new BN(data.numericInfo)
+                DappLib.fromAscii(data.title, 32),
+                new BN(data.count)
             );
             return {
                 type: DappLib.DAPP_RESULT_OBJECT,

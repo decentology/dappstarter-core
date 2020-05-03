@@ -19,8 +19,8 @@ it(`can add a new entity using setEntity()`, async function () {
     try {
         // arrange
         let entity = {
-            textInfo: "Hello World",
-            numericInfo:  42,
+            title: "Hello World",
+            count:  42,
             from: config.owner
         }
 
@@ -32,8 +32,8 @@ it(`can add a new entity using setEntity()`, async function () {
         let returnValue = (await DappLib.getEntity(entity)).result;
 
         assert.equal(entity.from, returnValue.creator, "Incorrect creator value");
-        assert.equal(entity.textInfo, returnValue.textInfo, "Incorrect textInfo value");
-        assert.equal(entity.numericInfo.toString(10), returnValue.numericInfo.toString(10), "Incorrect numericInfo value");
+        assert.equal(entity.title, returnValue.title, "Incorrect title value");
+        assert.equal(entity.count.toString(10), returnValue.count.toString(10), "Incorrect count value");
 
     }
     catch(e) {
@@ -48,14 +48,14 @@ it(`can update an entity using setEntity()`, async function () {
     try {
         // arrange
         let entity = {
-            textInfo: "Hello World",
-            numericInfo:  42,
+            title: "Hello World",
+            count:  42,
             from: config.owner
         }
 
         let updatedEntity = {
-            textInfo: "GoodBye World",
-            numericInfo: 24,
+            title: "GoodBye World",
+            count: 24,
             from: config.owner
         }
 
@@ -70,8 +70,8 @@ it(`can update an entity using setEntity()`, async function () {
         let returnValue = (await DappLib.getEntity(entity)).result;
 
         assert.equal(updatedEntity.from, returnValue.creator, "Incorrect creator value");
-        assert.equal(updatedEntity.textInfo, returnValue.textInfo, "Incorrect textInfo value");
-        assert.equal(updatedEntity.numericInfo.toString(10), returnValue.numericInfo.toString(10), "Incorrect numericInfo value");
+        assert.equal(updatedEntity.title, returnValue.title, "Incorrect title value");
+        assert.equal(updatedEntity.count.toString(10), returnValue.count.toString(10), "Incorrect count value");
 
     }
     catch(e) {

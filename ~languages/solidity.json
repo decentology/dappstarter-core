@@ -115,6 +115,11 @@
               "ipfs-http-client": "41.0.0",
               "bs58": "4.0.1"
             }
+          },
+          "collection:entity": {
+            "dependencies": {
+              "bn.js": "5.0.0"
+            }
           }
         }
       },

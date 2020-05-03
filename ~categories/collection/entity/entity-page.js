@@ -1,15 +1,14 @@
 ///(page-post-content
 
-import '../../pages/entity-page.js';
 import '../../lib/components/shared/action-card.js';
 import './components/page-body.js';
 import '../../lib/components/widgets/text-widget.js';
+import "./components/page-panel.js";
 import '../../lib/components/widgets/number-widget.js';
 import DappLib from "@trycrypto/dappstarter-dapplib";
 import { LitElement, html, customElement, property } from "lit-element";
 
 @customElement("entity-page")
-
 export default class EntityPage extends LitElement {
     @property()
     title;
@@ -32,20 +31,20 @@ export default class EntityPage extends LitElement {
 
         setTimeout(() => {
 
-            DOM.elid('page').addEventListener('change', (e) => {
-                console.log("page change value", e.target.value)
-                DOM.elid('page').setAttribute('data-field', 'page');
-            });
+            // DOM.elid('page').addEventListener('change', (e) => {
+            //     console.log("page change value", e.target.value)
+            //     DOM.elid('page').setAttribute('data-field', 'page');
+            // });
     
-            DOM.elid('results').addEventListener('change', (e) => {
-                console.log("results per page change")
-                DOM.elid('results').setAttribute('data-field', 'resultsPerPage');
-            });
+            // DOM.elid('results').addEventListener('change', (e) => {
+            //     console.log("results per page change")
+            //     DOM.elid('results').setAttribute('data-field', 'resultsPerPage');
+            // });
     
-            document.querySelector("action-button[action=setEntity]").addEventListener('click', (e) => {
-                console.log("set entity click")
-                this.connectedCallback();
-            });
+            // document.querySelector("action-button[action=setEntity]").addEventListener('click', (e) => {
+            //     console.log("set entity click")
+            //     this.connectedCallback();
+            // });
     
         }, 0)
     }
@@ -56,11 +55,11 @@ export default class EntityPage extends LitElement {
         this.entitiesCount = json.result;
     }
 
-    async connectedCallback() {
-        await this.fetchCount();
-        this.render();
+//     async connectedCallback() {
+//         await this.fetchCount();
+//         this.render();
 
-    }
+// i    }
 
     showPageNumbers(){
         let optionsString = '';
@@ -85,76 +84,100 @@ export default class EntityPage extends LitElement {
     }
 
     render() {
-        let content = 
-html`
-        <page-body title="${this.title}" category="${this.category}" description="${this.description}">
-        <action-card 
-        title="Get Entity" description="Get entity details"
-        action="getEntity" method="${CustomElement.METHOD_GET}" fields="id">
+        return html`
+         <page-body
+  title="${this.title}"
+  category="${this.category}"
+  description="${this.description}"
+>
+  <action-card
+    title="Get Entity"
+    description="Get entity details"
+    action="getEntity"
+    method="get"
+    fields="id"
+  >
+    <number-widget field="id" label="Entity ID" placeholder="Entity ID">
+    </number-widget>
+  </action-card>
 
-        <number-widget 
-            field="id" label="Entity ID" placeholder="Entity ID">
-        </number-widget>
+  <action-card
+    title="Get Entities by Creator"
+    description="Get all Entity Ids where Account is the creator"
+    action="getEntitiesByCreator"
+    method="get"
+    fields="account"
+  >
+    <account-widget
+      field="account"
+      label="Account"
+      placeholder="Account address"
+    >
+    </account-widget>
+  </action-card>
 
-    </action-card>
+  <action-card
+    title="Get Entities by Page"
+    description="Get all Entities by page"
+    action="getEntitiesByPage"
+    method="get"
 
-    <action-card 
-        title="Get Entities by Creator" description="Get all Entity Ids where Account is the creator"
-        action="getEntitiesByCreator" method="${CustomElement.METHOD_GET}" fields="account">
+    fields="page resultsPerPage"
+  >
+    ${this.showResultsPerPage()} ${this.showPageNumbers()}
+  </action-card>
 
-            <account-widget 
-                field="account" label="Account" placeholder="Account address">
-            </account-widget>
+  <action-card
+    title="Add Entity"
+    description="Set entity details"
+    action="setEntity"
+    method="post"
+    fields="title count"
+  >
+    <text-widget
+      field="title"
+      label="Title"
+      placeholder="Title for entity"
+    >
+    </text-widget>
 
-    </action-card>
+    <number-widget
+      field="count"
+      label="Count"
+      placeholder="Count for entity"
+    >
+    </number-widget>
+  </action-card>
 
-    <action-card 
-        title="Get Entities by Page" description="Get all Entities by page"
-        action="getEntitiesByPage" method="${CustomElement.METHOD_GET}" fields="page resultsPerPage">
+  <action-card
+    title="Update Entity"
+    description="Set entity details"
+    action="setEntity"
+    method="post"
+    fields="title count id"
+  >
+    <number-widget field="id" label="Entity ID" placeholder="Entity ID">
+    </number-widget>
 
-        ${this.showResultsPerPage()}
-        ${this.showPageNumbers()}
+    <text-widget
+      field="title"
+      label="Title"
+      placeholder="Title for entity"
+    >
+    </text-widget>
 
-    </action-card>
+    <number-widget
+      field="count"
+      label="Count"
+      placeholder="Count for entity"
+    >
+    </number-widget>
+  </action-card>
+</page-body>
+<page-panel id="resultPanel"></page-panel>
 
-
-    <action-card
-    title="Add Entity" description="Set entity details"
-    action="setEntity" method="${CustomElement.METHOD_POST}" fields="textInfo numericInfo">
-
-        <text-widget
-            field="textInfo" label="Text" placeholder="Sample text value for entity">
-        </text-widget>
-
-        <number-widget
-            field="numericInfo" label="Number" placeholder="Sample numeric value for entity">
-        </number-widget>
-    
-</action-card>
-
-<action-card
-    title="Update Entity" description="Set entity details"
-    action="setEntity" method="${CustomElement.METHOD_POST}" fields="textInfo numericInfo id">
-
-        <number-widget 
-            field="id" label="Entity ID" placeholder="Entity ID">
-        </number-widget>
-
-        <text-widget
-            field="textInfo" label="Text" placeholder="Sample text value for entity">
-        </text-widget>
-
-        <number-widget
-            field="numericInfo" label="Number" placeholder="Sample numeric value for entity">
-        </number-widget>
-
-</action-card>
-        </page-body>
-        <page-panel id="resultPanel"></page-panel>
-`
-        return content
-
+     `;
     }
 } 
-
 ///)
+
