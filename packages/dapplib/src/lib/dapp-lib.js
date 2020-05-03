@@ -3,6 +3,7 @@ const Blockchain = require( './blockchain');
 const dappConfig = require( '../dapp-config.json');
 const ClipboardJS = require( 'clipboard');
 const SvgIcons = require( './components/widgets/svg-icons');
+const BN = requre('bn.js'); // Required for injected code
 
 ///+import
 
@@ -389,6 +390,14 @@ module.exports = class DappLib {
         }
     }
 
+    // https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
+    static getUniqueId() {
+        return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, function(c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+    
     static getConfig() {
         return dappConfig;
     }
