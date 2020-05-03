@@ -2,8 +2,8 @@
   "name": "@trycrypto/dappstarter-hypergen",
   "version": "1.0.0",
   "scripts": {
-    "bootstrap": "lerna boostrap",
-    "dev": "lerna run dev --no-sort --stream --parallel"
+    "bootsddrap": "npx lerna boostrap",
+    "dev": "npx lerna run dev --no-sort --stream --parallel"
   },
   "devDependencies": {
     "lerna": "^3.20.2"
