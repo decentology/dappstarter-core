@@ -3,7 +3,7 @@ const Blockchain = require( './blockchain');
 const dappConfig = require( '../dapp-config.json');
 const ClipboardJS = require( 'clipboard');
 const SvgIcons = require( './components/widgets/svg-icons');
-const BN = requre('bn.js'); // Required for injected code
+const BN = require('bn.js'); // Required for injected code
 
 ///+import
 
