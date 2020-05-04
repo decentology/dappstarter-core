@@ -103,7 +103,6 @@ class entity {
         }
     
     
-    
         static async setEntity(data) {
             let id = data.id ? data.id : DappLib.getUniqueId();
             let result = await Blockchain.post({
@@ -129,7 +128,6 @@ class entity {
                 hint: `Verify Entity was added by using "Get Entity."`
             }
         }
-    
 ///)
         static serverEvent() {
 ///(server-event
