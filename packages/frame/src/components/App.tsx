@@ -122,7 +122,7 @@ export default () => {
                 </svg>
               </button>
             </li>
-            <li className={clsx({ active: selected === View.Contract })}>
+            {/* <li className={clsx({ active: selected === View.Contract })}>
               <button
                 title="Smart Contract"
                 onClick={() => setSelected(View.Contract)}
@@ -147,8 +147,8 @@ export default () => {
                   <line x1="12" y1="22.08" x2="12" y2="12"></line>
                 </svg>
               </button>
-            </li>
-            <li className={clsx({ active: selected === View.Logs })}>
+            </li> */}
+            {/* <li className={clsx({ active: selected === View.Logs })}>
               <button title="Logs" onClick={() => setSelected(View.Logs)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +170,7 @@ export default () => {
                   <line x1="3" y1="18" x2="3.01" y2="18"></line>
                 </svg>
               </button>
-            </li>
+            </li> */}
           </ul>
         </nav>
         <div className="account">
