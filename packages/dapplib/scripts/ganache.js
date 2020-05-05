@@ -3,7 +3,7 @@ const spawn = require("cross-spawn");
 const ganache = spawn("npx", [
   "ganache-cli",
   "--mnemonic",
-  `${truffleConfig.mnemonic}`,
+  `"${truffleConfig.mnemonic}"`,
   "-p",
   "7545"
 ]);
