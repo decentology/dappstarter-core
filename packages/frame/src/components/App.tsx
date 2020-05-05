@@ -148,7 +148,7 @@ export default () => {
                 </svg>
               </button>
             </li> */}
-            {/* <li className={clsx({ active: selected === View.Logs })}>
+            <li className={clsx({ active: selected === View.Logs })}>
               <button title="Logs" onClick={() => setSelected(View.Logs)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -170,13 +170,13 @@ export default () => {
                   <line x1="3" y1="18" x2="3.01" y2="18"></line>
                 </svg>
               </button>
-            </li> */}
+            </li>
           </ul>
         </nav>
         <div className="account">
           <div>
             <span className="avatar">
-              <img src="https://via.placeholder.com/32" alt="" />
+              <img src="https://uploads-ssl.webflow.com/5dea4f8b31edea3328b9a0f6/5e26f87654abf8eaf9235d7d_ethereum.png" alt="" />
             </span>
             <div className="capitalize">
               <strong>{manifest.name}</strong>
