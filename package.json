@@ -2,7 +2,7 @@
   "name": "@trycrypto/dappstarter-hypergen",
   "version": "1.0.0",
   "scripts": {
-    "bootstrap": "npx lerna boostrap",
+    "bootstrap": "npx lerna bootstrap",
     "dev": "npx lerna run dev --no-sort --stream --parallel"
   },
   "devDependencies": {
