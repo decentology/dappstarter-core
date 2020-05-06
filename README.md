@@ -12,6 +12,8 @@ In order to develop and build "My Dapp," the following pre-requisites must be in
 
 * [Visual Studio Code](https://code.visualstudio.com/download) (or any IDE for editing Javascript)
 * [NodeJS](https://nodejs.org/en/download/)
+///(language:solidity
+///)
 
 # Installation
 
@@ -19,7 +21,7 @@ Using a terminal (or command prompt), change to the folder containing the projec
 
 ///(blockchain:ethereum
 Note: You may see some npm warnings about "web3-bzz" after dependencies are installed. These can be ignored as the associated code is never invoked.
-
+///)
 # Build, Deploy and Test
 
 Using a terminal (or command prompt), change to the folder containing the project files and type: `npm run dev` This will run all the dev scripts in each project package.json.
