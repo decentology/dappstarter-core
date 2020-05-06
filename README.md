@@ -11,12 +11,7 @@ This project is for the blockchain application My Dapp. It contains code for the
 In order to develop and build "My Dapp," the following pre-requisites must be installed:
 
 * [Visual Studio Code](https://code.visualstudio.com/download) (or any IDE for editing Javascript)
-* [NodeJS v10.x](https://nodejs.org/en/download/)
-///(language:solidity
-* [Solidity v0.5.11](https://www.npmjs.com/package/solc)
-* [Truffle v5.0.7](https://truffleframework.com/truffle)
-* [Ganache v2.0.0](https://truffleframework.com/ganache) - blockchain simulator for Ethereum
-///)
+* [NodeJS v12.x](https://nodejs.org/en/download/)
 
 # Installation
 
@@ -25,20 +20,6 @@ Using a terminal (or command prompt), change to the folder containing the projec
 ///(blockchain:ethereum
 Note: You may see some npm warnings about "web3-bzz" after dependencies are installed. These can be ignored as the associated code is never invoked.
 
-## Ganache Settings (for Ethereum only; skip for other blockchains)
-
-Launch the Ganache GUI, then create a new workspace with any name of your choice. Once the workspace is active, click the gear icon and complete these configuration steps:
-
-- Workspace Tab: Truffle Projects: Select "Add Project" and select "truffle-config.js" from the same folder as this README.md file
-
-- Accounts & Keys Tab: Mnemonic (field with 12 or more words): Copy/paste the words below.
-
-  ### [] ///@{ "___test-mnemonic___": "[]"}
-
-  These keywords are used to auto-generate accounts with private keys for development. If the keywords in "truffle-config.js" (which are the same as above) and Ganache don't match, you will not be able to deploy your Smart Contracts to Ganache.
-
-- Server Tab: Check that "Port Number" is "7545" and "Network ID = 5777"
-///)
 # Build, Deploy and Test
 
 Using a terminal (or command prompt), change to the folder containing the project files and type: `npm run dev` This will run all the dev scripts in each project package.json.
