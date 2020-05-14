@@ -13,30 +13,6 @@
         "children": "form"
     },
     "parameters": [
-        {
-            "name": "singular",
-            "type": "string",
-            "title": "Singular Name",
-            "placeholder": "e.g. User",
-            "default": "Item",
-            "minLength": 3,
-            "maxLength": 20,
-            "description": "Limit: 30 characters",
-            "required": true
-
-        },
-        {
-            "name": "plural",
-            "type": "string",
-            "title": "Plural Name",
-            "placeholder": "e.g. Users",
-            "default": "Items",
-            "minLength": 3,
-            "maxLength": 20,
-            "description": "Limit: 30 characters",
-            "required": true
-
-        }
     ],
     "dependencies": {
         "access_control": [
