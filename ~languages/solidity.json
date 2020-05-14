@@ -100,12 +100,6 @@
               "@truffle/hdwallet-provider": "1.0.32",
               "web3": "1.2.6"
             }
-          },
-          "tomochain": {
-            "devDependencies": {
-              "@truffle/hdwallet-provider": "1.0.29",
-              "web3": "1.2.6"
-            }
           }
         },
         "block": {
