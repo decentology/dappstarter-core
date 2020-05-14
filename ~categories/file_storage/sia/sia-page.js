@@ -58,7 +58,7 @@ export default class SiaPage extends LitElement {
 
             <action-card 
                 title="Add Document" description="Upload document to Sia and add hash to contract"
-                action="addSiaDocument" method="get" fields="files label mode"
+                action="addSiaDocument" method="post" fields="files label mode"
                 target="card-body-addSiaDocument"
                 message="Waiting for Sia upload and smart contract transaction">
                     <text-widget
