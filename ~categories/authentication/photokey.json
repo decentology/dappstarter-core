@@ -1,6 +1,6 @@
 {
-    "name": "photoblock",
-    "title": "Photoblock",
+    "name": "photokey",
+    "title": "PhotoKey",
     "description": "OpenID Connect using PKCE for single-sign-on to blockchain accounts",
     "imageUrl": "",
     "help": {

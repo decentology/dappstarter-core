@@ -14,5 +14,5 @@
     },
     "blockchains": ["ethereum", "harmony", "klaytn"],
     "languages": ["solidity"],
-    "children": ["photoblock"]
+    "children": ["photokey"]
 }
