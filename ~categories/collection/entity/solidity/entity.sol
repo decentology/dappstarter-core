@@ -16,18 +16,21 @@ contract access_control_contract_runstate {
         uint256 count;
     }
 
-    mapping(bytes32 => EntityData) entities;              // Store some data
-    bytes32[] public entityList;                                   // Entity lookup
+    mapping(bytes32 => EntityData) entities;                // Store some data
+    bytes32[] public entityList;                            // Entity lookup
 
-    mapping(address => bytes32[]) public entitiesByCreator; 
+    mapping(address => bytes32[]) public entitiesByCreator; // Entities for which an account is the creator
 
-    mapping(uint256 => bytes32[]) public entitiesByPage;   
+    mapping(uint256 => bytes32[]) public entitiesByPage;    // Entities organized by page
     uint constant ENTITIES_DOCS_PAGE_SIZE = 50;
     uint256 public entitiesLastPage = 0;
 
 ///)
 
 ///(events
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> COLLECTION: ENTITY  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    // Event fired when Entity is added
     event EntityAdd
                     (
                         bytes32 indexed id, 
@@ -36,6 +39,7 @@ contract access_control_contract_runstate {
                         uint256 count
                     );
 
+    // Event fired when Entity is updated
     event EntityUpdate
                     (
                         bytes32 indexed id, 
@@ -55,6 +59,15 @@ contract access_control_contract_runstate {
 ///)
 
 ///(functions
+
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> COLLECTION: ENTITY  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+
+    /**
+    * @dev Gets Entities by page
+    *
+    * @param page Page number you want to retrieve
+    * @param resultsPerPage Amount of Entities displayed per page
+    */
     function getEntitiesByPage
                                 (
                                     uint256 page, 
@@ -68,6 +81,9 @@ contract access_control_contract_runstate {
         return DappLib.getItemsByPage(page, resultsPerPage, entityList);
     }
 
+    /**
+    * @dev Gets the amount of Entities in the collection
+    */
     function getEntityCount
                         (
                         ) 
@@ -82,7 +98,11 @@ contract access_control_contract_runstate {
          entityCount = entityList.length;
     }    
 
-
+    /**
+    * @dev Gets a single Entity by id
+    *
+    * @param id Id of an Entity
+    */
     function getEntity
                         (
                             bytes32 id
@@ -102,6 +122,11 @@ contract access_control_contract_runstate {
          count = entities[id].count;
     }    
 
+    /**
+    * @dev Gets all Entities of a specific creator
+    *
+    * @param account Address of creator's account 
+    */
     function getEntitiesByCreator
                         (
                             address account
@@ -126,8 +151,13 @@ contract access_control_contract_runstate {
         return entitiesByCreator[msg.sender];
     }
 
-
-
+    /**
+    * @dev Sets an Entity
+    *
+    * @param id Unique identifier 
+    * @param title Title of Entity
+    * @param count Numeric value of Entity
+    */
     function setEntity
                         (
                             bytes32 id,
@@ -137,9 +167,10 @@ contract access_control_contract_runstate {
                         external 
                         requireContractAdmin
     {
+        // Prevent empty Id field
         require(id[0] != 0, "entity Id cannot be empty");
 
-        // bytes32 id = keccak256(abi.encodePacked(msg.sender, now, title));
+        // Add Entity if it does not exist, otherwise update the existing Entity
         if (!entities[id].exists) {
             require(title[0] != 0, "title cannot be empty");
 
@@ -163,7 +194,6 @@ contract access_control_contract_runstate {
                                 count: count
                             });
     }
-
 ///)
 
 }
