@@ -48,114 +48,114 @@ export default class EntityPage extends LitElement {
             let pageNumbers = Math.ceil(parseInt(this.entitiesCount) / this.pagesInfo.resultsPerPage);
 
             for (let step = 1; step <= pageNumbers; step++) {
-                optionsString = optionsString + '<option value="' + `${step}` + '">' + `${step}` + '</option>'
-            }
+                optionsString = optionsString + '<option value="' + `${step}` + '">' + `${step}` + '</option>';
+            };
         } else {
             //less than one page of results
-            optionsString = '<option value="1">1</option>'
-        }
-        return '<div style="display: inline-block; margin-right: 20pt;"><label for="page">Page Number:</label><select id="page" data-field="page">' + optionsString + '</select></div>'
+            optionsString = '<option value="1">1</option>';
+        };
+        return '<div style="display: inline-block; margin-right: 20pt;"><label for="page">Page Number:</label><select id="page" data-field="page">' + optionsString + '</select></div>';
     }
 
     showResultsPerPage() {
         return (
             '<div style="display: inline-block"><label for="results">Results Per Page:</label><select id="results" data-field="resultsPerPage"><option value="10">10</option><option value="20">20</option><option value="30">30</option><option value="40">40</option> </select></div>'
-        )
+        );
     }
 
     render() {
         return html`
-         <page-body
-            title="${this.title}"
-            category="${this.category}"
-            description="${this.description}"
-        >
-            <action-card
-                title="Get Entity"
-                description="Get entity details"
-                action="getEntity"
-                method="get"
-                fields="id"
+            <page-body
+                title="${this.title}"
+                category="${this.category}"
+                description="${this.description}"
             >
-                <number-widget field="id" label="Entity ID" placeholder="Entity ID">
+                <action-card
+                    title="Get Entity"
+                    description="Get entity details"
+                    action="getEntity"
+                    method="get"
+                    fields="id"
+                >
+                    <number-widget field="id" label="Entity ID" placeholder="Entity ID">
+                        </number-widget>
+                    </action-card>
+
+                    <action-card
+                        title="Get Entities by Creator"
+                        description="Get all Entity Ids where Account is the creator"
+                        action="getEntitiesByCreator"
+                        method="get"
+                        fields="account"
+                    >
+                    <account-widget
+                        field="account"
+                        label="Account"
+                        placeholder="Account address"
+                    >
+                    </account-widget>
+                </action-card>
+
+                <action-card
+                    title="Get Entities by Page"
+                    description="Get all Entities by page"
+                    action="getEntitiesByPage"
+                    method="get"
+
+                    fields="page resultsPerPage"
+                >
+                    <div id="pageNumbers"></div>
+                </action-card>
+
+                <action-card
+                    title="Add Entity"
+                    description="Set entity details"
+                    action="setEntity"
+                    method="post"
+                    fields="title count"
+                >
+                    <text-widget
+                        field="title"
+                        label="Title"
+                        placeholder="Title for entity"
+                    >
+                    </text-widget>
+
+                    <number-widget
+                        field="count"
+                        label="Count"
+                        placeholder="Count for entity"
+                    >
                     </number-widget>
                 </action-card>
 
                 <action-card
-                    title="Get Entities by Creator"
-                    description="Get all Entity Ids where Account is the creator"
-                    action="getEntitiesByCreator"
-                    method="get"
-                    fields="account"
+                    title="Update Entity"
+                    description="Set entity details"
+                    action="setEntity"
+                    method="post"
+                    fields="title count id"
                 >
-                <account-widget
-                    field="account"
-                    label="Account"
-                    placeholder="Account address"
-                >
-                </account-widget>
-            </action-card>
+                    <number-widget field="id" label="Entity ID" placeholder="Entity ID">
+                    </number-widget>
 
-            <action-card
-                title="Get Entities by Page"
-                description="Get all Entities by page"
-                action="getEntitiesByPage"
-                method="get"
+                    <text-widget
+                        field="title"
+                        label="Title"
+                        placeholder="Title for entity"
+                    >
+                    </text-widget>
 
-                fields="page resultsPerPage"
-            >
-                <div id="pageNumbers"></div>
-            </action-card>
-
-            <action-card
-                title="Add Entity"
-                description="Set entity details"
-                action="setEntity"
-                method="post"
-                fields="title count"
-            >
-                <text-widget
-                    field="title"
-                    label="Title"
-                    placeholder="Title for entity"
-                >
-                </text-widget>
-
-                <number-widget
-                    field="count"
-                    label="Count"
-                    placeholder="Count for entity"
-                >
-                </number-widget>
-            </action-card>
-
-            <action-card
-                title="Update Entity"
-                description="Set entity details"
-                action="setEntity"
-                method="post"
-                fields="title count id"
-            >
-                <number-widget field="id" label="Entity ID" placeholder="Entity ID">
-                </number-widget>
-
-                <text-widget
-                    field="title"
-                    label="Title"
-                    placeholder="Title for entity"
-                >
-                </text-widget>
-
-                <number-widget
-                    field="count"
-                    label="Count"
-                    placeholder="Count for entity"
-                >
-                </number-widget>
-            </action-card>
-        </page-body>
-    <page-panel id="resultPanel"></page-panel>
-     `;
+                    <number-widget
+                        field="count"
+                        label="Count"
+                        placeholder="Count for entity"
+                    >
+                    </number-widget>
+                </action-card>
+            </page-body>
+            <page-panel id="resultPanel"></page-panel>
+        `;
     }
 }
 ///)
