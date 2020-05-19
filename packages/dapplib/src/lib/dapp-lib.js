@@ -343,6 +343,11 @@ module.exports = class DappLib {
         return icon.replace('<svg ', `<svg data-copy="${data}" `)
     }
 
+    static getAccounts() {
+        let accounts = dappConfig.accounts;
+        return accounts;
+    }
+
     static fromAscii(str, padding) {
 
         if (str.startsWith('0x') || !padding) {
