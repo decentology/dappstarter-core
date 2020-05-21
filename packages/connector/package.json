@@ -10,7 +10,7 @@
   },
   "private": "true",
   "scripts": {
-    "start": "nodemon -V -delay 2.5 -- packages/node_modules/node-red/red.js --settings settings.js",
+    "start": "nodemon -V --delay 2.5 -- packages/node_modules/node-red/red.js --settings settings.js",
     "dev": "wait-on ../dapplib/src/dapp-config.json && npm run build && npm run start",
     "test": "grunt",
     "build": "grunt build",
