@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "scripts": {
     "bootstrap": "npx lerna bootstrap",
-    "prestart": "node precheck.js",
     "start": "npx lerna run dev --no-sort --stream --parallel",
     "dev": "npm start"
   },

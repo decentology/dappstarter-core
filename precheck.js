@@ -9,7 +9,7 @@ const preCheck = async (port) => {
 
 (async () => {
   try {
-    await preCheck(3000);
+    await preCheck(5000);
     await preCheck(5001);
     await preCheck(5002);
     await preCheck(5003);
