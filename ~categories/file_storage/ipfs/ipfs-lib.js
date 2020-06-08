@@ -123,23 +123,18 @@ class ipfs {
             pin: true,
             progress: progressCallback
         }
-        let result = [];
+        let results = [];
 
-        let response = await ipfs.add(filesToUpload, options);
-
-        if (response.length && (response.length > 0)) {
-            if (wrapWithDirectory) {
-                // CID of wrapping directory is returned last
-                let folder = response[response.length - 1];
-                result.push(Object.assign({ }, folder, DappLib._decodeMultihash(folder.hash)));
-            } else {
-                for (let f = 0; f < response.length; f++) {
-                    let file = response[f];
-                    result.push(Object.assign({ }, file, DappLib._decodeMultihash(file.hash)));
-                }
+        for await (const result of ipfs.add(filesToUpload, options)) {
+            if (wrapWithDirectory && result.path !== "") {
+                continue;
             }
+            results.push(
+                Object.assign({}, result, DappLib._decodeMultihash(result.cid.string))
+            );
         }
-        return result;
+
+        return results;
     }
 
     static async onAddIpfsDocument(callback) {

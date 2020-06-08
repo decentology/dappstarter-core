@@ -5,7 +5,7 @@ import "../../lib/components/shared/action-card.js";
 import "../../lib/components/widgets/text-widget.js";
 import "../../lib/components/widgets/number-widget.js";
 import "../../lib/components/widgets/account-widget.js";
-import UploadWidget from "../../lib/components/widgets/upload-widget.js";
+import "../../lib/components/widgets/upload-widget.js";
 import "@uppy/core/dist/style.css";
 import "@uppy/dashboard/dist/style.css";
 import DappLib from "@trycrypto/dappstarter-dapplib";
@@ -26,7 +26,7 @@ export default class IpfsPage extends LitElement {
 
   constructor(args) {
     super(args);
-    this.mode = "true";
+    this.mode = 'single'; ///@{ "mode": "single" }
     this.files = [];
     this.eventHandlerRegistered = false;
     if (!this.eventHandlerRegistered) {
