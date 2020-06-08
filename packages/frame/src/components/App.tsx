@@ -44,7 +44,7 @@ export default () => {
         setTimeout(() => checkAppReady(view), 1000)
       }
     },
-    []
+    [],
   )
 
   useEffect(() => {
