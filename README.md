@@ -17,14 +17,14 @@ In order to develop and build "My Dapp," the following pre-requisites must be in
 
 # Installation
 
-Using a terminal (or command prompt), change to the folder containing the project files and type: `npm run bootstrap` This will fetch all required dependencies. The process will take 1-3 minutes and while it is in progress you can move on to the next step.
+Using a terminal (or command prompt), change to the folder containing the project files and type: `yarn` This will fetch all required dependencies. The process will take 1-3 minutes and while it is in progress you can move on to the next step.
 
 ///(blockchain:ethereum
 Note: You may see some npm warnings about "web3-bzz" after dependencies are installed. These can be ignored as the associated code is never invoked.
 ///)
 # Build, Deploy and Test
 
-Using a terminal (or command prompt), change to the folder containing the project files and type: `npm run dev` This will run all the dev scripts in each project package.json.
+Using a terminal (or command prompt), change to the folder containing the project files and type: `yarn start` This will run all the dev scripts in each project package.json.
 
 To view your dapp, open your browser to http://localhost:5000
 

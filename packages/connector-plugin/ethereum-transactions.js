@@ -9,7 +9,7 @@ const dappStateAbi = require("@trycrypto/dappstarter-dapplib/build/contracts/Dap
 module.exports = function(RED) {
   _contract = null;
 
-  function DappTransactionNode(config) {
+  function EthereumTransactionsNode(config) {
     let node = this;
     RED.nodes.createNode(this, config);
     (async function() {
@@ -44,7 +44,7 @@ module.exports = function(RED) {
     return connection;
   }
 
-  RED.nodes.registerType("dapp-transaction", DappTransactionNode, {
+  RED.nodes.registerType("ethereum-transactions", EthereumTransactionsNode, {
     settings: {
       dappTransactionAbi: {
         value: dappStateAbi,

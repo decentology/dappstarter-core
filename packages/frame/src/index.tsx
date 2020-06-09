@@ -1,17 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
-import { Router } from 'react-router-dom'
-import App from '@/components/App'
-import store from '@/features'
-import history from '@/utils/history'
-import './styles.css'
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import store, { history } from "./features";
+import { Provider } from "react-redux";
+import { Router } from "react-router-dom";
+import './style.css'
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Router history={history}>
+  <React.StrictMode>
+    <Provider store={store}>
+      <Router history={history}></Router>
       <App />
-    </Router>
-  </Provider>,
-  document.getElementById('root'),
-)
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById("root")
+);

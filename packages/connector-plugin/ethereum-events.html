@@ -56,8 +56,8 @@
             document.getElementById('abiFile').removeEventListener('change', onFileEventHandler);
         }
 
-        RED.nodes.registerType('dapp-connector', {
-            category: 'function',
+        RED.nodes.registerType('ethereum-events', {
+            category: 'trycrypto',
             color: '#a6bbcf',
             defaults: {
                 name: {
@@ -73,9 +73,6 @@
                 abi: {
                     value: RED.settings.dappConnectorAbi
                 },
-                rawr: {
-                    value: RED.settings.dappConnectorRawr
-                },
                eventName: {
                     value: "",
                     required: true
@@ -84,7 +81,7 @@
             outputs: 1,
             icon: 'ethjs.png',
             label: function () {
-                return this.name || "dapp-connector";
+                return this.name || "ethereum events";
             },
             oneditprepare: function () {
                 _node = this;
@@ -111,7 +108,7 @@
 </script>
 
 
-<script type="text/html" data-template-name="dapp-connector">
+<script type="text/html" data-template-name="ethereum-events">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -127,11 +124,11 @@
     <div class="form-row">
         <label for="node-input-eventName"><i class="fa fa-tasks"></i> Event Name</label>
         <select id="node-input-eventName" style="width:260px">
-            <option />
+            <option></option>
         </select>
     </div>
 </script>
 
-<script type="text/html" data-help-name="dapp-connector">
+<script type="text/html" data-help-name="ethereum-events">
     <p>DappConnector bridges existing data to blockchains</p>
 </script>

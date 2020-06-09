@@ -244,7 +244,7 @@ module.exports = {
   // added to the end of the palette.
   // If not set, the following default order is used:
   //paletteCategories: ['subflows','flow','input','output','function','parser','social','mobile','storage','analysis','advanced'],
-
+  paletteCategories: ['trycrypto','common','function'],
   // Configure the logging output
   logging: {
     // Only console logging is currently supported

@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import { createStore, compose, combineReducers } from 'redux'
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import './index.css';
 import App from './App.jsx';
 import * as reducers from './reducers';

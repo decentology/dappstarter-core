@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import clsx from 'clsx'
-import { find, keys } from 'lodash'
+import { find, keys } from 'lodash-es'
 const manifest = require('@trycrypto/dappstarter-dapplib/manifest.json')
 
 enum View {
@@ -44,7 +44,7 @@ export default () => {
         setTimeout(() => checkAppReady(view), 1000)
       }
     },
-    [],
+    []
   )
 
   useEffect(() => {

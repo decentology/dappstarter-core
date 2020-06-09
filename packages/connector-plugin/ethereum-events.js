@@ -6,7 +6,7 @@ const dappConfig = require("@trycrypto/dappstarter-dapplib/src/dapp-config.json"
 const truffleConfig = require("@trycrypto/dappstarter-dapplib/truffle-config");
 const dappStateAbi = require('@trycrypto/dappstarter-dapplib/build/contracts/DappState.json').abi;
 module.exports = function(RED) {
-  function DappConnectorNode(config) {
+  function EthereumEventsNode(){
     let node = this;
     RED.nodes.createNode(this, config);
     setupWeb3(node, config);
@@ -56,7 +56,7 @@ module.exports = function(RED) {
       });
     }
   }
-  RED.nodes.registerType("dapp-connector", DappConnectorNode, {
+  RED.nodes.registerType("ethereum-events", EthereumEventsNode, {
     settings: {
       dappConnectorAbi: {
         value: dappStateAbi,
@@ -69,7 +69,7 @@ module.exports = function(RED) {
     }
   });
 
-  DappConnectorNode.prototype.close = function() {
+  EthereumEventsNode.prototype.close = function() {
     // clearInterval(this.interval_id);
   };
 };
