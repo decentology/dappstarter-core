@@ -1,7 +1,3 @@
-<p align="center">
-<a href="https://memeblast.trycrypto.com/"><img src="https://info.trycrypto.com/giveaway.png" alt="Dappstarter Giveaway" /></a>
-</p>
-
 # My Dapp
 
 This project is for the blockchain application My Dapp. It contains code for the Smart Contract, web-based dapp and NodeJS server.
@@ -12,6 +8,7 @@ In order to develop and build "My Dapp," the following pre-requisites must be in
 
 * [Visual Studio Code](https://code.visualstudio.com/download) (or any IDE for editing Javascript)
 * [NodeJS](https://nodejs.org/en/download/)
+* [Yarn](https://classic.yarnpkg.com/en/docs/install) (DappStarter uses [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces))
 ///(language:solidity
 ///)
 
