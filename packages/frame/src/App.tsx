@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import clsx from 'clsx'
-import { find, keys } from 'lodash'
-const truffleConfig = require('@trycrypto/dappstarter-dapplib/truffle-config')
+import { find, keys } from 'lodash-es'
 const manifest = require('@trycrypto/dappstarter-dapplib/manifest.json')
 
 enum View {
@@ -30,26 +29,29 @@ export default () => {
     ?.toString()
     .split('/')[2]
 
+  const checkAppReady = useCallback(
+    async (view: View) => {
+      try {
+        const response = await fetch(viewLinks[view])
+        if (response.ok) {
+          setDappReady((dappReady) => {
+            return { ...dappReady, [view]: true }
+          })
+        } else {
+          setTimeout(() => checkAppReady(view), 1000)
+        }
+      } catch (error) {
+        setTimeout(() => checkAppReady(view), 1000)
+      }
+    },
+    []
+  )
+
   useEffect(() => {
     checkAppReady(View.Client)
     checkAppReady(View.Connector)
     checkAppReady(View.Server)
-  }, [])
-
-  async function checkAppReady(view: View) {
-    try {
-      const response = await fetch(viewLinks[view])
-      if (response.ok) {
-        setDappReady((dappReady) => {
-          return { ...dappReady, [view]: true }
-        })
-      } else {
-        setTimeout(() => checkAppReady(view), 1000)
-      }
-    } catch (error) {
-      setTimeout(() => checkAppReady(view), 1000)
-    }
-  }
+  }, [checkAppReady])
 
   return (
     <div>
@@ -176,14 +178,17 @@ export default () => {
         <div className="account">
           <div>
             <span className="avatar">
-              <img src="https://uploads-ssl.webflow.com/5dea4f8b31edea3328b9a0f6/5e26f87654abf8eaf9235d7d_ethereum.png" alt="" />
+              <img
+                src="https://uploads-ssl.webflow.com/5dea4f8b31edea3328b9a0f6/5e26f87654abf8eaf9235d7d_ethereum.png"
+                alt=""
+              />
             </span>
             <div className="capitalize">
               <strong>{manifest.name}</strong>
               <span>{blockchain}</span>
             </div>
           </div>
-          <a href="http://dappstarter.trycrypto.com" target="_blank">
+          <a href="http://dappstarter.trycrypto.com" target="_blank" rel="noopener noreferrer">
             <i className="fa fa-cog text-xl"></i>
           </a>
         </div>
@@ -193,7 +198,7 @@ export default () => {
           <h2>
             {View[selected]} <span>Preview</span>
           </h2>
-          <a className="full" target="_blank" href={viewLinks[selected]}>
+          <a className="full" target="_blank" href={viewLinks[selected]} rel="noopener noreferrer">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"

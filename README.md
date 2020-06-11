@@ -1,7 +1,3 @@
-<p align="center">
-<a href="https://memeblast.trycrypto.com/"><img src="https://info.trycrypto.com/giveaway.png" alt="Dappstarter Giveaway" /></a>
-</p>
-
 # My Dapp
 
 This project is for the blockchain application My Dapp. It contains code for the Smart Contract, web-based dapp and NodeJS server.
@@ -12,19 +8,20 @@ In order to develop and build "My Dapp," the following pre-requisites must be in
 
 * [Visual Studio Code](https://code.visualstudio.com/download) (or any IDE for editing Javascript)
 * [NodeJS](https://nodejs.org/en/download/)
+* [Yarn](https://classic.yarnpkg.com/en/docs/install) (DappStarter uses [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces))
 ///(language:solidity
 ///)
 
 # Installation
 
-Using a terminal (or command prompt), change to the folder containing the project files and type: `npm run bootstrap` This will fetch all required dependencies. The process will take 1-3 minutes and while it is in progress you can move on to the next step.
+Using a terminal (or command prompt), change to the folder containing the project files and type: `yarn` This will fetch all required dependencies. The process will take 1-3 minutes and while it is in progress you can move on to the next step.
 
 ///(blockchain:ethereum
 Note: You may see some npm warnings about "web3-bzz" after dependencies are installed. These can be ignored as the associated code is never invoked.
 ///)
 # Build, Deploy and Test
 
-Using a terminal (or command prompt), change to the folder containing the project files and type: `npm run dev` This will run all the dev scripts in each project package.json.
+Using a terminal (or command prompt), change to the folder containing the project files and type: `yarn start` This will run all the dev scripts in each project package.json.
 
 To view your dapp, open your browser to http://localhost:5000
 

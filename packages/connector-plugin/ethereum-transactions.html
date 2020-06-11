@@ -47,8 +47,8 @@
             }
         }
 
-        RED.nodes.registerType('dapp-transaction', {
-            category: 'function',
+        RED.nodes.registerType('ethereum-transactions', {
+            category: 'trycrypto',
             color: '#a6bbcf',
             defaults: {
                 op1: {
@@ -85,7 +85,7 @@
             outputs: 1,
             icon: 'ethjs.png',
             label: function () {
-                return this.name || 'dapp-transaction';
+                return this.name || 'ethereum transaction';
             },
             oneditprepare: function () {
                 _node = this;
@@ -132,7 +132,7 @@
     })();
 </script>
 
-<script type="text/html" data-template-name="dapp-transaction">
+<script type="text/html" data-template-name="ethereum-transactions">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
@@ -152,7 +152,7 @@
     <div class="form-row">
         <label for="node-input-contractFunction"><i class="fa fa-tasks"></i> Function</label>
         <select id="node-input-contractFunction" style="width:260px">
-            <option />
+            <option></option>
         </select>
     </div>
     <div class="form-row">
