@@ -14,7 +14,7 @@ enum View {
 const viewLinks = {
   [View.Client]: 'http://localhost:5001',
   [View.Server]: 'http://localhost:5002',
-  [View.Connector]: 'http://localhost:5003',
+  [View.Connector]: '',
   [View.Contract]: '',
   [View.Logs]: '',
 }
@@ -22,7 +22,7 @@ interface ISiteReady {
   [index: number]: boolean
 }
 
-export default function App(): ReactElement {
+export const App = (): React.FC => {
   const [selected, setSelected] = useState<View>(View.Client)
   const [dappReady, setDappReady] = useState<ISiteReady>({ 2: true })
   const blockchain = find(keys(manifest.blocks), /\/blockchains\//)
@@ -33,7 +33,7 @@ export default function App(): ReactElement {
     try {
       const response = await fetch(viewLinks[view])
       if (response.ok) {
-        setDappReady(dappReady => {
+        setDappReady((dappReady) => {
           return { ...dappReady, [view]: true }
         })
       } else {
