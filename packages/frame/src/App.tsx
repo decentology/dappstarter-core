@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, ReactElement } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import clsx from 'clsx'
 import { find, keys } from 'lodash-es'
 const manifest = require('@trycrypto/dappstarter-dapplib/manifest.json')
@@ -22,7 +22,7 @@ interface ISiteReady {
   [index: number]: boolean
 }
 
-export const App = (): React.FC => {
+export const App: React.FC = () => {
   const [selected, setSelected] = useState<View>(View.Client)
   const [dappReady, setDappReady] = useState<ISiteReady>({ 2: true })
   const blockchain = find(keys(manifest.blocks), /\/blockchains\//)
