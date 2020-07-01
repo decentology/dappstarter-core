@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": {
-    "packages": ["packages/*"],
-    "nohoist": [
-      "**/@trycrypto/dappstarter-connector/*"
-    ]
+    "packages": ["packages/*"]
   },
   "scripts": {
     "prestart": "port-precheck 5000 5001 5002",

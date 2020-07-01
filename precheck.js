@@ -12,7 +12,6 @@ const preCheck = async (port) => {
     await preCheck(5000);
     await preCheck(5001);
     await preCheck(5002);
-    await preCheck(5003);
   } catch (error) {
     console.error(chalk.yellowBright(error));
     process.exit(1);
