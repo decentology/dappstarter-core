@@ -1,5 +1,6 @@
 import DappLib from "@trycrypto/dappstarter-dapplib";
 import { LitElement, html, customElement, property } from "lit-element";
+
 @customElement("action-button")
 export default class ActionButton extends LitElement {
   @property()
@@ -41,18 +42,13 @@ export default class ActionButton extends LitElement {
     return html`
       <button
         @click=${this.clickHandler}
-        class="text-white p-3 w-auto ${this.method === "post"
-          ? "bg-orange-500"
-          : "bg-green-400"}"
+        class="text-white font-bold py-2 px-8 rounded-full ${this.method === "post"
+          ? "bg-orange-500 hover:bg-orange-700"
+          : "bg-green-500 hover:bg-green-700"}"
       >
-        ${(this.text ? this.text : this.method).toUpperCase()}
+        ${(this.text ? this.text : (this.method === "post" ? "Save" : "View")).toUpperCase()}
       </button>
     `;
-    // if (DappLib[this.action] && this.source) {
-
-    // } else {
-    //   console.error("😕 Action or Source not found");
-    // }
   }
 
   async clickHandler() {
@@ -60,13 +56,6 @@ export default class ActionButton extends LitElement {
       return;
     }
     this.clicked = true;
-
-    // render(
-    //   html`
-    //     <span class="spinner-border spinner-border-sm mr-2"></span>
-    //   `,
-    //   this
-    // );
     this.classList.add("disabled");
     // Capture values of all fields of interest
     let source = document.querySelector(this.source);

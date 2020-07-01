@@ -1,5 +1,6 @@
 import "@grubersjoe/slide-menu/dist/slide-menu.js";
 import { LitElement, html, customElement, property } from "lit-element";
+
 @customElement("page-panel")
 export default class PagePanel extends LitElement {
   @property()

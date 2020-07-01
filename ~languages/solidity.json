@@ -79,9 +79,16 @@
             }
           },
           "ethereum": {
+            "dependencies": {
+              "web3": "^1.2.6",
+              "web3-providers": "^1.0.0-beta.55"
+            },
             "devDependencies": {
-              "@truffle/hdwallet-provider": "1.0.32",
-              "web3": "1.2.6"
+              "@truffle/hdwallet-provider": "^1.0.33",
+              "truffle": "^5.1.19",
+              "@types/ethereum-protocol": "^1.0.0",
+              "@types/web3": "^1.2.2",
+              "ganache-cli": "^6.9.1"          
             }
           },
           "harmony": {
@@ -106,8 +113,8 @@
           "*": {},
           "file_storage:ipfs": {
             "devDependencies": {
-              "ipfs-http-client": "41.0.0",
-              "bs58": "4.0.1"
+              "ipfs-http-client": "44.0.3",
+              "bs58": "^4.0.1"
             }
           }
         }
@@ -119,7 +126,7 @@
           "*": {},
           "react": {
             "devDependencies": {
-              "@babel/preset-react": "^7.8.3",
+              "@babel/preset-react": "^7.9.4",
               "react": "^16.13.0",
               "react-dom": "^16.13.0",
               "react-redux": "^7.2.0",
@@ -128,15 +135,16 @@
             }
           },
           "vanilla": {
-            "devDependencies": {
-              "@fortawesome/fontawesome-free": "^5.11.2",
-              "bootstrap-css-only": "^4.3.1"
-            }
           }
         }
       }
     },
-    "ethereum": {},
+    "ethereum": {
+      "/packages/dapplib/[scripts]": {
+        "processor": "copy-folder",
+        "context": "blockchain"
+      }
+    },
     "harmony": {},
     "klaytn": {}
   }

@@ -1,0 +1,10 @@
+{
+    "blocks": {
+        "/blockchain/cadence": true,
+        "/blockchain/flow/cadence": true,
+        "/category/access_control/administrator_role": true,
+        "/category/access_control/contract_access": true,
+        "/category/access_control/contract_runstate": true,
+        "/framework/vanilla": true
+    }
+}

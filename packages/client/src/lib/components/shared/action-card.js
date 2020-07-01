@@ -1,5 +1,4 @@
 import DappLib from "@trycrypto/dappstarter-dapplib";
-import SvgIcons from "../widgets/svg-icons";
 import "../widgets/wait-widget";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { LitElement, html, customElement, property } from "lit-element";
@@ -72,22 +71,22 @@ export default class ActionCard extends LitElement {
 
   render() {
     return html`
-      <div class="shadow rounded bg-white mb-10">
+      <div class="shadow rounded-md bg-white mb-10 p-1">
         <div
-          class="text-white p-3 bg-blue-400 flex justify-between items-center"
+          class="text-white p-3 bg-blue-400 flex justify-between items-center rounded-md rounded-b-none"
         >
           <h5 class="font-bold">${this.title}</h5>
-          <span class="text-right circle-icon"
+          <span class="text-right"
             >${this.method === "post"
-              ? unsafeHTML(SvgIcons.readWrite)
-              : unsafeHTML(SvgIcons.readOnly)}</span
+              ? unsafeHTML(DappLib.SVG_ICONS.readWrite)
+              : unsafeHTML(DappLib.SVG_ICONS.readOnly)}</span
           >
         </div>
         <div
           class="slot ${this.innerHTML.indexOf("<") > -1 ? "p-3" : ""}"
           id="card-body-${this.action}"
         ></div>
-        <div class="bg-gray-300 p-1">
+        <div class="bg-gray-300 p-1 rounded-md rounded-t-none">
           <div class="p-2 flex items-center justify-between">
             <wait-widget
               size="50"

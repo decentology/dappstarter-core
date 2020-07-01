@@ -1,4 +1,5 @@
 import { LitElement, html, customElement, property } from "lit-element";
+
 @customElement('number-widget')
 export default class NumberWidget extends LitElement {
   @property()

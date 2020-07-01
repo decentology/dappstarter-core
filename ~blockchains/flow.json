@@ -1,0 +1,19 @@
+{
+    "name": "flow",
+    "title": "Flow",
+    "description": "",
+    "imageUrl": "",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "metadata": {
+        "developer_experience": "",
+        "different": ""
+    },
+    "interface": {
+        "hidden": false,
+        "enabled": false,
+        "children": "single"
+    }
+}

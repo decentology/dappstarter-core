@@ -15,9 +15,7 @@
         },
         "children": [
             "ethereum",
-            "harmony",
-            "klaytn",
-            "hyperledger",
+            "flow",
             "quorum"
         ]
     },
@@ -36,8 +34,7 @@
             "children": "single"
         },
         "children": [
-            "solidity",
-            "javascript"
+            "solidity"
         ]
     },
     {

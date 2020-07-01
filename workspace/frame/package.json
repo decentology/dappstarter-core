@@ -31,7 +31,7 @@
     "prestart": "npm run build:css",
     "start": "react-scripts start",
     "predev": "npm run build:css",
-    "dev": "wait-on ../dapplib/src/dapp-config.json && react-scripts start",
+    "dev": "wait-on ../../packages/dapplib/src/dapp-config.json && react-scripts start",
     "build": "react-scripts build",
     "build:css": "tailwindcss build ./src/tailwind.css -o ./src/style.css",
     "eject": "react-scripts eject"

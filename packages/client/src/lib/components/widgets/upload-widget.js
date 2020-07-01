@@ -1,6 +1,7 @@
 import Uppy from "@uppy/core";
 import UppyDashboard from "@uppy/dashboard";
 import { LitElement, html, customElement, property } from "lit-element";
+
 @customElement("upload-widget")
 export default class UploadWidget extends LitElement {
   createRenderRoot() {
@@ -41,7 +42,7 @@ export default class UploadWidget extends LitElement {
           autoProceed: false,
           restrictions: {
             maxFileSize: Number(this.maxsize),
-            maxNumberOfFiles: this.multiple === "true" ? 10 : 1,
+            maxNumberOfFiles: this.multiple === "true" ? 20 : 1,
             minNumberOfFiles: 1,
             allowedFileTypes: null
           }

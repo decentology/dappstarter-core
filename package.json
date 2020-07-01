@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": {
-    "packages": ["packages/*"]
+    "packages": ["packages/*", "workspace/*"]
   },
   "scripts": {
     "prestart": "port-precheck 5000 5001 5002",
