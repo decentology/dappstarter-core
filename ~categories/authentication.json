@@ -12,7 +12,7 @@
         "enabled": true,
         "children": "single"
     },
-    "blockchains": ["ethereum", "harmony", "klaytn"],
+    "blockchains": ["ethereum", "klaytn"],
     "languages": ["solidity"],
     "children": ["photokey"]
 }

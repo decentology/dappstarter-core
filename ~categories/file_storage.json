@@ -14,7 +14,6 @@
     },
     "blockchains": [
         "ethereum",
-        "harmony",
         "klaytn"
     ],
     "languages": [

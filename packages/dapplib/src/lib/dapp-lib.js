@@ -155,10 +155,6 @@ module.exports = class DappLib {
         } else if (typeof t === 'object') {    
             if (t.hasOwnProperty('transactionHash')) {
                     value = t.transactionHash;       // Ethereum                
-            } else if (t.hasOwnProperty('transaction')) {
-                if (t.transaction.id) {
-                    value = t.transaction.id;       // Harmony
-                }
             } else {
                 value = JSON.stringify(t);
             }
