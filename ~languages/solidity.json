@@ -7,7 +7,7 @@
     "title": "",
     "url": ""
   },
-  "blockchains": ["ethereum", "harmony", "klaytn"],
+  "blockchains": ["ethereum", "klaytn"],
   "interface": {
     "hidden": false,
     "enabled": true,
@@ -91,11 +91,6 @@
               "ganache-cli": "^6.9.1"          
             }
           },
-          "harmony": {
-            "devDependencies": {
-              "@harmony-js/core": "^0.1.36"
-            }
-          },
           "klaytn": {
             "scripts": {
               "faucet": "node ./src/lib/faucet",
@@ -145,7 +140,6 @@
         "context": "blockchain"
       }
     },
-    "harmony": {},
     "klaytn": {}
   }
 }

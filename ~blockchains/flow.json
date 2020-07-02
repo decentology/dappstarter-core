@@ -12,7 +12,7 @@
         "different": ""
     },
     "interface": {
-        "hidden": false,
+        "hidden": true,
         "enabled": false,
         "children": "single"
     }
