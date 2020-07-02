@@ -17,7 +17,20 @@
             "ethereum",
             "flow",
             "quorum"
-        ]
+        ],
+        "targets": {
+            "*": {
+                "/package.json": {
+                    "processor": "merge-json",
+                    "framework": {
+                        "*": {
+                            "private": true
+                        }
+                    },
+                    "blockchain": {}
+                }
+            }
+        }
     },
     {
         "name": "languages",
