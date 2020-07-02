@@ -10,62 +10,6 @@ const BN = require('bn.js'); // Required for injected code
 module.exports = class DappLib {
 
 ///+functions
-/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> EXAMPLES  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
-
-    // These example functions demonstrate cross-contract calling
-
-    static async getStateContractOwner() {
-
-        let result = await Blockchain.get({
-                config: DappLib.getConfig(),
-                contract: DappLib.DAPP_CONTRACT,
-                params: {
-                }
-            },
-            'getStateContractOwner',
-        ); 
-        let owner = result.callData;
-        return {
-            type: DappLib.DAPP_RESULT_ACCOUNT,
-            label: 'Contract Owner',
-            result: owner,
-            unitResult: null,
-            hint: null
-        }
-    }
-
-    static async getStateCounter() {
-
-        let result = await Blockchain.get({
-                config: DappLib.getConfig(),
-                contract: DappLib.DAPP_CONTRACT,
-                params: {
-                }
-            },
-            'getStateCounter',
-        );         
-        return result;
-    }
-
-    static async incrementStateCounter(data) {
-
-        let result = await Blockchain.post({
-                config: DappLib.getConfig(),
-                contract: DappLib.DAPP_CONTRACT,
-                params: {
-                }
-            },
-            'incrementStateCounter',
-            data.increment
-        );
-        return {
-            type: DappLib.DAPP_RESULT_TX_HASH,
-            label: 'Transaction Hash',
-            result: DappLib.getTransactionHash(result.callData),
-            hint: ''
-        }
-    }
-
 
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DAPP LIBRARY  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/

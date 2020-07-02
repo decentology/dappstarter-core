@@ -1,0 +1,117 @@
+{
+  "name": "cadence",
+  "title": "Cadence",
+  "description": "",
+  "imageUrl": "",
+  "help": {
+    "title": "",
+    "url": ""
+  },
+  "blockchains": ["flow"],
+  "interface": {
+    "hidden": false,
+    "enabled": true,
+    "children": "none"
+  },
+  "targets": {
+    "*": {
+      "/~languages/cadence/packages/dapplib/contracts/DappState.cdc": {
+        "processor": "merge-blocks",
+        "path": "${categoryRoot}/${category}/${name}/cadence/${name}.cdc"
+      },
+      "/~languages/cadence/packages/dapplib/deploy.js": {
+        "processor": "merge-blocks",
+        "path": "${categoryRoot}/${category}/${name}/${name}-config.js"
+      },
+      "/README.md": {
+        "processor": "filter"
+      },
+      "/packages/client/README.md": {
+        "processor": "filter"
+      },
+      "/packages/client/.babelrc": {
+        "processor": "filter"
+      },
+      "/packages/dapplib/src/lib/dapp-lib.js": {
+        "processor": "merge-blocks",
+        "path": "${categoryRoot}/${category}/${name}/${name}-lib.js"
+      },
+      "/packages/client/src/dapp/pages/[block-pages].js": {
+        "processor": "file-blocks",
+        "path": "${categoryRoot}/${category}/${name}/${name}-page.js",
+        "sequence": false
+      },
+      "/packages/client/src/dapp/[client-app]": {
+        "processor": "copy-folder",
+        "context": "framework"
+      },
+      "/packages/client/src/dapp/pages/components/top-navigation.js": {
+        "processor": "replace-parameters"
+      },
+      "/packages/dapplib/src/lib/[blockchain]": {
+        "processor": "copy-folder",
+        "context": "blockchain"
+      },
+      "/packages/dapplib/package.json": {
+        "processor": "merge-json",
+        "framework": {},
+        "blockchain": {
+          "*": {
+            "scripts": {
+              "clean": "rimraf -rf build && rimraf -rf dist",
+              "dev": "run-p emulator deploy",
+              "deploy": "wait-on tcp:3569 && node scripts/deploy.js",
+              "emulator": "node scripts/emulator.js"
+            }
+          },
+          "flow": {
+            "dependencies": {
+              "@onflow/dev-wallet": "0.0.7",
+              "@onflow/fcl": "0.0.37",
+              "@onflow/types": "0.0.2",
+              "elliptic": "^6.5.3",
+              "rlp": "^2.2.5",
+              "sha3": "^2.1.2"
+            },
+            "devDependencies": {
+            }
+          }
+        },
+        "block": {
+          "*": {},
+          "file_storage:ipfs": {
+            "devDependencies": {
+              "ipfs-http-client": "44.0.3",
+              "bs58": "^4.0.1"
+            }
+          }
+        }
+      },
+      "/packages/client/package.json": {
+        "processor": "merge-json",
+        "blockchain": {},
+        "framework": {
+          "*": {},
+          "react": {
+            "devDependencies": {
+              "@babel/preset-react": "^7.9.4",
+              "react": "^16.13.0",
+              "react-dom": "^16.13.0",
+              "react-redux": "^7.2.0",
+              "react-router-dom": "^5.1.2",
+              "redux": "^4.0.5"
+            }
+          },
+          "vanilla": {
+          }
+        }
+      }
+    },
+    "flow": {
+      "/packages/dapplib/[scripts]": {
+        "processor": "copy-folder",
+        "context": "blockchain"
+      }
+    }
+  }
+}

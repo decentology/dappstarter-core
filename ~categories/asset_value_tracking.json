@@ -14,5 +14,5 @@
     },
     "blockchains": ["ethereum", "klaytn"],
     "languages": ["solidity"],
-    "children": ["token", "digital_collectible"]
+    "children": ["token"]
 }

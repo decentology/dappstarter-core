@@ -29,6 +29,13 @@ export const App: React.FC = () => {
     ?.toString()
     .split('/')[2]
 
+  const logo = (blockchain: String) => {
+    switch(blockchain.toLowerCase()) {
+      case "flow": return "https://uploads-ssl.webflow.com/5dea4f8b31edea3328b9a0f6/5efddf9222f98990144ab601_Flow_Wordmark_GreenCircle.png";
+      case "ethereum": return "https://uploads-ssl.webflow.com/5dea4f8b31edea3328b9a0f6/5e26f87654abf8eaf9235d7d_ethereum.png";
+    }
+  }
+
   const checkAppReady = useCallback(async (view: View) => {
     try {
       const response = await fetch(viewLinks[view])
@@ -102,7 +109,7 @@ export const App: React.FC = () => {
           <div>
             <span className="avatar">
               <img
-                src="https://uploads-ssl.webflow.com/5dea4f8b31edea3328b9a0f6/5e26f87654abf8eaf9235d7d_ethereum.png"
+                src={ logo(String(blockchain)) }
                 alt=""
               />
             </span>

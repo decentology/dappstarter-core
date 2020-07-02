@@ -25,7 +25,7 @@ export default class DappPage extends LitElement {
   constructor(args) {
     super(args);
     this.counter = 0;
-    this.fetchAndDisplayCounter();
+    //this.fetchAndDisplayCounter();
   }
 
   handleClick = e => {
@@ -38,7 +38,7 @@ export default class DappPage extends LitElement {
       DOM.elid("result").innerHTML =
         '<span class="text-danger">' + info.result + "</span>";
     } else {
-      setTimeout(() => this.fetchAndDisplayCounter(), 500);
+     // setTimeout(() => this.fetchAndDisplayCounter(), 500);
     }
   }
 
@@ -56,13 +56,11 @@ export default class DappPage extends LitElement {
             <a href="https://www.trycrypto.com" target="_new" rel="nofollow"
               >TryCrypto.com</a
             >
-            for more insights on dapp development. The examples below
-            demonstrate how to use the Dapp Library, ActionCard and ActionButton
-            components to interact with the Dapp smart contract.
+            for more insights on dapp development.
           </p>
         </div>
 
-        <div class="row mt-3">
+        <!--div class="row mt-3">
           <div class="col-md-7">
             <action-card
               id="card-contractOwner"
@@ -98,7 +96,7 @@ export default class DappPage extends LitElement {
               .click=${this.buttonClick}
             ></action-button>
           </div>
-        </div>
+        </div -->
       </div>
     `;
     return content;

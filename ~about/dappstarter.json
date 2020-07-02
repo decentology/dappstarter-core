@@ -47,7 +47,8 @@
             "children": "single"
         },
         "children": [
-            "solidity"
+            "solidity",
+            "cadence"
         ]
     },
     {
@@ -88,6 +89,7 @@
         "children": [
             "access_control",
             "asset_value_tracking",
+            "nft",
             "file_storage",
             "authentication",
             "collection"

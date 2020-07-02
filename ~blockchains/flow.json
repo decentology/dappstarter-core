@@ -2,7 +2,7 @@
     "name": "flow",
     "title": "Flow",
     "description": "",
-    "imageUrl": "",
+    "imageUrl": "https://uploads-ssl.webflow.com/5dea4f8b31edea3328b9a0f6/5efddf9222f98990144ab601_Flow_Wordmark_GreenCircle.png",
     "help": {
         "title": "",
         "url": ""
@@ -12,8 +12,8 @@
         "different": ""
     },
     "interface": {
-        "hidden": true,
-        "enabled": false,
+        "hidden": false,
+        "enabled": true,
         "children": "single"
     }
 }
