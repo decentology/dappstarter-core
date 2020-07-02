@@ -1,6 +1,6 @@
 {
   "name": "@trycrypto/dappstarter",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "workspaces": {
     "packages": [
       "packages/*",
