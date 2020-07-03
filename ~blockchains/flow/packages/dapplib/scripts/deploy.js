@@ -7,7 +7,7 @@ let blockchainAccounts = [];
 let blockchainWallets = [];
 let count = 5;
 
-for (let a = 0; a < count; a++) {
+for (let a = 0; a < count; a++) { 
     setTimeout(async () => {
         let account = await blockchain.createFlowAccount();
         blockchainWallets.push(account);

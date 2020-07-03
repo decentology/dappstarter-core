@@ -6,7 +6,7 @@ const privateKey = 'f06d20b6336d365a3347cc1b2897a9c3ce4b18689e6ea34f9e6975718dea
 // https://asecuritysite.com/encryption/ethadd
 const emulator = spawn("npx", [
   "flow",
-  "emulator",
+  "emulator", 
   "start",
   "--init=true",
   "--block-time=1s",
