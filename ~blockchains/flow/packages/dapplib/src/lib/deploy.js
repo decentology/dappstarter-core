@@ -15,7 +15,7 @@ for (let a = 0; a < count; a++) {
         console.log('Account created on blockchain: ', account);
 
         if (a === count - 1) {
-          // Disable until fixed  deployContract();
+          deployContract();
         }
     }, a * 1500); // Timeout is needed to avoid sequence number problems
 }
@@ -26,9 +26,8 @@ function deployContract() {
             return console.log(err);
         }
 
-        let info = await blockchain.deployFlowContract(contract);
+        // let info = await blockchain.deployFlowContract(contract);
 
-        console.log(info);
         let config = {
             httpUri: devUri,
             dappStateContractAddress: ' ',
