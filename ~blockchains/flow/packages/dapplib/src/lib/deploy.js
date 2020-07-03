@@ -15,7 +15,7 @@ for (let a = 0; a < count; a++) {
         console.log('Account created on blockchain: ', account);
 
         if (a === count - 1) {
-            deployContract();
+          // Disable until fixed  deployContract();
         }
     }, a * 1500); // Timeout is needed to avoid sequence number problems
 }
