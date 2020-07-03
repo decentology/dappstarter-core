@@ -1,4 +1,4 @@
-const Blockchain = require('../src/lib/blockchain')
+const Blockchain = require('./blockchain')
 const fs = require('fs');
 
 let devUri = 'http://127.0.0.1:3569/';
@@ -21,7 +21,7 @@ for (let a = 0; a < count; a++) {
 }
 
 function deployContract() {
-    fs.readFile(__dirname + '/../contracts/DappState.cdc', 'utf8', async (err, contract) => {
+    fs.readFile(__dirname + '/../../contracts/DappState.cdc', 'utf8', async (err, contract) => {
         if (err) {
             return console.log(err);
         }
@@ -39,7 +39,7 @@ function deployContract() {
         }
 
         // On each deployment, a configuration file is created so dapp and API can access the latest contract code
-        fs.writeFileSync(__dirname + '/../src/dapp-config.json', JSON.stringify(config, null, '\t'), 'utf-8');
+        fs.writeFileSync(__dirname + '/../dapp-config.json', JSON.stringify(config, null, '\t'), 'utf-8');
 
 
     });

@@ -11,6 +11,9 @@ In order to develop and build "My Dapp," the following pre-requisites must be in
 * [Yarn](https://classic.yarnpkg.com/en/docs/install) (DappStarter uses [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces))
 ///(language:solidity
 ///)
+///(blockchain:flow
+* [Flow CLI](https://docs.onflow.org/docs/cli) (https://docs.onflow.org/docs/cli) (after installation run `flow cadence install-vscode-extension` to enable code highlighting for Cadence files)
+///)
 
 # Installation
 
@@ -25,7 +28,7 @@ Using a terminal (or command prompt), change to the folder containing the projec
 
 To view your dapp, open your browser to http://localhost:5000
 
-If you encounter any problems at this step, visit [https://support.trycrypto.com](https://support.trycrypto.com) for help.
+We ♥️ developers and want you to have an awesome experience. You should be experiencing Dappiness at this point. If not, let us know and we will help. Visit [https://support.trycrypto.com](https://support.trycrypto.com) or hit us up on Twitter @TryCrypto.
 
 
 ## Smart Contract

@@ -220,6 +220,7 @@ module.exports = class Blockchain {
                     t.Identity,
                     "code"
                 ),
+                fcl.limit(100)
             ]),
         ]);
 
