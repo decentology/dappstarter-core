@@ -29,8 +29,10 @@ let dappConfig = {
 
 (async () => {
 
-  await fkill('flow');
-
+  try {
+    await fkill('flow');
+  } catch(e) {
+  }
   // Start the emulator
   const emulator = spawn("npx", [
     "flow",
