@@ -239,3 +239,7 @@ main {
 .slide-menu a {
   cursor: pointer;
 }
+
+svg[data-copy] {
+  display: inline-block;
+}

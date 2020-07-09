@@ -138,7 +138,7 @@ module.exports = class DappLib {
         if (a.startsWith('<')) {
             return a;
         }
-        return `<span title="${copyText ? copyText : a}">${a}</span>${DappLib.addClippy(copyText ? copyText : a)}`;
+        return `<span class="copy-target" title="${copyText ? copyText : a}">${a}</span>${DappLib.addClippy(copyText ? copyText : a)}`;
     }
 
     static formatStrong(a) {

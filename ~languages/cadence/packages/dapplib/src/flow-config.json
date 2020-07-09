@@ -1,0 +1,18 @@
+{
+    "development": {
+        "config": {
+            "httpUri": "http://localhost:8080",
+            "serviceWallet": {
+                "address": "f8d6e0586b0a20c7",
+                "keys": [
+                          {
+                            "publicKey": "d8cd12ea5c67f2f8a00c1124893edcfa6754c4d6cede6be13bdf2295c810a97fa5a89d2d2a360c0ca9a4d6c7c9ed4b28d3e199d6627f2e696d689c310a5b0f48",
+                            "privateKey": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
+                            "keyId": 0,
+                            "weight": 1000
+                          }  
+                ]
+              }
+        }
+    }
+}

@@ -19,10 +19,6 @@
         "processor": "merge-blocks",
         "path": "${categoryRoot}/${category}/${name}/cadence/${name}.cdc"
       },
-      "/~languages/cadence/packages/dapplib/deploy.js": {
-        "processor": "merge-blocks",
-        "path": "${categoryRoot}/${category}/${name}/${name}-config.js"
-      },
       "/README.md": {
         "processor": "filter"
       },
@@ -59,9 +55,8 @@
           "*": {
             "scripts": {
               "clean": "rimraf -rf build && rimraf -rf dist",
-              "dev": "run-p emulator deploy",
-              "deploy": "wait-on tcp:3569 && node src/lib/deploy.js",
-              "emulator": "node src/lib/emulator.js"
+              "emulator": "node src/scripts/emulator.js",
+              "dev": "watch 'node src/scripts/emulator.js' contracts"
             }
           },
           "flow": {
@@ -74,6 +69,8 @@
               "sha3": "^2.1.2"
             },
             "devDependencies": {
+              "watch": "^1.0.2",
+              "fkill": "^7.0.1"
             }
           }
         },

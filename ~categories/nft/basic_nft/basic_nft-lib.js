@@ -5,8 +5,7 @@ class basic_nft {
 
     static async getAccountInfo(data) {
         let address = data.account.replace(/^0x/, '');
-        let blockchain = new Blockchain();
-        let result = await blockchain.getAccount(address); 
+        let result = await Blockchain.getAccount(DappLib.getConfig(), address); 
 
         result.data = Object.assign({}, {
             address: result.address,
