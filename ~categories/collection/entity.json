@@ -10,7 +10,7 @@
     "interface": {
         "hidden": false,
         "enabled": true,
-        "children": "form"
+        "children": "none"
     },
     "parameters": [
     ],
