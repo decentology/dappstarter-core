@@ -42,7 +42,7 @@ export default class ActionButton extends LitElement {
     return html`
       <button
         @click=${this.clickHandler}
-        class="text-white font-bold py-2 px-8 rounded-full ${this.method === "post"
+        class="text-white font-bold py-2 px-8 rounded ${this.method === "post"
           ? "bg-orange-500 hover:bg-orange-700"
           : "bg-green-500 hover:bg-green-700"}"
       >

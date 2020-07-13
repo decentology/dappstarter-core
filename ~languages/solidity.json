@@ -74,7 +74,7 @@
             "scripts": {
               "dev": "run-p ganache deploy",
               "deploy": "wait-on tcp:7545 && truffle compile && truffle migrate --reset",
-              "ganache": "node scripts/ganache.js",
+              "ganache": "node src/lib/ganache.js",
               "test": "npx truffle test"
             }
           },
@@ -133,13 +133,6 @@
           }
         }
       }
-    },
-    "ethereum": {
-      "/packages/dapplib/[scripts]": {
-        "processor": "copy-folder",
-        "context": "blockchain"
-      }
-    },
-    "klaytn": {}
+    }
   }
 }

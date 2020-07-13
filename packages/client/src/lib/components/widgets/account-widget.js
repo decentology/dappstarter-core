@@ -26,9 +26,14 @@ export default class AccountWidget extends LitElement {
   }
 
   displayAccountOptions() {
+    let roles = ['Admin', 'Alice', 'Bharat', 'Chen', 'Demarron', 'Ezra'];
     let optionsString = '';
     for(let i = 0; i < this.accountsLookUp.length; i++){
-      optionsString = optionsString + '<option value="' + `${this.accountsLookUp[i]}` + '">' + `${this.accountsLookUp[i]}` + '</option>';
+      let label = `User ${i}`;
+      if (roles.length > i) {
+         label = roles[i];
+      }
+      optionsString = optionsString + `<option value="${this.accountsLookUp[i]}">${label} - ${this.accountsLookUp[i]}</option>`;
     };
 
     return optionsString;
