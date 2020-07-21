@@ -5,6 +5,7 @@ import "../../lib/components/shared/action-card.js";
 import "../../lib/components/widgets/account-widget.js";
 import "../../lib/components/widgets/text-widget.js";
 import "../../lib/components/widgets/number-widget.js";
+import "../../lib/components/widgets/upload-widget.js";
 import DappLib from "@trycrypto/dappstarter-dapplib";
 import { LitElement, html, customElement, property } from "lit-element";
 
@@ -34,35 +35,50 @@ export default class BallotPage extends LitElement {
       >
 
         <action-card
-          title="Account Query Example"
-          description="An example of how to query an account during development"
-          action="getAccountInfo"
-          method="get"
-          fields="account"
+          title="Initialize Proposals"
+          description="Initializes proposals for voting."
+          action="initializeProposals"
+          method="post"
+          fields="admin files"
         >
           <account-widget
-            field="account"
-            label="Account"
-            placeholder="Account address"
-          >
-          </account-widget>
-        </action-card>
+              field="admin"
+              label="Administrator"
+              placeholder="Account address"
+            >
+            </account-widget>
 
+            <upload-widget data-field="files"
+                        field="file" label="Ballot Proposals" 
+                        placeholder="Select ballot proposals" 
+                        multiple="true">
+            </upload-widget>
+
+        </action-card>
 
         <action-card
-          title="Initialize Account"
-          description="Initializes an account so it can receive a NFT"
-          action="initializeAccount"
+          title="Issue Ballot"
+          description="Issues a ballot to an account for voting."
+          action="issueBallot"
           method="post"
-          fields="account"
+          fields="admin voter"
         >
           <account-widget
-            field="account"
-            label="Account"
+            field="admin"
+            label="Administrator"
             placeholder="Account address"
           >
           </account-widget>
+
+          <account-widget
+            field="voter"
+            label="Voter"
+            placeholder="Account address"
+          >
+          </account-widget>
+
         </action-card>
+
 
         <action-card
           title="Get NFT IDs"

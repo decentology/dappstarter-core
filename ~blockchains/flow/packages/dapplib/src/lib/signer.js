@@ -41,6 +41,7 @@ module.exports = class Signer {
             // Use currying to ensure that "account" is correctly hydrated for each
             // authorization for which signingFunction is called
             const __signingFunction = data => {
+                console.log(`Signing for account ${accountInfo.address}`)
                 return {
                     addr: accountInfo.address,
                     keyId: keyId,

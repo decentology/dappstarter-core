@@ -37,7 +37,7 @@ module.exports = class Blockchain {
     /**
      * @dev Calls a writeable smart contract function
      */
-    static async post(env, tx, ...data) {
+    static async post(env, tx, data) {
         let proposer = typeof env.params.proposer === 'string' ? env.params.proposer : env.config.accounts[0];
         let roleInfo = {
             [Flow.Roles.PROPOSER]: proposer,
@@ -49,6 +49,13 @@ module.exports = class Blockchain {
             { name: 'contractName', type: t.String, value: env.config.dappStateContract.name },
             { name: 'contractOwner', type: t.String, value: '0x' + env.config.dappStateContract.owner },
         ]
+        for(let key in data) {
+            params.push({
+                name: key, 
+                type: t.String, 
+                value: data[key]
+            });
+        }
         let options = {
             roleInfo,
             params,

@@ -2,7 +2,10 @@ import DappLib from "@trycrypto/dappstarter-dapplib";
 import DOM from "../../lib/components/shared/dom";
 import "../../lib/components/shared/action-card.js";
 import "../../lib/components/shared/action-button.js";
+import "../../lib/components/widgets/text-widget.js";
 import "../../lib/components/widgets/number-widget.js";
+import "../../lib/components/widgets/account-widget.js";
+import "../../lib/components/widgets/upload-widget.js";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { LitElement, html, customElement, property } from "lit-element";
 

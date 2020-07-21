@@ -16,7 +16,7 @@ const fkill = require('fkill');
 
 // Some control variables
 let config = networks.development.config;
-let accountCount = 5;
+let accountCount = 6;
 let keyCount = 3;
 
 // Unpopulated dappConfig with service info only

@@ -81,7 +81,7 @@
             }
         }
 
-        // The admin calls this function to create a new Ballo
+        // The admin calls this function to create a new Ballot
         // that can be transferred to another user
         pub fun issueBallot(): @Ballot {
             return <-create Ballot()

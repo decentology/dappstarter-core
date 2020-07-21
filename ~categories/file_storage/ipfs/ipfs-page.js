@@ -6,8 +6,10 @@ import "../../lib/components/widgets/text-widget.js";
 import "../../lib/components/widgets/number-widget.js";
 import "../../lib/components/widgets/account-widget.js";
 import "../../lib/components/widgets/upload-widget.js";
+// TODO: Move references to upload widget
 import "@uppy/core/dist/style.css";
 import "@uppy/dashboard/dist/style.css";
+// End TODO
 import DappLib from "@trycrypto/dappstarter-dapplib";
 import { LitElement, html, customElement, property } from "lit-element";
 

@@ -1,5 +1,7 @@
 import Uppy from "@uppy/core";
 import UppyDashboard from "@uppy/dashboard";
+import "@uppy/core/dist/style.css";
+import "@uppy/dashboard/dist/style.css";
 import { LitElement, html, customElement, property } from "lit-element";
 
 @customElement("upload-widget")
