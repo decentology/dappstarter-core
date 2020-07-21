@@ -104,35 +104,44 @@ static async issueBallot(data) {
 
 }
 
-static async getIDs(data) {
 
-    let result = await Blockchain.get({
+static async vote(data) {
+
+    let result = await Blockchain.post({
             config: DappLib.getConfig(),
             contract: DappLib.DAPP_STATE_CONTRACT,
             params: {
+                proposer: data.voter
             }
         },
-        fcl.script`
+        fcl.transaction`
         import ${p => p.contractName} from ${p => p.contractOwner}            
-        pub fun main() : [UInt64]? {
-            let account = getAccount(${p => p.account})
-            let capability = account.getCapability(/public/NFTReceiver)
-            let ref = capability!.borrow<&${p => p.contractName}.Collection>()
+        transaction {
+            prepare(voter: AuthAccount) {
 
-            return ref?.getIDs()
+                // take the voter's ballot our of storage
+                let ballot <- voter.load<@${p => p.contractName}.Ballot>(from: /storage/Ballot)!
+        
+                // Vote on the proposal 
+                ballot.vote(proposal: ${p => p.proposalIndex})
+        
+                // Cast the vote by submitting it to the smart contract
+                ${p => p.contractName}.cast(ballot: <-ballot)
+            }
         }`,
         {
-            account: '0x' + data.account
+            proposalIndex: data.proposalIndex
         }
     );
 
     return {
-        type: DappLib.DAPP_RESULT_ARRAY,
-        label: 'NFT IDs',
-        result: result.callData || []
+        type: DappLib.DAPP_RESULT_TX_HASH,
+        label: 'Transaction Hash',
+        result: result.callData.transactionId
     }
 
 }
+
 
 static async ipfsUpload(config, files, wrapWithDirectory, progressCallback) {
 

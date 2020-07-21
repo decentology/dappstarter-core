@@ -79,21 +79,31 @@ export default class BallotPage extends LitElement {
 
         </action-card>
 
-
         <action-card
-          title="Get NFT IDs"
-          description="Get NFT IDs for Account"
-          action="getIDs"
-          method="get"
-          fields="account"
+          title="Vote"
+          description="Vote on an issue"
+          action="vote"
+          method="post"
+          fields="voter proposalIndex"
         >
           <account-widget
-            field="account"
-            label="Account"
+            field="voter"
+            label="Voter"
             placeholder="Account address"
           >
           </account-widget>
+
+          <label>Proposal</label>: 
+          <select data-field="proposalIndex">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+
         </action-card>
+
 
 
       </page-body>
