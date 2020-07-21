@@ -92,7 +92,8 @@
             "nft",
             "file_storage",
             "authentication",
-            "collection"
+            "collection",
+            "voting"
         ]
     }
 ]
