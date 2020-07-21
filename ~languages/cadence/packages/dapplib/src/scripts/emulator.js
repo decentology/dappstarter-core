@@ -22,9 +22,13 @@ let keyCount = 3;
 // Unpopulated dappConfig with service info only
 let dappConfig = {
   httpUri: config.httpUri,
-  dappStateContractAddress: '',
+  dappStateContract: {
+    owner: '',
+    name: ''
+  },
   accounts: [],
-  wallets: [config.serviceWallet]
+  serviceWallet: config.serviceWallet,
+  wallets: []
 };
 
 (async () => {
@@ -42,7 +46,7 @@ let dappConfig = {
     "--block-time=1s",
     "--persist=false",
     "--dbpath=./flowdb",
-    "--service-priv-key=" + dappConfig.wallets[0].keys[0].privateKey,
+    "--service-priv-key=" + dappConfig.serviceWallet.keys[0].privateKey,
     "--service-sig-algo=ECDSA_P256",
     "--service-hash-algo=SHA3_256"
   ]);
@@ -95,10 +99,14 @@ let dappConfig = {
           console.log(`\n\n\🚀 Dapp configuration file created at ${dappConfigFile}\n\n`);
 
           let contract = fs.readFileSync(__dirname + '/../../contracts/DappState.cdc', 'utf8');
-          let contractAddresses = await Blockchain.deployContract(config, dappConfig.accounts[1], contract);
+          let contractAddresses = await Blockchain.deployContract(config, dappConfig.accounts[0], contract);
           console.log(`\n\n\📄 Contract deployed successfully! \n\n`);
 
-          dappConfig.dappStateContractAddress = contractAddresses[0];
+          let contractInfo = contractAddresses[0].split('.'); // A.20320323.DappState
+          dappConfig.dappStateContract = {
+            owner: contractInfo[1],
+            name: contractInfo[2]
+          }
           fs.writeFileSync(dappConfigFile, JSON.stringify(dappConfig, null, '\t'), 'utf-8');
           console.log(`\n\n\🚀 Dapp configuration file updated with contract address\n\n`);
 

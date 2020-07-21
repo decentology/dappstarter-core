@@ -46,7 +46,7 @@ export default class ActionButton extends LitElement {
           ? "bg-orange-500 hover:bg-orange-700"
           : "bg-green-500 hover:bg-green-700"}"
       >
-        ${(this.text ? this.text : (this.method === "post" ? "Save" : "View")).toUpperCase()}
+        ${(this.text ? this.text : (this.method === "post" ? "Submit" : "View")).toUpperCase()}
       </button>
     `;
   }

@@ -63,6 +63,7 @@
             "dependencies": {
               "@onflow/dev-wallet": "0.0.7",
               "@onflow/fcl": "0.0.37",
+              "@onflow/sdk": "0.0.27",
               "@onflow/types": "0.0.2",
               "elliptic": "^6.5.3",
               "rlp": "^2.2.5",

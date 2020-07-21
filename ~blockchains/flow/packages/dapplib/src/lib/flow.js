@@ -2,6 +2,7 @@
 const EC = require('elliptic').ec;
 const ec = new EC("p256")
 const rlp = require('rlp');
+const sdk = require('@onflow/sdk');
 const fcl = require('@onflow/fcl');
 const t = require('@onflow/types');
 const Signer = require('./signer');
@@ -16,6 +17,10 @@ module.exports = class Flow {
             'PAYER': 'payer',
             'ALL': 'all',
         }
+    }
+
+    static get Transaction() {
+        return fcl.transaction;
     }
 
     constructor(config) {
@@ -129,29 +134,25 @@ module.exports = class Flow {
     }
 
     async executeTransaction(tx, options) {
-        //console.log('Calling processTransaction');
         return await this._processTransaction(tx, options);
     }
 
-    // async executeScript(script) {
-    //     let ix = fcl.script(script);
-    //     let response = await fcl.send([ix], { node: this.serviceUri });
-    //     return await fcl.decode(response);
-    // }
+    static async decode(data) {
+        return await fcl.decode(data);
+    }
 
-    // async getTransactionStatus(txId) {
-    //     let ix = fcl.getTransactionStatus(txId);
-    //     return await this._processTransaction(ix);
-    // }
+    static async handleEvent(env, eventType, callback) {
 
-    // async getEvents(eventType, startBlock, endBlock) {
-    // }
+        const blockResponse = await sdk.send(await sdk.build([
+            sdk.getLatestBlock()
+          ]), { node: env.config.httpUri });
 
-    // async getLatestBlock() {
-    // }
+        const response = await sdk.send(await sdk.build([
+        sdk.getEvents(eventType, blockResponse.latestBlock.parentId, blockResponse.latestBlock.id),
+        ]), { node: env.config.httpUri });
 
-    // async ping() {
-    // }
+        callback(response);
+    }
 
     /* HELPERS */
 
@@ -184,7 +185,7 @@ module.exports = class Flow {
             [PAYER]: address
         }
     */
-    async _processTransaction(ix, options) {
+    async _processTransaction(tx, options) {
 
         options = options || {};
 
@@ -193,7 +194,7 @@ module.exports = class Flow {
         // BUILD INTERACTION
 
         // Add the actual interaction code
-        builders.push(ix);
+        builders.push(tx);
 
         // If there are any params, add those here
         if (options.params && Array.isArray(options.params)) {
@@ -207,7 +208,6 @@ module.exports = class Flow {
         if (options.gasLimit && options.gasLimit > 0) {
             builders.push(fcl.limit(options.gasLimit));
         }
-
         // If the transaction is going to change state, it will require roleInfo to be populated
         if (options.roleInfo ) {
 
