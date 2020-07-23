@@ -1,4 +1,4 @@
-const Flow = require('./flow');
+const { Flow } = require('./flow');
 const t = require('@onflow/types');
 
 const CONTRACT = 'access(all) contract Noop {}';
