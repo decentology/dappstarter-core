@@ -61,8 +61,8 @@
           },
           "flow": {
             "dependencies": {
-              "@onflow/fcl": "0.0.37",
-              "@onflow/types": "0.0.2",
+              "@onflow/fcl": "^0.0.45",
+              "@onflow/types": "^0.0.3",
               "elliptic": "^6.5.3",
               "rlp": "^2.2.5",
               "sha3": "^2.1.2"

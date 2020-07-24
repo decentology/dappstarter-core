@@ -75,7 +75,7 @@ static async issueBallot(data) {
             contract: DappLib.DAPP_STATE_CONTRACT,
             params: {
                 proposer: data.admin,
-                authorizers: [ data.voter ]
+                authorizers: [ data.admin, data.voter ]
             }
         },
         fcl.transaction`
