@@ -116,6 +116,72 @@ class token {
         }
     }
 
+    static async allowance(data) {
+
+        let result = await Blockchain.get({
+                config: DappLib.getConfig(),
+                contract: DappLib.DAPP_STATE_CONTRACT,
+                params: {
+                    from: data.from
+                }
+            },
+            'allowance',
+            data.sourceAccount,
+            data.targetAccount
+        );            
+        let balance = result.callData;
+        return {
+            type: DappLib.DAPP_RESULT_BIG_NUMBER,
+            label: DappLib.formatAccount(result.callAccount) + ' Allowance',
+            result: new BN(balance),
+            unitResult: await DappLib._fromSmallestUnit(balance, data),
+            hint: null
+        }
+    }
+
+    static async approve(data) {
+
+        let result = await Blockchain.post({
+                config: DappLib.getConfig(),
+                contract: DappLib.DAPP_STATE_CONTRACT,
+                params: {
+                    from: data.from
+                }
+            },
+            'approve',
+            data.targetAccount,
+            data.transferAmount
+        );            
+        return {
+            type: DappLib.DAPP_RESULT_BOOLEAN,
+            label: 'Is transaction approved',
+            result: result.callData,
+            hint: null
+        }
+    }
+
+    static async transferFrom(data) {
+
+        let result = await Blockchain.post({
+                config: DappLib.getConfig(),
+                contract: DappLib.DAPP_STATE_CONTRACT,
+                params: {
+                    from: data.from
+                }
+            },
+            'transferFrom',
+            data.from,
+            data.to,
+            data.amount
+        );
+        return {
+            type: DappLib.DAPP_RESULT_TX_HASH,
+            label: 'Transaction Hash',
+            result: DappLib.getTransactionHash(result.callData),
+            hint: `Verify transfer by using "Balance for Account" to check the balance of ${DappLib.formatAccount(data.to)}.`
+        }
+    }
+
     static async onApproval(callback) {
         let params = {};
         DappLib.addEventHandler(DappLib.DAPP_STATE_CONTRACT_WS, 'Approval', params, callback);
