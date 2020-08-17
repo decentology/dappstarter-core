@@ -1,6 +1,6 @@
 # My Dapp
 
-This project is for the blockchain application My Dapp. It contains code for the Smart Contract, web-based dapp and NodeJS server.
+This project is for the blockchain application My Dapp. It contains code for the Smart Contract, web-based dapp and NodeJS server. 
 
 # Pre-requisites
 
@@ -12,7 +12,7 @@ In order to develop and build "My Dapp," the following pre-requisites must be in
 ///(language:solidity
 ///)
 ///(blockchain:flow
-* [Flow CLI](https://docs.onflow.org/docs/cli) (https://docs.onflow.org/docs/cli) (after installation run `flow cadence install-vscode-extension` to enable code highlighting for Cadence files)
+* [Flow CLI](https://docs.onflow.org/docs/cli) (https://docs.onflow.org/docs/cli) (after installation run `flow cadence install-vscode-extension` to enable code highlighting for Cadence source files)
 ///)
 
 # Installation
