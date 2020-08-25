@@ -1,0 +1,16 @@
+{
+    "name": "flow-nft-vanilla",
+    "title": "Flow NFT (Vanilla JS)",
+    "description": "",
+    "imageUrl": "",
+    "help": {
+      "title": "",
+      "url": ""
+    },
+    "blocks": {
+        "/blockchain/flow": true,
+        "/blockchain/flow/cadence": true,
+        "/category/nft/basic_nft": true,
+        "/framework/vanilla": true
+    }
+}

@@ -95,5 +95,24 @@
             "collection",
             "voting"
         ]
+    },
+    {
+        "name": "recipes",
+        "title": "Recipes",
+        "description": "Recipes are ready-made DappStarter projects based on popular choices",
+        "imageUrl": "",
+        "help": {
+            "title": "",
+            "url": ""
+        },
+        "interface": {
+            "hidden": false,
+            "enabled": true,
+            "children": "single"
+        },
+        "children": [
+            "eth-token-vanilla",
+            "flow-nft-vanilla"
+        ]
     }
 ]

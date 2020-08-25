@@ -1,13 +1,13 @@
 const Hypergrep = require("../dappstarter-hypergrep/src/hypergrep");
 
 if (process.argv.length < 4) {
-  console.log('Syntax: node generate (dev | stage) (input file)');
+  console.log('Syntax: node generate (dev | stage) (test file)');
 } else {
   let sourceRoot = __dirname;
-  let inputFile = `${sourceRoot}/~inputs/${process.argv[3]}.json`;
-  console.log("Input File:", inputFile);
+  let testFile = `${sourceRoot}/~tests/${process.argv[3]}.json`;
+  console.log("Test File:", testFile);
 
-  let settings = require(inputFile);
+  let settings = require(testFile);
   let stage = false;
   if (process.argv[2] === 'stage') {
     stage = true;

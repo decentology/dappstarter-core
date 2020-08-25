@@ -1,0 +1,19 @@
+{
+    "name": "tomochain",
+    "title": "TomoChain",
+    "description": "",
+    "imageUrl": "",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "metadata": {
+        "developer_experience": "",
+        "different": ""
+    },
+    "interface": {
+        "hidden": false,
+        "enabled": true,
+        "children": "single"
+    }
+}
