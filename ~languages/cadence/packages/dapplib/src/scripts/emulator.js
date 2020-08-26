@@ -98,15 +98,55 @@ let dappConfig = {
           fs.writeFileSync(dappConfigFile, JSON.stringify(dappConfig, null, '\t'), 'utf-8');
           console.log(`\n\n\🚀 Dapp configuration file created at ${dappConfigFile}\n\n`);
 
-          let contract = fs.readFileSync(__dirname + '/../../contracts/DappState.cdc', 'utf8');
-          let contractAddresses = await Blockchain.deployContract(config, dappConfig.accounts[0], contract);
-          console.log(`\n\n\📄 Contract deployed successfully! \n\n`);
+          let contractsDir = __dirname + '/../../contracts/';
 
-          let contractInfo = contractAddresses[0].split('.'); // A.20320323.DappState
-          dappConfig.dappStateContract = {
-            owner: contractInfo[1],
-            name: contractInfo[2]
-          }
+          fs.readdir(contractsDir, function (err, files) {
+            if (err) {
+                return console.log('Unable to find contracts directory: ' + err);
+            } 
+            
+            let deploying = false;
+            let fileIndex = 0;
+            let handle = setInterval(async() => {
+              if (!deploying) {
+                deploying = true;
+                if (fileIndex > files.length - 1) {
+                  clearInterval(handle);
+                  return;
+                }
+                let file = files[fileIndex];
+                if (file.toLowerCase().endsWith('.cdc')) {                  
+                  let accountIndex = 0;
+                  if (file.indexOf('_') > -1) {
+                    let fileFrags = file.split('_');
+                    for(let f=0;f<fileFrags.length;f++) {
+                      if (!isNaN(fileFrags[f])) {
+                        let targetAccountIndex = Number(fileFrags[f]);
+                        if (targetAccountIndex < dappConfig.accounts.length) {
+                          accountIndex = targetAccountIndex;
+                        }
+                        break;  
+                      }
+                    }                    
+                  }
+                  let contract = fs.readFileSync(contractsDir + file, 'utf8');
+                  let contractAddresses = await Blockchain.deployContract(config, dappConfig.accounts[accountIndex], contract);
+                  console.log(`Deployed ${file} to account ${accountIndex} at ${dappConfig.accounts[accountIndex]}`);
+        
+                  let contractInfo = contractAddresses[0].split('.'); // A.20320323.DappState
+                  dappConfig.dappStateContract = {
+                    owner: contractInfo[1],
+                    name: contractInfo[2]
+                  }      
+                  deploying = false;
+                  fileIndex++;
+                }
+              }
+            }, 10);
+
+          });
+
+
           fs.writeFileSync(dappConfigFile, JSON.stringify(dappConfig, null, '\t'), 'utf-8');
           console.log(`\n\n\🚀 Dapp configuration file updated with contract address\n\n`);
 
@@ -115,6 +155,10 @@ let dappConfig = {
 
     });
 
+
+  function waitDeploy() {
+
+  }
 
   function getEntropy() {
     let entropy = [];
