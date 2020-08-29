@@ -50,7 +50,7 @@
         "processor": "merge-blocks",
         "path": "${categoryRoot}/${category}/${name}/${name}-lib.js"
       },
-      "/packages/client/src/dapp/pages/[block-pages].js": {
+      "/packages/client/src/dapp/pages/harness/[block-pages].js": {
         "processor": "file-blocks",
         "path": "${categoryRoot}/${category}/${name}/${name}-page.js",
         "sequence": false
@@ -59,7 +59,7 @@
         "processor": "copy-folder",
         "context": "framework"
       },
-      "/packages/client/src/dapp/pages/components/top-navigation.js": {
+      "/packages/client/src/dapp/pages/harness/harness.js": {
         "processor": "replace-parameters"
       },
       "/packages/dapplib/src/lib/[blockchain]": {

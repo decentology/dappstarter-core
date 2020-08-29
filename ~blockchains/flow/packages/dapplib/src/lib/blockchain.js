@@ -11,8 +11,8 @@ module.exports = class Blockchain {
      */
     static async get(env, tx, data) {
         let params = [
-            { name: 'contractName', type: t.String, value: env.config.dappStateContract.name },
-            { name: 'contractOwner', type: t.String, value: '0x' + env.config.dappStateContract.owner },
+            { name: 'contractName', type: t.String, value: env.contract },
+            { name: 'contractOwner', type: t.String, value: '0x' + env.config.contracts[env.contract] },
         ]
         for(let key in data) {
             params.push({
@@ -46,8 +46,8 @@ module.exports = class Blockchain {
             [Flow.Roles.PAYER]: typeof env.params.payer === 'string' ? env.params.payer : proposer
         };
         let params = [
-            { name: 'contractName', type: t.String, value: env.config.dappStateContract.name },
-            { name: 'contractOwner', type: t.String, value: '0x' + env.config.dappStateContract.owner },
+            { name: 'contractName', type: t.String, value: env.contract },
+            { name: 'contractOwner', type: t.String, value: '0x' + env.config.contracts[env.contract] },
         ]
         for(let key in data) {
             params.push({

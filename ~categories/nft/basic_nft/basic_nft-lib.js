@@ -26,7 +26,7 @@ static async initializeAccount(data) {
 
     let result = await Blockchain.post({
             config: DappLib.getConfig(),
-            contract: DappLib.DAPP_STATE_CONTRACT,
+            contract: 'DappState',
             params: {
                 proposer: data.account
             }
@@ -76,7 +76,7 @@ static async getIDs(data) {
 
     let result = await Blockchain.get({
             config: DappLib.getConfig(),
-            contract: DappLib.DAPP_STATE_CONTRACT,
+            contract: 'DappState',
             params: {
             }
         },

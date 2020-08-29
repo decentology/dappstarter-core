@@ -22,10 +22,7 @@ let keyCount = 3;
 // Unpopulated dappConfig with service info only
 let dappConfig = {
   httpUri: config.httpUri,
-  dappStateContract: {
-    owner: '',
-    name: ''
-  },
+  contracts: {},
   accounts: [],
   serviceWallet: config.serviceWallet,
   wallets: []
@@ -112,6 +109,8 @@ let dappConfig = {
                 deploying = true;
                 if (fileIndex > files.length - 1) {
                   clearInterval(handle);
+                  fs.writeFileSync(dappConfigFile, JSON.stringify(dappConfig, null, '\t'), 'utf-8');
+                  console.log(`\n\n\🚀 Dapp configuration file updated with contract addresses\n\n`);
                   return;
                 }
                 let file = files[fileIndex];
@@ -132,12 +131,8 @@ let dappConfig = {
                   let contract = fs.readFileSync(contractsDir + file, 'utf8');
                   let contractAddresses = await Blockchain.deployContract(config, dappConfig.accounts[accountIndex], contract);
                   console.log(`Deployed ${file} to account ${accountIndex} at ${dappConfig.accounts[accountIndex]}`);
-        
                   let contractInfo = contractAddresses[0].split('.'); // A.20320323.DappState
-                  dappConfig.dappStateContract = {
-                    owner: contractInfo[1],
-                    name: contractInfo[2]
-                  }      
+                  dappConfig.contracts[contractInfo[2]] = contractInfo[1];
                   deploying = false;
                   fileIndex++;
                 }
@@ -145,10 +140,6 @@ let dappConfig = {
             }, 10);
 
           });
-
-
-          fs.writeFileSync(dappConfigFile, JSON.stringify(dappConfig, null, '\t'), 'utf-8');
-          console.log(`\n\n\🚀 Dapp configuration file updated with contract address\n\n`);
 
         }
       }

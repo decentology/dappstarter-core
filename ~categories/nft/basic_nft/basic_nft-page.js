@@ -1,10 +1,10 @@
 ///(page-post-content
-import "./components/page-panel.js";
-import "./components/page-body.js";
-import "../../lib/components/shared/action-card.js";
-import "../../lib/components/widgets/account-widget.js";
-import "../../lib/components/widgets/text-widget.js";
-import "../../lib/components/widgets/number-widget.js";
+import "../components/page-panel.js";
+import "../components/page-body.js";
+import "../../../lib/components/shared/action-card.js";
+import "../../../lib/components/widgets/account-widget.js";
+import "../../../lib/components/widgets/text-widget.js";
+import "../../../lib/components/widgets/number-widget.js";
 import DappLib from "@trycrypto/dappstarter-dapplib";
 import { LitElement, html, customElement, property } from "lit-element";
 

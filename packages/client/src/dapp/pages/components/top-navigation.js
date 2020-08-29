@@ -11,7 +11,7 @@ export default class TopNavigation extends LitElement {
   constructor(args) {
     super(args);
     setTimeout(() => {
-      this.setPageLoader();
+      this.setPageLoader('dapp');
     }, 0);
   }
 
@@ -19,45 +19,29 @@ export default class TopNavigation extends LitElement {
     let staticPages = [
       {
         name: "dapp",
-        title: "My Dapp",
+        title: "Home",
         route: "/"
+      },
+      {
+        name: "harness",
+        title: "UI Harness",
+        route: "/harness"
       }
     ];
-    return staticPages.concat([]); ///@{ "___page-list___": "[]"}
+    return staticPages;
   }
-
-  navigate = name => {
-    let contentPages = this.getPages();
-    let pageItem = contentPages.find(item => item.name === name);
-    if (!pageItem) {
-      return;
-    }
-
-    window.history.pushState(null, pageItem.title, pageItem.route);
-    this.setPageLoader(pageItem);
-  };
 
   handleClick = e => {
     e.preventDefault();
-    this.navigate(e.target.dataset.link);
-    this.requestUpdate();
+    this.setPageLoader(e.target.dataset.link);
   };
 
-  setPageLoader(pageItem) {
-    let pages = this.getPages();
-    if (pageItem == null) {
-      let pageName = location.href.split("/").pop();
-      if (pageName !== "") {
-        pageItem = pages.find(x => x.name == pageName);
-      } else {
-        pageItem = pages[0];
-      }
-    }
-
+  setPageLoader(name) {
     let pageLoader = document.getElementById("page-loader");
-    pageLoader.load(pageItem);
+    pageLoader.load(name, this.getPages());
+    this.requestUpdate();
   }
-  
+
   render() {
     this.classList.add('z-10', 'fixed');
     let content = html`

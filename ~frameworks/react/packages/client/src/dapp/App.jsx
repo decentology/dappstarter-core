@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './pages/components/top-navigation';
 import './pages/components/page-loader';
-import '../dapp/pages/dapp-page';
+import '../dapp/pages/dapp';
 
 class App extends Component {
   

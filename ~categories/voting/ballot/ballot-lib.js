@@ -35,7 +35,7 @@ static async initializeProposals(data) {
 
     let result = await Blockchain.post({
             config: config,
-            contract: DappLib.DAPP_STATE_CONTRACT,
+            contract: 'DappState',
             params: {
                 proposer: data.admin,
             }
@@ -72,7 +72,7 @@ static async issueBallot(data) {
 
     let result = await Blockchain.post({
             config: DappLib.getConfig(),
-            contract: DappLib.DAPP_STATE_CONTRACT,
+            contract: 'DappState',
             params: {
                 proposer: data.admin,
                 authorizers: [ data.admin, data.voter ]
@@ -109,7 +109,7 @@ static async vote(data) {
 
     let result = await Blockchain.post({
             config: DappLib.getConfig(),
-            contract: DappLib.DAPP_STATE_CONTRACT,
+            contract: 'DappState',
             params: {
                 proposer: data.voter
             }

@@ -22,12 +22,35 @@ export default class PageLoader extends LitElement {
     `;
   }
 
-  async load(pageItem) {
+  async load(page, pages) {
+
+    let pageItem = pages.find(item => item.name === page);
+    if (!pageItem) {
+      return;
+    }
+
+    window.history.pushState(null, pageItem.title, pageItem.route);
+
+    if (pageItem == null) {
+      let pageName = location.href.split("/").pop();
+      if (pageName !== "") {
+        pageItem = pages.find(x => x.name == pageName);
+      } else {
+        pageItem = pages[0];
+      }
+    }
+
     this.classList.add("relative", "grid", "xl:grid-cols-4", "lg:grid-cols-1");
     this.setAttribute("style", "top: 70px");
 
     try {
-      await import(`../../pages/${pageItem.name}-page.js`);
+      if (pageItem.name === 'dapp') {
+        await import(`../../pages/${pageItem.name}.js`);
+      } else if (pageItem.name === 'harness') {
+        await import(`../../pages/harness/${pageItem.name}.js`);
+      } else {
+        await import(`../../pages/harness/${pageItem.name}-page.js`);
+      }
       let pageName = pageItem.name.replace("_", "-") + "-page";
 
       this.pageContent = DOM.create(pageName, {

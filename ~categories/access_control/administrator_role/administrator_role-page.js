@@ -1,8 +1,8 @@
 ///(page-post-content
-import "./components/page-panel.js";
-import "../../lib/components/shared/action-card.js";
-import "./components/page-body.js";
-import "../../lib/components/widgets/account-widget.js";
+import "../components/page-panel.js";
+import "../../../lib/components/shared/action-card.js";
+import "../components/page-body.js";
+import "../../../lib/components/widgets/account-widget.js";
 import { LitElement, html, customElement, property } from "lit-element";
 
 @customElement("administrator-role-page")
