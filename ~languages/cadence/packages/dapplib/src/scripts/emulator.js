@@ -92,7 +92,7 @@ let dappConfig = {
 
 
           // Write the configuration file with test accounts and contract address for use in the web app dev
-          fs.writeFileSync(dappConfigFile, JSON.stringify(dappConfig, null, '\t'), 'utf-8');
+          fs.writeFileSync(dappConfigFile, JSON.stringify(dappConfig, null, '\t'), 'utf8');
           console.log(`\n\n\🚀 Dapp configuration file created at ${dappConfigFile}\n\n`);
 
           let contractsDir = __dirname + '/../../contracts/';
@@ -109,7 +109,7 @@ let dappConfig = {
                 deploying = true;
                 if (fileIndex > files.length - 1) {
                   clearInterval(handle);
-                  fs.writeFileSync(dappConfigFile, JSON.stringify(dappConfig, null, '\t'), 'utf-8');
+                  fs.writeFileSync(dappConfigFile, JSON.stringify(dappConfig, null, '\t'), 'utf8');
                   console.log(`\n\n\🚀 Dapp configuration file updated with contract addresses\n\n`);
                   return;
                 }

@@ -39,7 +39,7 @@ module.exports = function(deployer, network) {
             }
 
             // On each deployment, a configuration file is created so dapp and API can access the latest contract code
-            fs.writeFileSync(__dirname + '/../src/dapp-config.json',JSON.stringify(config, null, '\t'), 'utf-8');
+            fs.writeFileSync(__dirname + '/../src/dapp-config.json',JSON.stringify(config, null, '\t'), 'utf8');
         });
 
 }

@@ -1,5 +1,15 @@
 
 
+///(initialize
+
+    // initializes the contract by setting the proposals and votes to empty 
+    // and creating a new Admin resource to put in storage
+    self.proposals = []
+    self.votes = {}
+    self.account.save(<-create Administrator(), to: /storage/VotingAdmin)
+
+///)
+
 ///(functions
 
     // https://play.onflow.org/8a1987ad-f5b3-4548-a460-56faef700221
@@ -104,14 +114,8 @@
         destroy ballot
     }
 
-///)
-
-///(initialize
-
-    // initializes the contract by setting the proposals and votes to empty 
-    // and creating a new Admin resource to put in storage
-    self.proposals = []
-    self.votes = {}
-    self.account.save(<-create Administrator(), to: /storage/VotingAdmin)
+    pub fun proposalList(): [String] {
+        return self.proposals;
+    }
 
 ///)

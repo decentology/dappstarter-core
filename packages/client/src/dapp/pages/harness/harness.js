@@ -75,7 +75,7 @@ export default class HarnessPage extends LitElement {
         }
         </ul>
       </div>
-    `; console.log(content)
+    `; 
     return content;
 
   }

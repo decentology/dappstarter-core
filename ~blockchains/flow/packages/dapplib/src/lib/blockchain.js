@@ -1,6 +1,7 @@
 const { Flow } = require('./flow');
 const t = require('@onflow/types');
-
+const DappTransactions = require('./dapp-transactions');
+const DappScripts = require('./dapp-scripts');
 const CONTRACT = 'access(all) contract Noop {}';
 
 
@@ -10,24 +11,13 @@ module.exports = class Blockchain {
      * @dev Calls a read-only smart contract function
      */
     static async get(env, tx, data) {
-        let params = [
-            { name: 'contractName', type: t.String, value: env.contract },
-            { name: 'contractOwner', type: t.String, value: '0x' + env.config.contracts[env.contract] },
-        ]
-        for(let key in data) {
-            params.push({
-                name: key, 
-                type: t.String, 
-                value: data[key]
-            });
-        }
         let options = {
-            params
         }
-
         let flow = new Flow(env.config);
-        let response = await flow.executeTransaction(tx, options);
+        console.log('Sending script', DappScripts[tx](env.imports, data));
+        let response = await flow.executeTransaction(DappScripts[tx](env.imports, data), options);
         let resultData = await Flow.decode(response);
+        console.log('Result of script', response, resultData)
         return {
             callAccount: null,
             callData: resultData
@@ -38,38 +28,28 @@ module.exports = class Blockchain {
      * @dev Calls a writeable smart contract function
      */
     static async post(env, tx, data) {
-        let proposer = typeof env.params.proposer === 'string' ? env.params.proposer : env.config.accounts[0];
+        let proposer = typeof env.roles.proposer === 'string' ? env.roles.proposer : env.config.accounts[0];
         let roleInfo = {
             [Flow.Roles.PROPOSER]: proposer,
-            [Flow.Roles.AUTHORIZERS]: env.params.authorizers && Array.isArray(env.params.authorizers) && env.params.authorizers.length > 0 ?
-                                                env.params.authorizers : [ proposer ],
-            [Flow.Roles.PAYER]: typeof env.params.payer === 'string' ? env.params.payer : proposer
+            [Flow.Roles.AUTHORIZERS]: env.roles.authorizers && Array.isArray(env.roles.authorizers) && 
+                                            env.roles.authorizers.length > 0 ? env.roles.authorizers : [ proposer ],
+            [Flow.Roles.PAYER]: typeof env.roles.payer === 'string' ? env.roles.payer : proposer
         };
-        let params = [
-            { name: 'contractName', type: t.String, value: env.contract },
-            { name: 'contractOwner', type: t.String, value: '0x' + env.config.contracts[env.contract] },
-        ]
-        for(let key in data) {
-            params.push({
-                name: key, 
-                type: t.String, 
-                value: data[key]
-            });
-        }
         let options = {
             roleInfo,
-            params,
             gasLimit: 50
         }
 
         let flow = new Flow(env.config);
-        let response = await flow.executeTransaction(tx, options);
+        console.log('Sending transaction', DappTransactions[tx](env.imports, data));
+        let response = await flow.executeTransaction(DappTransactions[tx](env.imports, data), options);
 
         return {
             callAccount: proposer,
             callData: response
         }
     } 
+
 
     static async handleEvent(env, event, callback) {
         Flow.handleEvent(env, event, callback);

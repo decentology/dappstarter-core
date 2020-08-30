@@ -27,6 +27,7 @@ export default class BallotPage extends LitElement {
   }
 
   render() {
+    
     let content = html`
       <page-body
         title="${this.title}"

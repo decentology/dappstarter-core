@@ -19,6 +19,10 @@
         "processor": "merge-blocks",
         "path": "${categoryRoot}/${category}/${name}/cadence/${name}.cdc"
       },
+      "/~languages/cadence/packages/dapplib/cadence/TRANSPILER.md": {
+        "processor": "merge-block-folders",
+        "path": "${categoryRoot}/${category}/${name}/cadence/"
+      },
       "/README.md": {
         "processor": "filter"
       },
@@ -56,8 +60,8 @@
             "scripts": {
               "clean": "rimraf -rf build && rimraf -rf dist",
               "emulator": "node src/scripts/emulator.js",
-              "transpiler": "watch 'node src/scripts/transpiler.js' cadence",
-              "dev": "watch 'node src/scripts/emulator.js' contracts && npm run transpiler"
+              "transpiler": "node src/scripts/transpiler.js",
+              "dev": "watch 'node src/scripts/emulator.js' contracts & watch 'node src/scripts/transpiler.js' cadence"
             }
           },
           "flow": {
