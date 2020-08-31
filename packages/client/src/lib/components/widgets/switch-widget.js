@@ -14,8 +14,6 @@ export default class SwitchWidget extends LitElement {
 
   constructor(args) {
     super(args);
-    console.log('Switch');
-
   }
 
   render() {

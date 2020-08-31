@@ -10,7 +10,6 @@ const TAB = '\t';
   const destFolder = rootFolder + 'src' + path.sep + 'lib' + path.sep;
 
   console.log('Transpiler activated');
-  console.log(__dirname, rootFolder, cadenceFolder, destFolder)
 
   // Create dapp-scripts.js from packages/dapplib/cadence/scripts
   generate('scripts');
@@ -25,14 +24,14 @@ const TAB = '\t';
     // Read the 'scripts' or 'transactions' folder as determined by 'type'
     let items = fs.readdirSync(sourceFolder);
     let prefix = TAB + TAB + TAB + TAB;
-    let isTransactions = type === 'transactions';
+    let isTransaction = type === 'transactions';
     // Outermost class wrapper
     let outSource = '// 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨' + NEWLINE;
     outSource += '// ⚠️ THIS FILE IS AUTO-GENERATED WHEN packages/dapplib/cadence CHANGES' + NEWLINE;
     outSource += '// DO **** NOT **** MODIFY CODE HERE AS IT WILL BE OVER-WRITTEN' + NEWLINE;
     outSource += '// 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨' + NEWLINE + NEWLINE;
     outSource += 'const fcl = require("@onflow/fcl");' + NEWLINE + NEWLINE;
-    outSource += 'module.exports = class Dapp' + (isTransactions ? 'Transactions' : 'Scripts') + ' {' + NEWLINE;
+    outSource += 'module.exports = class Dapp' + (isTransaction ? 'Transactions' : 'Scripts') + ' {' + NEWLINE;
 
     // For each Cadence file found we are going to create a JS wrapper function
     items.forEach((item) => {
@@ -40,44 +39,35 @@ const TAB = '\t';
       let codeLines = code.split(NEWLINE);
 
       // Function name (imports only for transactions)
-      outSource += NEWLINE + TAB + 'static ' + item.replace('.cdc', '') + '(imports, data) {' + NEWLINE;
+      outSource += NEWLINE + TAB + 'static ' + item.replace('.cdc', '') + '(imports) {' + NEWLINE;
 
       // All the code is added into a JS template literal so line breaks
       // are preserved. We also need to inject imports at run-time which 
       // a template literal enables quite easily
-      outSource += TAB + TAB + 'return fcl.' + (isTransactions ? 'transaction' : 'script') + '`' + NEWLINE;
+      outSource += TAB + TAB + 'return fcl.' + (isTransaction ? 'transaction' : 'script') + '`' + NEWLINE;
 
       // Function body
       codeLines.forEach((line) => {
         if (line.indexOf('import ') > -1) {
           // Skip because we will inject these based on the passed parameter 'imports'
-        } else if ((line.indexOf('transaction ') > -1) || (line.indexOf('script ') > -1)) {
+        } else if ((line.indexOf('transaction') > -1) || (line.indexOf('pub ') > -1)) {
           // If it's a transaction, we need to inject imports which
           // are passed as a parameter named 'imports'
           // Each import has a key which is the imported Type
           // and a value which is the account from which to import the type
-          outSource += prefix + '${Dapp' +  (isTransactions ? 'Transactions' : 'Scripts') 
+          outSource += prefix + '${Dapp' +  (isTransaction ? 'Transactions' : 'Scripts') 
                                          + '.injectImports(imports)}' + NEWLINE;
           outSource += prefix + line + NEWLINE;
         } else {
-          if (line.trim().indexOf('self.') === 0) {
-            // Extract variable name from self.xxxxx = "something";
-            let key = line.split('.')[1];
-            key = key.split('=')[0].trim();
-            
-            outSource += prefix + TAB + TAB + 'self.' + key + ' = ${data.' + key + '}' + NEWLINE
-          } else {
             outSource += prefix + line + NEWLINE;
-          }
         }
       });
       outSource += TAB + TAB + '`;';
       outSource += NEWLINE + TAB + '}' + NEWLINE;
     });
 
-    // For transactions, we include a function that will enumerate
-    // the 'imports' parameter and expand it into individual import lines
-    if (isTransactions) {
+    // We include a function that will enumerate the 'imports' parameter 
+    // and expand it into individual import lines
       outSource += `
       
       static injectImports(imports) {
@@ -91,7 +81,6 @@ const TAB = '\t';
       }     
 
       `  
-    }
     outSource += NEWLINE + '}' + NEWLINE;
 
     // Create dapp-*.js output file based on the type

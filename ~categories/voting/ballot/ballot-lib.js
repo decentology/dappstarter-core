@@ -43,14 +43,9 @@ static async initializeProposals(data) {
         },
         'ballot_initializeProposals',
         {
-            proposals: `["${proposals.join('","')}"]`            
+            proposals: { value: proposals, type: t.Array(t.String) }            
         }
     );
-    let accounts = DappLib.getAccounts();
-    console.log(accounts);
-    DappLib.getProposalList({
-      ballotOwner: accounts[0]
-    });
     return {
         type: DappLib.DAPP_RESULT_TX_HASH,
         label: 'Transaction Hash',
@@ -96,7 +91,7 @@ static async vote(data) {
         },
         'ballot_vote',
         {
-            proposalVotes: [data.proposalIndex]
+            proposalVotes: { value: [Number(data.proposalIndex)], type: t.Array(t.UInt64) }            
         }
     );
 
@@ -110,7 +105,6 @@ static async vote(data) {
 
 static async getProposalList(data) {
 
-    console.log('Calling proposalList', data)
     let result = await Blockchain.get({
             config: DappLib.getConfig(),
             imports: {
@@ -122,7 +116,6 @@ static async getProposalList(data) {
         'ballot_proposalList'
     );
 
-    console.log('ProposalList Result', result);
     return {
         type: DappLib.DAPP_RESULT_ARRAY,
         label: 'Proposals',

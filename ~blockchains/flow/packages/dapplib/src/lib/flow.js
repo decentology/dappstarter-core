@@ -224,6 +224,15 @@ class Flow {
             builders.push(fcl.params(params));
         }
 
+        // If there are any args, add those here
+        if (options.args && Array.isArray(options.args)) {
+            let args = [];
+            options.args.forEach((arg) => {
+                args.push(fcl.arg(arg.value, arg.type));
+            });
+            builders.push(fcl.args(args));
+        }
+
         if (options.gasLimit && options.gasLimit > 0) {
             builders.push(fcl.limit(options.gasLimit));
         }
