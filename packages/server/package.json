@@ -4,7 +4,11 @@
   "version": "1.0.0",
   "description": "Nest TypeScript starter repository",
   "license": "MIT",
-  "scripts": {
+  "contributors": [
+    "Jonathan Sheely <jon@decentology.com> https://www.decentology.com",
+    "Nik Kalyani <nik@decentology.com> https://www.decentology.com"
+   ],
+    "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

@@ -89,8 +89,6 @@ let dappConfig = {
         // Last timer event so we can continue
         if (a === accountCount - 1) {
 
-
-
           // Write the configuration file with test accounts and contract address for use in the web app dev
           fs.writeFileSync(dappConfigFile, JSON.stringify(dappConfig, null, '\t'), 'utf8');
           console.log(`\n\n\🚀 Dapp configuration file created at ${dappConfigFile}\n\n`);
@@ -111,6 +109,7 @@ let dappConfig = {
                   clearInterval(handle);
                   fs.writeFileSync(dappConfigFile, JSON.stringify(dappConfig, null, '\t'), 'utf8');
                   console.log(`\n\n\🚀 Dapp configuration file updated with contract addresses\n\n`);
+                  await complete();
                   return;
                 }
                 let file = files[fileIndex];
@@ -146,8 +145,26 @@ let dappConfig = {
 
     });
 
+  async function complete() {
+    // If the emulator is being run for testing then 
+    // we run tests then stop the emulator when we get here
+    // node emulator test
+    if (process.argv.length > 2) {
 
-  function waitDeploy() {
+      let testFile = './tests';
+      if (process.argv.length === 4) {
+        testFile = testFile + '/' + process.argv[3];
+      } 
+
+      console.log('Starting tests...');
+
+      spawn.sync('../../node_modules/mocha/bin/mocha', [testFile], { stdio: 'inherit' });
+
+      try {
+        await fkill('flow');
+      } catch(e) {
+      }  
+    }
 
   }
 

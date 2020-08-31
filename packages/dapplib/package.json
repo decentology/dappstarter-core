@@ -2,8 +2,13 @@
   "name": "@trycrypto/dappstarter-dapplib",
   "version": "0.1.0",
   "description": "> TODO: description",
-  "author": "Jonathan Sheely <jsheely@thirtytech.net>",
-  "homepage": "https://github.com/trycrypto/dappstarter-lerna#readme",
+  "contributors": [
+    "Nik Kalyani <nik@decentology.com> https://www.decentology.com",
+    "Jonathan Sheely <jon@decentology.com> https://www.decentology.com",
+    "Traci Fong <traci@decentology.com> https://www.decentology.com",
+    "Niharika Singh <niharika@decentology.com> https://www.decentology.com"
+  ],
+ "homepage": "https://github.com/trycrypto/dappstarter-lerna#readme",
   "license": "ISC",
   "main": "src/lib/dapp-lib.js",
   "repository": {

@@ -23,7 +23,7 @@
         "processor": "merge-blocks",
         "path": "${categoryRoot}/${category}/${name}/solidity/${name}-lib.sol"
       },
-      "/~languages/solidity/packages/dapplib/test/[block-tests].js": {
+      "/~languages/solidity/packages/dapplib/tests/[block-tests].js": {
         "processor": "file-blocks",
         "path": "${categoryRoot}/${category}/${name}/solidity/${name}-tests.js",
         "sequence": false

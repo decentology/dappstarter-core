@@ -13,10 +13,10 @@
     "dapp": "webpack-dev-server --mode development --config webpack.config.dapp.js",
     "dapp:prod": "webpack --mode production  --config webpack.config.dapp.js"
   },
-  "authors": [
-    "Nik Kalyani <nik@trycrypto.com> https://www.trycrypto.com",
-    "Jonathan Sheely <jon@trycrypto.com> https://www.trycrypto.com",
-    "Traci Fong <traci@trycrypto.com> https://www.trycrypto.com"
+  "contributors": [
+    "Nik Kalyani <nik@decentology.com> https://www.decentology.com",
+    "Jonathan Sheely <jon@decentology.com> https://www.decentology.com",
+    "Traci Fong <traci@decentology.com> https://www.decentology.com"
   ],
   "devDependencies": {
     "@babel/core": "^7.7.7",

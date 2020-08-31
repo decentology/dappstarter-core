@@ -36,6 +36,11 @@
         "processor": "merge-blocks",
         "path": "${categoryRoot}/${category}/${name}/${name}-lib.js"
       },
+      "/~languages/cadence/packages/dapplib/tests/[block-tests].js": {
+        "processor": "file-blocks",
+        "path": "${categoryRoot}/${category}/${name}/cadence/${name}-tests.js",
+        "sequence": false
+      },
       "/packages/client/src/dapp/pages/harness/[block-pages].js": {
         "processor": "file-blocks",
         "path": "${categoryRoot}/${category}/${name}/${name}-page.js",
@@ -61,7 +66,8 @@
               "clean": "rimraf -rf build && rimraf -rf dist",
               "emulator": "node src/scripts/emulator.js",
               "transpiler": "node src/scripts/transpiler.js",
-              "dev": "watch 'node src/scripts/emulator.js' contracts & watch 'node src/scripts/transpiler.js' cadence"
+              "dev": "watch 'node src/scripts/emulator.js' contracts & watch 'node src/scripts/transpiler.js' cadence",
+              "test": "npm run emulator test"
             }
           },
           "flow": {
@@ -73,6 +79,8 @@
               "sha3": "^2.1.2"
             },
             "devDependencies": {
+              "chai": "^4.2.0",
+              "mocha": "^8.1.3",
               "watch": "^1.0.2",
               "fkill": "^7.0.1"
             }

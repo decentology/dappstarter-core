@@ -125,7 +125,11 @@ static async getProposalList(data) {
 }
 
 static async ipfsUpload(config, files, wrapWithDirectory, progressCallback) {
-
+    
+    let results = [];
+    if (files.length < 1) {
+        return results;
+    }
     let ipfs = ipfsClient(config.ipfs);
     let filesToUpload = [];
     files.map((file) => {
@@ -139,7 +143,6 @@ static async ipfsUpload(config, files, wrapWithDirectory, progressCallback) {
         pin: true,
         progress: progressCallback
     }
-    let results = [];
 
     for await (const result of ipfs.add(filesToUpload, options)) {
         if (wrapWithDirectory && result.path !== "") {
