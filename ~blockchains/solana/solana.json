@@ -1,8 +1,8 @@
 {
-    "name": "tomochain",
-    "title": "TomoChain",
+    "name": "solana",
+    "title": "Solana",
     "description": "",
-    "imageUrl": "https://info.decentology.com/assets/blockchains/tomochain/tomochain-dappstarter.png",
+    "imageUrl": "https://info.decentology.com/assets/blockchains/solana/solana-dappstarter.png",
     "help": {
         "title": "",
         "url": ""
@@ -13,7 +13,7 @@
     },
     "interface": {
         "hidden": false,
-        "enabled": true,
+        "enabled": false,
         "children": "single"
     }
 }
