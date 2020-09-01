@@ -43,7 +43,7 @@ class ipfs {
 
             results.push({
                 transactionHash: DappLib.getTransactionHash(result.callData),
-                ipfsHash: file.hash,
+                ipfsHash: file.cid.string,
                 docId: file.docId
             });
         }
