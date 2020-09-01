@@ -16,6 +16,7 @@
         "children": [
             "ethereum",
             "flow",
+            "solana",
             "quorum"
         ],
         "targets": {
@@ -48,7 +49,8 @@
         },
         "children": [
             "solidity",
-            "cadence"
+            "cadence",
+            "rust"
         ]
     },
     {
