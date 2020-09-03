@@ -1,4 +1,3 @@
-import DappState from 0x01
 
 pub fun main(account) : [UInt64]? {
     let account = getAccount(account)

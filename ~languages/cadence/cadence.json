@@ -67,7 +67,7 @@
               "emulator": "node src/scripts/emulator.js",
               "transpiler": "node src/scripts/transpiler.js",
               "dev": "watch 'node src/scripts/emulator.js' contracts & watch 'node src/scripts/transpiler.js' cadence",
-              "test": "npm run emulator test"
+              "test": "npm run transpiler & npm run emulator test"
             }
           },
           "flow": {

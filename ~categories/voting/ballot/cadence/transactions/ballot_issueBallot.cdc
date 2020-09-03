@@ -1,4 +1,3 @@
-import DappState from 0x0          
 transaction {
     prepare(admin: AuthAccount, voter: AuthAccount) {
   
