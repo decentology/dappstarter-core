@@ -60,7 +60,7 @@ export const App: React.FC = () => {
     <div>
       <header>
         <div className="logo">
-          <img src="./trycrypto-logo.svg" width="133" alt="logo" />
+          <img src="./decentology-logo-light.svg" width="133" alt="logo" />
         </div>
         <nav>
           <ul>
@@ -193,7 +193,7 @@ export const App: React.FC = () => {
           </div>
           <span className="footer-left">Powered by TryCrypto</span>
           <span className="footer-right">
-            <a href="https://www.trycrypto.com">www.trycrypto.com</a>
+            <a href="https://www.decentology.com">www.decentology.com</a>
           </span>
         </div>
       </main>
