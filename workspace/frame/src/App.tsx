@@ -189,9 +189,9 @@ export const App: React.FC = () => {
         </div>
         <div className="main-footer">
           <div className="docs">
-            <a href="https://support.trycrypto.com/">Support Documentation</a>
+            <a href="https://support.decentology.com/">Support Documentation</a>
           </div>
-          <span className="footer-left">Powered by TryCrypto</span>
+          <span className="footer-left">Powered by Decentology</span>
           <span className="footer-right">
             <a href="https://www.decentology.com">www.decentology.com</a>
           </span>
