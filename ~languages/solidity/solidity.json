@@ -7,7 +7,7 @@
     "title": "",
     "url": ""
   },
-  "blockchains": ["ethereum", "klaytn"],
+  "blockchains": ["ethereum", "matic", "klaytn"],
   "interface": {
     "hidden": false,
     "enabled": true,
@@ -89,6 +89,17 @@
               "@types/ethereum-protocol": "^1.0.0",
               "@types/web3": "^1.2.2",
               "ganache-cli": "^6.9.1"          
+            }
+          },
+          "matic": {
+            "scripts": {
+              "faucet": "node ./src/lib/faucet",
+              "postinstall": "node ./src/lib/faucet"
+            },
+            "devDependencies": {
+              "axios": "^0.19.2",
+              "@truffle/hdwallet-provider": "1.0.32",
+              "web3": "1.2.6"
             }
           },
           "klaytn": {

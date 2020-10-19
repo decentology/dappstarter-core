@@ -10,6 +10,11 @@
   "scripts": {
     "prestart": "port-precheck 5000 5001 5002",
     "start": "lerna run dev --no-sort --stream --parallel",
+    "migrate": "lerna run deploy --scope=@trycrypto/dappstarter-dapplib --stream",
+    "dapp": "lerna run dev --scope=@trycrypto/dappstarter-client --stream",
+    "dapp:prod": "lerna run build:prod",
+    "server": "lerna run dev --scope=@trycrypto/dappstarter-server --stream",
+    "test": "lerna run test $npm_config_script --scope=@trycrypto/dappstarter-dapplib --stream",
     "dev": "npm start"
   },
   "devDependencies": {

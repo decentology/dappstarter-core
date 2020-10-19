@@ -16,8 +16,8 @@
         "children": [
             "ethereum",
             "flow",
-            "solana",
-            "quorum"
+            "matic",
+            "solana"
         ],
         "targets": {
             "*": {
@@ -50,7 +50,7 @@
         "children": [
             "solidity",
             "cadence",
-            "rust"
+            "solana-rust"
         ]
     },
     {
@@ -69,9 +69,7 @@
         },
         "children": [
             "vanilla",
-            "react",
-            "vue",
-            "angular"
+            "react"
         ]
     },
     {

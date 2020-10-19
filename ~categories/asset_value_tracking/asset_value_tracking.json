@@ -12,7 +12,10 @@
         "enabled": true,
         "children": "single"
     },
-    "blockchains": ["ethereum", "klaytn"],
+    "blockchains": [
+        "ethereum",
+        "matic",
+        "klaytn"],
     "languages": ["solidity"],
     "children": ["token"]
 }

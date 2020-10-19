@@ -1,0 +1,19 @@
+{
+    "name": "matic",
+    "title": "Matic",
+    "description": "",
+    "imageUrl": "https://info.decentology.com/assets/blockchains/matic/matic-dappstarter.png",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "metadata": {
+        "developer_experience": "easy for JS developers",
+        "different": ""
+    },
+    "interface": {
+        "hidden": false,
+        "enabled": false,
+        "children": "single"
+    }
+}
