@@ -1,5 +1,5 @@
 {
-  "name": "rust",
+  "name": "solana-rust",
   "title": "Rust",
   "description": "",
   "imageUrl": "",
@@ -15,24 +15,24 @@
   },
   "targets": {
     "*": {
-      "/~languages/rust/packages/dapplib/contracts/DappState.sol": {
+      "/~languages/solana-rust/packages/dapplib/contracts/DappState.sol": {
         "processor": "merge-blocks",
-        "path": "${categoryRoot}/${category}/${name}/rust/${name}.sol"
+        "path": "${categoryRoot}/${category}/${name}/solana-rust/${name}.sol"
       },
-      "/~languages/rust/packages/dapplib/contracts/DappLib.sol": {
+      "/~languages/solana-rust/packages/dapplib/contracts/DappLib.sol": {
         "processor": "merge-blocks",
-        "path": "${categoryRoot}/${category}/${name}/rust/${name}-lib.sol"
+        "path": "${categoryRoot}/${category}/${name}/solana-rust/${name}-lib.sol"
       },
-      "/~languages/rust/packages/dapplib/tests/[block-tests].js": {
+      "/~languages/solana-rust/packages/dapplib/tests/[block-tests].js": {
         "processor": "file-blocks",
-        "path": "${categoryRoot}/${category}/${name}/rust/${name}-tests.js",
+        "path": "${categoryRoot}/${category}/${name}/solana-rust/${name}-tests.js",
         "sequence": false
       },
-      "/~languages/rust/packages/dapplib/migrations/2_deploy_contracts.js": {
+      "/~languages/solana-rust/packages/dapplib/migrations/2_deploy_contracts.js": {
         "processor": "merge-blocks",
         "path": "${categoryRoot}/${category}/${name}/${name}-config.js"
       },
-      "/~languages/rust/packages/dapplib/truffle-config.js": {
+      "/~languages/solana-rust/packages/dapplib/truffle-config.js": {
         "processor": "copy-file",
         "context": "blockchain",
         "actions": ["accounts"]
@@ -74,33 +74,22 @@
             "scripts": {
               "dev": "run-p ganache deploy",
               "deploy": "wait-on tcp:7545 && truffle compile && truffle migrate --reset",
-              "ganache": "node src/lib/ganache.js",
-              "test": "npx truffle test"
+              "test": "npx truffle test",
+              "build:program-rust": "./src/program-rust/do.sh build && npm run clean:store",
+              "localnet:update": "solana-localnet update",
+              "localnet:up": "set -x; solana-localnet down; set -e; solana-localnet up",
+              "localnet:down": "solana-localnet down",
+              "localnet:logs": "solana-localnet logs -f",
+              "clean:store": "rm -rf store",
+              "clean:program-rust": "./src/program-rust/do.sh clean && rm -rf ./dist && npm run clean:store",
+              "test:program-rust": "./src/program-rust/do.sh test"          
             }
           },
-          "ethereum": {
+          "solana": {
             "dependencies": {
-              "web3": "^1.2.6",
-              "web3-providers": "^1.0.0-beta.55"
+              "@solana/web3.js": "^0.73.0"
             },
             "devDependencies": {
-              "@truffle/hdwallet-provider": "^1.0.33",
-              "truffle": "^5.1.19",
-              "@types/ethereum-protocol": "^1.0.0",
-              "@types/web3": "^1.2.2",
-              "ganache-cli": "^6.9.1"          
-            }
-          },
-          "klaytn": {
-            "scripts": {
-              "faucet": "node ./src/lib/faucet",
-              "postinstall": "node ./src/lib/faucet"
-            },
-            "devDependencies": {
-              "caver-js": "^1.3.2",
-              "axios": "^0.19.2",
-              "@truffle/hdwallet-provider": "1.0.32",
-              "web3": "1.2.6"
             }
           }
         },
