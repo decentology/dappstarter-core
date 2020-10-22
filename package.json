@@ -1,5 +1,5 @@
 {
-  "name": "@decentology/dappstarter",
+  "name": "@decentology/dappstarter-project",
   "version": "1.0.29",
   "workspaces": {
     "packages": [
