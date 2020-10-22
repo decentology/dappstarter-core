@@ -1,6 +1,6 @@
 {
     "name": "matic",
-    "title": "Matic",
+    "title": "Matic (Beta)",
     "description": "",
     "imageUrl": "https://info.decentology.com/assets/blockchains/matic/matic-dappstarter.png",
     "help": {
@@ -13,7 +13,7 @@
     },
     "interface": {
         "hidden": false,
-        "enabled": false,
+        "enabled": true,
         "children": "single"
     }
 }

@@ -3,7 +3,7 @@ import "../components/page-panel.js";
 import "../../../lib/components/shared/action-card.js";
 import "../components/page-body.js";
 import "../../../lib/components/widgets/switch-widget.js";
-import DappLib from "@trycrypto/dappstarter-dapplib";
+import DappLib from "@decentology/dappstarter-dapplib";
 import { LitElement, html, customElement, property } from "lit-element";
 
 @customElement("contract-runstate-page")

@@ -1,5 +1,5 @@
 {
-  "name": "@trycrypto/dappstarter-server",
+  "name": "@decentology/dappstarter-server",
   "private": true,
   "version": "1.0.0",
   "description": "Nest TypeScript starter repository",
@@ -20,7 +20,7 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "dependencies": {
-    "@trycrypto/dappstarter-dapplib": "^0.1.0",
+    "@decentology/dappstarter-dapplib": "^0.1.0",
     "@nestjs/common": "^7.0.1",
     "@nestjs/core": "^7.0.1",
     "@nestjs/platform-express": "^7.0.1",

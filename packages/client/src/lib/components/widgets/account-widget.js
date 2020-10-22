@@ -1,5 +1,5 @@
 import { LitElement, html, customElement, property } from "lit-element";
-import DappLib from "@trycrypto/dappstarter-dapplib";
+import DappLib from "@decentology/dappstarter-dapplib";
 
 @customElement("account-widget")
 export default class AccountWidget extends LitElement {

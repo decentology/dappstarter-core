@@ -1,4 +1,4 @@
-import DappLib from "@trycrypto/dappstarter-dapplib";
+import DappLib from "@decentology/dappstarter-dapplib";
 import { LitElement, html, customElement, property } from "lit-element";
 
 @customElement("action-button")

@@ -10,7 +10,7 @@ import "../../../lib/components/widgets/upload-widget.js";
 import "@uppy/core/dist/style.css";
 import "@uppy/dashboard/dist/style.css";
 // End TODO
-import DappLib from "@trycrypto/dappstarter-dapplib";
+import DappLib from "@decentology/dappstarter-dapplib";
 import { LitElement, html, customElement, property } from "lit-element";
 
 @customElement("ipfs-page")

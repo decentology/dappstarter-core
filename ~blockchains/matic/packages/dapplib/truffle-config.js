@@ -4,13 +4,15 @@ require('@babel/register');
 });
 require('@babel/polyfill');
 
-const HDWalletProvider = require('./src/lib/hdwalletprovider');
+const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 let mnemonic = 'PLACEHOLDER'; ///@{ "___test-mnemonic___": "PLACEHOLDER"}
 let testAccounts = null; ///@{ "___test-accounts___": "null"}
-let devUri = 'https://api.baobab.klaytn.net:8651';
+let devUri = 'https://rpc-mumbai.matic.today';
 
 module.exports = {
+    testAccounts,
+    mnemonic,
     networks: {
         development: {
             uri: devUri,
@@ -22,14 +24,15 @@ module.exports = {
                 true, // share nonce
                 `m/44'/60'/0'/0/` // wallet HD path
             ),
-            network_id: '1001',
-            gas: '8500000',
-            gasPrice: null,
+            network_id: 80001,
+            confirmations: 2,
+            timeoutBlocks: 200,
+            skipDryRun: true
         }
     },
     compilers: {
         solc: {
-            version: '^0.5.6'
+            version: '^0.5.11'
         }
     }
 };

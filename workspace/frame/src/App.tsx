@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import clsx from 'clsx'
 import { find, keys } from 'lodash-es'
-const manifest = require('@trycrypto/dappstarter-dapplib/manifest.json')
+const manifest = require('@decentology/dappstarter-dapplib/manifest.json')
 
 enum View {
   Client,

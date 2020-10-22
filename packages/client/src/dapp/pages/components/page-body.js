@@ -1,4 +1,4 @@
-import DappLib from "@trycrypto/dappstarter-dapplib";
+import DappLib from "@decentology/dappstarter-dapplib";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { LitElement, html, customElement, property } from "lit-element";
 

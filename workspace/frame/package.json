@@ -1,11 +1,11 @@
 {
-  "name": "@trycrypto/dappstarter-frame",
+  "name": "@decentology/dappstarter-frame",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.13.0",
-    "@trycrypto/dappstarter-client": "^0.1.0",
-    "@trycrypto/dappstarter-dapplib": "^0.1.0",
+    "@decentology/dappstarter-client": "^0.1.0",
+    "@decentology/dappstarter-dapplib": "^0.1.0",
     "@reduxjs/toolkit": "^1.3.6",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",

@@ -1,5 +1,5 @@
 {
-  "name": "@trycrypto/dappstarter-client",
+  "name": "@decentology/dappstarter-client",
   "version": "0.1.0",
   "description": "Dapp scaffolding created with DappStarter",
   "directories": {
@@ -46,7 +46,7 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
-    "@trycrypto/dappstarter-dapplib": "^0.1.0",
+    "@decentology/dappstarter-dapplib": "^0.1.0",
     "@babel/plugin-proposal-decorators": "^7.8.3",
     "@grubersjoe/slide-menu": "1.2.3",
     "@uppy/core": "^1.7.1",

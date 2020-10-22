@@ -1,19 +1,19 @@
 const TruffleConfig = require('../../truffle-config.js');
 const request = require('request');
-const Caver = require('caver-js');
+const Web3 = require("web3");
 const BN = require('bn.js');
 
 let devUri = TruffleConfig.networks.development.uri;
-let faucetUri = 'https://api-baobab.wallet.klaytn.com/faucet/run';
+let faucetUri = 'https://api.faucet.matic.network/getTokens';
 let testAccounts = TruffleConfig.networks.development.provider().addresses;
 
-// Scope: https://baobab.scope.klaytn.com
 
-let caver = new Caver(devUri);
+let web3 = new Web3(new Web3.providers.HttpProvider(devUri));
 
-// We want to keep accounts loaded with test Klay so we fire and forget requests to the faucet
+// We want to keep accounts loaded with test Matic so we fire and forget requests to the faucet
 testAccounts.map((account, index) => {
-    caver.klay
+
+    web3.eth
         .getBalance(account)
         .then((result) => {
             
@@ -21,7 +21,15 @@ testAccounts.map((account, index) => {
             let target = new BN('12000000000000000000');
             if (balance.lt(target)) {
                 console.log(`Faucet request for ${account}`);
-                request.post(`${faucetUri}?address=${account}`, (error, res, body) => {
+                request.post(
+                    faucetUri,
+                    {
+                      json: {
+                        network: "mumbai",
+                        address: account,
+                        token: "maticToken"
+                      },
+                    }, (error, res, body) => {
                     if (error) {
                         console.error(error);
                     }

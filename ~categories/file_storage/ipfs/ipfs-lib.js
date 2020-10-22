@@ -95,15 +95,17 @@ class ipfs {
             'getIpfsDocumentsByOwner',
             data.account
         );
+        let asciiCallData = [];
         if (result.callData && Array.isArray(result.callData)) {
             for(let i=0; i< result.callData.length; i++) {
-                result.callData[i] = DappLib.toAscii(result.callData[i]);
+                asciiCallData.push(DappLib.toAscii(result.callData[i]));
             }
         }
+        
         return {
             type: DappLib.DAPP_RESULT_ARRAY,
             label: 'Documents',
-            result: result.callData,
+            result: asciiCallData,
             formatter: ['Text-20-5']
         }
     }

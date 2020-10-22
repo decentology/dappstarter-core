@@ -71,14 +71,14 @@
         "framework": {},
         "blockchain": {
           "*": {
+          },
+          "ethereum": {
             "scripts": {
               "dev": "run-p ganache deploy",
               "deploy": "wait-on tcp:7545 && truffle compile && truffle migrate --reset",
               "ganache": "node src/lib/ganache.js",
               "test": "npx truffle test"
-            }
-          },
-          "ethereum": {
+            },
             "dependencies": {
               "web3": "^1.2.6",
               "web3-providers": "^1.0.0-beta.55"
@@ -93,17 +93,25 @@
           },
           "matic": {
             "scripts": {
+              "dev": "run-p deploy",
+              "deploy": "wait-on truffle compile && truffle migrate --reset",
+              "test": "npx truffle test",
               "faucet": "node ./src/lib/faucet",
               "postinstall": "node ./src/lib/faucet"
             },
             "devDependencies": {
-              "axios": "^0.19.2",
-              "@truffle/hdwallet-provider": "1.0.32",
-              "web3": "1.2.6"
+              "@truffle/hdwallet-provider": "^1.0.33",
+              "truffle": "^5.1.19",
+              "@types/ethereum-protocol": "^1.0.0",
+              "@types/web3": "^1.2.2"
             }
           },
           "klaytn": {
             "scripts": {
+              "dev": "run-p ganache deploy",
+              "deploy": "wait-on tcp:7545 && truffle compile && truffle migrate --reset",
+              "ganache": "node src/lib/ganache.js",
+              "test": "npx truffle test",
               "faucet": "node ./src/lib/faucet",
               "postinstall": "node ./src/lib/faucet"
             },

@@ -7,7 +7,7 @@ import '../../../lib/components/widgets/text-widget.js';
 import '../../../lib/components/widgets/number-widget.js';
 import '../../../lib/components/widgets/account-widget.js';
 import DOM from "../../../lib/components/shared/dom";
-import DappLib from "@trycrypto/dappstarter-dapplib";
+import DappLib from "@decentology/dappstarter-dapplib";
 import { LitElement, html, customElement, property } from "lit-element";
 
 @customElement("entity-page")
