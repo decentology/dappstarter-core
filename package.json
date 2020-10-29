@@ -10,6 +10,7 @@
   "scripts": {
     "prestart": "port-precheck 5000 5001 5002",
     "start": "lerna run dev --no-sort --stream --parallel",
+    "faucet": "lerna run faucet --scope=@decentology/dappstarter-dapplib --stream",
     "migrate": "lerna run deploy --scope=@decentology/dappstarter-dapplib --stream",
     "dapp": "lerna run dev --scope=@decentology/dappstarter-client --stream",
     "dapp:prod": "lerna run build:prod",

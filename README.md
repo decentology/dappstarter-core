@@ -39,7 +39,11 @@ Using a terminal (or command prompt), change to the folder containing the projec
 Note: You may see some npm warnings about "web3-bzz" after dependencies are installed. These can be ignored as the associated code is never invoked.
 ///)
 # Build, Deploy and Test
+///(blockchain:matic
 
+Before you can work with Matic's testnet, you need to request some tokens in your test accounts. To make this request type: `yarn faucet` This will request tokens for all 10 test accounts. You may have to run this command a few times to see the token balances get updated. It isn't necessary to wait until all accounts have tokens – the account labeled (0) is the account used to deploy contracts. Once you see a balance for this account, you can continue.
+
+///)
 Using a terminal (or command prompt), change to the folder containing the project files and type: `yarn start` This will run all the dev scripts in each project package.json.
 
 To view your dapp, open your browser to http://localhost:5000

@@ -24,9 +24,10 @@ module.exports = {
                 true, // share nonce
                 `m/44'/60'/0'/0/` // wallet HD path
             ),
+            gas: 2000000,
             network_id: 80001,
-            confirmations: 2,
-            timeoutBlocks: 200,
+            confirmations: 1,
+            timeoutBlocks: 100,
             skipDryRun: true
         }
     },

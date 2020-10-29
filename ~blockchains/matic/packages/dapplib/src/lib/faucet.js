@@ -18,26 +18,29 @@ testAccounts.map((account, index) => {
         .then((result) => {
             
             let balance = new BN(String(result));
-            let target = new BN('12000000000000000000');
+            let target = new BN('1000000000000000000');
             if (balance.lt(target)) {
-                console.log(`Faucet request for ${account}`);
-                request.post(
-                    faucetUri,
-                    {
-                      json: {
-                        network: "mumbai",
-                        address: account,
-                        token: "maticToken"
-                      },
-                    }, (error, res, body) => {
-                    if (error) {
-                        console.error(error);
-                    }
-                    console.log(`${account} statusCode ${index}: ${res.statusCode}`);
-                    if (index === testAccounts.length - 1) {
-                        process.exit(0);
-                    }
-                })
+                console.log(`Faucet request for (${index}) ${account} (Current Balance: ${balance.toString()})`);
+                setTimeout(() => {
+                    request.post(
+                        faucetUri,
+                        {
+                        json: {
+                            network: "mumbai",
+                            address: account,
+                            token: "maticToken"
+                        },
+                        }, (error, res, body) => {
+                        if (error) {
+                            console.error(error);
+                        }
+                        //console.log(`${account} statusCode ${index}: ${res.statusCode}`);
+                        if (index === testAccounts.length - 1) {
+                            process.exit(0);
+                            
+                        }
+                    })
+                }, 1000);
             } else {
                 if (index === testAccounts.length - 1) {
                     process.exit(0);

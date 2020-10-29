@@ -94,7 +94,7 @@
           "matic": {
             "scripts": {
               "dev": "run-p deploy",
-              "deploy": "wait-on truffle compile && truffle migrate --reset",
+              "deploy": "wait-on faucet & truffle compile && truffle migrate --reset",
               "test": "npx truffle test",
               "faucet": "node ./src/lib/faucet",
               "postinstall": "node ./src/lib/faucet"
