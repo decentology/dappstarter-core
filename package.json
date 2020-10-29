@@ -1,6 +1,6 @@
 {
   "name": "@decentology/dappstarter-project",
-  "version": "1.0.30",
+  "version": "1.0.31",
   "workspaces": {
     "packages": [
       "packages/*",
