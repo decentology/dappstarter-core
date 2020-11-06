@@ -75,7 +75,7 @@
           "ethereum": {
             "scripts": {
               "dev": "run-p ganache deploy",
-              "deploy": "wait-on tcp:7545 && truffle compile && truffle migrate --reset",
+              "deploy": "wait-on tcp:7545 && watch 'truffle migrate --reset' contracts",
               "ganache": "node src/lib/ganache.js",
               "test": "npx truffle test"
             },
