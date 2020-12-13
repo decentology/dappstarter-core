@@ -1,10 +1,10 @@
-# My Dapp
+# DappStarter
 
-This project is for the blockchain application My Dapp. It contains code for the Smart Contract, web-based dapp and NodeJS server. 
+This project was auto-generated using [DappStarter](https://dappstarter.decentology.com) by [Decentology](https://www.decentology.com). It contains code for the Smart Contract, web-based dapp and NodeJS server. 
 
 # Pre-requisites
 
-In order to develop and build "My Dapp," the following pre-requisites must be installed:
+In order to develop and build your dapp the following pre-requisites must be installed:
 
 * [Visual Studio Code](https://code.visualstudio.com/download) (or any IDE for editing Javascript)
 * [NodeJS](https://nodejs.org/en/download/)
@@ -35,9 +35,6 @@ $ solana --version
 
 Using a terminal (or command prompt), change to the folder containing the project files and type: `yarn` This will fetch all required dependencies. The process will take 1-3 minutes and while it is in progress you can move on to the next step.
 
-///(blockchain:ethereum
-Note: You may see some npm warnings about "web3-bzz" after dependencies are installed. These can be ignored as the associated code is never invoked.
-///)
 # Build, Deploy and Test
 ///(blockchain:matic
 
@@ -74,6 +71,7 @@ Run the server in a separate terminal. You *must* have run `npm run deploy` for 
 
 Run tests using `yarn test --script=[test file]`
 ///)
+
 ## Production Builds
 
 DappStarter currently does not provide blockchain migration scripts to be used in production. However, here are the scripts for generating production builds:
@@ -84,6 +82,7 @@ DappStarter currently does not provide blockchain migration scripts to be used i
 
 This section contains installation guides for common dev environments. 
 
+///(blockchain:solana
 ### Rust
 
 (Source: Solana)
@@ -98,10 +97,9 @@ For Mac users, Homebrew is also an option.  The Mac Homebrew command is `brew in
 
 After installation, you should have `rustc`, `cargo`, & `rustup`. You should
 also have `~/.cargo/bin` in your PATH environment variable.
-
+///)
 ### Docker
 
-(Source: Solana)
 Docker runs as a service and it needs to be running before you invoke any script that 
 requires the service. The exact start method depends on your system and how you
 installed docker.
