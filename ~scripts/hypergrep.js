@@ -10,7 +10,6 @@ const Manifest = require('./manifest.js');
 
 const SKIP_FOLDER_PREFIX = '~';
 const FIXED_OUTPUT_FOLDER_KEY = '__outputFolder';
-const CATEGORIES_FOLDER_NAME = SKIP_FOLDER_PREFIX + Manifest.CATEGORIES;
 const FRAMEWORKS_FOLDER_NAME = SKIP_FOLDER_PREFIX + Manifest.FRAMEWORKS;
 const BLOCKCHAINS_FOLDER_NAME = SKIP_FOLDER_PREFIX + Manifest.BLOCKCHAINS;
 const LANGUAGES_FOLDER_NAME = SKIP_FOLDER_PREFIX + Manifest.LANGUAGES;
@@ -19,6 +18,7 @@ const RECIPES_FOLDER_NAME = SKIP_FOLDER_PREFIX + Manifest.RECIPES;
 const ABOUT_FOLDER_NAME = SKIP_FOLDER_PREFIX + Manifest.ABOUT;
 const SCRIPTS_FOLDER_NAME = SKIP_FOLDER_PREFIX + Manifest.SCRIPTS;
 const DAPPSTARTER_CONFIG_FILE_NAME = 'manifest.json';
+const PROJECT_FILENAME_REPLACE_TEXT = '.project';
 
 const SLASH = path.sep;
 const DIRECTIVE_PREFIX = '///';
@@ -28,7 +28,6 @@ const DIRECTIVE_SECTION_END = DIRECTIVE_PREFIX + ')';
 const DIRECTIVE_REPLACE = DIRECTIVE_PREFIX + '+';
 const DIRECTIVE_PARAMETERS = DIRECTIVE_PREFIX + '@';
 const IGNORE_ITEMS = [
-    CATEGORIES_FOLDER_NAME,
     FRAMEWORKS_FOLDER_NAME,
     BLOCKCHAINS_FOLDER_NAME,
     RECIPES_FOLDER_NAME,
@@ -37,10 +36,14 @@ const IGNORE_ITEMS = [
     SCRIPTS_FOLDER_NAME,
     '.DS_Store',
     '.git',
+    '.npmignore',
+    '.npmrc',
     'generate.js',
     'build',
     'dist',
     'prod',
+    'node_modules',
+    'package.json',
     'package-lock.json'
 ];
 const NEWLINE = '\n';
@@ -91,8 +94,8 @@ module.exports = class Hypergrep {
         this.options = options || {
             sourceRoot: `.${SLASH}dapp`,
             moduleRoots: {
-                core: `.${SLASH}modules-core`,
-                community: `.${SLASH}modules-community`,
+                core: `..${SLASH}..${SLASH}dappstarter-modules-core`,
+                community: `..${SLASH}..${SLASH}dappstarter-modules-community`,
             },
             targetRoot: path.join(path.dirname(require.main.filename || process.mainModule.filename), '.temp')
         };
@@ -373,7 +376,6 @@ module.exports = class Hypergrep {
             // JS doesn't support template literals in a string variable so we
             // have to replace "blockPath" values with regex + function
             let blockData = {
-                categoryRoot: CATEGORIES_FOLDER_NAME
             };
             blockData[Manifest.CATEGORY] = block[Manifest.CATEGORY];
             blockData[Manifest.NAME] = block[Manifest.NAME];
@@ -417,7 +419,6 @@ module.exports = class Hypergrep {
             // JS doesn't support template literals in a string variable so we
             // have to replace "blockPath" values with regex + function
             let blockData = {
-                categoryRoot: CATEGORIES_FOLDER_NAME
             };
             blockData[Manifest.CATEGORY] = block[Manifest.CATEGORY];
             blockData[Manifest.NAME] = block[Manifest.NAME];
@@ -547,21 +548,26 @@ module.exports = class Hypergrep {
 
         let codeBlock = '';
         code.map(lineText => {
-            actions.map(action => {
-                switch (action) {
-                    case ACTION_ACCOUNTS:
-                        if (lineText.indexOf(DIRECTIVE_PARAMETERS) > -1) {
-                            lineText = self._replaceCodeParameters(lineText, null, swapParameterValues);
-                        } else {
+            if (actions) {
+                actions.map(action => {
+                    switch (action) {
+                        case ACTION_ACCOUNTS:
+                            if (lineText.indexOf(DIRECTIVE_PARAMETERS) > -1) {
+                                lineText = self._replaceCodeParameters(lineText, null, swapParameterValues);
+                            } else {
+                                lineText += NEWLINE;
+                            }
+                            break;
+                        default:
                             lineText += NEWLINE;
-                        }
-                        break;
-                    default:
-                        lineText += NEWLINE;
-                        break;
-                }
-            });
-            codeBlock += lineText;
+                            break;
+                    }
+                });
+                codeBlock += lineText;
+            } else {
+                codeBlock += lineText + NEWLINE;
+            }
+
         });
         fse.writeFileSync(targetFile, codeBlock);
     }
@@ -649,8 +655,13 @@ module.exports = class Hypergrep {
                     } else if (context === Manifest.FRAMEWORK) {
                         info = `${Manifest.FRAMEWORK} "${outputInfo[Manifest.FRAMEWORK]}"`;
                         sourceFolder = sourceFolder + FRAMEWORKS_FOLDER_NAME + SLASH + outputInfo[Manifest.FRAMEWORK] + pathFrag;
+                    } else {
+                        // Added this for package.project.json handling
+                        sourceFolder = sourceFolder + pathFrag;
+                        sourceFolder = sourceFolder.replace(path.sep + path.sep, path.sep);
                     }
                     targetFolder = targetFolder + pathFrag.substr(1);
+                    targetFolder = targetFolder.replace(PROJECT_FILENAME_REPLACE_TEXT, '');
                     if (copy) {
                         self._copyFolder(info, pathFrag, sourceFolder, targetFolder);
                     } else {
@@ -705,7 +716,7 @@ module.exports = class Hypergrep {
 
     getManifest(blockchain, language, category) {
         let self = this;
-        return new Manifest(self.sourceFolder).get(blockchain, language, category);
+        return new Manifest(self.sourceFolder, self.moduleRoots).get(blockchain, language, category);
     }
 
     _generatePages(outputInfo) {

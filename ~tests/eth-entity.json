@@ -2,9 +2,9 @@
     "blocks": {
         "/blockchain/ethereum": true,
         "/blockchain/ethereum/solidity": true,
-        "/category/collection/entity": true,
-        "/category/collection/entity/singular": "jury",
-        "/category/collection/entity/plural": "juries",
+        "/category/collection/core.entity": true,
+        "/category/collection/core.entity/singular": "jury",
+        "/category/collection/core.entity/plural": "juries",
         "/framework/react": true
     }
 }

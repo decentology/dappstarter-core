@@ -15,6 +15,9 @@
   },
   "targets": {
     "*": {
+      "/package.project.json": {
+        "processor": "copy-file"
+      },
       "/~languages/cadence/packages/dapplib/contracts/DappState.cdc": {
         "processor": "merge-blocks",
         "path": "${categoryRoot}/${category}/${name}/cadence/${name}.cdc"

@@ -1,4 +1,4 @@
-const Hypergrep = require("./~scripts/src/hypergrep");
+const Hypergrep = require("./~scripts/hypergrep");
 
 if (process.argv.length < 4) {
   console.log('Syntax: node generate (dev | stage) (test file)');
@@ -19,7 +19,7 @@ if (process.argv.length < 4) {
     sourceRoot: sourceRoot,
     moduleRoots: {
       core: __dirname + "/../dappstarter-modules-core/",
-      community: __dirname + "../dappstarter-modules-community/"
+      community: __dirname + "/../dappstarter-modules-community/"
     },
     targetRoot: __dirname + "/../output/"
   });

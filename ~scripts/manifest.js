@@ -106,8 +106,9 @@ module.exports = class Manifest {
         return 'actions';
     }
 
-    constructor(dataRoot) {
+    constructor(dataRoot, moduleRoots) {
         this.dataRoot = dataRoot;
+        this.moduleRoots = moduleRoots;
         this.components = null;
         this._hydrate(); // Lookup all configuration object files and load into memory as one data structure
     }
@@ -187,10 +188,25 @@ module.exports = class Manifest {
         let index = self.components.findIndex(element => element[Manifest.NAME] === entityName);
         let children = [...self.components[index][Manifest.CHILDREN]];
         self.components[index][Manifest.CHILDREN] = [];
+        console.log('***************** ', entityName)
         children.map(entity => {
-            let entityItem = self._readJsonFile(`${self.dataRoot}~${entityName}${SLASH}${entity}${SLASH}${entity}.json`);
-            self.components[index][Manifest.CHILDREN].push(entityItem);
-            log += `${entityName.toUpperCase()} — ${entityItem.title}\n`;
+            if (entityName === Manifest.CATEGORIES) {
+                console.log('>>>>>>>>>>>>>>>>>>>', entity)
+                for(let source in self.moduleRoots) {
+                    console.log('***************** Processing', source, self.moduleRoots[source])
+                    let moduleRoot = self.moduleRoots[source];
+                    let entityItem = self._readJsonFile(`${moduleRoot}${SLASH}${entity}${SLASH}${entity}.json`);
+                    console.log(entityItem)
+                    entityItem.name = `${source}.${entityItem.name}`;
+                    self.components[index][Manifest.CHILDREN].push(entityItem);
+                    log += `${entityName.toUpperCase()} — ${entityItem.title}\n`;        
+                }
+
+            } else {
+                let entityItem = self._readJsonFile(`${self.dataRoot}~${entityName}${SLASH}${entity}${SLASH}${entity}.json`);
+                self.components[index][Manifest.CHILDREN].push(entityItem);
+                log += `${entityName.toUpperCase()} — ${entityItem.title}\n`;
+            }
         });
         return log;
     }

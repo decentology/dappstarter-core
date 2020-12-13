@@ -15,6 +15,9 @@
   },
   "targets": {
     "*": {
+      "/package.project.json": {
+        "processor": "copy-file"
+      },
       "/~languages/solidity/packages/dapplib/contracts/DappState.sol": {
         "processor": "merge-blocks",
         "path": "${categoryRoot}/${category}/${name}/solidity/${name}.sol"
