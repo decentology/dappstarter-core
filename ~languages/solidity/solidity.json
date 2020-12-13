@@ -7,7 +7,7 @@
     "title": "",
     "url": ""
   },
-  "blockchains": ["ethereum", "matic", "klaytn"],
+  "blockchains": ["ethereum", "matic"],
   "interface": {
     "hidden": false,
     "enabled": true,
