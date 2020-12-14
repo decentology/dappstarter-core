@@ -1,5 +1,32 @@
 [
     {
+        "name": "sources",
+        "children": [
+            {
+                "name": "core",
+                "title": "Decentology Modules",
+                "description": "Modules created and maintained by Decentology",
+                "imageUrl": "",
+                "help": {
+                    "title": "Decentology Module Wiki",
+                    "url": "https://www.decentology.com"
+                },
+                "folder": "dappstarter-modules-core"
+            },
+            {
+                "name": "community",
+                "title": "Community Modules",
+                "description": "Modules created and maintained by community members",
+                "imageUrl": "",
+                "help": {
+                    "title": "Community Module Wiki",
+                    "url": "https://www.decentology.com"
+                },
+                "folder": "dappstarter-modules-community"
+            }
+        ]
+    },
+    {
         "name": "blockchains",
         "title": "Blockchains",
         "description": "Blockchains are the underlying technology for the decentralized web. If you aren't familiar with  the decentralized web, it's a good idea to <a href='https://trycrypto.com'>get some familiarity with how it works before you start.</a> There are numerous public and private blockchains (we will support many of them soon).",
@@ -17,7 +44,8 @@
             "ethereum",
             "flow",
             "matic",
-            "solana"
+            "solana",
+            "conflux"
         ],
         "targets": {
             "*": {
@@ -87,13 +115,126 @@
             "children": "multiple"
         },
         "children": [
-            "access_control",
-            "asset_value_tracking",
-            "nft",
-            "file_storage",
-            "authentication",
-            "collection",
-            "voting"
+            {
+                "name": "access_control",
+                "title": "Access Control",
+                "description": "Once a smart contract has been deployed, you cannot change your code. Access Control Blocks give you granular control over who can manage your contracts and control their operation.",
+                "imageUrl": "",
+                "help": {
+                    "title": "",
+                    "url": ""
+                },
+                "interface": {
+                    "hidden": false,
+                    "enabled": true,
+                    "children": "multiple"
+                }
+            },
+            {
+                "name": "asset_value_tracking",
+                "title": "Asset and Value Tracking",
+                "description": "Create your own cryptocurrency tokens and track or trade digital assets. Tokens are divisible and one unit is not uniquely different from another unit of the same token (like currency). Collectibles are uniquely different‒ each unit of a collectible is different from any other (like trading cards).",
+                "imageUrl": "",
+                "help": {
+                    "title": "",
+                    "url": ""
+                },
+                "interface": {
+                    "hidden": false,
+                    "enabled": true,
+                    "children": "single"
+                }
+            },
+            {
+                "name": "nft",
+                "title": "Non-fungible Tokens",
+                "description": "Create a non-fungible token for tracking unique assets associated with your dapp.",
+                "imageUrl": "",
+                "help": {
+                    "title": "",
+                    "url": ""
+                },
+                "interface": {
+                    "hidden": false,
+                    "enabled": true,
+                    "children": "single"
+                }
+            },
+            {
+                "name": "file_storage",
+                "title": "File Storage",
+                "description": "Storing data on a blockchain is expensive so developers usually store a pointer to the data, called a hash, on the blockchain.",
+                "imageUrl": "",
+                "help": {
+                    "title": "",
+                    "url": ""
+                },
+                "interface": {
+                    "hidden": false,
+                    "enabled": true,
+                    "children": "single"
+                }
+            },
+            {
+                "name": "authentication",
+                "title": "Authentication",
+                "description": "In order to engage with most dapps, users need to authenticate. Accounts on a blockchain are generated deterministically, so users do not use standard logins like email or social sign-on. Users access their accounts by generating their private key, which allows them to authorize transactions on their account.",
+                "imageUrl": "",
+                "help": {
+                    "title": "",
+                    "url": ""
+                },
+                "interface": {
+                    "hidden": false,
+                    "enabled": true,
+                    "children": "single"
+                }
+            },
+            {
+                "name": "collection",
+                "title": "Collection",
+                "description": "Many smart contracts require managing a collection of entities. Blocks in this category provide solutions for different collection scenarios.",
+                "imageUrl": "",
+                "help": {
+                    "title": "",
+                    "url": ""
+                },
+                "interface": {
+                    "hidden": false,
+                    "enabled": true,
+                    "children": "multiple"
+                }
+            },
+            {
+                "name": "voting",
+                "title": "Voting",
+                "description": "Implement different voting systems.",
+                "imageUrl": "",
+                "help": {
+                    "title": "",
+                    "url": ""
+                },
+                "interface": {
+                    "hidden": false,
+                    "enabled": true,
+                    "children": "single"
+                }
+            },
+            {
+                "name": "examples",
+                "title": "Module Examples",
+                "description": "DappStarter module examples.",
+                "imageUrl": "",
+                "help": {
+                    "title": "",
+                    "url": ""
+                },
+                "interface": {
+                    "hidden": false,
+                    "enabled": true,
+                    "children": "multiple"
+                }
+            }
         ]
     },
     {

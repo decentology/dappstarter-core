@@ -20,11 +20,11 @@
       },
       "/~languages/cadence/packages/dapplib/contracts/DappState.cdc": {
         "processor": "merge-blocks",
-        "path": "${categoryRoot}/${category}/${name}/cadence/${name}.cdc"
+        "path": "${categoryFolder}/${name}/cadence/${name}.cdc"
       },
       "/~languages/cadence/packages/dapplib/cadence/TRANSPILER.md": {
         "processor": "merge-block-folders",
-        "path": "${categoryRoot}/${category}/${name}/cadence/"
+        "path": "${categoryFolder}/${name}/cadence/"
       },
       "/README.md": {
         "processor": "filter"
@@ -37,16 +37,16 @@
       },
       "/packages/dapplib/src/lib/dapp-lib.js": {
         "processor": "merge-blocks",
-        "path": "${categoryRoot}/${category}/${name}/${name}-lib.js"
+        "path": "${categoryFolder}/${name}/${name}-lib.js"
       },
       "/~languages/cadence/packages/dapplib/tests/[block-tests].js": {
         "processor": "file-blocks",
-        "path": "${categoryRoot}/${category}/${name}/cadence/${name}-tests.js",
+        "path": "${categoryFolder}/${name}/cadence/${name}-tests.js",
         "sequence": false
       },
       "/packages/client/src/dapp/pages/harness/[block-pages].js": {
         "processor": "file-blocks",
-        "path": "${categoryRoot}/${category}/${name}/${name}-page.js",
+        "path": "${categoryFolder}/${name}/${name}-page.js",
         "sequence": false
       },
       "/packages/client/src/dapp/[client-app]": {

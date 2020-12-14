@@ -1,0 +1,19 @@
+{
+    "name": "conflux",
+    "title": "Conflux (Beta)",
+    "description": "",
+    "imageUrl": "https://info.decentology.com/assets/blockchains/conflux/conflux-dappstarter.png",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "metadata": {
+        "developer_experience": "",
+        "different": ""
+    },
+    "interface": {
+        "hidden": false,
+        "enabled": true,
+        "children": "single"
+    }
+}

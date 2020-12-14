@@ -63,6 +63,18 @@ module.exports = class Manifest {
     static get NAME() {
         return 'name';
     }
+    static get SOURCE() {
+        return 'source';
+    }
+    static get SOURCES() {
+        return 'sources';
+    }
+    static get FOLDER() {
+        return 'folder';
+    }
+    static get PATH() {
+        return 'path';
+    }
     static get CHILDREN() {
         return 'children';
     }
@@ -106,9 +118,8 @@ module.exports = class Manifest {
         return 'actions';
     }
 
-    constructor(dataRoot, moduleRoots) {
+    constructor(dataRoot) {
         this.dataRoot = dataRoot;
-        this.moduleRoots = moduleRoots;
         this.components = null;
         this._hydrate(); // Lookup all configuration object files and load into memory as one data structure
     }
@@ -118,12 +129,11 @@ module.exports = class Manifest {
      *
      * @param blockchain Name of blockchain
      * @param language Smart contract language
-     * @param category Name of category whose blocks should be returned
+     * @param category Name of category whose modules should be returned
      */
     get(blockchain, language, category) {
         let self = this;
         let components = [...self.components];
-
         // Filter blockchain
         if (blockchain) {
             let blockchainIndex = components.findIndex(element => element.name === Manifest.BLOCKCHAINS);
@@ -173,7 +183,7 @@ module.exports = class Manifest {
                 components[categoryIndex][Manifest.CHILDREN] = [];
             }
         }
-
+console.log('Returning ...........', JSON.stringify(components,null,2))
         return components;
     }
 
@@ -188,25 +198,10 @@ module.exports = class Manifest {
         let index = self.components.findIndex(element => element[Manifest.NAME] === entityName);
         let children = [...self.components[index][Manifest.CHILDREN]];
         self.components[index][Manifest.CHILDREN] = [];
-        console.log('***************** ', entityName)
         children.map(entity => {
-            if (entityName === Manifest.CATEGORIES) {
-                console.log('>>>>>>>>>>>>>>>>>>>', entity)
-                for(let source in self.moduleRoots) {
-                    console.log('***************** Processing', source, self.moduleRoots[source])
-                    let moduleRoot = self.moduleRoots[source];
-                    let entityItem = self._readJsonFile(`${moduleRoot}${SLASH}${entity}${SLASH}${entity}.json`);
-                    console.log(entityItem)
-                    entityItem.name = `${source}.${entityItem.name}`;
-                    self.components[index][Manifest.CHILDREN].push(entityItem);
-                    log += `${entityName.toUpperCase()} — ${entityItem.title}\n`;        
-                }
-
-            } else {
-                let entityItem = self._readJsonFile(`${self.dataRoot}~${entityName}${SLASH}${entity}${SLASH}${entity}.json`);
-                self.components[index][Manifest.CHILDREN].push(entityItem);
-                log += `${entityName.toUpperCase()} — ${entityItem.title}\n`;
-            }
+            let entityItem = self._readJsonFile(`${self.dataRoot}~${entityName}${SLASH}${entity}${SLASH}${entity}.json`);
+            self.components[index][Manifest.CHILDREN].push(entityItem);
+            log += `${entityName.toUpperCase()} — ${entityItem.title}\n`;
         });
         return log;
     }
@@ -215,35 +210,56 @@ module.exports = class Manifest {
         let self = this;
         let log = '';
 
-        self.components = self._readJsonFile(`${self.dataRoot}~${Manifest.ABOUT}${SLASH}${Manifest.ROOT}.json`);
-        log += self._expand(Manifest.RECIPES);
-        log += self._expand(Manifest.BLOCKCHAINS);
-        log += self._expand(Manifest.LANGUAGES);
-        log += self._expand(Manifest.FRAMEWORKS);
-        log += self._expand(Manifest.CATEGORIES);
-
         // NOTE: Use arrays instead of dictionaries to control the order of appearance
         //       of elements which is important for UI.
-
         try {
-            // CATEGORIES
-            let index = self.components.findIndex(element => element[Manifest.NAME] === Manifest.CATEGORIES);
-            let categories = [...self.components[index][Manifest.CHILDREN]];
-            self.components[index][Manifest.CHILDREN] = [];
-            categories.map(categoryItem => {
-                log += `${Manifest.CATEGORY.toUpperCase()} — ${categoryItem[Manifest.NAME]}\n`;
 
-                // BLOCKS
-                let blocks = [...categoryItem[Manifest.CHILDREN]];
-                categoryItem[Manifest.CHILDREN] = [];
-                blocks.map(block => {
-                    log += `${Manifest.BLOCK.toUpperCase()} — ${block}\n`;
-                    let blockItem = self._readJsonFile(`${self.dataRoot}~${Manifest.CATEGORIES}${SLASH}${categoryItem[Manifest.NAME]}${SLASH}${block}${SLASH}${block}.json`);
-                    categoryItem[Manifest.CHILDREN].push(blockItem);
+            self.components = self._readJsonFile(`${self.dataRoot}~${Manifest.ABOUT}${SLASH}${Manifest.ROOT}.json`);
+
+            // SOURCES
+            self.sources = self.components.find(element => element[Manifest.NAME] === Manifest.SOURCES)[Manifest.CHILDREN];
+            
+            log += self._expand(Manifest.RECIPES);
+            log += self._expand(Manifest.BLOCKCHAINS);
+            log += self._expand(Manifest.LANGUAGES);
+            log += self._expand(Manifest.FRAMEWORKS);
+    
+            // CATEGORIES
+            let categories = self.components.find(element => element[Manifest.NAME] === Manifest.CATEGORIES)[Manifest.CHILDREN];
+            self.sources.forEach(source => {
+                let sourcePath = path.resolve(`${self.dataRoot}${SLASH}..${SLASH}${source.folder}`);
+                let categoryFolders = fs.readdirSync(sourcePath, { withFileTypes: true })
+                                                .filter(entry => entry.isDirectory() && !entry.name.startsWith('.'))
+                                                .map(entry => entry.name);
+
+                categoryFolders.forEach(categoryFolder => {
+                    let categoryItemIndex = categories.findIndex(element => element[Manifest.NAME] === categoryFolder);
+                    if (categoryItemIndex > -1) {
+
+                        // If no prior item exists, initialize the children array
+                        if (!categories[categoryItemIndex][Manifest.CHILDREN]) {
+                            categories[categoryItemIndex][Manifest.CHILDREN] = [];
+                        }
+
+                        let categoryFolderPath = `${sourcePath}${SLASH}${categoryFolder}`;
+                        let moduleFolders = fs.readdirSync(categoryFolderPath, { withFileTypes: true })
+                                                    .filter(entry => entry.isDirectory() && !entry.name.startsWith('.'))
+                                                    .map(entry => entry.name);
+                        moduleFolders.forEach(moduleFolder => {
+                            let moduleFolderPath = `${categoryFolderPath}${SLASH}${moduleFolder}`;
+                            log += `${Manifest.BLOCK.toUpperCase()} — ${moduleFolder}\n`;
+                            let moduleItem = self._readJsonFile(`${moduleFolderPath}${SLASH}${moduleFolder}.json`);
+                            moduleItem[Manifest.NAME] = `${source[Manifest.NAME]}.${moduleItem[Manifest.NAME]}`;
+                            moduleItem[Manifest.PATH] = moduleFolderPath;
+                            moduleItem[Manifest.SOURCE] = source[Manifest.NAME];
+                            categories[categoryItemIndex][Manifest.CHILDREN].push(moduleItem);
+                        });    
+                    }
                 });
 
-                self.components[index][Manifest.CHILDREN].push(categoryItem);
             });
+
+
         } catch (e) {
             throw '\nLast item: \n' + log + '\n' + e.message;
         }
@@ -253,10 +269,10 @@ module.exports = class Manifest {
     /**
      * @dev Reads, parses and returns a JSON file
      *
-     * @param path Location of JSON file
+     * @param filePath Location of JSON file
      */
-    _readJsonFile(path) {
-        return JSON.parse(fs.readFileSync(path, 'utf8'));
+    _readJsonFile(filePath) {
+        return JSON.parse(fs.readFileSync(filePath, 'utf8'));
     }
 
 };

@@ -17,10 +17,6 @@ if (process.argv.length < 4) {
 
   let hypergrep = new Hypergrep({
     sourceRoot: sourceRoot,
-    moduleRoots: {
-      core: __dirname + "/../dappstarter-modules-core/",
-      community: __dirname + "/../dappstarter-modules-community/"
-    },
     targetRoot: __dirname + "/../output/"
   });
 

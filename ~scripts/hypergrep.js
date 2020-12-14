@@ -93,10 +93,6 @@ module.exports = class Hypergrep {
     constructor(options) {
         this.options = options || {
             sourceRoot: `.${SLASH}dapp`,
-            moduleRoots: {
-                core: `..${SLASH}..${SLASH}dappstarter-modules-core`,
-                community: `..${SLASH}..${SLASH}dappstarter-modules-community`,
-            },
             targetRoot: path.join(path.dirname(require.main.filename || process.mainModule.filename), '.temp')
         };
 
@@ -118,7 +114,7 @@ module.exports = class Hypergrep {
         };
         newConfig[Manifest.BLOCKS] = [];
 
-        for (let blockPath in config.blocks) {
+        for (let blockPath in config[Manifest.BLOCKS]) {
             let blockFrags = blockPath.split('/').slice(1);
             switch (blockFrags[0]) {
                 case Manifest.BLOCKCHAINS:
@@ -140,18 +136,18 @@ module.exports = class Hypergrep {
                     let thisBlock = blockFrags[2];
 
                     // Does it already exist?
-                    let block = newConfig[Manifest.BLOCKS].find(element => element[Manifest.CATEGORY] === thisCategory && element[Manifest.NAME] === thisBlock);
+                    let blockItem = newConfig[Manifest.BLOCKS].find(element => element[Manifest.CATEGORY] === thisCategory && element[Manifest.NAME] === thisBlock);
 
-                    if (!block) {
-                        block = {};
-                        block[Manifest.CATEGORY] = thisCategory;
-                        block[Manifest.NAME] = thisBlock;
-                        block[Manifest.PARAMETERS] = {};
-                        newConfig[Manifest.BLOCKS].push(block);
+                    if (!blockItem) {
+                        blockItem = {};
+                        blockItem[Manifest.CATEGORY] = thisCategory;
+                        blockItem[Manifest.NAME] = thisBlock;
+                        blockItem[Manifest.PARAMETERS] = {};
+                        newConfig[Manifest.BLOCKS].push(blockItem);
                     }
                     if (blockFrags.length > 3) {
                         // This is a property value
-                        block[Manifest.PARAMETERS][blockFrags[3]] = config[Manifest.BLOCKS][blockPath];
+                        blockItem[Manifest.PARAMETERS][blockFrags[3]] = config[Manifest.BLOCKS][blockPath];
                     }
                     break;
                 case Manifest.FRAMEWORKS:
@@ -173,35 +169,36 @@ module.exports = class Hypergrep {
     _enumerateBlockDependencies(config, outputInfo) {
         let self = this;
         self.log(2, 1, `Enumerating selected blocks for dependencies...`);
-        for (let b = 0; b < config.blocks.length; b++) {
+        for (let b = 0; b < config[Manifest.BLOCKS].length; b++) {
             getDependencies(outputInfo.categories, config[Manifest.BLOCKS][b][Manifest.CATEGORY], config[Manifest.BLOCKS][b][Manifest.NAME], config[Manifest.BLOCKS][b][Manifest.PARAMETERS]);
         }
 
         // Recurse through the block dependencies
         function getDependencies(manifestCategories, category, block, blockParams) {
+
             self.log(3, 2, `Getting dependencies for: ${category} => ${block}`);
             let categoryInfo = manifestCategories.find(element => element.name === category);
             if (!categoryInfo) {
                 return false;
             } else {
-                let blockInfo = categoryInfo.children.find(element => element.name === block);
-                if (!blockInfo) {
+                let moduleInfo = categoryInfo.children.find(element => element.name === block);
+                if (!moduleInfo) {
                     return false;
                 } else {
-                    let blockKey = self._getBlockKey(categoryInfo.name, blockInfo.name);
-                    if (outputInfo.blocks[blockKey]) {
+                    let blockKey = self._getBlockKey(categoryInfo.name, moduleInfo.name);
+                    if (outputInfo[Manifest.BLOCKS][blockKey]) {
                         return true; // Prevent duplicate block processing
                     } else {
-                        outputInfo.blocks[blockKey] = {};
-                        outputInfo.blocks[blockKey][Manifest.CATEGORY] = categoryInfo[Manifest.NAME];
-                        outputInfo.blocks[blockKey][Manifest.NAME] = blockInfo[Manifest.NAME];
-                        outputInfo.blocks[blockKey][Manifest.PARAMETERS] = blockParams || {};
-                        let dependentCategories = Object.keys(blockInfo.dependencies);
+                        outputInfo[Manifest.BLOCKS][blockKey] = {};
+                        outputInfo[Manifest.BLOCKS][blockKey][Manifest.CATEGORY] = categoryInfo[Manifest.NAME];
+                        outputInfo[Manifest.BLOCKS][blockKey][Manifest.NAME] = moduleInfo[Manifest.NAME];
+                        outputInfo[Manifest.BLOCKS][blockKey][Manifest.PARAMETERS] = blockParams || {};
+                        let dependentCategories = Object.keys(moduleInfo.dependencies);
                         dependentCategories.map(dependentCategoryName => {
-                            let dependentBlockNames = blockInfo.dependencies[dependentCategoryName];
+                            let dependentBlockNames = moduleInfo.dependencies[dependentCategoryName];
                             dependentBlockNames.map(dependentBlockName => {
                                 let dependentBlockKey = `${dependentCategoryName}:${dependentBlockName}`;
-                                if (!outputInfo.blocks[dependentBlockKey]) {
+                                if (!outputInfo[Manifest.BLOCKS][dependentBlockKey]) {
                                     self.log(3, 3, `Found dependency on: ${dependentCategoryName} => ${dependentBlockName}`);
                                     getDependencies(manifestCategories, dependentCategoryName, dependentBlockName, {});
                                 }
@@ -368,10 +365,10 @@ module.exports = class Hypergrep {
         let self = this;
         self.log(3, 2, `Merging code folders for ${filePath.replace(sourceFolder, '')}`);
 
-        let blockKeys = Object.keys(outputInfo.blocks);
+        let blockKeys = Object.keys(outputInfo[Manifest.BLOCKS]);
         blockKeys.map((blockKey, index) => {
             self.log(3, 2, `Merging Block folder: ${blockKey}`);
-            let block = outputInfo.blocks[blockKey];
+            let block = outputInfo[Manifest.BLOCKS][blockKey];
 
             // JS doesn't support template literals in a string variable so we
             // have to replace "blockPath" values with regex + function
@@ -401,7 +398,6 @@ module.exports = class Hypergrep {
     _mergeBlocksIntoFile(expand, filePath, blockPathTemplate, sourceFolder, targetFolder, outputInfo, sequence) {
         let self = this;
         self.log(3, 2, `Merging code snippets for ${filePath.replace(sourceFolder, '')}`);
-
         // STEP 1: Get the source file template and decide if:
         //         a) merge block code and write it to same file name as input file to output
         //         b) for each block code, create a separate file with name of block in output
@@ -412,10 +408,10 @@ module.exports = class Hypergrep {
         let codeSnippets = {};
         let blockKeys = Object.keys(outputInfo.blocks);
         let padLength = String(blockKeys.length).length < 2 ? 2 : String(blockKeys.length).length;
+
         blockKeys.map((blockKey, index) => {
             self.log(3, 2, `Merging BlockKey: ${blockKey}`);
-            let block = outputInfo.blocks[blockKey];
-
+            let block = outputInfo[Manifest.BLOCKS][blockKey];
             // JS doesn't support template literals in a string variable so we
             // have to replace "blockPath" values with regex + function
             let blockData = {
@@ -715,22 +711,22 @@ module.exports = class Hypergrep {
     }
 
     getManifest(blockchain, language, category) {
-        let self = this;
-        return new Manifest(self.sourceFolder, self.moduleRoots).get(blockchain, language, category);
+        let self = this; 
+        return new Manifest(self.sourceFolder).get(blockchain, language, category);
     }
 
     _generatePages(outputInfo) {
         let pages = [];
-        for (let blockKey in outputInfo.blocks) {
-            let category = outputInfo[Manifest.CATEGORIES].find(element => element[Manifest.NAME] === outputInfo.blocks[blockKey].category);
+        for (let blockKey in outputInfo[Manifest.BLOCKS]) {
+            let category = outputInfo[Manifest.CATEGORIES].find(element => element[Manifest.NAME] === outputInfo[Manifest.BLOCKS][blockKey][Manifest.CATEGORY]);
             let categoryBlocks = category[Manifest.CHILDREN];
-            let block = categoryBlocks.find(element => element[Manifest.NAME] === outputInfo.blocks[blockKey].name);
+            let moduleItem = categoryBlocks.find(element => element[Manifest.NAME] === outputInfo[Manifest.BLOCKS][blockKey][Manifest.NAME]);
             pages.push({
-                name: block.name,
-                title: block.title,
-                description: block.description,
+                name: moduleItem.name,
+                title: moduleItem.title,
+                description: moduleItem.description,
                 category: category.title,
-                route: `/${block.name}`
+                route: `/${moduleItem.name}`
             });
         }
         pages.sort((a, b) => (a.title > b.title ? 1 : -1));
@@ -748,7 +744,6 @@ module.exports = class Hypergrep {
                     blocks: {}
                 };
                 outputInfo[SWAP_PARAMETERS] = {};
-
                 let accountSeed = config[FIXED_OUTPUT_FOLDER_KEY] ? null : Hypergrep._generateFolderName();
                 let accountInfo = self._generateAccounts(accountSeed);
 
@@ -793,8 +788,8 @@ module.exports = class Hypergrep {
                 }
 
                 // Write input file as-is for diagnostics
-                fse.ensureDirSync(`${targetFolder}packages/dapplib`);
-                fse.writeFileSync(`${targetFolder}packages/dapplib/${DAPPSTARTER_CONFIG_FILE_NAME}`, JSON.stringify(settings, null, 4));
+                fse.ensureDirSync(`${targetFolder}`);
+                fse.writeFileSync(`${targetFolder}${SLASH}${DAPPSTARTER_CONFIG_FILE_NAME}`, JSON.stringify(settings, null, 4));
 
                 // Copy base language-specific files
                 // self._copyFolder(
