@@ -9,7 +9,9 @@ const ganache = spawn("npx", [
 ]);
 
 ganache.stdout.on("data", data => {
-  console.log(data.toString());
+  if (!data.toString().startsWith('eth_')) {
+    console.log(data.toString());
+  }
 });
 
 ganache.stderr.on("data", data => {

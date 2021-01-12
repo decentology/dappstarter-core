@@ -1,6 +1,11 @@
-{
-  "name": "@decentology/dappstarter-core",
-  "version": "1.0.0",
+{ "name": "@decentology/dappstarter-project",
+  "version": "1.0.33",
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "workspace/*"
+    ]
+  },
   "scripts": {
     "start": "node generate stage"
   },

@@ -63,6 +63,9 @@ module.exports = class Manifest {
     static get NAME() {
         return 'name';
     }
+    static get SHORTNAME() {
+        return 'shortname';
+    }
     static get SOURCE() {
         return 'source';
     }
@@ -72,8 +75,8 @@ module.exports = class Manifest {
     static get FOLDER() {
         return 'folder';
     }
-    static get PATH() {
-        return 'path';
+    static get CATEGORYFOLDER() {
+        return 'categoryFolder';
     }
     static get CHILDREN() {
         return 'children';
@@ -183,7 +186,7 @@ module.exports = class Manifest {
                 components[categoryIndex][Manifest.CHILDREN] = [];
             }
         }
-console.log('Returning ...........', JSON.stringify(components,null,2))
+console.log('Returning ...........', components)
         return components;
     }
 
@@ -249,8 +252,9 @@ console.log('Returning ...........', JSON.stringify(components,null,2))
                             let moduleFolderPath = `${categoryFolderPath}${SLASH}${moduleFolder}`;
                             log += `${Manifest.BLOCK.toUpperCase()} — ${moduleFolder}\n`;
                             let moduleItem = self._readJsonFile(`${moduleFolderPath}${SLASH}${moduleFolder}.json`);
+                            moduleItem[Manifest.SHORTNAME] = `${moduleItem[Manifest.NAME]}`;
                             moduleItem[Manifest.NAME] = `${source[Manifest.NAME]}.${moduleItem[Manifest.NAME]}`;
-                            moduleItem[Manifest.PATH] = moduleFolderPath;
+                            moduleItem[Manifest.CATEGORYFOLDER] = categoryFolderPath;
                             moduleItem[Manifest.SOURCE] = source[Manifest.NAME];
                             categories[categoryItemIndex][Manifest.CHILDREN].push(moduleItem);
                         });    

@@ -1,5 +1,5 @@
 import DappLib from "@decentology/dappstarter-dapplib";
-import "../widgets/wait-widget";
+import "./wait-widget";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { LitElement, html, customElement, property } from "lit-element";
 @customElement("action-card")

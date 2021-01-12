@@ -1,4 +1,4 @@
-import DOM from "../../../lib/components/shared/dom";
+import DOM from "../../../components/dom";
 import { LitElement, html, customElement, property } from "lit-element";
 
 @customElement("page-loader")
@@ -44,14 +44,15 @@ export default class PageLoader extends LitElement {
     this.setAttribute("style", "top: 70px");
 
     try {
-      if (pageItem.name === 'dapp') {
-        await import(`../../pages/${pageItem.name}.js`);
-      } else if (pageItem.name === 'harness') {
-        await import(`../../pages/harness/${pageItem.name}.js`);
+      let modulePage = pageItem.name.indexOf('.') > -1 ? pageItem.name.split('.')[1] : pageItem.name;
+      if (modulePage === 'dapp') {
+        await import(`../../pages/${modulePage}.js`);
+      } else if (modulePage === 'harness') {
+        await import(`../../pages/harness/${modulePage}.js`);
       } else {
-        await import(`../../pages/harness/${pageItem.name}-page.js`);
+        await import(`../../pages/harness/${modulePage}-page.js`);
       }
-      let pageName = pageItem.name.replace("_", "-") + "-page";
+      let pageName = modulePage.replace("_", "-") + "-page";
 
       this.pageContent = DOM.create(pageName, {
         title: pageItem.title,
