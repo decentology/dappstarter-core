@@ -673,6 +673,9 @@ module.exports = class Hypergrep {
     }
 
     _mustIgnore(p, folder) {
+        if(p.indexOf('@decentology') > -1) {
+            p = p.substr(p.indexOf('@decentology'));
+        }
         // Filter out langage configuration files from languages folder
         if (!folder && p.indexOf(LANGUAGES_FOLDER_NAME) > -1 && p.endsWith('.json')) {
             let lastPart = p.split(LANGUAGES_FOLDER_NAME + SLASH)[1].replace('.json', '');
