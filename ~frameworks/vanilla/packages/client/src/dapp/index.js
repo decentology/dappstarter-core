@@ -2,7 +2,7 @@ import DOM from '../components/dom';
 import './pages/components/top-navigation';
 import './pages/components/page-loader';
 import './pages/dapp';
-import './index.css';
+import './assets/index.css';
 
 DOM.elid('root').appendChild(
     DOM.div({

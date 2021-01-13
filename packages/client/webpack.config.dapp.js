@@ -69,7 +69,7 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: path.join(__dirname, "src/dapp/index.html")
       }),
-      new FaviconsWebpackPlugin("src/dapp/assets/img/dappstarter.png"),
+      new FaviconsWebpackPlugin("src/assets/dappstarter.png"),
       // new MiniCssExtractPlugin()
     ],
     resolve: {
