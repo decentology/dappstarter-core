@@ -1,5 +1,5 @@
 {
-  "name": "solana-rust",
+  "name": "rust",
   "title": "Rust",
   "description": "",
   "imageUrl": "",
@@ -18,27 +18,9 @@
       "/package.project.json": {
         "processor": "copy-file"
       },
-      "/~languages/solana-rust/packages/dapplib/contracts/DappState.sol": {
+      "/~languages/rust/packages/dapplib/contracts/DappState.rs": {
         "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/solana-rust/${name}.sol"
-      },
-      "/~languages/solana-rust/packages/dapplib/contracts/DappLib.sol": {
-        "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/solana-rust/${name}-lib.sol"
-      },
-      "/~languages/solana-rust/packages/dapplib/tests/[block-tests].js": {
-        "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/solana-rust/${name}-tests.js",
-        "sequence": false
-      },
-      "/~languages/solana-rust/packages/dapplib/migrations/2_deploy_contracts.js": {
-        "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/${name}-config.js"
-      },
-      "/~languages/solana-rust/packages/dapplib/truffle-config.js": {
-        "processor": "copy-file",
-        "context": "blockchain",
-        "actions": ["accounts"]
+        "path": "${categoryFolder}/${name}/rust/${name}.cdc"
       },
       "/README.md": {
         "processor": "filter"
@@ -52,6 +34,11 @@
       "/packages/dapplib/src/lib/dapp-lib.js": {
         "processor": "merge-blocks",
         "path": "${categoryFolder}/${name}/${name}-lib.js"
+      },
+      "/~languages/rust/packages/dapplib/tests/[block-tests].js": {
+        "processor": "file-blocks",
+        "path": "${categoryFolder}/${name}/rust/${name}-tests.js",
+        "sequence": false
       },
       "/packages/client/src/dapp/pages/harness/[block-pages].js": {
         "processor": "file-blocks",
@@ -75,35 +62,25 @@
         "blockchain": {
           "*": {
             "scripts": {
-              "dev": "run-p ganache deploy",
-              "deploy": "wait-on tcp:7545 && truffle compile && truffle migrate --reset",
-              "test": "npx truffle test",
-              "build:program-rust": "./src/program-rust/do.sh build && npm run clean:store",
-              "localnet:update": "solana-localnet update",
-              "localnet:up": "set -x; solana-localnet down; set -e; solana-localnet up",
-              "localnet:down": "solana-localnet down",
-              "localnet:logs": "solana-localnet logs -f",
-              "clean:store": "rm -rf store",
-              "clean:program-rust": "./src/program-rust/do.sh clean && rm -rf ./dist && npm run clean:store",
-              "test:program-rust": "./src/program-rust/do.sh test"          
+              "clean": "rimraf -rf build && rimraf -rf dist",
+              "initialize": "node src/scripts/initialize.js",
+              "dev": "watch 'node src/scripts/initialize.js' contracts",
+              "test": "npm run test"
             }
           },
-          "solana": {
+          "flow": {
             "dependencies": {
-              "@solana/web3.js": "^0.73.0"
             },
             "devDependencies": {
+              "chai": "^4.2.0",
+              "mocha": "^8.1.3",
+              "watch": "^1.0.2",
+              "fkill": "^7.0.1"
             }
           }
         },
         "block": {
-          "*": {},
-          "file_storage:ipfs": {
-            "devDependencies": {
-              "ipfs-http-client": "44.0.3",
-              "bs58": "^4.0.1"
-            }
-          }
+          "*": {}
         }
       },
       "/packages/client/package.json": {

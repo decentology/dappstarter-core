@@ -2,7 +2,6 @@
 const Blockchain = require( './blockchain');
 const dappConfig = require( '../dapp-config.json');
 const ClipboardJS = require( 'clipboard');
-const SvgIcons = require( './components/svg-icons');
 const BN = require('bn.js'); // Required for injected code
 
 ///+import
@@ -58,10 +57,6 @@ module.exports = class DappLib {
 
     static get DAPP_RESULT_ERROR() {
         return 'error'
-    }
-
-    static get SVG_ICONS() {
-        return SvgIcons;
     }
 
     static async addEventHandler(contract, event, params, callback) {
@@ -283,8 +278,19 @@ module.exports = class DappLib {
     }
     
     static addClippy(data) {
-        let icon = SvgIcons.clippy;
-        return icon.replace('<svg ', `<svg data-copy="${data}" `)
+        return `
+        <svg data-copy="${data}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+             viewBox="0 0 22.1 23.5" style="enable-background:new 0 0 22.1 23.5;cursor:pointer;" class="copy-target" width="19px" height="20.357px" xml:space="preserve">
+        <style type="text/css">
+            .st99{fill:#777777;stroke:none;stroke-linecap:round;stroke-linejoin:round;}
+        </style>
+        <path class="st99" d="M3.9,17.4h5.4v1.4H3.9V17.4z M10.7,9.2H3.9v1.4h6.8V9.2z M13.4,13.3v-2.7l-4.1,4.1l4.1,4.1V16h6.8v-2.7H13.4z
+             M7.3,12H3.9v1.4h3.4V12z M3.9,16h3.4v-1.4H3.9V16z M16.1,17.4h1.4v2.7c0,0.4-0.1,0.7-0.4,1c-0.3,0.3-0.6,0.4-1,0.4H2.6
+            c-0.7,0-1.4-0.6-1.4-1.4V5.2c0-0.7,0.6-1.4,1.4-1.4h4.1c0-1.5,1.2-2.7,2.7-2.7s2.7,1.2,2.7,2.7h4.1c0.7,0,1.4,0.6,1.4,1.4V12h-1.4
+            V7.9H2.6v12.2h13.6V17.4z M3.9,6.5h10.9c0-0.7-0.6-1.4-1.4-1.4h-1.4c-0.7,0-1.4-0.6-1.4-1.4s-0.6-1.4-1.4-1.4S8,3.1,8,3.8
+            S7.4,5.2,6.6,5.2H5.3C4.5,5.2,3.9,5.8,3.9,6.5z"/>
+        </svg>
+        `;
     }
 
     static getAccounts() {

@@ -1,7 +1,8 @@
 {
     "blocks": {
         "/blockchain/solana": true,
-        "/blockchain/solana/solana-rust": true,
+        "/blockchain/solana/rust": true,
+        "/category/access_control/contract_runstate": true,
         "/framework/vanilla": true
     }
 }

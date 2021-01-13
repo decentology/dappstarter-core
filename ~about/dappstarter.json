@@ -95,7 +95,7 @@
         "children": [
             "solidity",
             "cadence",
-            "solana-rust"
+            "rust"
         ]
     },
     {
