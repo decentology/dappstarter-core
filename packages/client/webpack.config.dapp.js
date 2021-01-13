@@ -5,7 +5,7 @@ const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 
 module.exports = (env, argv) => {
   return {
-    entry: ["@babel/polyfill", path.join(__dirname, "src/dapp")],
+    entry: ["@babel/polyfill", path.join(__dirname, "src")],
     output: {
       path: path.join(
         __dirname,
@@ -42,7 +42,7 @@ module.exports = (env, argv) => {
             {
               loader: "file-loader",
               options: {
-                name: "assets/img/[name].[ext]?[hash]"
+                name: "assets/[name].[ext]?[hash]"
               }
             }
           ]
@@ -67,7 +67,7 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new HtmlWebpackPlugin({
-        template: path.join(__dirname, "src/dapp/index.html")
+        template: path.join(__dirname, "src/index.html")
       }),
       new FaviconsWebpackPlugin("src/assets/dappstarter.png"),
       // new MiniCssExtractPlugin()

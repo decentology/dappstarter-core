@@ -119,7 +119,7 @@ export const App: React.FC = () => {
             </div>
           </div>
           <a
-            href="http://dappstarter.trycrypto.com"
+            href="http://dappstarter.decentology.com"
             target="_blank"
             rel="noopener noreferrer"
           >

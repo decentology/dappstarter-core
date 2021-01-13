@@ -76,11 +76,6 @@ export default class ActionCard extends LitElement {
           class="text-white p-3 bg-blue-400 flex justify-between items-center rounded-md rounded-b-none"
         >
           <h5 class="font-bold">${this.title}</h5>
-          <span class="text-right"
-            >${this.method === "post"
-              ? unsafeHTML(DappLib.SVG_ICONS.readWrite)
-              : unsafeHTML(DappLib.SVG_ICONS.readOnly)}</span
-          >
         </div>
         <div
           class="slot ${this.innerHTML.indexOf("<") > -1 ? "p-3" : ""}"

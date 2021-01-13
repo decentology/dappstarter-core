@@ -40,16 +40,16 @@
         "path": "${categoryFolder}/${name}/rust/${name}-tests.js",
         "sequence": false
       },
-      "/packages/client/src/dapp/pages/harness/[block-pages].js": {
+      "/packages/client/src/pages/harness/[block-pages].js": {
         "processor": "file-blocks",
         "path": "${categoryFolder}/${name}/${name}-page.js",
         "sequence": false
       },
-      "/packages/client/src/dapp/[client-app]": {
+      "/packages/client/src/[client-app]": {
         "processor": "copy-folder",
         "context": "framework"
       },
-      "/packages/client/src/dapp/pages/harness/harness.js": {
+      "/packages/client/src/pages/harness/harness.js": {
         "processor": "replace-parameters"
       },
       "/packages/dapplib/src/lib/[blockchain]": {
@@ -92,10 +92,7 @@
             "devDependencies": {
               "@babel/preset-react": "^7.9.4",
               "react": "^16.13.0",
-              "react-dom": "^16.13.0",
-              "react-redux": "^7.2.0",
-              "react-router-dom": "^5.1.2",
-              "redux": "^4.0.5"
+              "react-dom": "^16.13.0"
             }
           },
           "vanilla": {

@@ -1,6 +1,6 @@
 import DOM from '../components/dom';
-import './pages/components/top-navigation';
-import './pages/components/page-loader';
+import './components/top-navigation';
+import './components/page-loader';
 import './pages/dapp';
 import './assets/index.css';
 

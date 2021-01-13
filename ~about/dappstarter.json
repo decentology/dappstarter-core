@@ -29,11 +29,11 @@
     {
         "name": "blockchains",
         "title": "Blockchains",
-        "description": "Blockchains are the underlying technology for the decentralized web. If you aren't familiar with  the decentralized web, it's a good idea to <a href='https://trycrypto.com'>get some familiarity with how it works before you start.</a> There are numerous public and private blockchains (we will support many of them soon).",
+        "description": "Blockchains are the underlying technology for the decentralized web. If you aren't familiar with  the decentralized web, it's a good idea to <a href='https://www.decentology.com'>get some familiarity with how it works before you start.</a> There are numerous public and private blockchains (we will support many of them soon).",
         "imageUrl": "",
         "help": {
             "title": "How to choose a blockchain.",
-            "url": "https://trycrypto.com"
+            "url": "https://www.decentology.com"
         },
         "interface": {
             "hidden": false,
@@ -85,7 +85,7 @@
         "imageUrl": "",
         "help": {
             "title": "Learn more about languages used for each blockchain.",
-            "url": "https://trycrypto.com"
+            "url": "https://www.decentology.com"
         },
         "interface": {
             "hidden": false,
@@ -105,7 +105,7 @@
         "imageUrl": "",
         "help": {
             "title": "Learn more about building a front-end for your dapp.",
-            "url": "https://trycrypto.com"
+            "url": "https://www.decentology.com"
         },
         "interface": {
             "hidden": false,

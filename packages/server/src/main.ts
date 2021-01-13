@@ -10,9 +10,8 @@ async function bootstrap() {
   });
   const options = new DocumentBuilder()
     .setTitle('DappStarter')
-    .setDescription('Full-Stack Blockchain App Mojo')
+    .setDescription('Full-Stack Blockchain App')
     .setVersion('1.0')
-    .addTag('trycrypto')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('/', app, document, {

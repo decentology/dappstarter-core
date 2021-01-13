@@ -29,9 +29,6 @@ export default class PageBody extends LitElement {
   render() {
     return html`
       <section class="p-2 mb-12">
-        <div class="float-right">
-          ${ unsafeHTML(DappLib.SVG_ICONS.block) }
-        </div>
         <h5 class="text-gray-600">${this.category}</h5>
 
         <h2 class="mb-2 text-4xl text-gray-700">
