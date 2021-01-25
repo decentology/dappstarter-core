@@ -1,4 +1,4 @@
-import DOM from '../components/dom';
+import DOM from './components/dom';
 import './components/top-navigation';
 import './components/page-loader';
 import './pages/dapp';

@@ -1,91 +1,57 @@
+const { Solana } = require('./solana');
+const bs58 = require('bs58');
+
 module.exports = class Blockchain {
 
     /**
-     * @dev Calls a read-only smart contract function
+     * @dev Reads data from an account
      */
-    static async get(env, tx, args) {
-        let options = {
+    static async get(env, accountName) {
+        let solana = new Solana(env.config);
+        let account = env.config.programInfo.programAccounts[accountName];
+        if (!account) {
+            throw new Error(`Account ${accountName} does not exist.`);
         }
-        if (args) {
-            options.args = [];
-            for(let arg in args) {
-                if (typeof args[arg] === 'String') {
-                    options.args.push({
-                        value: args[arg],
-                        type: t.String
-                    });
-                } else {
-                    options.args.push(args[arg]);
-                }
-            }
+
+        let accountInfo = await solana.getAccountInfo(account.publicKey); // Convert from base58
+        let layoutItem = Solana.getDataLayouts().filter((item) => { return item.name === accountName });
+        let layout = layoutItem.length > 0 ? layoutItem[0].layout : null;        
+        let resultData = null;
+
+        if (accountInfo && layout) {
+            resultData = layout.decode(Buffer.from(accountInfo.data));
         }
-        let flow = new Flow(env.config);
-        let response = await flow.executeTransaction(DappScripts[tx](env.imports), options);
-        let resultData = await Flow.decode(response);
+
         return {
-            callAccount: null,
+            callAccount: account.publicKey,
             callData: resultData
         }
     }
 
     /**
-     * @dev Calls a writeable smart contract function
+     * @dev Updates an account's data
+     */
+    static async put(env, accountName, data) {
+        let solana = new Solana(env.config);
+        // Payer privateKey is hardcoded for Beta
+        let txReceipt = await solana.submitTransaction({
+                                    keys: [{pubkey: Solana.getPublicKey(env.config.programInfo.programAccounts[accountName].publicKey), isSigner: false, isWritable: true}],
+                                    payer: Solana.getSigningAccount(bs58.decode(env.config.programInfo.programAccounts['payer'].privateKey)),
+                                    programId: Solana.getPublicKey(env.config.programInfo.programId),
+                                    data
+                                });
+
+        let network = env.config.httpUri.indexOf('devnet') ? 'devnet' : 'mainnet';
+        return {
+            txHash: txReceipt,
+            explorer: `<a href="https://explorer.solana.com/tx/${txReceipt}?cluster=${network}" target="_new" style="text-decoration:underline;">View Transaction Details</a>`
+        }
+    }
+
+    /**
+     * @dev Calls a program function
      */
     static async post(env, tx, args) {
-        let proposer = typeof env.roles.proposer === 'string' ? env.roles.proposer : env.config.accounts[0];
-        let roleInfo = {
-            [Flow.Roles.PROPOSER]: proposer,
-            [Flow.Roles.AUTHORIZERS]: env.roles.authorizers && Array.isArray(env.roles.authorizers) && env.roles.authorizers.length > 0 ? env.roles.authorizers : [ proposer ],
-            [Flow.Roles.PAYER]: typeof env.roles.payer === 'string' ? env.roles.payer : proposer
-        };
-        let options = {
-            roleInfo,
-            gasLimit: 50
-        }
-
-        if (args) {
-            options.args = [];
-            for(let arg in args) {
-                if (typeof args[arg] === 'String') {
-                    options.args.push({
-                        value: args[arg],
-                        type: t.String
-                    });
-                } else {
-                    options.args.push(args[arg]);
-                }
-            }
-        }
-
-        let flow = new Flow(env.config);
-        let response = await flow.executeTransaction(DappTransactions[tx](env.imports), options);
-
-        return {
-            callAccount: proposer,
-            callData: response
-        }
+        return 'Not implemented';
     } 
-
-
-    static async handleEvent(env, event, callback) {
-        Flow.handleEvent(env, event, callback);
-    } 
-
-    static async createAccount(env, keyInfo) {
-        /*  keyInfo : { entropy: byte array, weight: 1 ... 1000 }  */        
-        let flow = new Flow(env);
-        return await flow.createAccount(keyInfo);
-    }
-
-    static async deployContract(env, address, contract) {
-
-        let flow = new Flow(env);
-        return await flow.deployContract(address, contract);
-    }
-
-    static async getAccount(env, address) {
-        let flow = new Flow(env);
-        return await flow.getAccount(address);
-    }
-
 }

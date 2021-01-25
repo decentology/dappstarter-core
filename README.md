@@ -1,10 +1,10 @@
-# DappStarter
+# My Dapp
 
-This project was auto-generated using [DappStarter](https://dappstarter.decentology.com) by [Decentology](https://www.decentology.com). It contains code for the Smart Contract, web-based dapp and NodeJS server. 
+This project is for the blockchain application My Dapp. It contains code for the Smart Contract, web-based dapp and NodeJS server. 
 
 # Pre-requisites
 
-In order to develop and build your dapp the following pre-requisites must be installed:
+In order to develop and build "My Dapp," the following pre-requisites must be installed:
 
 * [Visual Studio Code](https://code.visualstudio.com/download) (or any IDE for editing Javascript)
 * [NodeJS](https://nodejs.org/en/download/)
@@ -16,14 +16,12 @@ In order to develop and build your dapp the following pre-requisites must be ins
 ///)
 ///(blockchain:solana
 * [Solana CLI Tools](https://docs.solana.com/cli/install-solana-cli-tools)
-* Rust (see "Dependency Guides" at the end for help installing)
-* Docker (see "Dependency Guides" at the end for help installing)
+* Rust (see "Dependency Guides" at the end for help installing) 
 
-### Dependency Checklist
+### Dependency Checklist 
 ```bash
 $ node --version
 $ npm --version
-$ docker -v
 $ rustup --version
 $ rustc --version
 $ cargo --version
@@ -35,6 +33,12 @@ $ solana --version
 
 Using a terminal (or command prompt), change to the folder containing the project files and type: `yarn` This will fetch all required dependencies. The process will take 1-3 minutes and while it is in progress you can move on to the next step.
 
+# Yarn Errors
+
+You might see failures related to the `node-gyp` package when Yarn installs dependencies.
+These failures occur because the node-gyp package requires certain additional build tools
+to be installed on your computer. Follow the [instructions](https://www.npmjs.com/package/node-gyp) for adding build tools and then try running `yarn` again.
+
 # Build, Deploy and Test
 ///(blockchain:matic
 
@@ -43,11 +47,37 @@ Before you can work with Matic's testnet, you need to request some tokens in you
 ///)
 Using a terminal (or command prompt), change to the folder containing the project files and type: `yarn start` This will run all the dev scripts in each project package.json.
 
-To view your dapp, open your browser to http://localhost:5000
+///(blockchain:solana
+The first time you run `yarn start` there are a fair number of Rust libraries that are
+downloaded and pre-compiled. As a result, it may be take from 5-10 mins. before the
+dapp is compiled and launched the first time. On subsequent compilations, the build
+time will only be a few seconds.
 
-We ♥️ developers and want you to have an awesome experience. You should be experiencing Dappiness at this point. If not, let us know and we will help. Visit [https://support.trycrypto.com](https://support.trycrypto.com) or hit us up on Twitter @decentology.
+## File Locations
+Here are the locations of some important files:
+* Program Code: [packages/dapplib/programs/src/lib.rs](packages/dapplib/programs/src/lib.rs)
+* Dapp Library: [packages/dapplib/src/lib/dapp-lib.js](packages/dapplib/src/lib/dapp-lib.js)
+* Solana Wrapper: [packages/dapplib/src/lib/solana.js](packages/dapplib/src/lib/solana.js) 
+* Blockchain Interactions: [packages/dapplib/src/lib/blockchain.js](packages/dapplib/src/lib/blockchain.js)
+* Data Layouts: [packages/dapplib/src/scripts/layouts.js](packages/dapplib/src/scripts/layouts.js)
+* Migration Script: [packages/dapplib/src/scripts/migrate.js](packages/dapplib/src/scripts/migrate.js)
+///)
 
+///(language:solidity
+## File Locations
+Here are the locations of some important files:
+* Contract Code: [packages/dapplib/contracts](packages/dapplib/contracts)
+* Dapp Library: [packages/dapplib/src/lib/dapp-lib.js](packages/dapplib/src/lib/dapp-lib.js) 
+* Blockchain Interactions: [packages/dapplib/src/lib/blockchain.js](packages/dapplib/src/lib/blockchain.js)
+* Unit Tests: [packages/dapplib/tests](packages/dapplib/tests)
+* UI Test Harnesses: [packages/client/src/dapp/pages/harness](packages/client/src/dapp/pages/harness)
 
+///)
+To view your dapp, open your browser to http://localhost:5000 for the DappStarter Workspace.
+
+We ♥️ developers and want you to have an awesome experience. You should be experiencing Dappiness at this point. If not, let us know and we will help. Visit [https://support.decentology.com](https://support.decentology.com) or hit us up on Twitter @decentology.
+
+///(language:solidity
 ## Smart Contract
 
 `yarn migrate` to compile contracts/*.sol files, deploy them to the blockchain. 
@@ -64,25 +94,23 @@ Run the server in a separate terminal. You *must* have run `npm run deploy` for 
 
 `yarn server` runs NodeJS server app on port 5002 with NestJS
 
-///(language:solidity
 ## Testing
 
 `test-config.js` contains settings used by test scripts
 
 Run tests using `yarn test --script=[test file]`
-///)
 
 ## Production Builds
 
 DappStarter currently does not provide blockchain migration scripts to be used in production. However, here are the scripts for generating production builds:
 
 `yarn build:prod` generates dapp bundle for production.
-
+///)
+///(language:rust
 ## Dependency Guides
 
 This section contains installation guides for common dev environments. 
 
-///(blockchain:solana
 ### Rust
 
 (Source: Solana)
@@ -98,42 +126,3 @@ For Mac users, Homebrew is also an option.  The Mac Homebrew command is `brew in
 After installation, you should have `rustc`, `cargo`, & `rustup`. You should
 also have `~/.cargo/bin` in your PATH environment variable.
 ///)
-### Docker
-
-Docker runs as a service and it needs to be running before you invoke any script that 
-requires the service. The exact start method depends on your system and how you
-installed docker.
-
-#### Install and Start Docker On Linux
-The instructions to install Docker have changed over time. If you have
-previously installed Docker, this will be a good time to update your system.
-See [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/) for a step-by-step walk-through. When complete, `sudo docker run hello-world` should confirm that everything works correctly.
-
-To run Docker without typing `sudo` every time, take a look at Step 2 of [How To Install and Use Docker on Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04)
-
-#### Install and Start Docker On A Mac
-Docker provides a desktop application for Mac at [Docker Desktop for Mac](https://hub.docker.com/editions/community/docker-ce-desktop-mac/) with additional instructions here [Install Docker Desktop on Mac](https://docs.docker.com/docker-for-mac/install/). If you install the Docker Desktop app, you can skip the HomeBrew instructions below. If `docker run hello-world` works, you are ready to Start the local Solana cluster.
-
-If you are using HomeBrew on a Mac, the commands are:
-
-```bash
-$ brew install docker
-$ brew install docker-machine
-# The next two commands to install virtualbox & create a machine may need a
-# password. You may also need to address a System Preference setting and
-# re-try the installation.
-$ brew cask install virtualbox
-$ docker-machine create --driver virtualbox default
-# To see config info:
-$ docker-machine env default
-# Port forwarding of 8899 from your OS to the Docker machine:
-$ docker-machine ssh default -f -N -L 8899:localhost:8899
-# To configure your shell to use the docker-machine
-$ eval "$(docker-machine env default)"
-```
-
-NOTE: Later, you can run `docker-machine stop default` to stop the docker machine.
-
-Resources for Mac HomeBrew users:
-- https://medium.com/@yutafujii_59175/a-complete-one-by-one-guide-to-install-docker-on-your-mac-os-using-homebrew-e818eb4cfc3
-- https://stackoverflow.com/questions/32174560/port-forwarding-in-docker-machine

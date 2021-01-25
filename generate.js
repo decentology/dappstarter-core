@@ -11,7 +11,7 @@ if (process.argv.length < 4) {
   let stage = false;
   if (process.argv[2] === 'stage') {
     stage = true;
-    settings["__outputFolder"] = "stage-dapp";
+    settings["__outputFolder"] = process.argv[3];
     console.log("Staging:", (stage ? "YES" : "NO"));
   }
 

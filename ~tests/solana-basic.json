@@ -2,7 +2,7 @@
     "blocks": {
         "/blockchain/solana": true,
         "/blockchain/solana/rust": true,
-        "/category/access_control/contract_runstate": true,
+        "/category/examples/core.hello_dev": true,
         "/framework/vanilla": true
     }
 }
