@@ -28,7 +28,7 @@
       },
       "/~languages/solidity/packages/dapplib/tests/[block-tests].js": {
         "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/solidity/${name}-tests.js",
+        "path": "${categoryFolder}/${name}/${name}-tests.js",
         "sequence": false
       },
       "/~languages/solidity/packages/dapplib/migrations/2_deploy_contracts.js": {

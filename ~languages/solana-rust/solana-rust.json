@@ -28,7 +28,7 @@
       },
       "/~languages/solana-rust/packages/dapplib/tests/[block-tests].js": {
         "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/solana-rust/${name}-tests.js",
+        "path": "${categoryFolder}/${name}/${name}-tests.js",
         "sequence": false
       },
       "/~languages/solana-rust/packages/dapplib/migrations/2_deploy_contracts.js": {
