@@ -1,0 +1,8 @@
+{
+    "blocks": {
+        "/blockchain/ethereum": true,
+        "/blockchain/ethereum/solidity": true,
+        "/category/nft/core.nft_composer": true,
+        "/framework/vanilla": true
+    }
+}
