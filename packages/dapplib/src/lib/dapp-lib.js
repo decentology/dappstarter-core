@@ -11,7 +11,6 @@ module.exports = class DappLib {
 
 ///+functions
 
-
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DAPP LIBRARY  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
     static get DAPP_STATE_CONTRACT() {
