@@ -1,0 +1,13 @@
+{
+    "blocks": {
+        "/blockchain/flow": true,
+        "/blockchain/flow/solidity": true,
+        "/category/nft/core.nft_composer": true,
+        "/framework/vanilla": true,
+        "/category/nft/core.nft_composer/foundation": "collectible",
+        "/category/nft/core.nft_composer/minting": "grant",
+        "/category/nft/core.nft_composer/metadata": "collectible",
+        "/category/nft/core.nft_composer/generator": "uniqueid_ns",
+        "/category/nft/core.nft_composer/marketplace": "swap"
+    }
+}

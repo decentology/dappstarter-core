@@ -1,4 +1,5 @@
-{ "name": "@decentology/dappstarter-project",
+{
+  "name": "@decentology/dappstarter-project",
   "version": "1.0.33",
   "workspaces": {
     "packages": [
@@ -9,7 +10,7 @@
   "scripts": {
     "start": "node generate stage"
   },
-  "devDependencies": {
+  "dependencies": {
     "blakejs": "1.1.0",
     "copy-webpack-plugin": "5.1.1",
     "escape-string-regexp": "^2.0.0",
