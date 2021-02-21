@@ -304,64 +304,77 @@ module.exports = class Hypergrep {
         return lineText + NEWLINE;
     }
 
+    _filterContext(sourceContent, outputInfo) {
+
+        let self = this;
+        let code = sourceContent.split(NEWLINE);
+
+        let filteredContent = '';
+        let openTag = null;
+        let include = false;
+        code.map(lineText => {
+            if (lineText.startsWith(DIRECTIVE_PREFIX)) {
+                let tag = (lineText + ' ').substr(0, (lineText + ' ').indexOf(' '));
+                if (tag.startsWith(DIRECTIVE_SECTION_BEGIN)) {
+                    if (openTag) {
+                        throw `The section "${openTag}" must end before a new section can be started.`;
+                    }
+                    openTag = tag.replace(DIRECTIVE_SECTION_BEGIN, '');
+                    let context = openTag.split(':')[0];
+                    // The context can be any config property
+                    if (context === Manifest.BLOCKCHAIN) {
+                        include = openTag.indexOf(outputInfo[Manifest.BLOCKCHAIN]) > -1;
+                    } else if (context === Manifest.FRAMEWORK) {
+                        include = openTag.indexOf(outputInfo[Manifest.FRAMEWORK]) > -1;
+                    } else if (context === Manifest.LANGUAGE) {
+                        include = openTag.indexOf(outputInfo[Manifest.LANGUAGE].name) > -1;
+                    } else {
+                        include = false;
+                    }
+                    self.log(5, 4, `Found directive to begin section "${openTag}"`);
+                } else if (tag.startsWith(DIRECTIVE_SECTION_END)) {
+                    if (!openTag) {
+                        throw `End section encountered when no section has been started.`;
+                    }
+                    self.log(5, 4, `Found directive to end section "${openTag}"`);
+                    openTag = null;
+                }
+            } else {
+                // Include code for context or code outside of a directive
+                if (openTag) {
+                    if (include) {
+                        filteredContent += self._replaceCodeParameters(lineText, null, outputInfo[SWAP_PARAMETERS]);
+                    }
+                } else {
+                    filteredContent += self._replaceCodeParameters(lineText, null, outputInfo[SWAP_PARAMETERS]);
+                }
+            }
+        });
+
+        return filteredContent;
+    }
+
     _filterContextIntoFile(filePath, sourceFolder, targetFolder, outputInfo) {
         let self = this;
 
         self.log(3, 2, `Filtering context into ${filePath.replace(sourceFolder, '')}`);
         // STEP 1: Process directives in file
-        let fileContent = '';
+        let filteredContent = '';
         if (fse.existsSync(filePath)) {
-            let code = fse.readFileSync(filePath, 'utf8').split(NEWLINE);
+            let sourceContent = fse.readFileSync(filePath, 'utf8');
 
-            let openTag = null;
-            let include = false;
-            code.map(lineText => {
-                // STEP 2: Look for directives matching the context name. For example,
-                //         if name = 'blockchain' and current blockchain is 'ethereum'
-                //         then look for directive ///(ethereum and include that code
-                //         while skipping other directive code blocks
-                if (lineText.startsWith(DIRECTIVE_PREFIX)) {
-                    let tag = (lineText + ' ').substr(0, (lineText + ' ').indexOf(' '));
-                    if (tag.startsWith(DIRECTIVE_SECTION_BEGIN)) {
-                        if (openTag) {
-                            throw `The section "${openTag}" must end before a new section can be started.`;
-                        }
-                        openTag = tag.replace(DIRECTIVE_SECTION_BEGIN, '');
-                        let context = openTag.split(':')[0];
-                        // The context can be any config property
-                        if (context === Manifest.BLOCKCHAIN) {
-                            include = openTag.indexOf(outputInfo[Manifest.BLOCKCHAIN]) > -1;
-                        } else if (context === Manifest.FRAMEWORK) {
-                            include = openTag.indexOf(outputInfo[Manifest.FRAMEWORK]) > -1;
-                        } else if (context === Manifest.LANGUAGE) {
-                            include = openTag.indexOf(outputInfo[Manifest.LANGUAGE].name) > -1;
-                        } else {
-                            include = false;
-                        }
-                        self.log(5, 4, `Found directive to begin section "${openTag}"`);
-                    } else if (tag.startsWith(DIRECTIVE_SECTION_END)) {
-                        if (!openTag) {
-                            throw `End section encountered when no section has been started.`;
-                        }
-                        self.log(5, 4, `Found directive to end section "${openTag}"`);
-                        openTag = null;
-                    }
-                } else {
-                    // STEP 3: Include code for context or code outside of a directive
-                    if (openTag) {
-                        if (include) {
-                            fileContent += self._replaceCodeParameters(lineText, null, outputInfo[SWAP_PARAMETERS]);
-                        }
-                    } else {
-                        fileContent += self._replaceCodeParameters(lineText, null, outputInfo[SWAP_PARAMETERS]);
-                    }
-                }
-            });
+            // STEP 2: Look for directives matching the context name. For example,
+            //         if name = 'blockchain' and current blockchain is 'ethereum'
+            //         then look for directive ///(ethereum and include that code
+            //         while skipping other directive code blocks
+            filteredContent = self._filterContext(sourceContent, outputInfo);
+
+            // STEP 3: Write the file with filtered code to the output folder
+            let outfilePath = filePath.replace(sourceFolder, targetFolder);
+            self.log(3, 2, `Writing file: ${outfilePath.replace(outputInfo.targetFolder, '')}`);
+            fse.writeFileSync(outfilePath, filteredContent);
         }
-        // STEP 4: Write the file with filtered code to the output folder
-        let outfilePath = filePath.replace(sourceFolder, targetFolder);
-        self.log(3, 2, `Writing file: ${outfilePath.replace(outputInfo.targetFolder, '')}`);
-        fse.writeFileSync(outfilePath, fileContent);
+
     }
 
     _mergeBlockFolders(filePath, blockPathTemplate, sourceFolder, targetFolder, outputInfo, sequence) {
@@ -398,13 +411,14 @@ module.exports = class Hypergrep {
         });
     }
 
+
     _mergeBlocksIntoFile(expand, filePath, blockPathTemplate, sourceFolder, targetFolder, outputInfo, sequence) {
         let self = this;
         self.log(3, 2, `Merging code snippets for ${filePath.replace(sourceFolder, '')}`);
         // STEP 1: Get the source file template and decide if:
         //         a) merge block code and write it to same file name as input file to output
         //         b) for each block code, create a separate file with name of block in output
-        let sourceCodeText = fse.readFileSync(filePath, 'utf8');
+        let sourceCodeText = self._filterContext(fse.readFileSync(filePath, 'utf8'), outputInfo);
 
         // STEP 2: Create a dictionary of all the replacement block code using
         //         the directive suffix as key
@@ -431,8 +445,29 @@ module.exports = class Hypergrep {
             // STEP 3: Write the file with merged/replaced code to the output folder
             if (expand || index == blockKeys.length - 1) {
                 let finalText = sourceCodeText;
-                for (let key in codeSnippets) {
-                    finalText = finalText.replace(DIRECTIVE_REPLACE + key, codeSnippets[key]);
+
+                // Reduce any snippets that have a key with a filter in the format
+                // [key]:[filter]:[filter-value]  example: functions:language:solidity
+                // We aggregate these key values and send them off to be filtered, then
+                // cleanup codeSnippets so it has only the key value sans filter stuff
+                let filteredCodeSnippets = {};
+                for(let key in codeSnippets) {
+                    let keyFrags = key.split(':');
+                    if (keyFrags.length === 3) {                        
+                        let filteredCode = self._filterContext(`${DIRECTIVE_SECTION_BEGIN}${keyFrags[1]}:${keyFrags[2]}\n${codeSnippets[key]}\n${DIRECTIVE_SECTION_END}`, outputInfo);
+                        if (filteredCode.length > 0) {
+                            if (filteredCodeSnippets.hasOwnProperty(keyFrags[0])) {
+                                filteredCodeSnippets[keyFrags[0]] += filteredCode;
+                            } else {
+                                filteredCodeSnippets[keyFrags[0]] = filteredCode;
+                            }
+                        }
+                    } else {
+                        filteredCodeSnippets[key] = codeSnippets[key];
+                    }
+                }
+                for (let key in filteredCodeSnippets) {
+                    finalText = finalText.replace(DIRECTIVE_REPLACE + key, filteredCodeSnippets[key]);
                 }
 
                 let outfilePath = filePath.replace(sourceFolder, targetFolder);
@@ -461,12 +496,13 @@ module.exports = class Hypergrep {
         }
     }
 
-    _replaceParametersInFile(filePath, sourceFolder, targetFolder, swapParameterValues) {
+    _replaceParametersInFile(filePath, sourceFolder, targetFolder, outputInfo) {
         let self = this;
+        let swapParameterValues = outputInfo[SWAP_PARAMETERS];
         self.log(3, 2, `Replacing parameters in file for ${filePath.replace(sourceFolder, '')}`);
 
         if (fse.existsSync(filePath)) {
-            let code = fse.readFileSync(filePath, 'utf8').split(NEWLINE);
+            let code = self._filterContext(fse.readFileSync(filePath, 'utf8'), outputInfo).split(NEWLINE);
 
             let codeBlock = '';
             code.map(lineText => {
@@ -536,11 +572,12 @@ module.exports = class Hypergrep {
         };
     }
 
-    _copyFile(context, name, sourceFile, targetFile, actions, swapParameterValues) {
+    _copyFile(context, name, sourceFile, targetFile, actions, outputInfo) {
         let self = this;
+        let swapParameterValues = outputInfo[SWAP_PARAMETERS];
         self.log(3, 2, `Copying file "${name}" with context customization for ${context}`);
 
-        let code = fse.readFileSync(sourceFile, 'utf8').split(NEWLINE);
+        let code = self._filterContext(fse.readFileSync(sourceFile, 'utf8'), outputInfo).split(NEWLINE);
 
         let codeBlock = '';
         code.map(lineText => {
@@ -609,7 +646,7 @@ module.exports = class Hypergrep {
 
                 // Replace parameters in a file
                 case Hypergrep.PROCESSOR_REPLACE_PARAMETERS:
-                    self._replaceParametersInFile(filePath, sourceFolder, targetFolder, outputInfo[SWAP_PARAMETERS]);
+                    self._replaceParametersInFile(filePath, sourceFolder, targetFolder, outputInfo);
                     break;
 
                 // Merge JSON at block, language and blockchain level into a file
@@ -660,7 +697,7 @@ module.exports = class Hypergrep {
                         // Source and target are a file, not folder
                         sourceFolder = sourceFolder.replace(SLASH + LANGUAGES_FOLDER_NAME + SLASH + outputInfo[Manifest.LANGUAGE].name, '');
                         targetFolder = targetFolder.replace(SLASH + LANGUAGES_FOLDER_NAME + SLASH + outputInfo[Manifest.LANGUAGE].name, '');
-                        self._copyFile(info, pathFrag, sourceFolder, targetFolder, actions, outputInfo[SWAP_PARAMETERS]);
+                        self._copyFile(info, pathFrag, sourceFolder, targetFolder, actions, outputInfo);
                     }
                     break;
             }
@@ -800,7 +837,7 @@ module.exports = class Hypergrep {
 
                 self._enumerateBlockDependencies(config, outputInfo);
                 self._generatePages(outputInfo);
-
+                
                 let emitter = walk(sourceFolder, filePath => { });
 
                 emitter.on('directory', dirPath => {
@@ -838,7 +875,7 @@ module.exports = class Hypergrep {
 
                 emitter.on('end', () => {
                     self.log(1, 1, '');
-                    self.log(1, 1, 'DONE! 😀');
+                    self.log(1, 1, gracefulCompletion ? 'SUCCESS! 😃': 'Miserable failure! 😫');
                     self.log(1, 1, '');
                     self.log(1, 1, 'Output project in ' + targetFolder);
                     self.log(1, 1, '');
