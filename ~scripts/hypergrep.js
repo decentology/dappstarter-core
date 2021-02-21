@@ -418,7 +418,7 @@ module.exports = class Hypergrep {
         // STEP 1: Get the source file template and decide if:
         //         a) merge block code and write it to same file name as input file to output
         //         b) for each block code, create a separate file with name of block in output
-        let sourceCodeText = self._filterContext(fse.readFileSync(filePath, 'utf8'), outputInfo);
+        let sourceCodeText = fse.readFileSync(filePath, 'utf8');
 
         // STEP 2: Create a dictionary of all the replacement block code using
         //         the directive suffix as key
