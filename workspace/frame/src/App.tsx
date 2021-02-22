@@ -29,10 +29,14 @@ export const App: React.FC = () => {
     ?.toString()
     .split('/')[2]
 
+  let network = ''; 
   const logo = (blockchain: String) => {
     switch(blockchain.toLowerCase()) {
       case "flow": return "https://info.decentology.com/assets/blockchains/flow/flow-dappstarter.png";
       case "ethereum": return "https://info.decentology.com/assets/blockchains/ethereum/ethereum-dappstarter.png";
+      case "matic": return "https://info.decentology.com/assets/blockchains/matic/matic-dappstarter.png";
+      case "solana": network='devnet'; return "https://info.decentology.com/assets/blockchains/solana/solana-dappstarter.png";
+      case "conflux": return "https://info.decentology.com/assets/blockchains/conflux/conflux-dappstarter.png";
     }
   }
 
@@ -116,6 +120,7 @@ export const App: React.FC = () => {
             <div className="capitalize">
               <strong>{manifest.name}</strong>
               <span>{blockchain}</span>
+              <span>{network}</span>
             </div>
           </div>
           <a

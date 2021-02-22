@@ -6,14 +6,21 @@ module.exports = function(deployer, network) {
 
     let httpUri = deployer.networks[network].uri;
     let wsUri = '';
-    if (httpUri) {
+    if (deployer.networks[network].wsUri) {
+        wsUri = deployer.networks[network].wsUri;
+    } else if (httpUri) {
         wsUri = httpUri.replace('http', 'ws');
     }
 
     let accounts = [];
     let wallets = [];
-    for(let address in deployer.networks[network].provider().wallets) {
-        let wallet = deployer.networks[network].provider().wallets[address];
+
+    let provider = deployer.networks[network].walletProvider ?
+                        deployer.networks[network].walletProvider() :
+                        deployer.networks[network].provider();
+
+    for(let address in provider.wallets) {
+        let wallet = provider.wallets[address];
         accounts.push(wallet.getAddressString());
         wallets.push({
             account: wallet.getAddressString(),

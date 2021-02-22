@@ -4,11 +4,14 @@ require('@babel/register');
 });
 require('@babel/polyfill');
 
-const HDWalletProvider = require('@truffle/hdwallet-provider');
+const WalletProvider = require('./src/lib/wallet-provider');
+
 
 let mnemonic = 'PLACEHOLDER'; ///@{ "___test-mnemonic___": "PLACEHOLDER"}
 let testAccounts = null; ///@{ "___test-accounts___": "null"}
-let devUri = 'http://127.0.0.1:7545/';
+let devUri = 'https://test.confluxrpc.org/v2';
+let host = devUri.replace('http://','').replace('https://','');
+let privateKeys = new WalletProvider(mnemonic, 10).privateKeys;
 
 module.exports = {
     testAccounts,
@@ -16,15 +19,12 @@ module.exports = {
     networks: {
         development: {
             uri: devUri,
-            provider: () => new HDWalletProvider(
-                mnemonic,
-                devUri, // provider url
-                0, // address index
-                10, // number of addresses
-                true, // share nonce
-                `m/44'/60'/0'/0/` // wallet HD path
-            ),
-            network_id: '*'
+            network_id: '*',
+            host,
+            port: 80,
+            type: "conflux",
+            privateKeys,
+            walletProvider: () => new WalletProvider(mnemonic, 10)
         }
     },
     compilers: {

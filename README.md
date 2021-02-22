@@ -1,3 +1,10 @@
+///(blockchain:conflux
+# Conflux Beta Notes
+
+* All contract-related features (compilation, migration etc.) are fully implemented.
+* Client-side (dapp UI) features will not work as they aren't fully implemented in the Conflux JS SDK
+
+///)
 # My Dapp
 
 This project is for the blockchain application My Dapp. It contains code for the Smart Contract, web-based dapp and NodeJS server. 

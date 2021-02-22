@@ -1,0 +1,8 @@
+{
+    "blocks": {
+        "/blockchain/conflux": true,
+        "/blockchain/conflux/solidity": true,
+        "/category/access_control/core.contract_runstate": true,
+        "/framework/vanilla": true
+    }
+}

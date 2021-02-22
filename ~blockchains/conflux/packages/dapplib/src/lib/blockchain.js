@@ -1,25 +1,32 @@
 const DappStateContract = require("../../build/contracts/DappState.json");
 const DappContract = require("../../build/contracts/Dapp.json");
-const Web3 = require("web3");
+const { Conflux } = require('js-conflux-sdk');
 
-// Ethereum
 module.exports = class Blockchain {
 
     static async _init(config) {
-        let web3Obj = {
-            http: new Web3(new Web3.providers.HttpProvider(config.httpUri)),
-            ws: new Web3(new Web3.providers.WebsocketProvider(config.wsUri))
+        let networkId = 1;
+        let conflux = {
+            http: new Conflux({ 
+                url: config.httpUri,
+                networkId,
+            }),
+            ws: new Conflux({ 
+                url: config.wsUri,
+                networkId,
+            })
         }
 
-        let accounts = config.accounts || await web3Obj.http.eth.getAccounts();
-
         return {
-            dappStateContract: new web3Obj.http.eth.Contract(DappStateContract.abi, config.dappStateContractAddress),
-            dappContract: new web3Obj.http.eth.Contract(DappContract.abi, config.dappContractAddress),
-            dappStateContractWs: new web3Obj.ws.eth.Contract(DappStateContract.abi, config.dappStateContractAddress),
-            dappContractWs: new web3Obj.ws.eth.Contract(DappContract.abi, config.dappContractAddress),
-            accounts: accounts,
-            lastBlock: await web3Obj.http.eth.getBlockNumber()
+            dappStateContract: conflux.http.Contract({ abi: DappStateContract.abi, address: config.dappStateContractAddress }),
+            dappContract: conflux.http.Contract({ abi: DappContract.abi, address: config.dappContractAddress }),
+            dappStateContractWs: conflux.ws.Contract({ abi: DappStateContract.abi, address: config.dappStateContractAddress }),
+            dappContractWs: conflux.ws.Contract({ abi: DappContract.abi, address: config.dappContractAddress }),
+            accounts: config.accounts,
+            wallets: config.wallets,
+            lastBlock: 'latest_mined', //await conflux.http.getEpochNumber()
+            networkId,
+            instance: conflux
         }
     }
 
@@ -31,8 +38,7 @@ module.exports = class Blockchain {
         env.params.from = typeof env.params.from === 'string' ? env.params.from : blockchain.accounts[0];
         return {
             callAccount: env.params.from,
-            callData: await blockchain[env.contract]
-                                .methods[action](...data)
+            callData: await blockchain[env.contract][action](...data)
                                 .call(env.params)
         }
     }
@@ -43,29 +49,37 @@ module.exports = class Blockchain {
     static async post(env, action, ...data) {
         let blockchain = await Blockchain._init(env.config);
         env.params.from = typeof env.params.from === 'string' ? env.params.from : blockchain.accounts[0];
+        let wallet = blockchain.wallets.find((wallet) => wallet.account === env.params.from);
+        if (wallet) {
+            env.params.from = blockchain.instance.http.wallet.addPrivateKey(wallet.privateKey);
+        } else {
+            env.params.from = null;
+        } 
         return {
             callAccount: env.params.from,
-            callData: await blockchain[env.contract]
-                                .methods[action](...data)
-                                .send(env.params)
+            callData: await blockchain[env.contract][action](...data)
+                                .sendTransaction(env.params)
+                                .executed()
         }
     }
 
     static async handleEvent(env, event, callback) {
-        let blockchain = await Blockchain._init(env.config);
-        env.params.fromBlock = typeof env.params.fromBlock === 'number' ? env.params.fromBlock : blockchain.lastBlock + 1;
-        if (blockchain[env.contract].events[event]) {
-            blockchain[env.contract].events[event](env.params, (error, result) => {
-                let eventInfo = Object.assign({
-                                                id: result.id,
-                                                blockNumber: result.blockNumber
-                                            }, result.returnValues);
+        // Disabled for Conflux beta
 
-                callback(error, eventInfo);
-            });
-        } else {
-            throw(`Contract "${env.contract}" does not contain event "${event}"`);
-        }
+        // let blockchain = await Blockchain._init(env.config);
+        // env.params.fromBlock = typeof env.params.fromBlock === 'number' ? env.params.fromBlock : blockchain.lastBlock + 1;
+        // if (blockchain[env.contract].events[event]) {
+        //     blockchain[env.contract].events[event](env.params, (error, result) => {
+        //         let eventInfo = Object.assign({
+        //                                         id: result.id,
+        //                                         blockNumber: result.blockNumber
+        //                                     }, result.returnValues);
+
+        //         callback(error, eventInfo);
+        //     });
+        // } else {
+        //     throw(`Contract "${env.contract}" does not contain event "${event}"`);
+        // }
     }
 
 }

@@ -78,7 +78,7 @@
           "ethereum": {
             "scripts": {
               "dev": "run-p ganache deploy",
-              "deploy": "wait-on tcp:7545 && watch 'truffle migrate --reset' contracts",
+              "deploy": "wait-on tcp:7545 && watch \"truffle migrate --reset\" contracts",
               "ganache": "node src/lib/ganache.js",
               "test": "npx truffle test"
             },
@@ -109,20 +109,19 @@
               "@types/web3": "^1.2.2"
             }
           },
-          "klaytn": {
+          "conflux": {
             "scripts": {
-              "dev": "run-p ganache deploy",
-              "deploy": "wait-on tcp:7545 && truffle compile && truffle migrate --reset",
-              "ganache": "node src/lib/ganache.js",
-              "test": "npx truffle test",
+              "clean": "rimraf -rf build && rimraf -rf dist",
+              "dev": "run-s faucet-admin deploy",
+              "deploy": "npx conflux-truffle compile && npx conflux-truffle migrate --reset && node ./src/lib/faucet",
+              "test": "npx conflux-truffle test",
               "faucet": "node ./src/lib/faucet",
-              "postinstall": "node ./src/lib/faucet"
+              "faucet-admin": "node ./src/lib/faucet 1"
             },
             "devDependencies": {
-              "caver-js": "^1.3.2",
-              "axios": "^0.19.2",
-              "@truffle/hdwallet-provider": "1.0.32",
-              "web3": "1.2.6"
+              "conflux-truffle": "^0.0.8",
+              "js-conflux-sdk": "^1.5.10",
+              "ethers": "^5.0.26"
             }
           }
         },
