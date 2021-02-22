@@ -148,7 +148,7 @@ module.exports = class DappLib {
         let data = [];
         let labels = [ 'Item', 'Value' ];
         let keys = [ 'item', 'value' ];
-        let formatters = [ 'Strong', 'Text-20-5' ];
+        let formatters = [ 'Strong', 'Text-20-5' ]; // 'Strong': Bold, 'Text-20-5': Compress a 20 character long string down to 5
         let reg = new RegExp('^\\d+$'); // only digits
         for(let key in a) {
             if (!reg.test(key)) {
