@@ -61,10 +61,9 @@ class Flow {
 
         // Transaction code
         let tx =  fcl.transaction`
-                            transaction {
+                            transaction(publicKeys: [String]) {
                                 prepare(signer: AuthAccount) {
                                     let acct = AuthAccount(payer: signer)
-                                    let publicKeys =  ["${p => p.publicKeys.join('","')}"]
                                     for key in publicKeys {
                                         acct.addPublicKey(key.decodeHex())
                                     }
@@ -78,7 +77,7 @@ class Flow {
         // { [Flow.Roles.PROPOSER]: xxxxxx,  [Flow.Roles.AUTHORIZATIONS]: [ xxxxxx ],  [Flow.Roles.PAYER]: xxxxxx,}
         let options = {
             roleInfo: { [Flow.Roles.ALL]: this.serviceWallet.address },
-            params: [{ name: 'publicKeys', type: t.Array(t.String), value: publicKeys.map(o => o.encodedPublicKey) }],
+            args: [{ type: t.Array(t.String), value: publicKeys.map(o => o.encodedPublicKey) }],
             gasLimit: 50
         }
 
@@ -111,13 +110,13 @@ class Flow {
 
 
 
-    async deployContract(address, contract) {
+    async deployContract(address, name, contract) {
 
         // Transaction code
         let tx = fcl.transaction`
-                                    transaction {
+                                    transaction(name: String, code: String) {
                                         prepare(acct: AuthAccount) {
-                                            acct.setCode("${p => p.code}".decodeHex())
+                                            acct.contracts.add(name: name, code: code.decodeHex())
                                         }
                                     }
                                     `;
@@ -125,20 +124,19 @@ class Flow {
         let options = {
            roleInfo: { [Flow.Roles.ALL]: address },
            //roleInfo: { [Flow.Roles.ALL]: address},
-           params: [{ name: 'code', type: t.Identity, value: Buffer.from(contract, "utf8").toString("hex") }],
-            gasLimit: 50
+           args: [{value: name, type: t.String }, { value: Buffer.from(contract, "utf8").toString("hex"), type: t.String }],
+           gasLimit: 50
         }
 
         let response = await this.executeTransaction(tx, options);
 
         const { events } = await fcl.tx(response).onceSealed();
-        const accountCreatedEvent = events.find(d => d.type === "flow.AccountCodeUpdated")
-        if (accountCreatedEvent && accountCreatedEvent.data) {
-            let contracts = accountCreatedEvent.data.contracts;
-            return contracts;
+        const contractAddedEvent = events.find(d => d.type === "flow.AccountContractAdded")
+        if (contractAddedEvent && contractAddedEvent.data) {
+            return contractAddedEvent.data.address;
         } else {
-            console.log('Contract not deployed', contracts);
-            return [];
+            console.log('Contract not deployed');
+            return null;
         }
     }
 
@@ -146,7 +144,9 @@ class Flow {
 
     async getAccount(address) {
         let accountInfo = await fcl.send([fcl.getAccount(address)], { node: this.serviceUri });
-        if (accountInfo.account.address !== address) {
+        // Changed to indexOf instead of comparison because fcl returns 0x prefixed address
+        // when previously it didn't have the prefix
+        if (accountInfo.account.address.indexOf(address) < 0) { 
             throw new Error(`Account 0x${address} does not exist`);
         }                
         return accountInfo.account;
@@ -210,6 +210,7 @@ class Flow {
 
         let builders = [];
 
+        let debug = null;
         // BUILD INTERACTION
 
         // Add the actual interaction code
@@ -278,11 +279,14 @@ class Flow {
                 
             }
         }
-        // const response = await fcl.serialize(builders);
-        // console.log(JSON.stringify(JSON.parse(response), null, 2))
 
-        // SEND TRANSACTION TO BLOCKCHAIN
-        return await fcl.send(builders, { node: this.serviceUri });
+        //     const response = await fcl.serialize(builders);
+    //     console.log(JSON.stringify(JSON.parse(response), null, 2))    
+
+    // SEND TRANSACTION TO BLOCKCHAIN
+
+    return await fcl.send(builders, { node: this.serviceUri });
+
     }
 
 }
@@ -306,7 +310,7 @@ class Signer {
 
         let selectedKey = 0; // TODO: This could be different
 
-        let wallet = dappConfig.wallets.find(o => o.address === address);
+        let wallet = dappConfig.wallets.find(o => address.indexOf(o.address) > -1);
         let key = wallet.keys.find(k => k.keyId === selectedKey);
 
         return {
@@ -326,7 +330,8 @@ class Signer {
             const __signingFunction = data => {
                 console.log(`Signing for account ${accountInfo.address}`)
                 return {
-                    addr: accountInfo.address,
+                    tempId: accountInfo.address,
+                    addr: fcl.sansPrefix(accountInfo.address),
                     keyId: keyId,
                     signature: Signer.signMessage(privateKey, data.message)
                 }
@@ -334,9 +339,10 @@ class Signer {
 
             let retVal = {
                 ...account,
-                addr: accountInfo.address,
+                tempId: accountInfo.address,
+                addr: fcl.sansPrefix(accountInfo.address),
                 keyId: keyId,
-                sequenceNum: accountInfo.keys[keyId].sequenceNumber,
+//                sequenceNum: accountInfo.keys[keyId].sequenceNumber,
                 signature: account.signature || null,
                 signingFunction: __signingFunction
             }

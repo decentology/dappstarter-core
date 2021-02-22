@@ -388,11 +388,8 @@ module.exports = class Hypergrep {
 
             // JS doesn't support template literals in a string variable so we
             // have to replace "blockPath" values with regex + function
-            let blockData = {
-            };
-            blockData[Manifest.CATEGORY] = block[Manifest.CATEGORY];
-            blockData[Manifest.NAME] = block[Manifest.NAME];
-            let blockPath = sourceFolder + blockPathTemplate.replace(/\$\{(\w+)\}/g, (_, key) => blockData[key] || '?');
+            block[Manifest.NAME] = block[Manifest.SHORTNAME];
+            let blockPath = blockPathTemplate.replace(/\$\{(\w+)\}/g, (_, key) => block[key] || '?');
             let outfilePath = filePath.replace(sourceFolder, targetFolder);
             outfilePath = outfilePath.replace(SLASH + LANGUAGES_FOLDER_NAME + SLASH + outputInfo[Manifest.LANGUAGE].name, '');
             outfilePath = outfilePath.substr(0, outfilePath.lastIndexOf(SLASH) + 1);

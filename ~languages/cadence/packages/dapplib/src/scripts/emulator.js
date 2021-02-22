@@ -128,10 +128,11 @@ let dappConfig = {
                     }                    
                   }
                   let contract = fs.readFileSync(contractsDir + file, 'utf8');
-                  let contractAddresses = await Blockchain.deployContract(config, dappConfig.accounts[accountIndex], contract);
+                  let contractName = file.replace('.cdc', '');
+                  let contractAddress = await Blockchain.deployContract(config, dappConfig.accounts[accountIndex], contractName, contract);
+
                   console.log(`Deployed ${file} to account ${accountIndex} at ${dappConfig.accounts[accountIndex]}`);
-                  let contractInfo = contractAddresses[0].split('.'); // A.20320323.DappState
-                  dappConfig.contracts[contractInfo[2]] = contractInfo[1];
+                  dappConfig.contracts[contractName] = contractAddress;
                   deploying = false;
                   fileIndex++;
                 }
