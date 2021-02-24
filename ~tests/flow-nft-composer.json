@@ -1,7 +1,7 @@
 {
     "blocks": {
         "/blockchain/flow": true,
-        "/blockchain/flow/solidity": true,
+        "/blockchain/flow/cadence": true,
         "/category/nft/core.nft_composer": true,
         "/framework/vanilla": true,
         "/category/nft/core.nft_composer/foundation": "collectible",
