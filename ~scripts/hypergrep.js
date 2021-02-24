@@ -228,7 +228,8 @@ module.exports = class Hypergrep {
             let openTag = null;
             let codeBlock = '';
             code.map(lineText => {
-                if (lineText.startsWith(DIRECTIVE_PREFIX)) {
+                if (lineText.trimStart().startsWith(DIRECTIVE_PREFIX)) {
+                    lineText = lineText.trimStart();
                     let tag = (lineText + ' ').substr(0, (lineText + ' ').indexOf(' '));
                     if (tag.startsWith(DIRECTIVE_SECTION_BEGIN)) {
                         if (openTag) {
@@ -313,7 +314,8 @@ module.exports = class Hypergrep {
         let openTag = null;
         let include = false;
         code.map(lineText => {
-            if (lineText.startsWith(DIRECTIVE_PREFIX)) {
+            if (lineText.trimStart().startsWith(DIRECTIVE_PREFIX)) {
+                lineText = lineText.trimStart();
                 let tag = (lineText + ' ').substr(0, (lineText + ' ').indexOf(' '));
                 if (tag.startsWith(DIRECTIVE_SECTION_BEGIN)) {
                     if (openTag) {
