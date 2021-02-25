@@ -1,5 +1,5 @@
 const BN = require('bn.js');
-const DappLib = require('../src/lib/dapp-lib.js');
+const DappLib = require('../src/dapp-lib.js');
 const DappContract = artifacts.require('Dapp');
 const DappStateContract = artifacts.require('DappState');
 

@@ -35,7 +35,7 @@
       "/packages/client/.babelrc": {
         "processor": "filter"
       },
-      "/packages/dapplib/src/lib/dapp-lib.js": {
+      "/packages/dapplib/src/dapp-lib.js": {
         "processor": "merge-blocks",
         "path": "${categoryFolder}/${name}/${name}-lib.js"
       },
@@ -56,7 +56,7 @@
       "/packages/client/src/pages/harness/harness.js": {
         "processor": "replace-parameters"
       },
-      "/packages/dapplib/src/lib/[blockchain]": {
+      "/packages/dapplib/src/[blockchain]": {
         "processor": "copy-folder",
         "context": "blockchain"
       },

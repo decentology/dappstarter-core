@@ -10,7 +10,7 @@ const dappConfigFile = path.resolve(
 );
 
 const networks = require("../solana-config.json");
-const { Solana } = require("../lib/solana");
+const { Solana } = require("../solana");
 const { setUncaughtExceptionCaptureCallback } = require("process");
 
 (async () => {

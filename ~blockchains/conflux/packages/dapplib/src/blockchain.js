@@ -1,5 +1,5 @@
-const DappStateContract = require("../../build/contracts/DappState.json");
-const DappContract = require("../../build/contracts/Dapp.json");
+const DappStateContract = require("../build/contracts/DappState.json");
+const DappContract = require("../build/contracts/Dapp.json");
 const { Conflux } = require('js-conflux-sdk');
 
 module.exports = class Blockchain {

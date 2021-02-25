@@ -9,7 +9,7 @@
   ],
  "homepage": "https://github.com/trycrypto/dappstarter-lerna#readme",
   "license": "ISC",
-  "main": "src/lib/dapp-lib.js",
+  "main": "src/dapp-lib.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/trycrypto/dappstarter-lerna.git"

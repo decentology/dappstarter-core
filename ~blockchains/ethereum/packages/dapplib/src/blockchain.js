@@ -1,5 +1,5 @@
-const DappStateContract = require("../../build/contracts/DappState.json");
-const DappContract = require("../../build/contracts/Dapp.json");
+const DappStateContract = require("../build/contracts/DappState.json");
+const DappContract = require("../build/contracts/Dapp.json");
 const Web3 = require("web3");
 
 // Ethereum

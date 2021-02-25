@@ -301,7 +301,7 @@ class Signer {
         let dappConfig;
         try {
             //delete require.cache[require.resolve('../dapp-config.json')];
-            dappConfig = require('../dapp-config.json');
+            dappConfig = require('./dapp-config.json');
         } catch(e) {
             dappConfig = {
                 wallets: [ this.serviceWallet ]               

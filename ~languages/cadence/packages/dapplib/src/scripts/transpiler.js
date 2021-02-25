@@ -7,7 +7,7 @@ const TAB = '\t';
 
   const rootFolder = __dirname + path.sep + '..' + path.sep + '..' + path.sep;
   const cadenceFolder =  rootFolder + 'cadence' + path.sep;
-  const destFolder = rootFolder + 'src' + path.sep + 'lib' + path.sep;
+  const destFolder = rootFolder + 'src' +  path.sep;
 
   console.log('Transpiler activated');
 

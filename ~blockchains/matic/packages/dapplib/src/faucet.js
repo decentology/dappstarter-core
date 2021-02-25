@@ -1,4 +1,4 @@
-const TruffleConfig = require('../../truffle-config.js');
+const TruffleConfig = require('../truffle-config.js');
 const request = require('request');
 const Web3 = require("web3");
 const BN = require('bn.js');

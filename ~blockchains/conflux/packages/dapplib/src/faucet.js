@@ -1,4 +1,4 @@
-const TruffleConfig = require('../../truffle-config.js');
+const TruffleConfig = require('../truffle-config.js');
 const request = require('request');
 const { Conflux, format, address } = require('js-conflux-sdk');
 const BN = require('bn.js');

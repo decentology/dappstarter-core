@@ -10,7 +10,7 @@ if (fs.existsSync(dappConfigFile)) {
 
 const spawn = require("cross-spawn");
 const networks = require('../flow-config.json');
-const Blockchain = require('../lib/blockchain');
+const Blockchain = require('../blockchain');
 const waitOn = require('wait-on');
 const fkill = require('fkill');
 

@@ -49,7 +49,7 @@
       "/packages/client/.babelrc": {
         "processor": "filter"
       },
-      "/packages/dapplib/src/lib/dapp-lib.js": {
+      "/packages/dapplib/src/dapp-lib.js": {
         "processor": "merge-blocks",
         "path": "${categoryFolder}/${name}/${name}-lib.js"
       },
@@ -65,7 +65,7 @@
       "/packages/client/src/pages/harness/harness.js": {
         "processor": "replace-parameters"
       },
-      "/packages/dapplib/src/lib/[blockchain]": {
+      "/packages/dapplib/src/[blockchain]": {
         "processor": "copy-folder",
         "context": "blockchain"
       },
@@ -79,7 +79,7 @@
             "scripts": {
               "dev": "run-p ganache deploy",
               "deploy": "wait-on tcp:7545 && watch \"truffle migrate --reset\" contracts",
-              "ganache": "node src/lib/ganache.js",
+              "ganache": "node src/ganache.js",
               "test": "npx truffle test"
             },
             "dependencies": {
@@ -99,8 +99,8 @@
               "dev": "run-p deploy",
               "deploy": "wait-on faucet & truffle compile && truffle migrate --reset",
               "test": "npx truffle test",
-              "faucet": "node ./src/lib/faucet",
-              "postinstall": "node ./src/lib/faucet"
+              "faucet": "node ./src/faucet",
+              "postinstall": "node ./src/faucet"
             },
             "devDependencies": {
               "@truffle/hdwallet-provider": "^1.0.33",
@@ -113,10 +113,10 @@
             "scripts": {
               "clean": "rimraf -rf build && rimraf -rf dist",
               "dev": "run-s faucet-admin deploy",
-              "deploy": "npx conflux-truffle compile && npx conflux-truffle migrate --reset && node ./src/lib/faucet",
+              "deploy": "npx conflux-truffle compile && npx conflux-truffle migrate --reset && node ./src/faucet",
               "test": "npx conflux-truffle test",
-              "faucet": "node ./src/lib/faucet",
-              "faucet-admin": "node ./src/lib/faucet 1"
+              "faucet": "node ./src/faucet",
+              "faucet-admin": "node ./src/faucet 1"
             },
             "devDependencies": {
               "conflux-truffle": "^0.0.8",

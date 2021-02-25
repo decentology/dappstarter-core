@@ -1,4 +1,4 @@
-const truffleConfig = require("../../truffle-config");
+const truffleConfig = require("../truffle-config");
 const spawn = require("cross-spawn");
 const ganache = spawn("npx", [
   "ganache-cli",

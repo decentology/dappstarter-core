@@ -4,7 +4,7 @@ require('@babel/register');
 });
 require('@babel/polyfill');
 
-const WalletProvider = require('./src/lib/wallet-provider');
+const WalletProvider = require('./src/wallet-provider');
 
 
 let mnemonic = 'PLACEHOLDER'; ///@{ "___test-mnemonic___": "PLACEHOLDER"}

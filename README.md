@@ -63,9 +63,9 @@ time will only be a few seconds.
 ## File Locations
 Here are the locations of some important files:
 * Program Code: [packages/dapplib/programs/src/lib.rs](packages/dapplib/programs/src/lib.rs)
-* Dapp Library: [packages/dapplib/src/lib/dapp-lib.js](packages/dapplib/src/lib/dapp-lib.js)
-* Solana Wrapper: [packages/dapplib/src/lib/solana.js](packages/dapplib/src/lib/solana.js) 
-* Blockchain Interactions: [packages/dapplib/src/lib/blockchain.js](packages/dapplib/src/lib/blockchain.js)
+* Dapp Library: [packages/dapplib/src/dapp-lib.js](packages/dapplib/src/dapp-lib.js)
+* Solana Wrapper: [packages/dapplib/src/solana.js](packages/dapplib/src/solana.js) 
+* Blockchain Interactions: [packages/dapplib/src/blockchain.js](packages/dapplib/src/blockchain.js)
 * Data Layouts: [packages/dapplib/src/scripts/layouts.js](packages/dapplib/src/scripts/layouts.js)
 * Migration Script: [packages/dapplib/src/scripts/migrate.js](packages/dapplib/src/scripts/migrate.js)
 ///)
@@ -74,8 +74,8 @@ Here are the locations of some important files:
 ## File Locations
 Here are the locations of some important files:
 * Contract Code: [packages/dapplib/contracts](packages/dapplib/contracts)
-* Dapp Library: [packages/dapplib/src/lib/dapp-lib.js](packages/dapplib/src/lib/dapp-lib.js) 
-* Blockchain Interactions: [packages/dapplib/src/lib/blockchain.js](packages/dapplib/src/lib/blockchain.js)
+* Dapp Library: [packages/dapplib/src/dapp-lib.js](packages/dapplib/src/dapp-lib.js) 
+* Blockchain Interactions: [packages/dapplib/src/blockchain.js](packages/dapplib/src/blockchain.js)
 * Unit Tests: [packages/dapplib/tests](packages/dapplib/tests)
 * UI Test Harnesses: [packages/client/src/dapp/pages/harness](packages/client/src/dapp/pages/harness)
 

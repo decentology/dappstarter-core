@@ -11,7 +11,7 @@ const {
     sendAndConfirmTransaction,
   } = require('@solana/web3.js');
 const bs58 = require('bs58');
-const DataLayouts = require('../scripts/layouts');
+const DataLayouts = require('./scripts/layouts');
 
 class Solana {
 
