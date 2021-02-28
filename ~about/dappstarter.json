@@ -118,6 +118,40 @@
         ]
     },
     {
+        "name": "storage-providers",
+        "title": "Storage Providers",
+        "description": "",
+        "imageUrl": "",
+        "help": {
+            "title": "Learn more about building a front-end for your dapp.",
+            "url": "https://www.decentology.com"
+        },
+        "interface": {
+            "hidden": false,
+            "enabled": false,
+            "children": "single"
+        },
+        "children": [
+        ]
+    },
+    {
+        "name": "wallet-providers",
+        "title": "Wallet Providers",
+        "description": "",
+        "imageUrl": "",
+        "help": {
+            "title": "Learn more about building a front-end for your dapp.",
+            "url": "https://www.decentology.com"
+        },
+        "interface": {
+            "hidden": false,
+            "enabled": false,
+            "children": "single"
+        },
+        "children": [
+        ]
+    },
+    {
         "name": "categories",
         "title": "Feature Categories",
         "description": "",
