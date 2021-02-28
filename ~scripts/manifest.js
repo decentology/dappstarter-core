@@ -270,7 +270,7 @@ module.exports = class Manifest {
                             log += `${Manifest.BLOCK.toUpperCase()} — ${moduleFolder}\n`;
                             let moduleItem = self._readJsonFile(`${moduleFolderPath}${SLASH}${moduleFolder}.json`);
                             moduleItem[Manifest.SHORTNAME] = `${moduleItem[Manifest.NAME]}`;
-                            moduleItem[Manifest.NAME] = `${source[Manifest.NAME]}.${moduleItem[Manifest.NAME]}`;
+                            moduleItem[Manifest.NAME] = `${source[Manifest.NAME]}-${moduleItem[Manifest.NAME]}`;
                             moduleItem[Manifest.CATEGORYFOLDER] = categoryFolderPath;
                             moduleItem[Manifest.SOURCE] = source[Manifest.NAME];
                             categories[categoryItemIndex][Manifest.CHILDREN].push(moduleItem);
