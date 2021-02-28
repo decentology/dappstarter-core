@@ -42,19 +42,34 @@ module.exports = class Manifest {
     static get LANGUAGES() {
         return 'languages';
     }
+    static get STORAGE_PROVIDER() {
+        return 'storage-provider';
+    }
+    static get STORAGE_PROVIDERS() {
+        return 'storage-providers';
+    }
+    static get WALLET_PROVIDER() {
+        return 'wallet-provider';
+    }
+    static get WALLET_PROVIDERS() {
+        return 'wallet-providers';
+    }
     static get CATEGORY() {
         return 'category';
     }
     static get CATEGORIES() {
         return 'categories';
     }
+    static get PARAMETER() {
+        return 'parameter';
+    }
     static get PARAMETERS() {
         return 'parameters';
     }
-    static get FEATURE() {
+    static get MODULE() {
         return 'feature';
     }
-    static get FEATURES() {
+    static get MODULES() {
         return 'features';
     }
     static get SCRIPTS() {
@@ -226,6 +241,8 @@ module.exports = class Manifest {
             log += self._expand(Manifest.BLOCKCHAINS);
             log += self._expand(Manifest.LANGUAGES);
             log += self._expand(Manifest.FRAMEWORKS);
+            log += self._expand(Manifest.STORAGE_PROVIDERS);
+            log += self._expand(Manifest.WALLET_PROVIDERS);
     
             // CATEGORIES
             let categories = self.components.find(element => element[Manifest.NAME] === Manifest.CATEGORIES)[Manifest.CHILDREN];
