@@ -2,9 +2,9 @@
     "blocks": {
         "/blockchain/ethereum": true,
         "/blockchain/ethereum/solidity": true,
-        "/category/access_control/core.contract_runstate": true,
-        "/category/file_storage/core.sia": true,
-        "/category/file_storage/core.sia/mode": "multiple",
+        "/category/access_control/core-contract_runstate": true,
+        "/category/file_storage/core-sia": true,
+        "/category/file_storage/core-sia/mode": "multiple",
         "/framework/react": true
     }
 }

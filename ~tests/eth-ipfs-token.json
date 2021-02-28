@@ -2,15 +2,15 @@
     "blocks": {
         "/blockchain/ethereum": true,
         "/blockchain/ethereum/solidity": true,
-        "/category/access_control/core.contract_runstate": true,
-        "/category/access_control/core.contract_access": true,
-        "/category/file_storage/core.ipfs": true,
-        "/category/file_storage/core.ipfs/mode": "folder",
-        "/category/asset_value_tracking/core.token": true,
-        "/category/asset_value_tracking/core.token/name": "My Token",
-        "/category/asset_value_tracking/core.token/symbol": "MTOK",
-        "/category/asset_value_tracking/core.token/decimals": "18",
-        "/category/asset_value_tracking/core.token/supply": "10000",
+        "/category/access_control/core-contract_runstate": true,
+        "/category/access_control/core-contract_access": true,
+        "/category/file_storage/core-ipfs": true,
+        "/category/file_storage/core-ipfs/mode": "folder",
+        "/category/asset_value_tracking/core-token": true,
+        "/category/asset_value_tracking/core-token/name": "My Token",
+        "/category/asset_value_tracking/core-token/symbol": "MTOK",
+        "/category/asset_value_tracking/core-token/decimals": "18",
+        "/category/asset_value_tracking/core-token/supply": "10000",
         "/framework/react": true
     }
 }

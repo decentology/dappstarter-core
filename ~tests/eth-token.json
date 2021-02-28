@@ -4,11 +4,11 @@
         "/blockchains/ethereum": true,
         "/languages/solidity": true,
         "/categories/asset_value_tracking": true,
-        "/categories/asset_value_tracking/core.token": true,
-        "/categories/asset_value_tracking/core.token/name": "WHEN",
-        "/categories/asset_value_tracking/core.token/symbol": "WHN",
-        "/categories/asset_value_tracking/core.token/decimals": "18",
-        "/categories/asset_value_tracking/core.token/supply": "1000",
+        "/categories/asset_value_tracking/core-token": true,
+        "/categories/asset_value_tracking/core-token/name": "WHEN",
+        "/categories/asset_value_tracking/core-token/symbol": "WHN",
+        "/categories/asset_value_tracking/core-token/decimals": "18",
+        "/categories/asset_value_tracking/core-token/supply": "1000",
         "/frameworks/vanilla": true
     }
 }
