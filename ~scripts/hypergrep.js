@@ -249,18 +249,11 @@ module.exports = class Hypergrep {
                         codeBlock = '';
                     } else {
                         if (tag.startsWith(DIRECTIVE_LITERAL)) {
-                            if (tag.length == DIRECTIVE_LITERAL.length) {
-                                // Unconditional literal
-                                codeBlock += self._replaceCodeParameters(lineText.replace(DIRECTIVE_LITERAL, ''), parameterValues, swapParameterValues);
-                                self.log(5, 4, `Found literal directive`);
-                            } else {
-                                let conditionBlock = tag.replace(DIRECTIVE_LITERAL, '');
-                                if (blockKeys.indexOf(conditionBlock) > -1) {
-                                    codeBlock += self._replaceCodeParameters(lineText.replace(DIRECTIVE_LITERAL + conditionBlock, ''), parameterValues, swapParameterValues);
-                                    self.log(5, 4, `Found conditional literal directive`);
-                                }
+                            let conditionBlock = tag.replace(DIRECTIVE_LITERAL, '');
+                            if (blockKeys.indexOf(conditionBlock) > -1) {
+                                codeBlock += self._replaceCodeParameters(lineText.replace(DIRECTIVE_LITERAL + conditionBlock, ''), parameterValues, swapParameterValues);
+                                self.log(5, 4, `Found conditional literal directive`);
                             }
-                        } else {
                         }
                     }
                 } else {
