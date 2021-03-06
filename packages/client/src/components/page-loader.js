@@ -44,7 +44,8 @@ export default class PageLoader extends LitElement {
     this.setAttribute("style", "top: 70px");
 
     try {
-      let modulePage = pageItem.name.indexOf('.') > -1 ? pageItem.name.split('.')[1] : pageItem.name;
+      let pagePrefix = pageItem.name.substr(0, pageItem.name.indexOf('-')+1);
+      let modulePage = pageItem.name.replace(pagePrefix, ''); // Removes the module source
       if (modulePage === 'dapp') {
         await import(`../pages/${modulePage}.js`);
       } else if (modulePage === 'harness') {
