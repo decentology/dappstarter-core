@@ -14,7 +14,9 @@ import "./DappLib.sol";
 /* continue using this one.                                                                 */
 /********************************************************************************************/
 
-contract DappState is IDappState {
+contract DappState is IDappState 
+///+interfaces
+{
     // Allow DappLib(SafeMath) functions to be called for all uint256 types
     // (similar to "prototype" in Javascript)
     using DappLib for uint256; 

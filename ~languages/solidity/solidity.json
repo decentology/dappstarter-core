@@ -26,6 +26,10 @@
         "processor": "merge-blocks",
         "path": "${categoryFolder}/${name}/solidity/${name}-lib.sol"
       },
+      "/~languages/solidity/packages/dapplib/contracts/[import]": {
+        "processor": "merge-block-folders",
+        "path": "${categoryFolder}/${name}/solidity/"
+      },
       "/~languages/solidity/packages/dapplib/tests/[block-tests].js": {
         "processor": "file-blocks",
         "path": "${categoryFolder}/${name}/${name}-tests.js",
