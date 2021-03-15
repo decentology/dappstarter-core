@@ -86,7 +86,7 @@
               "ganache": "node src/ganache.js",
               "test": "npx truffle test"
             },
-            "dependencies": {
+            "Exdependencies": {
               "web3": "^1.2.6",
               "web3-providers": "^1.0.0-beta.55"
             },

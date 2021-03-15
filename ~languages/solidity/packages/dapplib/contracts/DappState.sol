@@ -1,4 +1,4 @@
-pragma solidity  >=0.5.0;
+pragma solidity ^0.8.0;
 pragma experimental ABIEncoderV2;
 
 import "./interfaces/IDappState.sol";
@@ -71,6 +71,7 @@ contract DappState is IDappState
     function getContractOwner()
                                 external
                                 view
+                                override
                                 returns(address)
     {
         return contractOwner;
@@ -90,6 +91,7 @@ contract DappState is IDappState
                                 uint256 increment
                             )
                             external
+                            override
                             // Enable the modifier below if using the Contract Access feature
                             // requireContractAuthorized
     {
@@ -114,6 +116,7 @@ contract DappState is IDappState
     function getCounter()
                                 external
                                 view
+                                override
                                 returns(uint256)
     {
         return counter;
