@@ -95,7 +95,8 @@
               "truffle": "^5.1.19",
               "@types/ethereum-protocol": "^1.0.0",
               "@types/web3": "^1.2.2",
-              "ganache-cli": "^6.9.1"          
+              "ganache-cli": "^6.9.1",
+              "@openzeppelin/test-helpers": "^0.5.10"           
             }
           },
           "matic": {
