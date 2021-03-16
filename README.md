@@ -2,7 +2,6 @@
 # Conflux Beta Notes
 
 * All contract-related features (compilation, migration etc.) are fully implemented.
-* Client-side (dapp UI) features will not work as they aren't fully implemented in the Conflux JS SDK
 
 ///)
 # My Dapp
