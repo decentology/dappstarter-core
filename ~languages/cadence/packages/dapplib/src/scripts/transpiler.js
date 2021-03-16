@@ -6,20 +6,20 @@ const TAB = '\t';
 (async () => {
 
   const rootFolder = __dirname + path.sep + '..' + path.sep + '..' + path.sep;
-  const cadenceFolder =  rootFolder + 'cadence' + path.sep;
+  const interactionsFolder =  rootFolder + 'interactions' + path.sep;
   const destFolder = rootFolder + 'src' +  path.sep;
 
   console.log('Transpiler activated');
 
-  // Create dapp-scripts.js from packages/dapplib/cadence/scripts
+  // Create dapp-scripts.js from packages/dapplib/interactions/scripts
   generate('scripts');
   
-  // Create dapp-transactions.js from packages/dapplib/cadence/transactions
+  // Create dapp-transactions.js from packages/dapplib/interactions/transactions
   generate('transactions');
 
   function generate(type) {
 
-    let sourceFolder = cadenceFolder + type + path.sep;
+    let sourceFolder = interactionsFolder + type + path.sep;
 
     // Read the 'scripts' or 'transactions' folder as determined by 'type'
     let items = fs.readdirSync(sourceFolder);
@@ -27,7 +27,7 @@ const TAB = '\t';
     let isTransaction = type === 'transactions';
     // Outermost class wrapper
     let outSource = '// 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨' + NEWLINE;
-    outSource += '// ⚠️ THIS FILE IS AUTO-GENERATED WHEN packages/dapplib/cadence CHANGES' + NEWLINE;
+    outSource += '// ⚠️ THIS FILE IS AUTO-GENERATED WHEN packages/dapplib/interactions CHANGES' + NEWLINE;
     outSource += '// DO **** NOT **** MODIFY CODE HERE AS IT WILL BE OVER-WRITTEN' + NEWLINE;
     outSource += '// 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨' + NEWLINE + NEWLINE;
     outSource += 'const fcl = require("@onflow/fcl");' + NEWLINE + NEWLINE;
