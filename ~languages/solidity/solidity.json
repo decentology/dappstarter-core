@@ -35,6 +35,16 @@
         "path": "${categoryFolder}/${name}/${name}-tests.js",
         "sequence": false
       },
+      "/~languages/solidity/packages/dapplib/tests/[block-tests-1].js": {
+        "processor": "file-blocks",
+        "path": "${categoryFolder}/${name}/${name}-behavior-tests.js",
+        "sequence": false
+      },
+      "/~languages/solidity/packages/dapplib/tests/[block-tests-2].js": {
+        "processor": "file-blocks",
+        "path": "${categoryFolder}/${name}/${name}-interface-tests.js",
+        "sequence": false
+      },
       "/~languages/solidity/packages/dapplib/migrations/2_deploy_contracts.js": {
         "processor": "merge-blocks",
         "path": "${categoryFolder}/${name}/${name}-config.js"
