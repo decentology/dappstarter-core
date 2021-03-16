@@ -82,7 +82,7 @@ Here are the locations of some important files:
 ///)
 To view your dapp, open your browser to http://localhost:5000 for the DappStarter Workspace.
 
-We ♥️ developers and want you to have an awesome experience. You should be experiencing Dappiness at this point. If not, let us know and we will help. Join  [https://discord.gg/XdtJfu8W](our Discord) or hit us up on [https://twitter.com/decentology](Twitter @Decentology).
+We ♥️ developers and want you to have an awesome experience. You should be experiencing Dappiness at this point. If not, let us know and we will help. Join our [Discord](https://discord.gg/XdtJfu8W) or hit us up on Twitter [@Decentology](https://twitter.com/decentology).
 
 ///(language:solidity
 ## Smart Contract
