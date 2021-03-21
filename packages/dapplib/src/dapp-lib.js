@@ -55,6 +55,10 @@ module.exports = class DappLib {
         return 'object'
     }
 
+    static get DAPP_RESULT_STRING() {
+        return 'string'
+    }
+
     static get DAPP_RESULT_ERROR() {
         return 'error'
     }
@@ -223,17 +227,17 @@ module.exports = class DappLib {
             case DappLib.DAPP_RESULT_IPFS_HASH_ARRAY:
                 formatted = DappLib.formatArray(
                     retVal[returnKey],
-                    ['TxHash', 'IpfsHash', 'Text-10-5'],
-                    ['Transaction', 'IPFS URL', 'Doc Id'],
-                    ['transactionHash', 'ipfsHash', 'docId']
+                    ['TxHash', 'IpfsHash', 'Text-10-5'], //Formatter
+                    ['Transaction', 'IPFS URL', 'Doc Id'], //Label
+                    ['transactionHash', 'ipfsHash', 'docId'] //Values
                 );
                 break;
             case DappLib.DAPP_RESULT_SIA_HASH_ARRAY:
                 formatted = DappLib.formatArray(
                     retVal[returnKey],
-                    ['TxHash', 'SiaHash', 'Text-10-5'],
-                    ['Transaction', 'Sia URL', 'Doc Id'],
-                    ['transactionHash', 'docId', 'docId']
+                    ['TxHash', 'SiaHash', 'Text-10-5'], //Formatter
+                    ['Transaction', 'Sia URL', 'Doc Id'], //Label
+                    ['transactionHash', 'docId', 'docId'] //Values
                 );
                 break;
             case DappLib.DAPP_RESULT_ARRAY:
@@ -242,6 +246,11 @@ module.exports = class DappLib {
                     retVal.formatter ? retVal.formatter : ['Text'],
                     null,
                     null
+                );
+                break;
+            case DappLib.DAPP_RESULT_STRING:
+                formatted = DappLib.formatPlain(
+                    retVal[returnKey]
                 );
                 break;
             case DappLib.DAPP_RESULT_OBJECT:
