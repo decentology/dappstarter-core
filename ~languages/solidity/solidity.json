@@ -101,7 +101,7 @@
               "web3-providers": "^1.0.0-beta.55"
             },
             "devDependencies": {
-              "@truffle/hdwallet-provider": "^1.0.33",
+              "@truffle/hdwallet-provider": "1.2.3",
               "truffle": "^5.1.19",
               "@types/ethereum-protocol": "^1.0.0",
               "@types/web3": "^1.2.2",
@@ -118,7 +118,7 @@
               "postinstall": "node ./src/faucet"
             },
             "devDependencies": {
-              "@truffle/hdwallet-provider": "^1.0.33",
+              "@truffle/hdwallet-provider": "^1.2.3",
               "truffle": "^5.1.19",
               "@types/ethereum-protocol": "^1.0.0",
               "@types/web3": "^1.2.2"
