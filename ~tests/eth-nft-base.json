@@ -1,0 +1,13 @@
+{
+    "blocks": {
+        "/blockchain/ethereum": true,
+        "/blockchain/ethereum/solidity": true,
+        "/category/nft/core-nft_base": true,
+        "/framework/vanilla": true,
+        "/category/nft/core-nft_base/foundation": "collectible",
+        "/category/nft/core-nft_base/minting": "grant",
+        "/category/nft/core-nft_base/metadata": "collectible",
+        "/category/nft/core-nft_base/generator": "uniqueid_ns",
+        "/category/nft/core-nft_base/marketplace": "swap"
+    }
+}
