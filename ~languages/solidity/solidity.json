@@ -35,6 +35,16 @@
         "path": "${categoryFolder}/${name}/${name}-tests.js",
         "sequence": false
       },
+      "/~languages/solidity/packages/dapplib/tests/[block-tests-1].js": {
+        "processor": "file-blocks",
+        "path": "${categoryFolder}/${name}/${name}-behavior-tests.js",
+        "sequence": false
+      },
+      "/~languages/solidity/packages/dapplib/tests/[block-tests-2].js": {
+        "processor": "file-blocks",
+        "path": "${categoryFolder}/${name}/${name}-interface-tests.js",
+        "sequence": false
+      },
       "/~languages/solidity/packages/dapplib/migrations/2_deploy_contracts.js": {
         "processor": "merge-blocks",
         "path": "${categoryFolder}/${name}/${name}-config.js"
@@ -86,16 +96,17 @@
               "ganache": "node src/ganache.js",
               "test": "npx truffle test"
             },
-            "dependencies": {
+            "Exdependencies": {
               "web3": "^1.2.6",
               "web3-providers": "^1.0.0-beta.55"
             },
             "devDependencies": {
-              "@truffle/hdwallet-provider": "^1.0.33",
+              "@truffle/hdwallet-provider": "1.2.3",
               "truffle": "^5.1.19",
               "@types/ethereum-protocol": "^1.0.0",
               "@types/web3": "^1.2.2",
-              "ganache-cli": "^6.9.1"          
+              "ganache-cli": "^6.9.1",
+              "@openzeppelin/test-helpers": "^0.5.10"           
             }
           },
           "matic": {
@@ -107,7 +118,7 @@
               "postinstall": "node ./src/faucet"
             },
             "devDependencies": {
-              "@truffle/hdwallet-provider": "^1.0.33",
+              "@truffle/hdwallet-provider": "^1.2.3",
               "truffle": "^5.1.19",
               "@types/ethereum-protocol": "^1.0.0",
               "@types/web3": "^1.2.2"

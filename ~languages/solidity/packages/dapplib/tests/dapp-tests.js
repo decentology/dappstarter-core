@@ -1,4 +1,5 @@
-const BN = require('bn.js');
+const TestHelpers = require('@openzeppelin/test-helpers');
+const BN = TestHelpers.BN;
 const DappLib = require('../src/dapp-lib.js');
 const DappContract = artifacts.require('Dapp');
 const DappStateContract = artifacts.require('DappState');
