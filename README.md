@@ -1,9 +1,3 @@
-///(blockchain:conflux
-# Conflux Beta Notes
-
-* All contract-related features (compilation, migration etc.) are fully implemented.
-
-///)
 # My Dapp
 
 This project is for the blockchain application My Dapp. It contains code for the Smart Contract, web-based dapp and NodeJS server. 
