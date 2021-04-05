@@ -1,0 +1,9 @@
+{
+    "blocks": {
+        "/blockchain/conflux": true,
+        "/blockchain/conflux/solidity": true,
+        "/category/nft/core-nft_base": true,
+        "/framework/vanilla": true,
+        "/category/nft/core-nft_base/template": "collectible"
+    }
+}

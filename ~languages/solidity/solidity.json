@@ -136,7 +136,8 @@
             "devDependencies": {
               "conflux-truffle": "^0.0.8",
               "js-conflux-sdk": "^1.5.10",
-              "ethers": "^5.0.26"
+              "ethers": "^5.0.26",
+              "@openzeppelin/test-helpers": "^0.5.10"   
             }
           }
         },
