@@ -1,0 +1,8 @@
+{
+    "blocks": {
+        "/blockchain/ethereum": true,
+        "/blockchain/ethereum/solidity": true,
+        "/category/access_control/core-contract_runstate": true,
+        "/framework/react": true
+    }
+}
