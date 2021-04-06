@@ -1,0 +1,13 @@
+{
+    "blocks": {
+        "/blockchain/flow": true,
+        "/blockchain/flow/cadence": true,
+        "/category/nft/core-composable_nft": true,
+        "/framework/vanilla": true,
+        "/category/nft/core-composable_nft/foundation": "collectible",
+        "/category/nft/core-composable_nft/minting": "grant",
+        "/category/nft/core-composable_nft/metadata": "collectible",
+        "/category/nft/core-composable_nft/generator": "mandala",
+        "/category/nft/core-composable_nft/marketplace": "swap"
+    }
+}

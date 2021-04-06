@@ -2,8 +2,8 @@
     "blocks": {
         "/blockchain/ethereum": true,
         "/blockchain/ethereum/solidity": true,
-        "/category/nft/core-nft_base": true,
+        "/category/nft/core-composable_nft": true,
         "/framework/vanilla": true,
-        "/category/nft/core-nft_base/template": "collectible"
+        "/category/nft/core-composable_nft/template": "collectible"
     }
 }
