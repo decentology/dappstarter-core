@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import clsx from 'clsx'
-import { find, keys } from 'lodash-es'
 const manifest = require('@decentology/dappstarter-dapplib/manifest.json')
 
 enum View {
@@ -23,11 +22,9 @@ interface ISiteReady {
 }
 
 export const App: React.FC = () => {
-  const [selected, setSelected] = useState<View>(View.Client)
-  const [dappReady, setDappReady] = useState<ISiteReady>({ 2: true })
-  const blockchain = find(keys(manifest.blocks), /\/blockchains\//)
-    ?.toString()
-    .split('/')[2]
+  const [selected, setSelected] = useState<View>(View.Client);
+  const [dappReady, setDappReady] = useState<ISiteReady>({ 2: true });
+  const blockchain = manifest.blockchain;
 
   let network = ''; 
   const logo = (blockchain: String) => {
