@@ -816,8 +816,8 @@ module.exports = class Hypergrep {
                 // }
 
                 // Write input file as-is for diagnostics
-                fse.ensureDirSync(`${targetFolder}packages${SLASH}dapplib`);
-                fse.writeFileSync(`${targetFolder}packages${SLASH}dapplib${SLASH}${DAPPSTARTER_CONFIG_FILE_NAME}`, JSON.stringify(settings, null, 4));
+                fse.ensureDirSync(`${targetFolder}`);
+                fse.writeFileSync(`${targetFolder}{SLASH}${DAPPSTARTER_CONFIG_FILE_NAME}`, JSON.stringify(settings, null, 4));
 
                 // Copy base language-specific files
                 // self._copyFolder(
