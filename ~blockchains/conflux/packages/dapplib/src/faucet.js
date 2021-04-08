@@ -23,7 +23,9 @@ testAccounts.map(async (account, index) => {
             if (error) {
                 console.log('Error requesting funds');
             } else if (bodyInfo.message && (typeof bodyInfo.message == 'string') && (bodyInfo.message.toLowerCase().indexOf('error') > -1)) {
-                console.log(`(${index}) ${bodyInfo.message}`);
+                if (bodyInfo.message.indexOf('reject is not a function') < 0) {
+                    console.log(`(${index}) ${bodyInfo.message}`);
+                }
             }
             if (index === testAccounts.length - 1) {
                 process.exit(0);                

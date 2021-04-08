@@ -18,6 +18,7 @@ const RECIPES_FOLDER_NAME = SKIP_FOLDER_PREFIX + Manifest.RECIPES;
 const ABOUT_FOLDER_NAME = SKIP_FOLDER_PREFIX + Manifest.ABOUT;
 const SCRIPTS_FOLDER_NAME = SKIP_FOLDER_PREFIX + Manifest.SCRIPTS;
 const DAPPSTARTER_CONFIG_FILE_NAME = 'manifest.json';
+const DAPPSTARTER_SETTINGS_FILE_NAME = 'dappstarter.json';
 const PROJECT_FILENAME_REPLACE_TEXT = '.project';
 
 const SLASH = path.sep;
@@ -817,7 +818,11 @@ module.exports = class Hypergrep {
 
                 // Write input file as-is for diagnostics
                 fse.ensureDirSync(`${targetFolder}`);
-                fse.writeFileSync(`${targetFolder}${SLASH}${DAPPSTARTER_CONFIG_FILE_NAME}`, JSON.stringify(config, null, 4));
+                fse.writeFileSync(`${targetFolder}${SLASH}${DAPPSTARTER_SETTINGS_FILE_NAME}`, JSON.stringify(settings, null, 4));
+
+                // Write manifest file for composer
+                fse.ensureDirSync(`${targetFolder}`);
+                fse.writeFileSync(`${targetFolder}packages${SLASH}dapplib${SLASH}${DAPPSTARTER_CONFIG_FILE_NAME}`, JSON.stringify(config, null, 4));
 
                 // Copy base language-specific files
                 // self._copyFolder(
