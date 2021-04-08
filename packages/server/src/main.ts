@@ -4,17 +4,20 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
   app.enableCors({
     origin: true,
     preflightContinue: false
   });
+
   const options = new DocumentBuilder()
-    .setTitle('DappStarter')
+    .setTitle('DappStarter API')
     .setDescription('Full-Stack Blockchain App')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('/', app, document, {
+  
+  SwaggerModule.setup('api', app, document, {
     customCss: `
     .topbar {display: none}
     `

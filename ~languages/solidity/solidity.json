@@ -82,6 +82,22 @@
       "/packages/dapplib/src/[blockchain]": {
         "processor": "copy-folder",
         "context": "blockchain"
+      },      
+      "/packages/server/src/modules/dapp/dapp.controller.ts": {
+        "processor": "merge-blocks",
+        "path": "${categoryFolder}/${name}/${name}-api.js"
+      },
+      "/packages/server/src/modules/dapp/dapp.service.ts": {
+        "processor": "merge-blocks",
+        "path": "${categoryFolder}/${name}/${name}-api.js"
+      },      
+      "/packages/server/src/modules/admin/admin.controller.ts": {
+        "processor": "merge-blocks",
+        "path": "${categoryFolder}/${name}/${name}-api.js"
+      },
+      "/packages/server/src/modules/admin/admin.service.ts": {
+        "processor": "merge-blocks",
+        "path": "${categoryFolder}/${name}/${name}-api.js"
       },
       "/packages/dapplib/package.json": {
         "processor": "merge-json",
