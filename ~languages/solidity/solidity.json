@@ -144,7 +144,7 @@
             "scripts": {
               "clean": "rimraf -rf build && rimraf -rf dist",
               "dev": "run-s faucet-admin deploy",
-              "deploy": "npx conflux-truffle compile && npx conflux-truffle migrate --reset && node ./src/faucet",
+              "deploy": "../../node_modules/conflux-truffle/build/cli.bundled.js compile && ../../node_modules/conflux-truffle/build/cli.bundled.js migrate --reset && node ./src/faucet",
               "test": "../../node_modules/conflux-truffle/build/cli.bundled.js test",
               "faucet": "node ./src/faucet",
               "faucet-admin": "node ./src/faucet 1"
