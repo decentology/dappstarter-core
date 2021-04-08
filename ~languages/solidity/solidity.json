@@ -145,12 +145,12 @@
               "clean": "rimraf -rf build && rimraf -rf dist",
               "dev": "run-s faucet-admin deploy",
               "deploy": "npx conflux-truffle compile && npx conflux-truffle migrate --reset && node ./src/faucet",
-              "test": "npx conflux-truffle test",
+              "test": "../../node_modules/conflux-truffle/build/cli.bundled.js test",
               "faucet": "node ./src/faucet",
               "faucet-admin": "node ./src/faucet 1"
             },
             "devDependencies": {
-              "conflux-truffle": "^0.0.8",
+              "conflux-truffle": "1.0.0-beta7",
               "js-conflux-sdk": "^1.5.10",
               "ethers": "^5.0.26",
               "@openzeppelin/test-helpers": "^0.5.10"   
