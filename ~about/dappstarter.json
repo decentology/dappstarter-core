@@ -45,7 +45,8 @@
             "flow",
             "matic",
             "solana",
-            "conflux"
+            "conflux",
+            "avalanche"
         ],
         "targets": {
             "*": {

@@ -1,0 +1,19 @@
+{
+    "name": "avalanche",
+    "title": "Avalanche (Beta)",
+    "description": "",
+    "imageUrl": "https://info.decentology.com/assets/blockchains/avalanche/avalanche-dappstarter.png",
+    "help": {
+        "title": "",
+        "url": ""
+    },
+    "metadata": {
+        "developer_experience": "",
+        "different": ""
+    },
+    "interface": {
+        "hidden": true,
+        "enabled": false,
+        "children": "single"
+    }
+}

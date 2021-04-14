@@ -7,7 +7,7 @@
     "title": "",
     "url": ""
   },
-  "blockchains": ["ethereum", "matic", "conflux"],
+  "blockchains": ["ethereum", "matic", "conflux", "avalanche"],
   "interface": {
     "hidden": false,
     "enabled": true,
@@ -135,6 +135,21 @@
               "@types/web3": "^1.2.2",
               "ganache-cli": "^6.9.1",
               "@openzeppelin/test-helpers": "^0.5.10"           
+            }
+          },
+          "avalanche": {
+            "scripts": {
+              "dev": "run-p deploy",
+              "deploy": "wait-on faucet & truffle compile && truffle migrate --reset",
+              "test": "npx truffle test",
+              "faucet": "node ./src/faucet",
+              "postinstall": "node ./src/faucet"
+            },
+            "devDependencies": {
+              "@truffle/hdwallet-provider": "^1.2.3",
+              "truffle": "^5.1.19",
+              "@types/ethereum-protocol": "^1.0.0",
+              "@types/web3": "^1.2.2"
             }
           },
           "matic": {
