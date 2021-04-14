@@ -49,11 +49,19 @@
         "path": "${categoryFolder}/${name}/${name}-page.js",
         "sequence": false
       },
+      "/packages/client/src/pages/harness/[block-composer].js": {
+        "processor": "file-blocks",
+        "path": "${categoryFolder}/${name}/${name}-composer.js",
+        "sequence": false
+      },
       "/packages/client/src/[client-app]": {
         "processor": "copy-folder",
         "context": "framework"
       },
       "/packages/client/src/pages/harness/harness.js": {
+        "processor": "replace-parameters"
+      },
+      "/packages/client/src/pages/harness/composer.js": {
         "processor": "replace-parameters"
       },
       "/packages/dapplib/src/[blockchain]": {

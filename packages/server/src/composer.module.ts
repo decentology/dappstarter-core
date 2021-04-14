@@ -7,6 +7,8 @@ import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { Injectable, CanActivate, ExecutionContext} from '@nestjs/common';
 import { ApiExcludeEndpoint } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
+import * as fse from 'fs-extra';
+import * as path from 'path';
 
 export class ComposerGuard implements CanActivate{
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
@@ -18,11 +20,26 @@ export class ComposerGuard implements CanActivate{
 class ComposerService {
 
   async info(): Promise<any> {
-    return `Hello Composer Info!`;
+    return `Hello world`;  
   }
 
-  async process(): Promise<any> {
-    return `Hello Composer Process!`;    
+  async process(feature: string, option: string, value: string): Promise<any> {
+
+    let root = path.join(__dirname,'..','..','..');
+    let clientRoot = path.join(root, 'packages', 'client', 'src', 'components', feature, option);
+    let dapplibRoot = path.join(root, 'packages', 'dapplib', 'contracts', 'imports', feature, option);
+    let composerRoot = path.join(root, 'workspace', 'composer');
+
+      // Delete packages/client/src/components/{feature}/{option}
+      fse.removeSync(clientRoot);
+
+      // Delete packages/dapplib/contracts/imports/{feature}/{option}
+      fse.removeSync(dapplibRoot);
+
+      // Copy from workspace/composer/{category}/{feature}-{option}
+      fse.copySync(path.join(composerRoot, feature, option + '-' + value), path.join(root, 'packages'));
+    
+    return `SUCCESS! 😃`;    
   }
 
 }
@@ -32,17 +49,17 @@ class ComposerController {
   constructor(private readonly composerService: ComposerService) { }
 
   @UseGuards(ComposerGuard)
-  @ApiExcludeEndpoint()
+  //@ApiExcludeEndpoint()
   @Get('info')
   async info(): Promise<any> {
     return await this.composerService.info();
   }
 
   @UseGuards(ComposerGuard)
-  @ApiExcludeEndpoint()
-  @Post('process')
-  async process(): Promise<any> {
-    return await this.composerService.process();
+  //@ApiExcludeEndpoint()
+  @Post('process/:feature/:option/:value')
+  async process(@Param('feature') feature: string, @Param('option') option: string, @Param('value') value: string): Promise<any> {
+    return await this.composerService.process(feature, option, value);
   }
   
 }

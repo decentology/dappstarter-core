@@ -41,13 +41,14 @@ export default class DappPage extends LitElement {
           </p>
           <p class="mt-3">
             You are currently viewing your Dapp in the DappStarter Workspace which 
-            provides an easy way to switch between the Client, UI Harness and Server 
+            provides an easy way to switch between the Client, UI Harness, Composer and Server 
             web apps. You can view any of these in a separate browser tab by clicking the 
             <svg style="display:inline;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon feather feather-arrow-up-right"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg> 
             icon at the top right of the frame (try it now).
           </p>
           <h3 class="mt-3 text-3xl">Next Steps</h3>
           <ul class="mt-3 ml-5 list-decimal">
+            <li class="mt-3">Customize modules that support composition using the Composer</li>
             <li class="mt-3">Interact with the feature modules you selected with the UI Harness</li>
             <li class="mt-3">Customize this page by editing <i>packages/client/src/pages/dapp.js</i></li>
           </ul>

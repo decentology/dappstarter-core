@@ -46,15 +46,20 @@ export default class PageLoader extends LitElement {
     try {
       let pagePrefix = pageItem.name.substr(0, pageItem.name.indexOf('-')+1);
       let modulePage = pageItem.name.replace(pagePrefix, ''); // Removes the module source
+      let suffix = '-page';
       if (modulePage === 'dapp') {
         await import(`../pages/${modulePage}.js`);
       } else if (modulePage === 'harness') {
         await import(`../pages/harness/${modulePage}.js`);
+      } else if (modulePage === 'composer') {
+        await import(`../pages/harness/${modulePage}.js`);
+      } else if (modulePage.indexOf('-composer') > -1) {
+        await import(`../pages/harness/${modulePage}.js`);
+        suffix = '';
       } else {
         await import(`../pages/harness/${modulePage}-page.js`);
       }
-      let pageName = modulePage.replace("_", "-") + "-page";
-
+      let pageName = modulePage.replace('_', '-') + suffix;
       this.pageContent = DOM.create(pageName, {
         title: pageItem.title,
         description: pageItem.description,

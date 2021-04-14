@@ -52,6 +52,7 @@ const SWAP_PAGES = '___page-list___';
 const SWAP_ACCOUNTS = '___test-accounts___';
 const SWAP_MNEMONIC = '___test-mnemonic___';
 const SWAP_PARAMETERS = 'swap-parameters';
+const SWAP_COMPOSABLE = '___composable-list___';
 const ACTION_ACCOUNTS = 'accounts';
 const DEFAULT_MNEMONIC = 'pottery movie angle day assault faculty banana rural lyrics hammer believe learn';
 
@@ -64,6 +65,9 @@ module.exports = class Hypergrep {
     }
     static get PROCESSOR_MERGE_BLOCK_FOLDERS() {
         return 'merge-block-folders';
+    }
+    static get PROCESSOR_COPY_BLOCK_COMPOSER_FOLDERS() {
+        return 'copy-block-composer-folders';
     }
     static get PROCESSOR_FILTER() {
         return 'filter';
@@ -283,6 +287,8 @@ module.exports = class Hypergrep {
             for (let key in parameterInfo) {
                 if (key == SWAP_PAGES) {
                     lineText = lineText.replace(parameterInfo[key], JSON.stringify(swapParameterValues[SWAP_PAGES], null, 4));
+                } else if (key == SWAP_COMPOSABLE) {
+                    lineText = lineText.replace(parameterInfo[key], JSON.stringify(swapParameterValues[SWAP_COMPOSABLE], null, 4));
                 } else if (key == SWAP_ACCOUNTS) {
                     lineText = lineText.replace(parameterInfo[key], swapParameterValues[SWAP_ACCOUNTS]);
                 } else if (key == SWAP_MNEMONIC) {
@@ -404,6 +410,73 @@ module.exports = class Hypergrep {
         });
     }
 
+    
+    _copyBlockComposerFolders(filePath, blockPathTemplate, targetFolder, outputInfo) {
+        let self = this;
+        self.log(3, 2, `Copying composer code folders`);
+
+        let blockKeys = Object.keys(outputInfo[Manifest.BLOCKS]);
+        let outputPath = path.join(targetFolder, 'workspace', 'composer');
+        let packagesPath = path.join(targetFolder, 'packages');
+        blockKeys.map((blockKey, index) => {
+
+            self.log(3, 2, `Merging Block folder: ${blockKey}`);
+            let block = outputInfo[Manifest.BLOCKS][blockKey];
+            let category = outputInfo[Manifest.CATEGORIES].find(item => item[Manifest.NAME] === block[Manifest.CATEGORY]);
+            let module = category.children.find(item => item[Manifest.NAME] === block[Manifest.NAME]);
+            let composable = module.composable || false;
+            if (composable === true) {
+
+                fse.ensureDirSync(path.join(outputPath, module[Manifest.SHORTNAME]));
+
+                // JS doesn't support template literals in a string variable so we
+                // have to replace "blockPath" values with regex + function
+                block[Manifest.NAME] = block[Manifest.SHORTNAME];
+                let blockPath = blockPathTemplate.replace(/\$\{(\w+)\}/g, (_, key) => block[key] || '?');
+                blockPath = path.join(blockPath, 'composer');
+
+                let blockConfigPath = path.join(blockPath, 'composer.json');
+                slet blockConfig = JSON.parse(fse.readFileSync(blockConfigPath));
+
+                // let outfilePath = filePath.replace(sourceFolder, targetFolder);
+                // outfilePath = outfilePath.replace(SLASH + LANGUAGES_FOLDER_NAME + SLASH + outputInfo[Manifest.LANGUAGE].name, '');
+                // outfilePath = outfilePath.substr(0, outfilePath.lastIndexOf(SLASH) + 1);
+
+                // Copy all files from subfolders of blockPath to outfilePath
+                // These will be in the format {option name}-{option value}
+                let folders = fse.readdirSync(blockPath, { withFileTypes: true })
+                    .filter(dir => dir.isDirectory())
+                    .map(dir => dir.name);
+
+                folders.forEach((folder) => {
+
+                    let optionName = folder.split('-')[0];
+                    let optionValue = folder.split('-')[1];
+
+                    let subfolders = fse.readdirSync(path.join(blockPath, folder), { withFileTypes: true })
+                                                .filter(dir => dir.isDirectory())
+                                                .map(dir => dir.name);
+
+                    subfolders.forEach((subfolder) => {
+                        if (subfolder === 'client') {
+                            fse.copy(path.join(blockPath, folder, subfolder), path.join(outputPath, module[Manifest.SHORTNAME], folder, subfolder, 'src', 'components', module[Manifest.SHORTNAME], optionName), err => {
+                                if (err) return console.error(err)
+                            });        
+        
+                        } else if (subfolder === outputInfo[Manifest.LANGUAGE].name) {
+                            fse.copy(path.join(blockPath, folder, subfolder), path.join(outputPath, module[Manifest.SHORTNAME], folder, 'dapplib', 'contracts', 'imports', module[Manifest.SHORTNAME], optionName), err => {
+                                if (err) return console.error(err)
+                            });        
+                        }
+
+                    });
+
+
+                });
+            }
+
+        });
+    }
 
     _mergeBlocksIntoFile(expand, filePath, blockPathTemplate, sourceFolder, targetFolder, outputInfo, sequence) {
         let self = this;
@@ -624,6 +697,10 @@ module.exports = class Hypergrep {
                     self._mergeBlockFolders(filePath, outputInfo[Manifest.TARGETS][pathFrag][Manifest.TARGETS_PATH], sourceFolder, targetFolder, outputInfo);
                     break;
 
+                case Hypergrep.PROCESSOR_COPY_BLOCK_COMPOSER_FOLDERS:
+                    self._copyBlockComposerFolders(filePath, outputInfo[Manifest.TARGETS][pathFrag][Manifest.TARGETS_PATH], targetFolder, outputInfo);
+                    break;
+    
                 // Merge each block with source file and save as a separate file
                 case Hypergrep.PROCESSOR_FILE_BLOCKS:
                     self._mergeBlocksIntoFile(
@@ -762,6 +839,27 @@ module.exports = class Hypergrep {
         outputInfo[SWAP_PARAMETERS][SWAP_PAGES] = pages;
     }
 
+    _generateComposable(outputInfo) {
+        let composable = [];
+        for (let blockKey in outputInfo[Manifest.BLOCKS]) {
+            let category = outputInfo[Manifest.CATEGORIES].find(element => element[Manifest.NAME] === outputInfo[Manifest.BLOCKS][blockKey][Manifest.CATEGORY]);
+            let categoryBlocks = category[Manifest.CHILDREN];
+            let moduleItem = categoryBlocks.find(element => element[Manifest.NAME] === outputInfo[Manifest.BLOCKS][blockKey][Manifest.NAME]);
+            if (moduleItem.composable === true) {
+                composable.push({
+                    name: moduleItem.name + '-composer',
+                    title: moduleItem.title,
+                    description: moduleItem.description,
+                    category: category.title,
+                    route: `/${moduleItem.name}`
+                });
+            }
+        }
+        composable.sort((a, b) => (a.title > b.title ? 1 : -1));
+        outputInfo[SWAP_PARAMETERS][SWAP_COMPOSABLE] = composable;
+    }
+
+
     process(settings, callback) {
         return new Promise((resolve, reject) => {
             try {
@@ -832,6 +930,7 @@ module.exports = class Hypergrep {
 
                 self._enumerateBlockDependencies(config, outputInfo);
                 self._generatePages(outputInfo);
+                self._generateComposable(outputInfo);
                 
                 let emitter = walk(sourceFolder, filePath => { });
 

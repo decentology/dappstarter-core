@@ -66,6 +66,9 @@ module.exports = class Manifest {
     static get PARAMETERS() {
         return 'parameters';
     }
+    static get COMPOSABLE() {
+        return 'composable';
+    }
     static get MODULE() {
         return 'feature';
     }
@@ -205,7 +208,7 @@ module.exports = class Manifest {
         return components;
     }
 
-    /** Enumerate and expand all name references with objects
+    /**  Enumerate and expand all name references with objects
      *   Basic pattern is when an object's name is encountered,
      *   the corresponding JSON file is read and the object's
      *   name (string) is replaced with the JSON file data (object)
