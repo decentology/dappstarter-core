@@ -436,11 +436,11 @@ module.exports = class Hypergrep {
                 blockPath = path.join(blockPath, 'composer');
 
                 let blockConfigPath = path.join(blockPath, 'composer.json');
-                slet blockConfig = JSON.parse(fse.readFileSync(blockConfigPath));
+                let blockConfig = JSON.parse(fse.readFileSync(blockConfigPath));
 
-                // let outfilePath = filePath.replace(sourceFolder, targetFolder);
-                // outfilePath = outfilePath.replace(SLASH + LANGUAGES_FOLDER_NAME + SLASH + outputInfo[Manifest.LANGUAGE].name, '');
-                // outfilePath = outfilePath.substr(0, outfilePath.lastIndexOf(SLASH) + 1);
+                fse.copy(blockConfigPath, path.join(outputPath, module[Manifest.SHORTNAME], 'composer.json'), err => {
+                    if (err) return console.error(err)
+                });        
 
                 // Copy all files from subfolders of blockPath to outfilePath
                 // These will be in the format {option name}-{option value}
@@ -452,6 +452,16 @@ module.exports = class Hypergrep {
 
                     let optionName = folder.split('-')[0];
                     let optionValue = folder.split('-')[1];
+                    let isDefault = false;
+                    if (blockConfig[optionName].default === optionValue) {
+                        isDefault = true;
+                    }    
+
+                    if (fse.existsSync(path.join(blockPath, folder, 'preview.png'))) {
+                        fse.copy(path.join(blockPath, folder, 'preview.png'), path.join(outputPath, module[Manifest.SHORTNAME], folder, 'preview.png'), err => {
+                            if (err) return console.error(err)
+                        });  
+                    }
 
                     let subfolders = fse.readdirSync(path.join(blockPath, folder), { withFileTypes: true })
                                                 .filter(dir => dir.isDirectory())
@@ -462,12 +472,30 @@ module.exports = class Hypergrep {
                             fse.copy(path.join(blockPath, folder, subfolder), path.join(outputPath, module[Manifest.SHORTNAME], folder, subfolder, 'src', 'components', module[Manifest.SHORTNAME], optionName), err => {
                                 if (err) return console.error(err)
                             });        
+
+                            if (isDefault === true) {
+                                let clientRoot = path.join(packagesPath, 'client', 'src', 'components', module[Manifest.SHORTNAME], optionName);
+                                
+                                fse.copy(path.join(blockPath, folder, subfolder), clientRoot, err => {
+                                    if (err) return console.error(err)
+                                });                                            
+                            }
         
                         } else if (subfolder === outputInfo[Manifest.LANGUAGE].name) {
                             fse.copy(path.join(blockPath, folder, subfolder), path.join(outputPath, module[Manifest.SHORTNAME], folder, 'dapplib', 'contracts', 'imports', module[Manifest.SHORTNAME], optionName), err => {
                                 if (err) return console.error(err)
                             });        
+
+                            if (isDefault === true) {
+                                let dapplibRoot = path.join(packagesPath, 'dapplib', 'contracts', 'imports', module[Manifest.SHORTNAME], optionName);
+                                
+                                fse.copy(path.join(blockPath, folder, subfolder), dapplibRoot, err => {
+                                    if (err) return console.error(err)
+                                });                                            
+                            }
+
                         }
+
 
                     });
 

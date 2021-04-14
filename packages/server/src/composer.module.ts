@@ -19,29 +19,48 @@ export class ComposerGuard implements CanActivate{
 @Injectable()
 class ComposerService {
 
-  async info(): Promise<any> {
-    return `Hello world`;  
+  async info(moduleName: string): Promise<any> {
+    let root = path.join(__dirname,'..','..','..');
+    let configFile = path.join(root, 'workspace', 'composer', moduleName, 'composer.json');
+
+    if (fse.existsSync(configFile)) {
+      let config = JSON.parse(fse.readFileSync(configFile, 'utf8'));
+      for(let feature in config) {
+        config[feature].options.forEach((option) => {
+
+          let previewPath = path.join(root, 'workspace', 'composer', moduleName, `${feature}-${option.name}`, 'preview.png');
+          if (fse.existsSync(previewPath)) {
+            var previewImage = fse.readFileSync(previewPath);
+            option.preview = Buffer.from(previewImage).toString('base64');  
+          }
+        });
+
+      }
+      return config; 
+    } else {
+      return {}
+    }
   }
 
-  async process(feature: string, option: string, value: string): Promise<any> {
+  async process(moduleName: string, feature: string, option: string): Promise<any> {
 
     let root = path.join(__dirname,'..','..','..');
-    let clientRoot = path.join(root, 'packages', 'client', 'src', 'components', feature, option);
-    let dapplibRoot = path.join(root, 'packages', 'dapplib', 'contracts', 'imports', feature, option);
+    let clientRoot = path.join(root, 'packages', 'client', 'src', 'components', moduleName, feature);
+    let dapplibRoot = path.join(root, 'packages', 'dapplib', 'contracts', 'imports', moduleName, feature);
     let composerRoot = path.join(root, 'workspace', 'composer');
 
-      // Delete packages/client/src/components/{feature}/{option}
+      // Delete packages/client/src/components/{moduleName}/{feature}
       fse.removeSync(clientRoot);
 
-      // Delete packages/dapplib/contracts/imports/{feature}/{option}
+      // Delete packages/dapplib/contracts/imports/{moduleName}/{feature}
       fse.removeSync(dapplibRoot);
 
       // Copy from workspace/composer/{category}/{feature}-{option}
-      fse.copySync(path.join(composerRoot, feature, option + '-' + value), path.join(root, 'packages'));
+      fse.copySync(path.join(composerRoot, moduleName, feature + '-' + option), path.join(root, 'packages'));
     
-    return `SUCCESS! 😃`;    
+      return true;    
   }
-
+  
 }
 @Controller('api/composer')
 class ComposerController {
@@ -50,16 +69,16 @@ class ComposerController {
 
   @UseGuards(ComposerGuard)
   //@ApiExcludeEndpoint()
-  @Get('info')
-  async info(): Promise<any> {
-    return await this.composerService.info();
+  @Get('info/:moduleName')
+  async info(@Param('moduleName') moduleName: string): Promise<any> {
+    return await this.composerService.info(moduleName);
   }
 
   @UseGuards(ComposerGuard)
   //@ApiExcludeEndpoint()
-  @Post('process/:feature/:option/:value')
-  async process(@Param('feature') feature: string, @Param('option') option: string, @Param('value') value: string): Promise<any> {
-    return await this.composerService.process(feature, option, value);
+  @Post('process/:moduleName/:feature/:option')
+  async process(@Param('moduleName') moduleName: string, @Param('feature') feature: string, @Param('option') option: string): Promise<any> {
+    return await this.composerService.process(moduleName, feature, option);
   }
   
 }
