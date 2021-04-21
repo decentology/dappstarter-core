@@ -8,7 +8,7 @@ const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 let mnemonic = 'PLACEHOLDER'; ///@{ "___test-mnemonic___": "PLACEHOLDER"}
 let testAccounts = null; ///@{ "___test-accounts___": "null"}
-let devUri = 'https://rpc-mumbai.matic.today';
+let devUri = 'https://api.avax-test.network/ext/bc/C/rpc';
 
 module.exports = {
     testAccounts,
@@ -20,20 +20,20 @@ module.exports = {
                 mnemonic,
                 devUri, // provider url
                 0, // address index
-                10, // number of addresses
+                6, // number of addresses
                 true, // share nonce
                 `m/44'/60'/0'/0/` // wallet HD path
             ),
-            gas: 2000000,
-            network_id: 80001,
-            confirmations: 1,
-            timeoutBlocks: 100,
+            gas: 3000000,
+            gasPrice: 470000000000,
+            network_id: '*',
+            chainId: 43113,
             skipDryRun: true
         }
     },
     compilers: {
         solc: {
-            version: '^0.5.11'
+            version: '^0.8.0'
         }
     }
 };

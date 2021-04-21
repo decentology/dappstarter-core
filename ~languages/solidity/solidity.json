@@ -146,10 +146,11 @@
               "postinstall": "node ./src/faucet"
             },
             "devDependencies": {
-              "@truffle/hdwallet-provider": "^1.2.3",
+              "@truffle/hdwallet-provider": "^1.2.2",
               "truffle": "^5.1.19",
               "@types/ethereum-protocol": "^1.0.0",
-              "@types/web3": "^1.2.2"
+              "@types/web3": "^1.2.2",
+              "@openzeppelin/test-helpers": "^0.5.10"           
             }
           },
           "matic": {
