@@ -12,17 +12,6 @@
                     "url": "https://www.decentology.com"
                 },
                 "folder": "dappstarter-modules-core"
-            },
-            {
-                "name": "community",
-                "title": "Community Modules",
-                "description": "Modules created and maintained by community members",
-                "imageUrl": "",
-                "help": {
-                    "title": "Community Module Wiki",
-                    "url": "https://www.decentology.com"
-                },
-                "folder": "dappstarter-modules-community"
             }
         ]
     },
