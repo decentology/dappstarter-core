@@ -1,6 +1,8 @@
 const DappStateContract = require("../build/contracts/DappState.json");
 const DappContract = require("../build/contracts/Dapp.json");
 const Web3 = require("web3");
+const Tx = require('ethereumjs-tx');
+const Common = require('ethereumjs-common');
 
 // Ethereum
 module.exports = class Blockchain {
@@ -19,7 +21,11 @@ module.exports = class Blockchain {
             dappStateContractWs: new web3Obj.ws.eth.Contract(DappStateContract.abi, config.dappStateContractAddress),
             dappContractWs: new web3Obj.ws.eth.Contract(DappContract.abi, config.dappContractAddress),
             accounts: accounts,
-            lastBlock: await web3Obj.http.eth.getBlockNumber()
+            wallets: config.wallets,
+            gas: config.gas,
+            gasPrice: config.gasPrice,
+            lastBlock: await web3Obj.http.eth.getBlockNumber(),
+            web3: web3Obj
         }
     }
 
@@ -42,18 +48,49 @@ module.exports = class Blockchain {
      */
     static async post(env, action, ...data) {
         let blockchain = await Blockchain._init(env.config);
-        env.params.from = typeof env.params.from === 'string' ? env.params.from : blockchain.accounts[0];
-        return {
-            callAccount: env.params.from,
-            callData: await blockchain[env.contract]
-                                .methods[action](...data)
-                                .send(env.params)
+        let method = blockchain[env.contract].methods[action](...data);
+
+        let from = typeof env.params.from === 'string' ? env.params.from : blockchain.accounts[0];
+        let wallet = blockchain.wallets.find((wallet) => wallet.account === from);
+        if (wallet) {
+            let txCount = await blockchain.web3.http.eth.getTransactionCount(from);
+            const customCommon = Common.default.forCustomChain(
+                'mainnet', // Only known Ethereum network names are supported
+                {
+                  networkId: 1,
+                  chainId: blockchain.chainId,
+                }
+            );
+
+            let rawTx = {
+                from,
+                to: env.config[`${env.contract}Address`],
+                data: method.encodeABI(),
+                gasLimit: blockchain.web3.http.utils.toHex(blockchain.gas),
+                gasPrice: blockchain.web3.http.utils.toHex(blockchain.gasPrice),
+                nonce: blockchain.web3.http.utils.toHex(txCount)
+            }
+            let tx = new Tx(rawTx, {common: customCommon});
+            tx.sign(Web3.utils.hexToBytes(wallet.privateKey));
+            let serializedTx = tx.serialize().toString('hex');
+
+            try {
+                let receipt = await blockchain.web3.http.eth.sendSignedTransaction(`0x${serializedTx}`);    
+                return {
+                    callAccount: env.params.from,
+                    callData: receipt
+                }
+            } catch(e) {
+                console.log(e);
+                throw e.message;
+            }    
         }
     }
 
     static async handleEvent(env, event, callback) {
         let blockchain = await Blockchain._init(env.config);
         env.params.fromBlock = typeof env.params.fromBlock === 'number' ? env.params.fromBlock : blockchain.lastBlock + 1;
+        console.log(blockchain, env);
         if (blockchain[env.contract].events[event]) {
             blockchain[env.contract].events[event](env.params, (error, result) => {
                 let eventInfo = Object.assign({

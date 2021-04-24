@@ -42,6 +42,9 @@ const network = deployer.networks["development"];
   let config = {
     httpUri: httpUri,
     wsUri: wsUri,
+    chainId: network.chainId,
+    gas: network.gas,
+    gasPrice: network.gasPrice,
     dappStateContractAddress: DappStateContract.address,
     dappContractAddress: DappContract.address,
     accounts: accounts,
