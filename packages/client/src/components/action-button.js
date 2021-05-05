@@ -81,7 +81,7 @@ export default class ActionButton extends LitElement {
         }
       }
     });
-    console.log(values);
+
     try {
       //console.log('Last call, values: ', this.action, values);
       let retVal = await DappLib[this.action].call(null, values);
