@@ -1,5 +1,6 @@
 import DappLib from "@decentology/dappstarter-dapplib";
 import { LitElement, html, customElement, property } from "lit-element";
+import { objectExpression } from "../../../../../../../Library/Caches/typescript/4.2/node_modules/@babel/types/lib/index";
 
 @customElement("action-button")
 export default class ActionButton extends LitElement {
@@ -70,12 +71,17 @@ export default class ActionButton extends LitElement {
           } else if (fieldElement.type === "uploader") {
             values[field] = fieldElement.files;
           } else {
+            if (field.indexOf("-") > -1) {
+              let frags = field.split("-");
+              values[frags[0]] = values[frags[0]] || {};
+              values[frags[0]][frags[1]] = fieldElement.value || "";
+            }
             values[field] = fieldElement.value || "";
           }
         }
       }
     });
-
+    console.log(values);
     try {
       //console.log('Last call, values: ', this.action, values);
       let retVal = await DappLib[this.action].call(null, values);
