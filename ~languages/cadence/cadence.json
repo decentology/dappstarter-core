@@ -18,7 +18,7 @@
       "/package.project.json": {
         "processor": "copy-file"
       },
-      "/~languages/cadence/packages/dapplib/contracts/DappState.cdc": {
+      "/~languages/cadence/packages/dapplib/contracts/project/DappState.cdc": {
         "processor": "merge-blocks",
         "path": "${categoryFolder}/${name}/cadence/${name}.cdc"
       },
@@ -75,15 +75,14 @@
           "*": {
             "scripts": {
               "clean": "rimraf -rf build && rimraf -rf dist",
-              "emulator": "node src/scripts/emulator.js",
-              "transpiler": "node src/scripts/transpiler.js",
-              "dev": "watch \"node src/scripts/emulator.js\" contracts & watch \"node src/scripts/transpiler.js\" interactions",
-              "test": "npm run transpiler & npm run emulator test"
+              "deploy": "node src/scripts/emulator deploy",
+              "dev": "node src/scripts/emulator",
+              "test": "node src/scripts/emulator test"
             }
           },
           "flow": {
             "dependencies": {
-              "@onflow/fcl": "^0.0.67",
+              "@onflow/fcl": "^0.0.70",
               "@onflow/types": "^0.0.4",
               "elliptic": "^6.5.3",
               "rlp": "^2.2.5",

@@ -1,6 +1,5 @@
 import DappLib from "@decentology/dappstarter-dapplib";
 import { LitElement, html, customElement, property } from "lit-element";
-import { objectExpression } from "../../../../../../../Library/Caches/typescript/4.2/node_modules/@babel/types/lib/index";
 
 @customElement("action-button")
 export default class ActionButton extends LitElement {

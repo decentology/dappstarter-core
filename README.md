@@ -12,7 +12,7 @@ In order to develop and build "My Dapp," the following pre-requisites must be in
 ///(language:solidity
 ///)
 ///(blockchain:flow
-* [Flow CLI](https://docs.onflow.org/docs/cli) (https://docs.onflow.org/docs/cli) (after installation run `flow cadence install-vscode-extension` to enable code highlighting for Cadence source files)
+* [Flow CLI](https://docs.onflow.org/flow-cli/install) (https://docs.onflow.org/flow-cli/install) (after installation run `flow cadence install-vscode-extension` to enable code highlighting for Cadence source files)
 ///)
 ///(blockchain:solana
 * [Solana CLI Tools](https://docs.solana.com/cli/install-solana-cli-tools)
