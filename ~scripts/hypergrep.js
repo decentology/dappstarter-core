@@ -202,11 +202,11 @@ module.exports = class Hypergrep {
                         outputInfo[Manifest.BLOCKS][blockKey][Manifest.CATEGORYFOLDER] = moduleInfo[Manifest.CATEGORYFOLDER];
 
                         let dependentCategories = [];
-                        if ((module.dependencies) && module.dependencies[language]) {
+                        if ((moduleInfo.dependencies) && moduleInfo.dependencies[language]) {
                             dependentCategories = Object.keys(moduleInfo.dependencies[language]);
                         }
                         dependentCategories.map(dependentCategoryName => {
-                            let dependentBlockNames = moduleInfo.dependencies[dependentCategoryName];
+                            let dependentBlockNames = moduleInfo.dependencies[language][dependentCategoryName];
                             dependentBlockNames.map(dependentBlockName => {
                                 let dependentBlockKey = `${dependentCategoryName}:${dependentBlockName}`;
                                 if (!outputInfo[Manifest.BLOCKS][dependentBlockKey]) {
