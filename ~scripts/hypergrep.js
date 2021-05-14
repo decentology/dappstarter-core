@@ -175,11 +175,11 @@ module.exports = class Hypergrep {
         let self = this;
         self.log(2, 1, `Enumerating selected blocks for dependencies...`);
         for (let b = 0; b < config[Manifest.BLOCKS].length; b++) {
-            getDependencies(outputInfo.categories, config[Manifest.BLOCKS][b][Manifest.CATEGORY], config[Manifest.BLOCKS][b][Manifest.NAME], config[Manifest.BLOCKS][b][Manifest.PARAMETERS]);
+            getDependencies(outputInfo.categories, config[Manifest.BLOCKS][b][Manifest.CATEGORY], config[Manifest.BLOCKS][b][Manifest.NAME], config[Manifest.BLOCKS][b][Manifest.PARAMETERS], config[Manifest.LANGUAGE]);
         }
 
         // Recurse through the block dependencies
-        function getDependencies(manifestCategories, category, block, blockParams) {
+        function getDependencies(manifestCategories, category, block, blockParams, language) {
 
             self.log(3, 2, `Getting dependencies for: ${category} => ${block}`);
             let categoryInfo = manifestCategories.find(element => element.name === category);
@@ -201,8 +201,10 @@ module.exports = class Hypergrep {
                         outputInfo[Manifest.BLOCKS][blockKey][Manifest.PARAMETERS] = blockParams || {};
                         outputInfo[Manifest.BLOCKS][blockKey][Manifest.CATEGORYFOLDER] = moduleInfo[Manifest.CATEGORYFOLDER];
 
-//                        console.log('Module', moduleInfo)
-                        let dependentCategories = Object.keys(moduleInfo.dependencies);
+                        let dependentCategories = [];
+                        if ((module.dependencies) && module.dependencies[language]) {
+                            dependentCategories = Object.keys(moduleInfo.dependencies[language]);
+                        }
                         dependentCategories.map(dependentCategoryName => {
                             let dependentBlockNames = moduleInfo.dependencies[dependentCategoryName];
                             dependentBlockNames.map(dependentBlockName => {
