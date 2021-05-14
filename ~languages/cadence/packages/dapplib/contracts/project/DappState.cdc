@@ -1,4 +1,8 @@
-pub contract DappState {
+///+import
+
+pub contract DappState
+///+interface
+{
 
 ///+functions
 
