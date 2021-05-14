@@ -7,7 +7,9 @@
     "title": "",
     "url": ""
   },
-  "blockchains": ["flow"],
+  "blockchains": [
+    "flow"
+  ],
   "interface": {
     "hidden": false,
     "enabled": true,
@@ -25,6 +27,10 @@
       "/~languages/cadence/packages/dapplib/interactions/[transpiler-files]": {
         "processor": "merge-block-folders",
         "path": "${categoryFolder}/${name}/cadence/"
+      },
+      "/workspace/composer/[composer]": {
+        "processor": "copy-block-composer-folders",
+        "path": "${categoryFolder}/${name}/"
       },
       "/README.md": {
         "processor": "filter"
@@ -121,8 +127,7 @@
               "redux": "^4.0.5"
             }
           },
-          "vanilla": {
-          }
+          "vanilla": {}
         }
       }
     }
