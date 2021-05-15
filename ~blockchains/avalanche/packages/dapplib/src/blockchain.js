@@ -1,8 +1,8 @@
 const DappStateContract = require("../build/contracts/DappState.json");
 const DappContract = require("../build/contracts/Dapp.json");
 const Web3 = require("web3");
-const Tx = require('ethereumjs-tx');
-const Common = require('ethereumjs-common');
+const Transaction = require('@ethereumjs/tx').Transaction;
+const Common = require('@ethereumjs/common');
 
 // Ethereum
 module.exports = class Blockchain {
@@ -24,6 +24,7 @@ module.exports = class Blockchain {
             wallets: config.wallets,
             gas: config.gas,
             gasPrice: config.gasPrice,
+            chainId: config.chainId,
             lastBlock: await web3Obj.http.eth.getBlockNumber(),
             web3: web3Obj
         }
@@ -62,7 +63,7 @@ module.exports = class Blockchain {
                 }
             );
 
-            let rawTx = {
+            let txParams = {
                 from,
                 to: env.config[`${env.contract}Address`],
                 data: method.encodeABI(),
@@ -70,9 +71,11 @@ module.exports = class Blockchain {
                 gasPrice: blockchain.web3.http.utils.toHex(blockchain.gasPrice),
                 nonce: blockchain.web3.http.utils.toHex(txCount)
             }
-            let tx = new Tx(rawTx, {common: customCommon});
-            tx.sign(Web3.utils.hexToBytes(wallet.privateKey));
-            let serializedTx = tx.serialize().toString('hex');
+
+            let tx = Transaction.fromTxData(txParams, {common: customCommon});
+            let privateKeyBytes = Uint8Array.from(Web3.utils.hexToBytes(wallet.privateKey));
+            let signedTx = tx.sign(privateKeyBytes);
+            let serializedTx = signedTx.serialize().toString('hex');
 
             try {
                 let receipt = await blockchain.web3.http.eth.sendSignedTransaction(`0x${serializedTx}`);    

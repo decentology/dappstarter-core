@@ -146,7 +146,8 @@
               "faucet-admin": "node ./src/faucet 1"
             },
             "dependencies": {
-              "ethers": "5.1.3"
+              "ethers": "5.1.3",
+              "@ethereumjs/tx": "^3.1.4"
             },
             "devDependencies": {
               "@truffle/hdwallet-provider": "^1.2.2",
