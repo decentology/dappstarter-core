@@ -91,7 +91,7 @@
     {
         "name": "frameworks",
         "title": "Frameworks",
-        "description": "The UI of your dapp is composed using Material Design for Bootstrap. Choose which flavor of MDBootstrap you’d like to use (or choose vanilla JS).",
+        "description": "DappStarter includes a starter client app (optional; can be replaced) using Tailwind CSS and JavaScript. Choose which flavor of JavaScript you'd like the client app to use.",
         "imageUrl": "",
         "help": {
             "title": "Learn more about building a front-end for your dapp.",
@@ -117,7 +117,7 @@
             "url": "https://www.decentology.com"
         },
         "interface": {
-            "hidden": false,
+            "hidden": true,
             "enabled": false,
             "children": "single"
         },
@@ -134,7 +134,7 @@
             "url": "https://www.decentology.com"
         },
         "interface": {
-            "hidden": false,
+            "hidden": true,
             "enabled": false,
             "children": "single"
         },
