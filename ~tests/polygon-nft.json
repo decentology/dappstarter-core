@@ -1,7 +1,7 @@
 {
     "blocks": {
-        "/blockchain/matic": true,
-        "/blockchain/matic/solidity": true,
+        "/blockchain/polygon": true,
+        "/blockchain/polygon/solidity": true,
         "/category/access_control/core-contract_access": true,
         "/category/access_control/core-contract_runstate": true,
         "/framework/vanilla": true

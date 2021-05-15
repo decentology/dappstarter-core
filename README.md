@@ -40,7 +40,7 @@ These failures occur because the node-gyp package requires certain additional bu
 to be installed on your computer. Follow the [instructions](https://www.npmjs.com/package/node-gyp) for adding build tools and then try running `yarn` again.
 
 # Build, Deploy and Test
-///(blockchain:matic
+///(blockchain:polygon
 
 Before you can work with Matic's testnet, you need to request some tokens in your test accounts. To make this request type: `yarn faucet` This will request tokens for all 10 test accounts. You may have to run this command a few times to see the token balances get updated. It isn't necessary to wait until all accounts have tokens – the account labeled (0) is the account used to deploy contracts. Once you see a balance for this account, you can continue.
 

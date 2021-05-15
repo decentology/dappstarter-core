@@ -7,7 +7,7 @@
     "title": "",
     "url": ""
   },
-  "blockchains": ["ethereum", "matic", "conflux", "avalanche"],
+  "blockchains": ["ethereum", "polygon", "conflux", "avalanche"],
   "interface": {
     "hidden": false,
     "enabled": true,
@@ -157,7 +157,7 @@
               "@openzeppelin/test-helpers": "^0.5.10"           
             }
           },
-          "matic": {
+          "polygon": {
             "scripts": {
               "dev": "run-p deploy",
               "deploy": "wait-on faucet & truffle compile && truffle migrate --reset",
