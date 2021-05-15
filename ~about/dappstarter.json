@@ -30,12 +30,12 @@
             "children": "single"
         },
         "children": [
-            "ethereum",
             "flow",
-            "matic",
             "solana",
+            "avalanche",
             "conflux",
-            "avalanche"
+            "ethereum",
+            "polygon"
         ],
         "targets": {
             "*": {
