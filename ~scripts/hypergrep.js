@@ -484,12 +484,20 @@ module.exports = class Hypergrep {
                             }
         
                         } else if (subfolder === outputInfo[Manifest.LANGUAGE].name) {
-                            fse.copy(path.join(blockPath, folder, subfolder), path.join(outputPath, module[Manifest.SHORTNAME], folder, 'dapplib', 'contracts', 'imports', module[Manifest.SHORTNAME], optionName), err => {
+
+                            let blockTargetPath = path.join('dapplib', 'contracts', 'imports', module[Manifest.SHORTNAME], optionName);
+
+                            // Imports folder needs to be in a specific place for Cadence
+                            if (outputInfo[Manifest.LANGUAGE].name === 'cadence') {
+                                blockTargetPath = path.join('dapplib', 'contracts', 'project', 'imports');
+                            }
+
+                            fse.copy(path.join(blockPath, folder, subfolder), path.join(outputPath, module[Manifest.SHORTNAME], folder, blockTargetPath), err => {
                                 if (err) return console.error(err)
                             });        
 
                             if (isDefault === true) {
-                                let dapplibRoot = path.join(packagesPath, 'dapplib', 'contracts', 'imports', module[Manifest.SHORTNAME], optionName);
+                                let dapplibRoot = path.join(packagesPath, blockTargetPath);
                                 
                                 fse.copy(path.join(blockPath, folder, subfolder), dapplibRoot, err => {
                                     if (err) return console.error(err)
