@@ -24,16 +24,9 @@ export default class ComposerPage extends LitElement {
   }
 
   getModules() {
-    return[
-    {
-        "name": "core-composable_nft-composer",
-        "title": "Composable NFT",
-        "description": "Interactively select options to build an NFT application.",
-        "category": "Non-fungible Tokens",
-        "route": "/core-composable_nft"
-    }
-]; 
+    return[]; ///@{ "___composable-list___": "[]"}
   }
+
 
   updateProject(moduleName, feature, option) {
     let self = this;
