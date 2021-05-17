@@ -46,19 +46,24 @@ class ComposerService {
 
     let root = path.join(__dirname,'..','..','..');
     let clientRoot = path.join(root, 'packages', 'client', 'src', 'components', moduleName, feature);
-    let dapplibRoot = path.join(root, 'packages', 'dapplib', 'contracts', 'imports', moduleName, feature);
     let composerRoot = path.join(root, 'workspace', 'composer');
+    let dapplibRoot = path.join(root, 'packages', 'dapplib', 'contracts', 'imports', moduleName, feature);
 
-      // Delete packages/client/src/components/{moduleName}/{feature}
-      fse.removeSync(clientRoot);
+    // Import path exception for Cadence
+    if (fse.existsSync(path.join(root, 'packages', 'dapplib', 'contracts', 'project'))) {
+      dapplibRoot = path.join(root, 'packages', 'dapplib', 'contracts', 'project', 'imports');
+    }
 
-      // Delete packages/dapplib/contracts/imports/{moduleName}/{feature}
-      fse.removeSync(dapplibRoot);
+    // Delete packages/client/src/components/{moduleName}/{feature}
+    fse.removeSync(clientRoot);
 
-      // Copy from workspace/composer/{category}/{feature}-{option}
-      fse.copySync(path.join(composerRoot, moduleName, feature + '-' + option), path.join(root, 'packages'));
-    
-      return true;    
+    // Delete packages/dapplib/contracts/imports/{moduleName}/{feature}
+    fse.removeSync(dapplibRoot);
+
+    // Copy from workspace/composer/{category}/{feature}-{option}
+    fse.copySync(path.join(composerRoot, moduleName, feature + '-' + option), path.join(root, 'packages'));
+  
+    return true;    
   }
   
 }
