@@ -53,6 +53,11 @@ const network = deployer.networks["development"];
       host: 'ipfs.infura.io',
       protocol: 'https',
       port: 5001
+    },
+    sia: {
+      host: 'siasky.net',
+      protocol: 'https',
+      port: 443
     }
   };
 
