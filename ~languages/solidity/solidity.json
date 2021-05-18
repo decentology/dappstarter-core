@@ -49,6 +49,10 @@
         "processor": "merge-blocks",
         "path": "${categoryFolder}/${name}/${name}-config.js"
       },
+      "/~blockchains/avalanche/packages/dapplib/src/deploy.js": {
+        "processor": "merge-blocks",
+        "path": "${categoryFolder}/${name}/${name}-config.js"
+      },
       "/~languages/solidity/packages/dapplib/truffle-config.js": {
         "processor": "copy-file",
         "context": "blockchain",
