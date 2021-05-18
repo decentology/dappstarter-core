@@ -49,8 +49,11 @@ const network = deployer.networks["development"];
     dappContractAddress: DappContract.address,
     accounts: accounts,
     wallets: wallets,
-
-    ///+config
+    ipfs: {
+      host: 'ipfs.infura.io',
+      protocol: 'https',
+      port: 5001
+    }
   };
 
   // On each deployment, a configuration file is created so dapp and API can access the latest contract code
