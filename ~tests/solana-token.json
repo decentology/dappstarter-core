@@ -1,0 +1,8 @@
+{
+    "blocks": {
+        "/blockchain/solana": true,
+        "/blockchain/solana/rust": true,
+        "/category/onchain/core-token": true,
+        "/framework/vanilla": true
+    }
+}
