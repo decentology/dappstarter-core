@@ -17,7 +17,6 @@ In order to develop and build "My Dapp," the following pre-requisites must be in
 ///(blockchain:solana
 * [Solana CLI Tools](https://docs.solana.com/cli/install-solana-cli-tools)
 * Rust (see "Dependency Guides" at the end for help installing) 
-
 ### Dependency Checklist 
 ```bash
 $ node --version
@@ -29,6 +28,11 @@ $ solana --version
 ```
 ///)
 
+### Windows Users
+
+Before you proceed with installation, it's important to note that many blockchain libraries either don't work or generate errors on Windows. If you try installation and can't get the startup scripts to completion, this may be the problem. In that case, it's best to install and run DappStarter using Windows Subsystem for Linux (WSL). Here's a [guide to help you install WSL](https://docs.decentology.com/guides/windows-subsystem-for-linux-wsl).
+
+Blockchains known to require WSL: Solana
 # Installation
 
 Using a terminal (or command prompt), change to the folder containing the project files and type: `yarn` This will fetch all required dependencies. The process will take 1-3 minutes and while it is in progress you can move on to the next step.
@@ -60,7 +64,7 @@ Here are the locations of some important files:
 * Solana Wrapper: [packages/dapplib/src/solana.js](packages/dapplib/src/solana.js) 
 * Blockchain Interactions: [packages/dapplib/src/blockchain.js](packages/dapplib/src/blockchain.js)
 * Data Layouts: [packages/dapplib/src/scripts/layouts.js](packages/dapplib/src/scripts/layouts.js)
-* Migration Script: [packages/dapplib/src/scripts/migrate.js](packages/dapplib/src/scripts/migrate.js)
+* Deploy Script: [packages/dapplib/src/scripts/deploy.js](packages/dapplib/src/scripts/deploy.js)
 ///)
 
 ///(language:solidity
