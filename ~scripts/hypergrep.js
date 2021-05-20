@@ -404,10 +404,11 @@ module.exports = class Hypergrep {
                 .map(dir => dir.name);
 
             folders.forEach((folder) => {
-                fse.copy(blockPath + folder, outfilePath + folder, err => {
-                    if (err) return console.error(err)
-                });
-
+                if (folder !== 'composer') {
+                    fse.copy(blockPath + folder, outfilePath + folder, err => {
+                        if (err) return console.error(err)
+                    });    
+                }
             })
         });
     }
@@ -483,7 +484,7 @@ module.exports = class Hypergrep {
                                 });                                            
                             }
         
-                        } else if (subfolder === outputInfo[Manifest.LANGUAGE].name) {
+                        } else if (subfolder === 'dapplib') {
 
                             let blockTargetPath = path.join('dapplib', 'contracts', 'imports', module[Manifest.SHORTNAME], optionName);
 

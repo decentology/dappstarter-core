@@ -26,32 +26,43 @@
         "processor": "merge-blocks",
         "path": "${categoryFolder}/${name}/solidity/${name}-lib.sol"
       },
-      "/~languages/solidity/packages/dapplib/contracts/[import]": {
+      "/~languages/solidity/packages/dapplib/contracts/[subfolders]": {
         "processor": "merge-block-folders",
         "path": "${categoryFolder}/${name}/solidity/"
       },
       "/~languages/solidity/packages/dapplib/tests/[block-tests].js": {
         "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/${name}-tests.js",
+        "path": "${categoryFolder}/${name}/solidity/${name}-tests.js",
         "sequence": false
       },
-      "/~languages/solidity/packages/dapplib/tests/[block-tests-1].js": {
+      "/packages/client/src/pages/harness/[block-pages].js": {
         "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/${name}-behavior-tests.js",
-        "sequence": false
-      },
-      "/~languages/solidity/packages/dapplib/tests/[block-tests-2].js": {
-        "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/${name}-interface-tests.js",
+        "path": "${categoryFolder}/${name}/solidity/${name}-page.js",
         "sequence": false
       },
       "/~languages/solidity/packages/dapplib/migrations/2_deploy_contracts.js": {
         "processor": "merge-blocks",
         "path": "${categoryFolder}/${name}/${name}-config.js"
-      },
-      "/~blockchains/avalanche/packages/dapplib/src/deploy.js": {
+      },      
+      "/packages/server/src/modules/dapp/dapp.controller.ts": {
         "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/${name}-config.js"
+        "path": "${categoryFolder}/${name}/solidity/${name}-api.js"
+      },
+      "/packages/server/src/modules/dapp/dapp.service.ts": {
+        "processor": "merge-blocks",
+        "path": "${categoryFolder}/${name}/solidity/${name}-api.js"
+      },      
+      "/packages/server/src/modules/admin/admin.controller.ts": {
+        "processor": "merge-blocks",
+        "path": "${categoryFolder}/${name}/solidity/${name}-api.js"
+      },
+      "/packages/server/src/modules/admin/admin.service.ts": {
+        "processor": "merge-blocks",
+        "path": "${categoryFolder}/${name}/solidity/${name}-api.js"
+      },
+      "/packages/dapplib/src/dapp-lib.js": {
+        "processor": "merge-blocks",
+        "path": "${categoryFolder}/${name}/solidity/${name}-lib.js"
       },
       "/~languages/solidity/packages/dapplib/truffle-config.js": {
         "processor": "copy-file",
@@ -60,7 +71,7 @@
       },
       "/workspace/composer/[composer]": {
         "processor": "copy-block-composer-folders",
-        "path": "${categoryFolder}/${name}/"
+        "path": "${categoryFolder}/${name}/solidity/"
       },
       "/README.md": {
         "processor": "filter"
@@ -70,20 +81,6 @@
       },
       "/packages/client/.babelrc": {
         "processor": "filter"
-      },
-      "/packages/dapplib/src/dapp-lib.js": {
-        "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/${name}-lib.js"
-      },
-      "/packages/client/src/pages/harness/[block-pages].js": {
-        "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/${name}-page.js",
-        "sequence": false
-      },
-      "/packages/client/src/pages/harness/[block-composer].js": {
-        "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/${name}-composer.js",
-        "sequence": false
       },
       "/packages/client/src/[client-app]": {
         "processor": "copy-folder",
@@ -98,22 +95,6 @@
       "/packages/dapplib/src/[blockchain]": {
         "processor": "copy-folder",
         "context": "blockchain"
-      },      
-      "/packages/server/src/modules/dapp/dapp.controller.ts": {
-        "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/${name}-api.js"
-      },
-      "/packages/server/src/modules/dapp/dapp.service.ts": {
-        "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/${name}-api.js"
-      },      
-      "/packages/server/src/modules/admin/admin.controller.ts": {
-        "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/${name}-api.js"
-      },
-      "/packages/server/src/modules/admin/admin.service.ts": {
-        "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/${name}-api.js"
       },
       "/packages/dapplib/package.json": {
         "processor": "merge-json",

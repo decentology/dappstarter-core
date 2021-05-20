@@ -54,6 +54,12 @@ class ComposerService {
       dapplibRoot = path.join(root, 'packages', 'dapplib', 'contracts', 'project', 'imports');
     }
 
+    // Ensures complete redeployment of contracts and removal of artifacts
+    let buildRoot =  path.join(root, 'packages', 'dapplib', 'build');
+    if (fse.existsSync(buildRoot)) {
+      fse.removeSync(buildRoot);
+    }
+
     // Delete packages/client/src/components/{moduleName}/{feature}
     fse.removeSync(clientRoot);
 
