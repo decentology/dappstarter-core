@@ -1,0 +1,10 @@
+{
+    "blocks": {
+        "/blockchain/conflux": true,
+        "/blockchain/conflux/solidity": true,
+        "/category/access_control/core-contract_runstate": true,
+        "/category/file_storage/core-ipfs": true,
+        "/category/file_storage/core-ipfs/mode": "folder",
+        "/framework/vanilla": true
+    }
+}
