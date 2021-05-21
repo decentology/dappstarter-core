@@ -1,0 +1,8 @@
+{
+    "blocks": {
+        "/blockchain/avalanche": true,
+        "/blockchain/avalanche/solidity": true,
+	"/category/access_control/core-administrator_role" : true,
+        "/framework/vanilla": true
+    }
+}

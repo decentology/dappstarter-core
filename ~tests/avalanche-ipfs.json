@@ -1,0 +1,9 @@
+{
+    "blocks": {
+        "/blockchain/avalanche": true,
+        "/blockchain/avalanche/solidity": true,
+        "/framework/vanilla" : true, 
+        "/category/file_storage/core-ipfs" : true, 
+        "/category/file_storage/core-ipfs/mode" : "folder"
+    }
+}

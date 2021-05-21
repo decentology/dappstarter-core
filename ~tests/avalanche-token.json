@@ -1,0 +1,12 @@
+{
+    "blocks": {
+        "/blockchain/avalanche": true,
+        "/blockchain/avalanche/solidity": true,
+        "/framework/vanilla" : true, 
+        "/category/asset_value_tracking/core-token" : true, 
+        "/category/asset_value_tracking/core-token/name" : "Test", 
+        "/category/asset_value_tracking/core-token/symbol" : "TES", 
+        "/category/asset_value_tracking/core-token/decimals" : "18", 
+        "/category/asset_value_tracking/core-token/supply" : "100000"
+    }
+}
