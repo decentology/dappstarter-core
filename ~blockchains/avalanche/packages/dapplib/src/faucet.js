@@ -31,7 +31,7 @@ testAccounts.map((account, index) => {
                             json: {
                                 key: "3XT9XY8-AM4MBW8-NRB8RSX-H3HG2QJ",
                                 to: account,
-                                amount: 1000000000
+                                amount: 2000000000
                             },
                         }, (error, res, body) => {
                             console.log(error, res, body)

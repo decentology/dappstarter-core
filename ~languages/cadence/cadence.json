@@ -30,7 +30,7 @@
       },
       "/workspace/composer/[composer]": {
         "processor": "copy-block-composer-folders",
-        "path": "${categoryFolder}/${name}/"
+        "path": "${categoryFolder}/${name}/cadence/"
       },
       "/README.md": {
         "processor": "filter"
@@ -43,21 +43,16 @@
       },
       "/packages/dapplib/src/dapp-lib.js": {
         "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/${name}-lib.js"
+        "path": "${categoryFolder}/${name}/cadence/${name}-lib.js"
       },
       "/~languages/cadence/packages/dapplib/tests/[block-tests].js": {
         "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/${name}-tests.js",
+        "path": "${categoryFolder}/${name}/cadence/${name}-tests.js",
         "sequence": false
       },
       "/packages/client/src/pages/harness/[block-pages].js": {
         "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/${name}-page.js",
-        "sequence": false
-      },
-      "/packages/client/src/pages/harness/[block-composer].js": {
-        "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/${name}-composer.js",
+        "path": "${categoryFolder}/${name}/cadence/${name}-page.js",
         "sequence": false
       },
       "/packages/client/src/[client-app]": {

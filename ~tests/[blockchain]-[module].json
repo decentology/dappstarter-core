@@ -1,0 +1,8 @@
+{
+    "blocks": {
+        "/blockchains/{blockchain}": true,
+        "/blockchain/{blockchain}/{language}": true,
+        "/category/{category}/{module}": true,
+        "/framework/vanilla": true
+    }
+}

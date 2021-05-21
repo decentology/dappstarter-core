@@ -37,7 +37,7 @@
       },
       "/packages/dapplib/src/dapp-lib.js": {
         "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/${name}-lib.js"
+        "path": "${categoryFolder}/${name}/cadence/${name}-lib.js"
       },
       "/~languages/rust/packages/dapplib/tests/[block-tests].js": {
         "processor": "file-blocks",
@@ -46,12 +46,7 @@
       },
       "/packages/client/src/pages/harness/[block-pages].js": {
         "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/${name}-page.js",
-        "sequence": false
-      },
-      "/packages/client/src/pages/harness/[block-composer].js": {
-        "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/${name}-composer.js",
+        "path": "${categoryFolder}/${name}/cadence/${name}-page.js",
         "sequence": false
       },
       "/packages/client/src/[client-app]": {
@@ -76,14 +71,14 @@
           "solana": {
             "scripts": {
               "clean": "rimraf -rf build && rimraf -rf dist",
-              "migrate": "node src/scripts/migrate.js",
-              "dev": "watch \"node src/scripts/migrate.js\" programs/src",
+              "deploy": "node src/scripts/deploy.js",
+              "dev": "watch \"node src/scripts/deploy.js\" programs/src",
               "test": "npm run test"
             },
             "dependencies": {
             },
             "devDependencies": {
-              "@solana/web3.js": "^0.87.0",
+              "@solana/web3.js": "^1.11.0",
               "buffer-layout": "^1.2.0",
               "bs58": "^4.0.1",
               "chai": "^4.2.0",
@@ -92,8 +87,13 @@
             }
           }
         },
-        "block": {
-          "*": {}
+        "block":  {
+          "*": {},
+          "onchain:core-token": {
+            "devDependencies": {
+              "@solana/spl-token": "^0.1.4"
+            }
+          }
         }
       },
       "/packages/client/package.json": {

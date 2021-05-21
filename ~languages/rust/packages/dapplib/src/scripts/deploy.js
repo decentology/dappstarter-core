@@ -39,9 +39,10 @@ const { setUncaughtExceptionCaptureCallback } = require("process");
   // data layout size
 
   let dataLayouts = Solana.getDataLayouts();
-
-  await deployProgram(dataLayouts);
-
+  if (dataLayouts.length > 0) {
+    await deployProgram(dataLayouts);
+  }
+  
   console.log(
     `\n\n\🚀 Dapp configuration file updated at ${dappConfigFile}\n\n`
   );
