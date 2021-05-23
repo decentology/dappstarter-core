@@ -4,6 +4,6 @@
         "/blockchain/conflux/solidity": true,
         "/framework/vanilla" : true, 
         "/category/file_storage/core-sia" : true, 
-        "/category/file_storage/core-ipfs/mode" : "multiple"
+        "/category/file_storage/core-sia/mode" : "multiple"
     }
 }
