@@ -1,6 +1,6 @@
 const DappStateContract = require("../build/contracts/DappState.json");
 const DappContract = require("../build/contracts/Dapp.json");
-const { Conflux } = require('js-conflux-sdk');
+const { Conflux, format } = require('js-conflux-sdk');
 
 module.exports = class Blockchain {
 
@@ -55,6 +55,15 @@ module.exports = class Blockchain {
         } else {
             env.params.from = null;
         } 
+
+        // Conflux JS SDK doesn't auto-convert hex strings to byte arrays so we
+        // enumerate parameters and force this for top-level object properties
+        Object.keys(data).forEach((key) => {
+            if ((typeof data[key] === 'string') && (data[key].startsWith('0x'))) {
+                data[key] = format.hexBuffer(data[key]);
+            }
+        });
+
         return {
             callAccount: env.params.from,
             callData: await blockchain[env.contract][action](...data)
