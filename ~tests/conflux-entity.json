@@ -1,0 +1,10 @@
+{
+    "blocks": {
+        "/blockchains/conflux": true,
+        "/blockchain/conflux/solidity": true,
+        "/category/collection/core-entity": true,
+        "/category/collection/core-entity/singular": "widget",
+        "/category/collection/core-entity/plural": "widgets",
+        "/framework/react": true
+    }
+}
