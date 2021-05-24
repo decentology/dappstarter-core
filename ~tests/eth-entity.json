@@ -1,6 +1,7 @@
 {
     "blocks": {
         "/blockchains/ethereum": true,
+        "/blockchain/ethereum/solidity": true,
         "/category/collection/core-entity": true,
         "/category/collection/core-entity/singular": "jury",
         "/category/collection/core-entity/plural": "juries",
