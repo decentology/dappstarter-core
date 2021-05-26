@@ -30,7 +30,13 @@ export default class ComposerPage extends LitElement {
 
   updateProject(moduleName, feature, option) {
     let self = this;
-    fetch(`${this.apiUrl}/process/${moduleName}/${feature}/${option}`, { method: 'post'})
+    fetch(`${this.apiUrl}/process/${moduleName}/${feature}/${option}`, 
+      { 
+        method: 'post',
+        body: JSON.stringify(DappLib.getManifest()),
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        headers: { 'Content-Type': 'application/json' }
+      })
       .then((response) => {
         return response.json();
       })

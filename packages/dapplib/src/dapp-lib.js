@@ -3,7 +3,7 @@ const Blockchain = require( './blockchain');
 const dappConfig = require( './dapp-config.json');
 const ClipboardJS = require( 'clipboard');
 const BN = require('bn.js'); // Required for injected code
-
+const manifest = require('../manifest.json');
 ///+import
 
 module.exports = class DappLib {
@@ -309,6 +309,10 @@ module.exports = class DappLib {
 
     static fromAscii(str, padding) {
 
+        if (Array.isArray(str)) {
+            return DappLib.arrayToHex(str);
+        }
+
         if (str.startsWith('0x') || !padding) {
             return str;
         }
@@ -325,7 +329,8 @@ module.exports = class DappLib {
         }
         return hex + '0'.repeat(padding*2 - hex.length + 2);
     };
-    
+
+
     static toAscii(hex) {
         var str = '',
             i = 0,
@@ -340,6 +345,29 @@ module.exports = class DappLib {
         }
         return str;
     };
+    
+    static arrayToHex(bytes) {
+        if (Array.isArray(bytes)) {
+            return '0x' + 
+                Array.prototype.map.call(bytes, function(byte) {
+                    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+                }).join('')
+        } else {
+            return bytes;
+        }
+    }
+    
+    static hexToArray(hex) {
+        if ((typeof hex === 'string') && (hex.beginsWith('0x'))) {
+            let bytes = [];
+            for (let i = 0; i < hex.length; i += 2) {
+              bytes.push(parseInt(hex.substr(i, 2), 16));
+            }
+            return bytes;
+        } else {
+            return hex;
+        }
+    }
 
     static toCondensed(s, begin, end) {
         if (!s) { return; }
@@ -352,6 +380,10 @@ module.exports = class DappLib {
                 return `${s.substr(0, begin)}...`;
             }
         }
+    }
+
+    static getManifest() {
+        return manifest;
     }
 
     // https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
