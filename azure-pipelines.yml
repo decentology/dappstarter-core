@@ -1,10 +1,9 @@
 trigger:
   - production
-pool: Default
 
 jobs:
   - job: Build
-    pool: ubuntu-latest
+    pool: Default 
     steps:
       - task: CmdLine@2
         displayName: Commit version Bump
