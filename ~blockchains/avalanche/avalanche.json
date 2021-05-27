@@ -12,8 +12,8 @@
         "different": ""
     },
     "interface": {
-        "hidden": true,
-        "enabled": false,
+        "hidden": false,
+        "enabled": true,
         "children": "single"
     }
 }
