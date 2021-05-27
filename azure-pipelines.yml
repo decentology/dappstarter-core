@@ -1,7 +1,7 @@
 trigger:
   - production
 variables:
-  system_accesstoken: $(System.AccessToken)
+  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
 jobs:
   - job: Build
     pool: Default 
