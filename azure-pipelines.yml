@@ -14,7 +14,7 @@ jobs:
             git config --global user.name "Botimus Prime"
 
             npm version patch -m "Version bump %s [skip azurepipelines]"
-            git push -u origin HEAD:main
+            git push -u origin HEAD:production
         env:
           SYSTEM_ACCESSTOKEN: $(System.AccessToken)
       - task: Npm@1
