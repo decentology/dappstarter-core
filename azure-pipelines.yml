@@ -6,6 +6,8 @@ jobs:
   - job: Build
     pool: Default 
     steps:
+      - checkout: self
+        persistCredentials: true
       - task: CmdLine@2
         displayName: Commit version Bump
         inputs:
