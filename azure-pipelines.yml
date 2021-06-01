@@ -1,0 +1,26 @@
+trigger:
+  - production
+variables:
+  SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+jobs:
+  - job: Build
+    pool: Default 
+    steps:
+      - task: CmdLine@2
+        displayName: Commit version Bump
+        inputs:
+          script: |
+            git config --global user.email "bot@decentology.com"
+            git config --global user.name "Botimus Prime"
+
+            npm version patch -m "Version bump %s [skip azurepipelines]"
+            git push -u origin HEAD:production
+        env:
+          SYSTEM_ACCESSTOKEN: $(System.AccessToken)
+      - task: Npm@1
+        displayName: "npm publish"
+        inputs:
+          command: publish
+          verbose: false
+          publishRegistry: useFeed
+          publishFeed: "7b86b151-d138-465e-bfbe-6b01ace5e74b"
