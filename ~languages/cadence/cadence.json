@@ -20,11 +20,7 @@
       "/package.project.json": {
         "processor": "copy-file"
       },
-      "/~languages/cadence/packages/dapplib/contracts/project/DappState.cdc": {
-        "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/cadence/${name}.cdc"
-      },
-      "/~languages/cadence/packages/dapplib/interactions/[transpiler-files]": {
+      "/~languages/cadence/packages/dapplib/[contract-files]": {
         "processor": "merge-block-folders",
         "path": "${categoryFolder}/${name}/cadence/"
       },
