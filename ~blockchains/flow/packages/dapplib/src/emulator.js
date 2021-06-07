@@ -310,9 +310,6 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
 
   function generate(interactionsFolder, destFolder, type, deployedContracts) {
 
-    let sourceFolder = path.join(interactionsFolder, type);
-    // Read the 'scripts' or 'transactions' folder as determined by 'type'
-    let items = fs.readdirSync(sourceFolder);
     let prefix = TAB + TAB + TAB + TAB;
     let isTransaction = type === 'transactions';
     // Outermost class wrapper
@@ -323,29 +320,40 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
     outSource += 'const fcl = require("@onflow/fcl");' + NEWLINE + NEWLINE;
     outSource += 'module.exports = class Dapp' + (isTransaction ? 'Transactions' : 'Scripts') + ' {' + NEWLINE;
 
-    // For each Cadence file found we are going to create a JS wrapper function
-    items.forEach((item) => {
-      let code = fs.readFileSync(path.join(sourceFolder, item), 'utf8');
+
+    // Read the 'scripts' or 'transactions' folder as determined by 'type'
+    let sourceFolder = path.join(interactionsFolder, type);
+    let emitter = walk(sourceFolder, filePath => { });
+   
+    emitter.on('file', filePath => {
+
+      let functionName = filePath.replace(sourceFolder + path.sep, '');
+      functionName = functionName.split(path.sep).join('_');
+      functionName = functionName.split('.')[0];
+
+      let code = fs.readFileSync(filePath, 'utf8');
 
       // Function name
-      outSource += NEWLINE + TAB + 'static ' + item.replace('.cdc', '') + '() {' + NEWLINE;
+      outSource += NEWLINE + TAB + 'static ' + functionName + '() {' + NEWLINE;
 
       // All the code is added into a JS template literal so line breaks
       // are preserved. We also need to inject imports at run-time which 
       // a template literal enables quite easily
       outSource += TAB + TAB + 'return fcl.' + (isTransaction ? 'transaction' : 'script') + '`' + NEWLINE;
-
       outSource += Flow.replaceImportRefs(code, deployedContracts, prefix);
-
       outSource += TAB + TAB + '`;';
       outSource += NEWLINE + TAB + '}' + NEWLINE;
+
     });
 
-    outSource += NEWLINE + '}' + NEWLINE;
+    emitter.on('end', () => {
+      outSource += NEWLINE + '}' + NEWLINE;
 
-    // Create dapp-*.js output file based on the type
-    fs.writeFileSync(path.join(destFolder, 'dapp-' + type + '.js'), outSource, 'utf8')
-    console.log(`\n    📑  Transpiled ${type} to dapp-${type}.js`);
+      // Create dapp-*.js output file based on the type
+      fs.writeFileSync(path.join(destFolder, 'dapp-' + type + '.js'), outSource, 'utf8')
+      console.log(`\n    📑  Transpiled ${type} to dapp-${type}.js`);
+  
+    });
 
   }
 
