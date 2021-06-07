@@ -4,6 +4,8 @@ const path = require('path');
 const waitOn = require('wait-on');
 const spawn = require('cross-spawn');
 const fkill = require('fkill');
+const walk = require('walkdir');
+const toposort = require('toposort');
 const { Flow } = require('../flow');
 const networks = require('../flow-config.json');
 const NEWLINE = '\n';
@@ -45,6 +47,9 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
         'Flow.FlowStorageFees': '0xf8d6e0586b0a20c7',
         'Flow.FlowToken': '0x0ae53cb6e3f42a79',
         'Flow.FungibleToken': '0xee82856bf20e2aa6',
+      },
+      deployAccountHints: {
+        'Project.Example': 1
       },
       accounts: [],
       serviceWallet: newServiceWallet,
@@ -101,14 +106,14 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
 
       await createTestAccounts();
       updateConfiguration();
-      await deployVendorContracts(true);
+      await processContractFolders(['Flow', 'Decentology', 'Project'], true);
     });
 
   } else if (mode === 'deploy') {
 
     // After all the vendor contracts are deployed, the call back runs this script file with a watch
     // on the contracts folder and an arg of 'deploy' causing processing to start here
-    await deployProjectContracts();
+    await processContractFolders(['Project'], true);
 
   } else if (mode === 'transpile') {
 
@@ -143,41 +148,129 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
     }
   }
 
-  async function deployVendorContracts(processProjectContracts) {
-
-    console.log('\n🎛   Deploying vendor contracts...');
+  async function processContractFolders(folders, runTranspiler) {
+    
+    let sourceFolder = path.join(__dirname, '..', '..', 'contracts');
     dappConfig = JSON.parse(fs.readFileSync(dappConfigFile, 'utf8'));
-    let importsFolder = path.join(__dirname, '..', '..', 'contracts', 'vendor');
+    let queueItems = [];
+    let contracts = {};
 
-    queue = [];
-    await queueContracts(importsFolder, dappConfig.contractWallet.address, ['Flow', 'Decentology']); // The order of sources is very important
-
-    await deployContracts(async () => {
-      // Vendor contracts are done deploying
-      if (processProjectContracts === true) {
-        await deployProjectContracts(true);
+    let emitter = walk(sourceFolder, filePath => { });
+   
+    emitter.on('file', filePath => {
+      for(let f=0; f<folders.length; f++) {
+        if ((filePath.endsWith('.cdc')) && (filePath.indexOf(`/contracts/${folders[f]}/`) > -1)) {
+          let { code, contractNames, deps } = getContractDependencies(folders[f], filePath);
+          queueItems = queueItems.concat(deps);
+          contractNames.forEach((cname) => {
+            contracts[cname] = code;
+          })
+          break;
+        }
       }
+    });
+
+    emitter.on('end', () => {
+      let sorted = toposort(queueItems);
+      queue = [];
+
+      sorted.forEach((s) => {
+        if (s !== null) {
+          queue.push({
+            prefix: s.split('.')[0],            
+            contractName: s.split('.')[1],
+            contract: contracts[s],
+            address: dappConfig.deployAccountHints[s] ? dappConfig.accounts[ dappConfig.deployAccountHints[s]] : dappConfig.accounts[0]
+          });
+        }
+      });
+
+      deployContracts(() => {
+        if (runTranspiler === true) {
+          transpile();
+        }  
+      });
     });
   }
 
-  async function deployProjectContracts(runTranspiler) {
+  function getContractDependencies(contractType, filePath) {
+    let code = fs.readFileSync(filePath, 'utf8');
+    let contractNames = [];
+    let importRefs = [];
+    let match = null;
 
-    if (fs.existsSync(dappConfigFile)) {
-      console.log('\n🎛   Deploying project contracts...');
-      dappConfig = JSON.parse(fs.readFileSync(dappConfigFile, 'utf8'));
-      let contractsFolder = path.join(__dirname, '..', '..', 'contracts', 'project');
+    // Contract names defined in code
+    const contractRegex = /\scontract\s+(interface\s+)?(?<contract>[a-zA-Z0-9_]+)\s*\:?.*\s*{\s/gm;
+    while((match = contractRegex.exec(code)) !== null) {
+      contractNames.push(`${contractType}.${match.groups.contract}`);
+    } ;
+    //console.log(contractNames);
 
-      queue = [];
-      await queueContracts(contractsFolder, dappConfig.accounts[0]);
+    // Contract imports referenced in code
+    const importRegex = /\s*import\s+\S+\s+from\s+(?<import>\S+)\s+/gm;
+    while((match = importRegex.exec(code)) !== null) {
+      importRefs.push(match.groups.import);
+    } ;
+    //console.log(importRefs);
 
-      await deployContracts(() => {
-        // Always transpile after project contracts are deployed
-        // to surface any errors in interactions due to contract changes
-        if (runTranspiler === true) {
-          transpile();
+    let deps = [];
+    contractNames.forEach((cname) => {
+      if (importRefs.length > 0) {
+        importRefs.forEach((iname) => {
+          deps.push([iname, cname]);
+        });
+      } else {
+        deps.push([null, cname])
+      }
+    });
+        
+    return { code, contractNames, deps };
+  }
+
+
+  async function deployContracts(callback) {
+
+    let itemIndex = 0;
+    let flow = new Flow(config);
+    let handle = setInterval(async () => {
+      if (pending) {
+        return;
+      }
+      pending = true;
+
+      if (itemIndex == queue.length) {
+        clearInterval(handle);
+        pending = false;
+        if (callback) {
+          callback();
         }
-      });
-    }
+        return;
+      }
+      let item = queue[itemIndex];
+
+      if (item !== null) {
+        item.contract = Flow.replaceImportRefs(item.contract, dappConfig.contracts);
+        console.log(
+          `\n🛠   Deploying ${item.contractName} to account ${item.address}`
+        );
+        let contractAddress = await flow.deployContract(
+          item.address,
+          item.contractName,
+          item.contract
+        );
+        console.log(
+          `    ✅  ${item.contractName} => ${contractAddress}`
+        );
+        dappConfig.contracts[
+          (item.prefix ? item.prefix + '.' : '') + item.contractName
+        ] = contractAddress;
+        updateConfiguration();
+      }
+
+      itemIndex++;
+
+      pending = false;
+    }, BLOCK_INTERVAL);
   }
 
   function transpile(runTest) {
@@ -202,89 +295,6 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
 
   }
 
-  async function queueContracts(folder, address, sources) {
-    if (sources && sources.length && sources.length > 0) {
-      sources.forEach((source) => {
-        queue = queue.concat(
-          queueContractsInFolder(path.join(folder, source), address, source)
-        );
-      });
-    } else {
-      queue = queue.concat(
-        queueContractsInFolder(folder, address, 'Project')
-      );
-    }
-  }
-
-
-  function queueContractsInFolder(folder, address, prefix) {
-    let contracts = [];
-
-    if (!folder.endsWith('imports')) {
-      contracts = contracts.concat(
-        queueContractsInFolder(path.join(folder, 'imports'), address, prefix)
-      );
-    }
-
-    if (fs.existsSync(folder)) {
-      let files = fs.readdirSync(folder);
-      files.forEach(async (file) => {
-        if (file.toLowerCase().endsWith('.cdc')) {
-          let contract = fs.readFileSync(path.join(folder, file), 'utf8');
-          let contractName = file.replace('.cdc', '');
-          contractName = contractName.replace('01_', '')
-          contractName = contractName.replace('02_', '')
-          contractName = contractName.replace('03_', '')
-          contracts.push({ prefix, address, contractName, contract });
-        }
-      });
-    }
-
-    return contracts;
-  }
-
-  async function deployContracts(callback) {
-
-    let itemIndex = 0;
-    let flow = new Flow(config);
-    let handle = setInterval(async () => {
-      if (pending) {
-        return;
-      }
-      pending = true;
-
-      if (itemIndex == queue.length) {
-        clearInterval(handle);
-        pending = false;
-        if (callback) {
-          callback();
-        }
-        return;
-      }
-      let item = queue[itemIndex];
-
-      item.contract = Flow.replaceImportRefs(item.contract, dappConfig.contracts);
-      console.log(
-        `\n🛠   Deploying ${item.contractName} to account ${item.address}`
-      );
-      let contractAddress = await flow.deployContract(
-        item.address,
-        item.contractName,
-        item.contract
-      );
-      console.log(
-        `    ✅  ${item.contractName} => ${contractAddress}`
-      );
-      dappConfig.contracts[
-        (item.prefix ? item.prefix + '.' : '') + item.contractName
-      ] = contractAddress;
-      updateConfiguration();
-
-      itemIndex++;
-
-      pending = false;
-    }, BLOCK_INTERVAL);
-  }
 
   function updateConfiguration() {
     //Write the configuration file with test and contract accounts for use in the web app dev
