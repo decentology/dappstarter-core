@@ -6,15 +6,15 @@ const spawn = require('cross-spawn');
 const fkill = require('fkill');
 const walk = require('walkdir');
 const toposort = require('toposort');
-const { Flow } = require('../flow');
-const networks = require('../flow-config.json');
+const { Flow } = require('./flow');
+const networks = require('./flow-config.json');
 const NEWLINE = '\n';
 const TAB = '\t';
 const BLOCK_INTERVAL = 200;
 
 let config = networks.development.config;
 
-const dappConfigFile = path.join(__dirname, '..', 'dapp-config.json');
+const dappConfigFile = path.join(__dirname, 'dapp-config.json');
 let mode = 'emulate';
 if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
   mode = 'deploy';
@@ -150,7 +150,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
 
   async function processContractFolders(folders, runTranspiler) {
     
-    let sourceFolder = path.join(__dirname, '..', '..', 'contracts');
+    let sourceFolder = path.join(__dirname, '..', '..', 'dapplib', 'contracts');
     dappConfig = JSON.parse(fs.readFileSync(dappConfigFile, 'utf8'));
     let queueItems = [];
     let contracts = {};
@@ -278,8 +278,8 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
       console.log('\n🎛   Transpiling scripts and transactions...');
       dappConfig = JSON.parse(fs.readFileSync(dappConfigFile, 'utf8'));
 
-      let interactionsFolder = path.join(__dirname, '..', '..', 'interactions');
-      let destFolder = path.join(__dirname, '..');
+      let interactionsFolder = path.join(__dirname, '..', '..', 'dapplib', 'interactions');
+      let destFolder = __dirname;
 
       generate(interactionsFolder, destFolder, 'scripts', dappConfig.contracts);
       generate(interactionsFolder, destFolder, 'transactions', dappConfig.contracts);
