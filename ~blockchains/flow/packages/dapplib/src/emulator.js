@@ -13,6 +13,13 @@ const TAB = '\t';
 const BLOCK_INTERVAL = 200;
 
 let config = networks.development.config;
+let chainContracts = {
+  'Flow.FlowFees': '0xe5a8b7f23e8b548f',
+  'Flow.FlowServiceAccount': '0xf8d6e0586b0a20c7',
+  'Flow.FlowStorageFees': '0xf8d6e0586b0a20c7',
+  'Flow.FlowToken': '0x0ae53cb6e3f42a79',
+  'Flow.FungibleToken': '0xee82856bf20e2aa6',
+}
 
 const dappConfigFile = path.join(__dirname, 'dapp-config.json');
 let mode = 'emulate';
@@ -41,13 +48,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
     // Unpopulated dappConfig with service info only
     dappConfig = {
       httpUri: config.httpUri,
-      contracts: {
-        'Flow.FlowFees': '0xe5a8b7f23e8b548f',
-        'Flow.FlowServiceAccount': '0xf8d6e0586b0a20c7',
-        'Flow.FlowStorageFees': '0xf8d6e0586b0a20c7',
-        'Flow.FlowToken': '0x0ae53cb6e3f42a79',
-        'Flow.FungibleToken': '0xee82856bf20e2aa6',
-      },
+      contracts: chainContracts,
       deployAccountHints: {
         'Project.Example': 1
       },
@@ -209,7 +210,10 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
     // Contract imports referenced in code
     const importRegex = /\s*import\s+\S+\s+from\s+(?<import>\S+)\s+/gm;
     while((match = importRegex.exec(code)) !== null) {
-      importRefs.push(match.groups.import);
+      // Check if import is for a chain contract and skip
+      if (!chainContracts[match.groups.import]) {
+        importRefs.push(match.groups.import);
+      }
     } ;
     //console.log(importRefs);
 
