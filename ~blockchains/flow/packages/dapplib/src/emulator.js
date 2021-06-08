@@ -326,23 +326,24 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
     let emitter = walk(sourceFolder, filePath => { });
    
     emitter.on('file', filePath => {
+      if (filePath.endsWith('.cdc')) {
+        let functionName = filePath.replace(sourceFolder + path.sep, '');
+        functionName = functionName.split(path.sep).join('_');
+        functionName = functionName.split('.')[0];
 
-      let functionName = filePath.replace(sourceFolder + path.sep, '');
-      functionName = functionName.split(path.sep).join('_');
-      functionName = functionName.split('.')[0];
+        let code = fs.readFileSync(filePath, 'utf8');
 
-      let code = fs.readFileSync(filePath, 'utf8');
+        // Function name
+        outSource += NEWLINE + TAB + 'static ' + functionName + '() {' + NEWLINE;
 
-      // Function name
-      outSource += NEWLINE + TAB + 'static ' + functionName + '() {' + NEWLINE;
-
-      // All the code is added into a JS template literal so line breaks
-      // are preserved. We also need to inject imports at run-time which 
-      // a template literal enables quite easily
-      outSource += TAB + TAB + 'return fcl.' + (isTransaction ? 'transaction' : 'script') + '`' + NEWLINE;
-      outSource += Flow.replaceImportRefs(code, deployedContracts, prefix);
-      outSource += TAB + TAB + '`;';
-      outSource += NEWLINE + TAB + '}' + NEWLINE;
+        // All the code is added into a JS template literal so line breaks
+        // are preserved. We also need to inject imports at run-time which 
+        // a template literal enables quite easily
+        outSource += TAB + TAB + 'return fcl.' + (isTransaction ? 'transaction' : 'script') + '`' + NEWLINE;
+        outSource += Flow.replaceImportRefs(code, deployedContracts, prefix);
+        outSource += TAB + TAB + '`;';
+        outSource += NEWLINE + TAB + '}' + NEWLINE;
+      }
 
     });
 
