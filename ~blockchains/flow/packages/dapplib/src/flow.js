@@ -46,7 +46,7 @@ class Flow {
           weight: 1 ... 1000 
       }
     */
-    async createAccount(keyInfo) {
+    async createAccount(keyInfo, tokens) {
         /*
            
         */
@@ -60,25 +60,67 @@ class Flow {
         });
 
         // Transaction code
-        let tx = fcl.transaction`
-                            transaction(publicKeys: [String]) {
-                                prepare(signer: AuthAccount) {
-                                    let acct = AuthAccount(payer: signer)
-                                    for key in publicKeys {
-                                        acct.addPublicKey(key.decodeHex())
-                                    }
-                                }
-                            }`;
-
+        let tx;
         // Transaction options
         // roleInfo can either be:
         // { [Flow.Roles.ALL]: xxxxxx }  
         // - OR - 
         // { [Flow.Roles.PROPOSER]: xxxxxx,  [Flow.Roles.AUTHORIZATIONS]: [ xxxxxx ],  [Flow.Roles.PAYER]: xxxxxx,}
-        let options = {
-            roleInfo: { [Flow.Roles.ALL]: this.serviceWallet.address },
-            args: [{ type: t.Array(t.String), value: publicKeys.map(o => o.encodedPublicKey) }],
-            gasLimit: 300
+        let options;
+
+        // If tokens (the number of Flow Token to give to an account on deployment)
+        // is provided
+        if (tokens !== undefined) {
+            tx = fcl.transaction`
+                                import FlowToken from 0x0ae53cb6e3f42a79
+                                import FungibleToken from 0xee82856bf20e2aa6
+                                transaction(publicKeys: [String], amount: UFix64) {
+                                    let tokenAdmin: &FlowToken.Administrator
+                                    let tokenReceiver: &{FungibleToken.Receiver}
+                                    prepare(signer: AuthAccount) {
+                                        let acct = AuthAccount(payer: signer)
+                                        for key in publicKeys {
+                                            acct.addPublicKey(key.decodeHex())
+                                        }
+
+                                        self.tokenAdmin = signer.borrow<&FlowToken.Administrator>(from: /storage/flowTokenAdmin)
+                                            ?? panic("Signer is not the token admin")
+
+                                        self.tokenReceiver = acct
+                                            .getCapability(/public/flowTokenReceiver)
+                                            .borrow<&{FungibleToken.Receiver}>()
+                                            ?? panic("Unable to borrow receiver reference")
+                                    }
+
+                                    execute {
+                                        let minter <- self.tokenAdmin.createNewMinter(allowedAmount: amount)
+                                        let mintedVault <- minter.mintTokens(amount: amount)
+
+                                        self.tokenReceiver.deposit(from: <-mintedVault)
+
+                                        destroy minter
+                                    }
+                                }`;
+            options = {
+                roleInfo: { [Flow.Roles.ALL]: this.serviceWallet.address },
+                args: [{ type: t.Array(t.String), value: publicKeys.map(o => o.encodedPublicKey) }, { value: tokens, type: t.UFix64 }],
+                gasLimit: 300
+            }
+        } else {
+            tx = fcl.transaction`
+                                transaction(publicKeys: [String]) {
+                                    prepare(signer: AuthAccount) {
+                                        let acct = AuthAccount(payer: signer)
+                                        for key in publicKeys {
+                                            acct.addPublicKey(key.decodeHex())
+                                        }
+                                    }
+                                }`;
+            options = {
+                roleInfo: { [Flow.Roles.ALL]: this.serviceWallet.address },
+                args: [{ type: t.Array(t.String), value: publicKeys.map(o => o.encodedPublicKey) }],
+                gasLimit: 300
+            }
         }
 
         // Use fcl to compose and submit the transaction

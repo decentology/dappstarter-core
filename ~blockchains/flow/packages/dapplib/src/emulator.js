@@ -37,6 +37,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
   let dappConfig = null;
   let pending = false;
   let queue = [];
+  let tokens = 1000;
 
   if ((mode === 'emulate') || (mode === 'test')) {
     if (fs.existsSync(dappConfigFile)) {
@@ -137,7 +138,10 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
       }
 
       // Create the account with the public keys
-      let account = await flow.createAccount(keyInfo);
+      //
+      // You do not have to include a second parameter, but if you don't,
+      // you may deal with contract storage issues.
+      let account = await flow.createAccount(keyInfo, String(tokens) + '.0');
 
       if (a == accountCount - 1) {
         dappConfig.contractWallet = account;
@@ -150,16 +154,16 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
   }
 
   async function processContractFolders(folders, runTranspiler) {
-    
+
     let sourceFolder = path.join(__dirname, '..', '..', 'dapplib', 'contracts');
     dappConfig = JSON.parse(fs.readFileSync(dappConfigFile, 'utf8'));
     let queueItems = [];
     let contracts = {};
 
     let emitter = walk(sourceFolder, filePath => { });
-   
+
     emitter.on('file', filePath => {
-      for(let f=0; f<folders.length; f++) {
+      for (let f = 0; f < folders.length; f++) {
         if ((filePath.endsWith('.cdc')) && (filePath.indexOf(`/contracts/${folders[f]}/`) > -1)) {
           let { code, contractNames, deps } = getContractDependencies(folders[f], filePath);
           queueItems = queueItems.concat(deps);
@@ -178,10 +182,10 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
       sorted.forEach((s) => {
         if (s !== null) {
           queue.push({
-            prefix: s.split('.')[0],            
+            prefix: s.split('.')[0],
             contractName: s.split('.')[1],
             contract: contracts[s],
-            address: dappConfig.deployAccountHints[s] ? dappConfig.accounts[ dappConfig.deployAccountHints[s]] : dappConfig.accounts[0]
+            address: dappConfig.deployAccountHints[s] ? dappConfig.accounts[dappConfig.deployAccountHints[s]] : dappConfig.accounts[0]
           });
         }
       });
@@ -189,7 +193,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
       deployContracts(() => {
         if (runTranspiler === true) {
           transpile();
-        }  
+        }
       });
     });
   }
@@ -202,19 +206,19 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
 
     // Contract names defined in code
     const contractRegex = /\scontract\s+(interface\s+)?(?<contract>[a-zA-Z0-9_]+)\s*\:?.*\s*{\s/gm;
-    while((match = contractRegex.exec(code)) !== null) {
+    while ((match = contractRegex.exec(code)) !== null) {
       contractNames.push(`${contractType}.${match.groups.contract}`);
-    } ;
+    };
     //console.log(contractNames);
 
     // Contract imports referenced in code
     const importRegex = /\s*import\s+\S+\s+from\s+(?<import>\S+)\s+/gm;
-    while((match = importRegex.exec(code)) !== null) {
+    while ((match = importRegex.exec(code)) !== null) {
       // Check if import is for a chain contract and skip
       if (!chainContracts[match.groups.import]) {
         importRefs.push(match.groups.import);
       }
-    } ;
+    };
     //console.log(importRefs);
 
     let deps = [];
@@ -227,7 +231,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
         deps.push([null, cname])
       }
     });
-        
+
     return { code, contractNames, deps };
   }
 
@@ -328,7 +332,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
     // Read the 'scripts' or 'transactions' folder as determined by 'type'
     let sourceFolder = path.join(interactionsFolder, type);
     let emitter = walk(sourceFolder, filePath => { });
-   
+
     emitter.on('file', filePath => {
       if (filePath.endsWith('.cdc')) {
         let functionName = filePath.replace(sourceFolder + path.sep, '');
@@ -357,7 +361,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
       // Create dapp-*.js output file based on the type
       fs.writeFileSync(path.join(destFolder, 'dapp-' + type + '.js'), outSource, 'utf8')
       console.log(`\n    📑  Transpiled ${type} to dapp-${type}.js`);
-  
+
     });
 
   }
