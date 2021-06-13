@@ -1,7 +1,7 @@
 {
     "development": {
         "config": {
-            "httpUri": "https://devnet.solana.com"
+            "httpUri": "https://api.devnet.solana.com"
         }
     }
 }
