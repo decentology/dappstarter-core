@@ -1,0 +1,18 @@
+{
+	"extends": ["airbnb", "prettier", "plugin:node/recommended"],
+	"plugins": ["prettier"],
+	"rules": {
+		"prettier/prettier": "error",
+		"no-unused-vars": "warn",
+		"no-console": "off",
+		"func-names": "off",
+		"no-process-exit": "off",
+		"object-shorthand": "off",
+		"class-methods-use-this": "off",
+		"no-empty": "error",
+		"no-underscore-dangle": "off",
+		"prefer-destructuring": "warn",
+		"no-param-reassign": "warn",
+		"no-lonely-if": "off"
+	}
+}
