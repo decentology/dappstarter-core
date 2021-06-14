@@ -131,7 +131,7 @@ module.exports = class Hypergrep {
 			__outputFolder: config.__outputFolder || null,
 		};
 		newConfig[Manifest.BLOCKS] = [];
-		Object.keys(config[Manifest.BLOCK]).forEach((blockPath) => {
+		Object.keys(config[Manifest.BLOCKS]).forEach((blockPath) => {
 			// for (const blockPath in config[Manifest.BLOCKS]) {
 			const blockFrags = blockPath.split('/').slice(1);
 			switch (blockFrags[0]) {
@@ -1098,7 +1098,7 @@ module.exports = class Hypergrep {
 					const blockContentRaw =
 						outputInfo[Manifest.TARGETS][pathFrag][Manifest.TARGETS_BLOCK];
 					let blockContent = {};
-					Object.keys(blockContentRaw).forEach((blockKey) => {
+					Object.keys(blockContentRaw || {}).forEach((blockKey) => {
 						if (outputInfo[Manifest.BLOCKS][blockKey]) {
 							blockContent = merge(blockContent, blockContentRaw[blockKey]);
 						}
