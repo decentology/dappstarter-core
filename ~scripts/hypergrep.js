@@ -6,7 +6,6 @@ const walk = require('walkdir');
 const ethers = require('ethers');
 const escape = require('escape-string-regexp');
 const Phonetic = require('./phonetic');
-
 const Manifest = require('./manifest');
 
 const SKIP_FOLDER_PREFIX = '~';
