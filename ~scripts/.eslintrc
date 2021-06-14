@@ -14,5 +14,6 @@
 		"prefer-destructuring": "warn",
 		"no-param-reassign": "warn",
 		"no-lonely-if": "off"
-	}
+	},
+	
 }
