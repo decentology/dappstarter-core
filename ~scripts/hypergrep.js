@@ -819,6 +819,9 @@ module.exports = class Hypergrep {
     }
 
     _mustIgnore(p, folder) {
+        if (p.includes(path.join('dappstarter-core', 'node_modules'))) {
+            return true;
+        }
         if(p.indexOf('@decentology') > -1) {
             p = p.substr(p.indexOf('@decentology'));
         }
