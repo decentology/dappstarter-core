@@ -224,11 +224,13 @@ module.exports = class Manifest {
 				(element) => element.name === Manifest.LANGUAGES
 			);
 			if (languageIndex > -1) {
-				let languageItem = components[languageIndex][Manifest.CHILDREN].find(
-					(element) => element.name === language.toLowerCase()
-				);
+				let languageItem = components[languageIndex][
+					Manifest.CHILDREN
+				].find((element) => element.name === language.toLowerCase());
 				if (blockchain && languageItem) {
-					const bcIndex = languageItem[Manifest.BLOCKCHAINS].findIndex(
+					const bcIndex = languageItem[
+						Manifest.BLOCKCHAINS
+					].findIndex(
 						(element) => element === blockchain.toLowerCase()
 					);
 					if (bcIndex < 0) {
@@ -248,11 +250,13 @@ module.exports = class Manifest {
 				(element) => element.name === Manifest.CATEGORIES
 			);
 			if (categoryIndex > -1) {
-				let categoryItem = components[categoryIndex][Manifest.CHILDREN].find(
-					(element) => element.name === category.toLowerCase()
-				);
+				let categoryItem = components[categoryIndex][
+					Manifest.CHILDREN
+				].find((element) => element.name === category.toLowerCase());
 				if (blockchain && categoryItem) {
-					const bcIndex = categoryItem[Manifest.BLOCKCHAINS].findIndex(
+					const bcIndex = categoryItem[
+						Manifest.BLOCKCHAINS
+					].findIndex(
 						(element) => element === blockchain.toLowerCase()
 					);
 					if (bcIndex < 0) {
@@ -260,7 +264,9 @@ module.exports = class Manifest {
 					}
 				}
 				if (language && categoryItem) {
-					const langIndex = categoryItem[Manifest.LANGUAGES].findIndex(
+					const langIndex = categoryItem[
+						Manifest.LANGUAGES
+					].findIndex(
 						(element) => element === language.toLowerCase()
 					);
 					if (langIndex < 0) {
@@ -333,7 +339,10 @@ module.exports = class Manifest {
 				);
 				const categoryFolders = fs
 					.readdirSync(sourcePath, { withFileTypes: true })
-					.filter((entry) => entry.isDirectory() && !entry.name.startsWith('.'))
+					.filter(
+						(entry) =>
+							entry.isDirectory() && !entry.name.startsWith('.')
+					)
 					.map((entry) => entry.name);
 
 				categoryFolders.forEach((categoryFolder) => {
@@ -343,14 +352,19 @@ module.exports = class Manifest {
 					if (categoryItemIndex > -1) {
 						// If no prior item exists, initialize the children array
 						if (!categories[categoryItemIndex][Manifest.CHILDREN]) {
-							categories[categoryItemIndex][Manifest.CHILDREN] = [];
+							categories[categoryItemIndex][Manifest.CHILDREN] =
+								[];
 						}
 
 						const categoryFolderPath = `${sourcePath}${SLASH}${categoryFolder}`;
 						const moduleFolders = fs
-							.readdirSync(categoryFolderPath, { withFileTypes: true })
+							.readdirSync(categoryFolderPath, {
+								withFileTypes: true,
+							})
 							.filter(
-								(entry) => entry.isDirectory() && !entry.name.startsWith('.')
+								(entry) =>
+									entry.isDirectory() &&
+									!entry.name.startsWith('.')
 							)
 							.map((entry) => entry.name);
 						moduleFolders.forEach((moduleFolder) => {
@@ -359,13 +373,18 @@ module.exports = class Manifest {
 							const moduleItem = self._readJsonFile(
 								`${moduleFolderPath}${SLASH}${moduleFolder}.json`
 							);
-							moduleItem[Manifest.SHORTNAME] = `${moduleItem[Manifest.NAME]}`;
-							moduleItem[Manifest.NAME] = `${source[Manifest.NAME]}-${
+							moduleItem[Manifest.SHORTNAME] = `${
 								moduleItem[Manifest.NAME]
 							}`;
-							moduleItem[Manifest.CATEGORYFOLDER] = categoryFolderPath;
+							moduleItem[Manifest.NAME] = `${
+								source[Manifest.NAME]
+							}-${moduleItem[Manifest.NAME]}`;
+							moduleItem[Manifest.CATEGORYFOLDER] =
+								categoryFolderPath;
 							moduleItem[Manifest.SOURCE] = source[Manifest.NAME];
-							categories[categoryItemIndex][Manifest.CHILDREN].push(moduleItem);
+							categories[categoryItemIndex][
+								Manifest.CHILDREN
+							].push(moduleItem);
 						});
 					}
 				});

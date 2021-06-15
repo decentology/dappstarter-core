@@ -1,6 +1,6 @@
 {
-    "files.associations": {
-        "*.cdx": "cadence"
-    },
-    "editor.formatOnSave": true
+	"files.associations": {
+		"*.cdx": "cadence"
+	},
+	"editor.formatOnSave": true
 }

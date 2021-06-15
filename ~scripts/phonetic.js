@@ -561,7 +561,9 @@ module.exports = class Phonetic {
 			(wordObj.numeric + deriv) % wordObj.opts.phoneticSimplicity > 0;
 		const cap = simple || forceSimple ? simpleCap : phoneticSet.length;
 		const phonetic = phoneticSet[wordObj.numeric % cap];
-		wordObj.numeric = Phonetic.getNumericHash(wordObj.numeric + wordObj.word);
+		wordObj.numeric = Phonetic.getNumericHash(
+			wordObj.numeric + wordObj.word
+		);
 		return phonetic;
 	}
 
@@ -594,9 +596,14 @@ module.exports = class Phonetic {
 	static postProcess(wordObj) {
 		let regex = null;
 		Object.keys(Phonetic.REPLACEMENTS).forEach((i) => {
-			if (Object.prototype.hasOwnProperty.call(Phonetic.REPLACEMENTS, i)) {
+			if (
+				Object.prototype.hasOwnProperty.call(Phonetic.REPLACEMENTS, i)
+			) {
 				regex = new RegExp(i);
-				wordObj.word = wordObj.word.replace(regex, Phonetic.REPLACEMENTS[i]);
+				wordObj.word = wordObj.word.replace(
+					regex,
+					Phonetic.REPLACEMENTS[i]
+				);
 			}
 		});
 		if (wordObj.opts.capFirst) return Phonetic.capFirst(wordObj.word);

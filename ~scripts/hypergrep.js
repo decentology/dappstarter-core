@@ -201,23 +201,13 @@ module.exports = class Hypergrep {
 		self.log(2, 1, `Enumerating selected blocks for dependencies...`);
 
 		// Recurse through the block dependencies
-		function getDependencies(
-			manifestCategories,
-			category,
-			block,
-			blockParams,
-			language
-		) {
+		function getDependencies(manifestCategories, category, block, blockParams, language) {
 			self.log(3, 2, `Getting dependencies for: ${category} => ${block}`);
-			const categoryInfo = manifestCategories.find(
-				(element) => element.name === category
-			);
+			const categoryInfo = manifestCategories.find((element) => element.name === category);
 			if (!categoryInfo) {
 				return false;
 			}
-			const moduleInfo = categoryInfo.children.find(
-				(element) => element.name === block
-			);
+			const moduleInfo = categoryInfo.children.find((element) => element.name === block);
 			if (!moduleInfo) {
 				return false;
 			}
@@ -226,14 +216,11 @@ module.exports = class Hypergrep {
 				return true; // Prevent duplicate block processing
 			}
 			outputInfo[Manifest.BLOCKS][blockKey] = {};
-			outputInfo[Manifest.BLOCKS][blockKey][Manifest.CATEGORY] =
-				categoryInfo[Manifest.NAME];
-			outputInfo[Manifest.BLOCKS][blockKey][Manifest.NAME] =
-				moduleInfo[Manifest.NAME];
+			outputInfo[Manifest.BLOCKS][blockKey][Manifest.CATEGORY] = categoryInfo[Manifest.NAME];
+			outputInfo[Manifest.BLOCKS][blockKey][Manifest.NAME] = moduleInfo[Manifest.NAME];
 			outputInfo[Manifest.BLOCKS][blockKey][Manifest.SHORTNAME] =
 				moduleInfo[Manifest.SHORTNAME];
-			outputInfo[Manifest.BLOCKS][blockKey][Manifest.PARAMETERS] =
-				blockParams || {};
+			outputInfo[Manifest.BLOCKS][blockKey][Manifest.PARAMETERS] = blockParams || {};
 			outputInfo[Manifest.BLOCKS][blockKey][Manifest.CATEGORYFOLDER] =
 				moduleInfo[Manifest.CATEGORYFOLDER];
 
@@ -279,19 +266,9 @@ module.exports = class Hypergrep {
 		return `${category}:${name}`;
 	}
 
-	_extractCodeSnippets(
-		filePath,
-		blockKeys,
-		parameterValues,
-		swapParameterValues,
-		sourceFolder
-	) {
+	_extractCodeSnippets(filePath, blockKeys, parameterValues, swapParameterValues, sourceFolder) {
 		const self = this;
-		self.log(
-			4,
-			3,
-			`Extracting code snippets from ${filePath.replace(sourceFolder, '')}`
-		);
+		self.log(4, 3, `Extracting code snippets from ${filePath.replace(sourceFolder, '')}`);
 		const snippets = {};
 		if (fse.existsSync(filePath)) {
 			const code = fse.readFileSync(filePath, 'utf8').split(NEWLINE);
@@ -308,9 +285,7 @@ module.exports = class Hypergrep {
 								`The section "${openTag}" must end before a new section can be started.`
 							);
 						}
-						openTag = tag
-							.replace(DIRECTIVE_SECTION_BEGIN, '')
-							.replace(/\r|\n/, '');
+						openTag = tag.replace(DIRECTIVE_SECTION_BEGIN, '').replace(/\r|\n/, '');
 						self.log(5, 4, `Found directive to begin section "${openTag}"`);
 					} else if (tag.startsWith(DIRECTIVE_SECTION_END)) {
 						if (!openTag) {
@@ -357,16 +332,8 @@ module.exports = class Hypergrep {
 
 			lineText = lineFrags[0]; // Line code without parameter info
 			const parameterInfo = JSON.parse(lineFrags[1]);
-			self.log(
-				5,
-				4,
-				`Parameter info: ${JSON.stringify(parameterInfo, null, 4)}`
-			);
-			self.log(
-				5,
-				4,
-				`Parameter values: ${JSON.stringify(parameterValues, null, 4)}`
-			);
+			self.log(5, 4, `Parameter info: ${JSON.stringify(parameterInfo, null, 4)}`);
+			self.log(5, 4, `Parameter values: ${JSON.stringify(parameterValues, null, 4)}`);
 			self.log(5, 4, `Before replace: ${lineText}`);
 			Object.keys(parameterInfo).forEach((key) => {
 				if (key === SWAP_PAGES) {
@@ -391,9 +358,7 @@ module.exports = class Hypergrep {
 					);
 				} else {
 					if (parameterValues && !parameterValues[key]) {
-						throw new Error(
-							`Value for required parameter "${key}" not specified`
-						);
+						throw new Error(`Value for required parameter "${key}" not specified`);
 					}
 					lineText = lineText.replace(parameterInfo[key], parameterValues[key]);
 				}
@@ -470,11 +435,7 @@ module.exports = class Hypergrep {
 	_filterContextIntoFile(filePath, sourceFolder, targetFolder, outputInfo) {
 		const self = this;
 
-		self.log(
-			3,
-			2,
-			`Filtering context into ${filePath.replace(sourceFolder, '')}`
-		);
+		self.log(3, 2, `Filtering context into ${filePath.replace(sourceFolder, '')}`);
 		// STEP 1: Process directives in file
 		let filteredContent = '';
 		if (fse.existsSync(filePath)) {
@@ -488,11 +449,7 @@ module.exports = class Hypergrep {
 
 			// STEP 3: Write the file with filtered code to the output folder
 			const outfilePath = filePath.replace(sourceFolder, targetFolder);
-			self.log(
-				3,
-				2,
-				`Writing file: ${outfilePath.replace(outputInfo.targetFolder, '')}`
-			);
+			self.log(3, 2, `Writing file: ${outfilePath.replace(outputInfo.targetFolder, '')}`);
 			fse.writeFileSync(outfilePath, filteredContent);
 		}
 	}
@@ -506,11 +463,7 @@ module.exports = class Hypergrep {
 		sequence
 	) {
 		const self = this;
-		self.log(
-			3,
-			2,
-			`Merging code folders for ${filePath.replace(sourceFolder, '')}`
-		);
+		self.log(3, 2, `Merging code folders for ${filePath.replace(sourceFolder, '')}`);
 
 		const blockKeys = Object.keys(outputInfo[Manifest.BLOCKS]);
 		blockKeys.forEach((blockKey) => {
@@ -526,10 +479,7 @@ module.exports = class Hypergrep {
 			);
 			let outfilePath = filePath.replace(sourceFolder, targetFolder);
 			outfilePath = outfilePath.replace(
-				SLASH +
-					LANGUAGES_FOLDER_NAME +
-					SLASH +
-					outputInfo[Manifest.LANGUAGE].name,
+				SLASH + LANGUAGES_FOLDER_NAME + SLASH + outputInfo[Manifest.LANGUAGE].name,
 				''
 			);
 			outfilePath = outfilePath.substr(0, outfilePath.lastIndexOf(SLASH) + 1);
@@ -551,12 +501,7 @@ module.exports = class Hypergrep {
 		});
 	}
 
-	_copyBlockComposerFolders(
-		filePath,
-		blockPathTemplate,
-		targetFolder,
-		outputInfo
-	) {
+	_copyBlockComposerFolders(filePath, blockPathTemplate, targetFolder, outputInfo) {
 		const self = this;
 		self.log(3, 2, `Copying composer code folders`);
 
@@ -629,7 +574,9 @@ module.exports = class Hypergrep {
 					}
 
 					const subfolders = fse
-						.readdirSync(path.join(blockPath, folder), { withFileTypes: true })
+						.readdirSync(path.join(blockPath, folder), {
+							withFileTypes: true,
+						})
 						.filter((dir) => dir.isDirectory())
 						.map((dir) => dir.name);
 
@@ -734,11 +681,7 @@ module.exports = class Hypergrep {
 		sequence
 	) {
 		const self = this;
-		self.log(
-			3,
-			2,
-			`Merging code snippets for ${filePath.replace(sourceFolder, '')}`
-		);
+		self.log(3, 2, `Merging code snippets for ${filePath.replace(sourceFolder, '')}`);
 		// STEP 1: Get the source file template and decide if:
 		//         a) merge block code and write it to same file name as input file to output
 		//         b) for each block code, create a separate file with name of block in output
@@ -748,8 +691,7 @@ module.exports = class Hypergrep {
 		//         the directive suffix as key
 		let codeSnippets = {};
 		const blockKeys = Object.keys(outputInfo[Manifest.BLOCKS]);
-		const padLength =
-			String(blockKeys.length).length < 2 ? 2 : String(blockKeys.length).length;
+		const padLength = String(blockKeys.length).length < 2 ? 2 : String(blockKeys.length).length;
 
 		blockKeys.forEach((blockKey, index) => {
 			self.log(3, 2, `Merging BlockKey: ${blockKey}`);
@@ -817,28 +759,20 @@ module.exports = class Hypergrep {
 
 				let outfilePath = filePath.replace(sourceFolder, targetFolder);
 				outfilePath = outfilePath.replace(
-					SLASH +
-						LANGUAGES_FOLDER_NAME +
-						SLASH +
-						outputInfo[Manifest.LANGUAGE].name,
+					SLASH + LANGUAGES_FOLDER_NAME + SLASH + outputInfo[Manifest.LANGUAGE].name,
 					''
 				);
 				if (expand) {
 					const outfileName = path.parse(blockPath).name;
 					outfilePath = outfilePath.replace(
 						path.parse(filePath).name,
-						sequence
-							? `${padStart(index, padLength, '0')}-${outfileName}`
-							: outfileName
+						sequence ? `${padStart(index, padLength, '0')}-${outfileName}` : outfileName
 					);
 					if (Object.keys(snippets).length > 0) {
 						self.log(
 							3,
 							2,
-							`Writing file: ${outfilePath.replace(
-								outputInfo.targetFolder,
-								''
-							)}`
+							`Writing file: ${outfilePath.replace(outputInfo.targetFolder, '')}`
 						);
 						fse.writeFileSync(outfilePath, finalText);
 					}
@@ -858,17 +792,10 @@ module.exports = class Hypergrep {
 			const finalText = sourceCodeText;
 			let outfilePath = filePath.replace(sourceFolder, targetFolder);
 			outfilePath = outfilePath.replace(
-				SLASH +
-					LANGUAGES_FOLDER_NAME +
-					SLASH +
-					outputInfo[Manifest.LANGUAGE].name,
+				SLASH + LANGUAGES_FOLDER_NAME + SLASH + outputInfo[Manifest.LANGUAGE].name,
 				''
 			);
-			self.log(
-				3,
-				2,
-				`Writing file: ${outfilePath.replace(outputInfo.targetFolder, '')}`
-			);
+			self.log(3, 2, `Writing file: ${outfilePath.replace(outputInfo.targetFolder, '')}`);
 			fse.writeFileSync(outfilePath, finalText);
 		}
 	}
@@ -876,11 +803,7 @@ module.exports = class Hypergrep {
 	_replaceParametersInFile(filePath, sourceFolder, targetFolder, outputInfo) {
 		const self = this;
 		const swapParameterValues = outputInfo[SWAP_PARAMETERS];
-		self.log(
-			3,
-			2,
-			`Replacing parameters in file for ${filePath.replace(sourceFolder, '')}`
-		);
+		self.log(3, 2, `Replacing parameters in file for ${filePath.replace(sourceFolder, '')}`);
 
 		if (fse.existsSync(filePath)) {
 			const code = self
@@ -889,11 +812,7 @@ module.exports = class Hypergrep {
 
 			let codeBlock = '';
 			code.forEach((lineText) => {
-				codeBlock += self._replaceCodeParameters(
-					lineText,
-					null,
-					swapParameterValues
-				);
+				codeBlock += self._replaceCodeParameters(lineText, null, swapParameterValues);
 			});
 			const outfilePath = filePath.replace(sourceFolder, targetFolder);
 			self.log(3, 2, `Writing file: ${outfilePath.replace(targetFolder, '')}`);
@@ -911,11 +830,7 @@ module.exports = class Hypergrep {
 		outputInfo
 	) {
 		const self = this;
-		self.log(
-			3,
-			2,
-			`Injecting JSON content for ${filePath.replace(sourceFolder, '')}`
-		);
+		self.log(3, 2, `Injecting JSON content for ${filePath.replace(sourceFolder, '')}`);
 
 		// Get the source file and parse JSON
 		const sourceJson = JSON.parse(fse.readFileSync(filePath, 'utf8'));
@@ -933,11 +848,7 @@ module.exports = class Hypergrep {
 
 		// Write the file with injected code to the output folder
 		const outfilePath = filePath.replace(sourceFolder, targetFolder);
-		self.log(
-			3,
-			2,
-			`Writing file: ${outfilePath.replace(outputInfo.targetFolder, '')}`
-		);
+		self.log(3, 2, `Writing file: ${outfilePath.replace(outputInfo.targetFolder, '')}`);
 		fse.writeFileSync(outfilePath, JSON.stringify(targetJson, null, 4));
 	}
 
@@ -958,9 +869,7 @@ module.exports = class Hypergrep {
 
 	_generateAccounts(accountSeed, count = 10) {
 		const hdPath = "m/44'/60'/0'/0";
-		const bytes = Hypergrep._stringToBuffer(
-			`${accountSeed}0000000000000000`.substr(0, 16)
-		);
+		const bytes = Hypergrep._stringToBuffer(`${accountSeed}0000000000000000`.substr(0, 16));
 		const mnemonic = accountSeed
 			? ethers.utils.HDNode.entropyToMnemonic(bytes)
 			: DEFAULT_MNEMONIC;
@@ -982,11 +891,7 @@ module.exports = class Hypergrep {
 	_copyFile(context, name, sourceFile, targetFile, actions, outputInfo) {
 		const self = this;
 		const swapParameterValues = outputInfo[SWAP_PARAMETERS];
-		self.log(
-			3,
-			2,
-			`Copying file "${name}" with context customization for ${context}`
-		);
+		self.log(3, 2, `Copying file "${name}" with context customization for ${context}`);
 
 		const code = self
 			._filterContext(fse.readFileSync(sourceFile, 'utf8'), outputInfo)
@@ -1084,12 +989,7 @@ module.exports = class Hypergrep {
 
 				// Replace parameters in a file
 				case Hypergrep.PROCESSOR_REPLACE_PARAMETERS:
-					self._replaceParametersInFile(
-						filePath,
-						sourceFolder,
-						targetFolder,
-						outputInfo
-					);
+					self._replaceParametersInFile(filePath, sourceFolder, targetFolder, outputInfo);
 					break;
 
 				// Merge JSON at block, language and blockchain level into a file
@@ -1115,12 +1015,7 @@ module.exports = class Hypergrep {
 					break;
 				}
 				case Hypergrep.PROCESSOR_FILTER:
-					self._filterContextIntoFile(
-						filePath,
-						sourceFolder,
-						targetFolder,
-						outputInfo
-					);
+					self._filterContextIntoFile(filePath, sourceFolder, targetFolder, outputInfo);
 					break;
 
 				// Copy folder or copy file with contextual parameter replacement
@@ -1134,13 +1029,9 @@ module.exports = class Hypergrep {
 						outputInfo[Manifest.TARGETS][pathFrag][Manifest.TARGETS_CONTEXT];
 					const actions =
 						outputInfo[Manifest.TARGETS][pathFrag][Manifest.TARGETS_ACTIONS];
-					pathFrag = copy
-						? pathFrag.replace(path.basename(pathFrag), '')
-						: pathFrag;
+					pathFrag = copy ? pathFrag.replace(path.basename(pathFrag), '') : pathFrag;
 					if (context === Manifest.BLOCKCHAIN) {
-						info = `${Manifest.BLOCKCHAIN} "${
-							outputInfo[Manifest.BLOCKCHAIN]
-						}"`;
+						info = `${Manifest.BLOCKCHAIN} "${outputInfo[Manifest.BLOCKCHAIN]}"`;
 						sourceFolder =
 							sourceFolder +
 							BLOCKCHAINS_FOLDER_NAME +
@@ -1157,10 +1048,7 @@ module.exports = class Hypergrep {
 							pathFrag;
 					}
 					targetFolder += pathFrag.substr(1);
-					targetFolder = targetFolder.replace(
-						PROJECT_FILENAME_REPLACE_TEXT,
-						''
-					);
+					targetFolder = targetFolder.replace(PROJECT_FILENAME_REPLACE_TEXT, '');
 					if (copy) {
 						self._copyFolder(info, pathFrag, sourceFolder, targetFolder);
 					} else {
@@ -1196,10 +1084,7 @@ module.exports = class Hypergrep {
 		} else {
 			let destFile = filePath.replace(sourceFolder, targetFolder);
 			destFile = destFile.replace(
-				SLASH +
-					LANGUAGES_FOLDER_NAME +
-					SLASH +
-					outputInfo[Manifest.LANGUAGE].name,
+				SLASH + LANGUAGES_FOLDER_NAME + SLASH + outputInfo[Manifest.LANGUAGE].name,
 				''
 			);
 			fse.copyFile(filePath, destFile, () => {});
@@ -1217,14 +1102,8 @@ module.exports = class Hypergrep {
 		}
 
 		// Filter out langage configuration files from languages folder
-		if (
-			!folder &&
-			p.indexOf(LANGUAGES_FOLDER_NAME) > -1 &&
-			p.endsWith('.json')
-		) {
-			const lastPart = p
-				.split(LANGUAGES_FOLDER_NAME + SLASH)[1]
-				.replace('.json', '');
+		if (!folder && p.indexOf(LANGUAGES_FOLDER_NAME) > -1 && p.endsWith('.json')) {
+			const lastPart = p.split(LANGUAGES_FOLDER_NAME + SLASH)[1].replace('.json', '');
 			if (lastPart.indexOf(SLASH) > 0) {
 				const frags = lastPart.split(SLASH);
 				if (frags[0] === frags[1]) {
@@ -1234,9 +1113,7 @@ module.exports = class Hypergrep {
 		}
 		for (let f = 0; f < IGNORE_ITEMS.length; f += 1) {
 			const search = new RegExp(
-				`${
-					escape(SLASH + IGNORE_ITEMS[f]) + (folder ? `${escape(SLASH)}.*` : '')
-				}$`
+				`${escape(SLASH + IGNORE_ITEMS[f]) + (folder ? `${escape(SLASH)}.*` : '')}$`
 			);
 			if (p.match(search) || p.startsWith(IGNORE_ITEMS[f])) {
 				if (folder) {
@@ -1274,8 +1151,7 @@ module.exports = class Hypergrep {
 			const categoryBlocks = category[Manifest.CHILDREN];
 			const moduleItem = categoryBlocks.find(
 				(element) =>
-					element[Manifest.NAME] ===
-					outputInfo[Manifest.BLOCKS][blockKey][Manifest.NAME]
+					element[Manifest.NAME] === outputInfo[Manifest.BLOCKS][blockKey][Manifest.NAME]
 			);
 			pages.push({
 				name: moduleItem.name,
@@ -1300,8 +1176,7 @@ module.exports = class Hypergrep {
 			const categoryBlocks = category[Manifest.CHILDREN];
 			const moduleItem = categoryBlocks.find(
 				(element) =>
-					element[Manifest.NAME] ===
-					outputInfo[Manifest.BLOCKS][blockKey][Manifest.NAME]
+					element[Manifest.NAME] === outputInfo[Manifest.BLOCKS][blockKey][Manifest.NAME]
 			);
 			if (moduleItem.composable === true) {
 				composable.push({
@@ -1341,9 +1216,7 @@ module.exports = class Hypergrep {
 
 				const sourceFolder = path.normalize(self.sourceFolder + SLASH);
 				const targetFolder = path.normalize(
-					self.targetFolder +
-						(config[FIXED_OUTPUT_FOLDER_KEY] || accountSeed) +
-						SLASH
+					self.targetFolder + (config[FIXED_OUTPUT_FOLDER_KEY] || accountSeed) + SLASH
 				);
 
 				if (callback == null) {
@@ -1361,9 +1234,7 @@ module.exports = class Hypergrep {
 				const languageTarget =
 					outputInfo[Manifest.LANGUAGE] &&
 					outputInfo[Manifest.LANGUAGE][Manifest.TARGETS] &&
-					outputInfo[Manifest.LANGUAGE][Manifest.TARGETS][
-						Manifest.TARGETS_WILDCARD
-					];
+					outputInfo[Manifest.LANGUAGE][Manifest.TARGETS][Manifest.TARGETS_WILDCARD];
 				const languageTargetBlockchain =
 					outputInfo[Manifest.LANGUAGE] &&
 					outputInfo[Manifest.LANGUAGE][Manifest.TARGETS] &&
@@ -1371,9 +1242,9 @@ module.exports = class Hypergrep {
 
 				outputInfo[Manifest.TARGETS] = merge(
 					{},
-					outputInfo.manifest.find(
-						(x) => x[Manifest.NAME] === Manifest.BLOCKCHAINS
-					)[Manifest.TARGETS][Manifest.TARGETS_WILDCARD],
+					outputInfo.manifest.find((x) => x[Manifest.NAME] === Manifest.BLOCKCHAINS)[
+						Manifest.TARGETS
+					][Manifest.TARGETS_WILDCARD],
 					languageTarget,
 					languageTargetBlockchain
 				);
@@ -1425,10 +1296,7 @@ module.exports = class Hypergrep {
 						if (
 							!dirPath.endsWith(LANGUAGES_FOLDER_NAME) &&
 							!self._mustIgnore(dirPath + SLASH, true) &&
-							!self._isOtherLanguage(
-								dirPath,
-								outputInfo[Manifest.LANGUAGE].name
-							)
+							!self._isOtherLanguage(dirPath, outputInfo[Manifest.LANGUAGE].name)
 						) {
 							let dest = dirPath.replace(sourceFolder, targetFolder);
 							dest = dest.replace(
@@ -1460,17 +1328,9 @@ module.exports = class Hypergrep {
 					try {
 						if (
 							!self._mustIgnore(filePath, false) &&
-							!self._isOtherLanguage(
-								filePath,
-								outputInfo[Manifest.LANGUAGE].name
-							)
+							!self._isOtherLanguage(filePath, outputInfo[Manifest.LANGUAGE].name)
 						) {
-							self._processFile(
-								filePath,
-								sourceFolder,
-								targetFolder,
-								outputInfo
-							);
+							self._processFile(filePath, sourceFolder, targetFolder, outputInfo);
 						} else {
 							self.log(7, 1, `Ignoring file: ${filePath}`);
 						}
@@ -1483,11 +1343,7 @@ module.exports = class Hypergrep {
 
 				emitter.on('end', () => {
 					self.log(1, 1, '');
-					self.log(
-						1,
-						1,
-						gracefulCompletion ? 'SUCCESS! 😃' : 'Miserable failure! 😫'
-					);
+					self.log(1, 1, gracefulCompletion ? 'SUCCESS! 😃' : 'Miserable failure! 😫');
 					self.log(1, 1, '');
 					self.log(1, 1, `Output project in ${targetFolder}`);
 					self.log(1, 1, '');
