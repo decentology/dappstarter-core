@@ -26,13 +26,18 @@ export default class TopNavigation extends LitElement {
         name: "harness",
         title: "UI Harness",
         route: "/harness"
-      },
-      {
-        name: "composer",
-        title: "Composer",
-        route: "/composer"
-      }
+      }      
     ];
+
+    // Add Customizer menu only if there are modules
+    let customizableModules = []; ///@{ "___customizable-list___": "[]"}
+    if (customizableModules.length > 0) {
+      staticPages.push({
+        name: "customizer",
+        title: "Customizer",
+        route: "/customizer"
+      });
+    }
     return staticPages;
   }
 

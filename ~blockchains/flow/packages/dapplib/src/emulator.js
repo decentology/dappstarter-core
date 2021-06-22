@@ -166,6 +166,19 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
       for (let f = 0; f < folders.length; f++) {
         if ((filePath.endsWith('.cdc')) && (filePath.indexOf(`/contracts/${folders[f]}/`) > -1)) {
           let { code, contractNames, deps } = getContractDependencies(folders[f], filePath);
+
+          // Ignore imported contracts in folders that
+          // aren't explicitly in the 'folders' list
+          for(let d=0;d<deps.length;d++) {
+            let iname = deps[d][0];
+            if (iname !== null) {
+              iname = iname.split('.')[0];
+              if (!folders.includes(iname)) {
+                deps[d][0] = null;
+              }
+            }            
+          }
+
           queueItems = queueItems.concat(deps);
           contractNames.forEach((cname) => {
             contracts[cname] = code;
@@ -219,8 +232,10 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
         importRefs.push(match.groups.import);
       }
     };
-    //console.log(importRefs);
 
+    // Create an array of  [import, contract] pairs
+    // for topological sort so imported contracts are deployed
+    // before contracts that depend on them
     let deps = [];
     contractNames.forEach((cname) => {
       if (importRefs.length > 0) {

@@ -51,9 +51,9 @@ export default class PageLoader extends LitElement {
         await import(`../pages/${modulePage}.js`);
       } else if (modulePage === 'harness') {
         await import(`../pages/harness/${modulePage}.js`);
-      } else if (modulePage === 'composer') {
+      } else if (modulePage === 'customizer') {
         await import(`../pages/harness/${modulePage}.js`);
-      } else if (modulePage.indexOf('-composer') > -1) {
+      } else if (modulePage.indexOf('-customizer') > -1) {
         await import(`../pages/harness/${modulePage}.js`);
         suffix = '';
       } else {

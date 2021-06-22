@@ -24,8 +24,8 @@
         "processor": "merge-block-folders",
         "path": "${categoryFolder}/${name}/cadence/"
       },
-      "/workspace/composer/[composer]": {
-        "processor": "copy-block-composer-folders",
+      "/workspace/customizer/[customizer]": {
+        "processor": "copy-block-customizer-folders",
         "path": "${categoryFolder}/${name}/cadence/"
       },
       "/README.md": {
@@ -55,10 +55,13 @@
         "processor": "copy-folder",
         "context": "framework"
       },
+      "/packages/client/src/components/top-navigation.js": {
+        "processor": "replace-parameters"
+      },
       "/packages/client/src/pages/harness/harness.js": {
         "processor": "replace-parameters"
       },
-      "/packages/client/src/pages/harness/composer.js": {
+      "/packages/client/src/pages/harness/customizer.js": {
         "processor": "replace-parameters"
       },
       "/packages/dapplib/src/[blockchain]": {

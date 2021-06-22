@@ -10,25 +10,25 @@ import { Observable } from 'rxjs';
 import * as fse from 'fs-extra';
 import * as path from 'path';
 
-export class ComposerGuard implements CanActivate{
+export class CustomizerGuard implements CanActivate{
   canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
     return !process.env.NODE_ENV || (process.env.NODE_ENV === 'development');
   }
 }
 
 @Injectable()
-class ComposerService {
+class CustomizerService {
 
   async info(moduleName: string): Promise<any> {
     let root = path.join(__dirname,'..','..','..');
-    let configFile = path.join(root, 'workspace', 'composer', moduleName, 'composer.json');
+    let configFile = path.join(root, 'workspace', 'customizer', moduleName, 'customizer.json');
 
     if (fse.existsSync(configFile)) {
       let config = JSON.parse(fse.readFileSync(configFile, 'utf8'));
       for(let feature in config) {
         config[feature].options.forEach((option) => {
 
-          let previewPath = path.join(root, 'workspace', 'composer', moduleName, `${feature}-${option.name}`, 'preview.png');
+          let previewPath = path.join(root, 'workspace', 'customizer', moduleName, `${feature}-${option.name}`, 'preview.png');
           if (fse.existsSync(previewPath)) {
             var previewImage = fse.readFileSync(previewPath);
             option.preview = Buffer.from(previewImage).toString('base64');  
@@ -46,7 +46,7 @@ class ComposerService {
 
     let root = path.join(__dirname,'..','..','..');
     let clientRoot = path.join(root, 'packages', 'client', 'src', 'components', moduleName, feature);
-    let composerRoot = path.join(root, 'workspace', 'composer');
+    let customizerRoot = path.join(root, 'workspace', 'customizer');
     let dapplibRoot = path.join(root, 'packages', 'dapplib', 'contracts', 'imports', moduleName, feature);
 
     // Import path exception for Cadence
@@ -66,37 +66,37 @@ class ComposerService {
     // Delete packages/dapplib/contracts/imports/{moduleName}/{feature}
     fse.removeSync(dapplibRoot);
 
-    // Copy from workspace/composer/{category}/{feature}-{option}
-    fse.copySync(path.join(composerRoot, moduleName, feature + '-' + option), path.join(root, 'packages'));
+    // Copy from workspace/customizer/{category}/{feature}-{option}
+    fse.copySync(path.join(customizerRoot, moduleName, feature + '-' + option), path.join(root, 'packages'));
   
     return true;    
   }
   
 }
-@Controller('api/composer')
-class ComposerController {
+@Controller('api/customizer')
+class CustomizerController {
 
-  constructor(private readonly composerService: ComposerService) { }
+  constructor(private readonly customizerService: CustomizerService) { }
 
-  @UseGuards(ComposerGuard)
+  @UseGuards(CustomizerGuard)
   //@ApiExcludeEndpoint()
   @Get('info/:moduleName')
   async info(@Param('moduleName') moduleName: string): Promise<any> {
-    return await this.composerService.info(moduleName);
+    return await this.customizerService.info(moduleName);
   }
 
-  @UseGuards(ComposerGuard)
+  @UseGuards(CustomizerGuard)
   //@ApiExcludeEndpoint()
   @Post('process/:moduleName/:feature/:option')
   async process(@Param('moduleName') moduleName: string, @Param('feature') feature: string, @Param('option') option: string): Promise<any> {
-    return await this.composerService.process(moduleName, feature, option);
+    return await this.customizerService.process(moduleName, feature, option);
   }
   
 }
 
 
 @Module({
-  controllers: [ComposerController],
-  providers: [ComposerService],
+  controllers: [CustomizerController],
+  providers: [CustomizerService],
 })
-export class ComposerModule {}
+export class CustomizerModule {}
