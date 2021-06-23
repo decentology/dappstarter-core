@@ -11,7 +11,7 @@ export default class TopNavigation extends LitElement {
   constructor(args) {
     super(args);
     let page = localStorage.getItem('dappstarter-page');
-    if (page.includes('-')) {
+    if (page && page.includes('-')) {
       page = 'harness';
     }
     setTimeout(() => {
