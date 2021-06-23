@@ -23,7 +23,6 @@ export default class PageLoader extends LitElement {
   }
 
   async load(page, pages) {
-
     let pageItem = pages.find(item => item.name === page);
     if (!pageItem) {
       return;

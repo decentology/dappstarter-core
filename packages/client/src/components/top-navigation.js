@@ -10,8 +10,12 @@ export default class TopNavigation extends LitElement {
 
   constructor(args) {
     super(args);
+    let page = localStorage.getItem('dappstarter-page');
+    if (page.includes('-')) {
+      page = 'harness';
+    }
     setTimeout(() => {
-      this.setPageLoader('dapp');
+      this.setPageLoader(page ? page : 'dapp');
     }, 0);
   }
 
@@ -43,6 +47,7 @@ export default class TopNavigation extends LitElement {
 
   handleClick = e => {
     e.preventDefault();
+    localStorage.setItem('dappstarter-page', e.target.dataset.link);
     this.setPageLoader(e.target.dataset.link);
   };
 
