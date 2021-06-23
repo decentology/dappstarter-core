@@ -46,9 +46,9 @@
         "path": "${categoryFolder}/${name}/cadence/${name}-tests.js",
         "sequence": false
       },
-      "/packages/client/src/pages/harness/[block-pages].js": {
+      "/packages/client/src/harness/[harness-pages].js": {
         "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/cadence/${name}-page.js",
+        "path": "${categoryFolder}/${name}/cadence/${name}-harness.js",
         "sequence": false
       },
       "/packages/client/src/[client-app]": {
@@ -58,10 +58,10 @@
       "/packages/client/src/components/top-navigation.js": {
         "processor": "replace-parameters"
       },
-      "/packages/client/src/pages/harness/harness.js": {
+      "/packages/client/src/harness/harness.js": {
         "processor": "replace-parameters"
       },
-      "/packages/client/src/pages/harness/customizer.js": {
+      "/packages/client/src/components/customizer.js": {
         "processor": "replace-parameters"
       },
       "/packages/dapplib/src/[blockchain]": {

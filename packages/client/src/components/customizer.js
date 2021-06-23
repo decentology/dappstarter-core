@@ -1,5 +1,5 @@
 import DappLib from "@decentology/dappstarter-dapplib";
-import DOM from "../../components/dom";
+import DOM from "./dom";
 import { LitElement, html, customElement, property } from "lit-element";
 
 @customElement("customizer-page")
@@ -29,7 +29,6 @@ export default class CustomizerPage extends LitElement {
 
 
   updateProject(moduleName, feature, option) {
-    let self = this;
     fetch(`${this.apiUrl}/process/${moduleName}/${feature}/${option}`, 
       { 
         method: 'post',
@@ -41,7 +40,7 @@ export default class CustomizerPage extends LitElement {
         return response.json();
       })
       .then(function(data) {
-        console.log(data);
+        //console.log(data);
       });
   }
 
