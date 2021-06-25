@@ -20,16 +20,12 @@
       "/package.project.json": {
         "processor": "copy-file"
       },
-      "/~languages/cadence/packages/dapplib/contracts/project/DappState.cdc": {
-        "processor": "merge-blocks",
-        "path": "${categoryFolder}/${name}/cadence/${name}.cdc"
-      },
-      "/~languages/cadence/packages/dapplib/interactions/[transpiler-files]": {
+      "/~languages/cadence/packages/dapplib/[contract-files]": {
         "processor": "merge-block-folders",
         "path": "${categoryFolder}/${name}/cadence/"
       },
-      "/workspace/composer/[composer]": {
-        "processor": "copy-block-composer-folders",
+      "/workspace/customizer/[customizer]": {
+        "processor": "copy-block-customizer-folders",
         "path": "${categoryFolder}/${name}/cadence/"
       },
       "/README.md": {
@@ -50,19 +46,22 @@
         "path": "${categoryFolder}/${name}/cadence/${name}-tests.js",
         "sequence": false
       },
-      "/packages/client/src/pages/harness/[block-pages].js": {
+      "/packages/client/src/harness/[harness-pages].js": {
         "processor": "file-blocks",
-        "path": "${categoryFolder}/${name}/cadence/${name}-page.js",
+        "path": "${categoryFolder}/${name}/cadence/${name}-harness.js",
         "sequence": false
       },
       "/packages/client/src/[client-app]": {
         "processor": "copy-folder",
         "context": "framework"
       },
-      "/packages/client/src/pages/harness/harness.js": {
+      "/packages/client/src/components/top-navigation.js": {
         "processor": "replace-parameters"
       },
-      "/packages/client/src/pages/harness/composer.js": {
+      "/packages/client/src/harness/harness.js": {
+        "processor": "replace-parameters"
+      },
+      "/packages/client/src/components/customizer.js": {
         "processor": "replace-parameters"
       },
       "/packages/dapplib/src/[blockchain]": {
@@ -76,9 +75,9 @@
           "*": {
             "scripts": {
               "clean": "rimraf -rf build && rimraf -rf dist",
-              "deploy": "node src/scripts/emulator deploy",
-              "dev": "node src/scripts/emulator",
-              "test": "node src/scripts/emulator test"
+              "deploy": "node src/emulator deploy",
+              "dev": "node src/emulator",
+              "test": "node src/emulator test"
             }
           },
           "flow": {
@@ -93,7 +92,9 @@
               "chai": "^4.2.0",
               "mocha": "^8.1.3",
               "watch": "^1.0.2",
-              "fkill": "^7.0.1"
+              "fkill": "^7.0.1",
+              "walkdir": "0.4.1",
+              "toposort": "^2.0.2"
             }
           }
         },

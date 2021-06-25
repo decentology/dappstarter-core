@@ -187,6 +187,21 @@
                 }
             },
             {
+                "name": "common",
+                "title": "Common functionality for various modules",
+                "description": "",
+                "imageUrl": "",
+                "help": {
+                    "title": "",
+                    "url": ""
+                },
+                "interface": {
+                    "hidden": true,
+                    "enabled": false,
+                    "children": "single"
+                }
+            },
+            {
                 "name": "nft",
                 "title": "Non-fungible Tokens",
                 "description": "Create a non-fungible token for tracking unique assets associated with your dapp.",

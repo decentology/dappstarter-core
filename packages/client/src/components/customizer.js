@@ -1,9 +1,9 @@
 import DappLib from "@decentology/dappstarter-dapplib";
-import DOM from "../../components/dom";
+import DOM from "./dom";
 import { LitElement, html, customElement, property } from "lit-element";
 
-@customElement("composer-page")
-export default class ComposerPage extends LitElement {
+@customElement("customizer-page")
+export default class CustomizerPage extends LitElement {
   @property()
   get;
   @property()
@@ -20,16 +20,15 @@ export default class ComposerPage extends LitElement {
   }
   constructor(args) {
     super(args);
-    this.apiUrl = 'http://localhost:5002/api/composer';
+    this.apiUrl = 'http://localhost:5002/api/customizer';
   }
 
   getModules() {
-    return[]; ///@{ "___composable-list___": "[]"}
+    return[]; ///@{ "___customizable-list___": "[]"}
   }
 
 
   updateProject(moduleName, feature, option) {
-    let self = this;
     fetch(`${this.apiUrl}/process/${moduleName}/${feature}/${option}`, 
       { 
         method: 'post',
@@ -41,7 +40,7 @@ export default class ComposerPage extends LitElement {
         return response.json();
       })
       .then(function(data) {
-        console.log(data);
+        //console.log(data);
       });
   }
 
@@ -99,7 +98,7 @@ export default class ComposerPage extends LitElement {
                 @click=${(e) => { e.preventDefault(); self.customizeModule(module.name.split('-')[1]); }}
                 class="self-end text-white font-bold py-2 px-8 rounded bg-green-500 hover:bg-green-700"}"
               >
-                Customize ${module.title}
+                ${module.title}
               </button>
 
             </li>`);
@@ -110,7 +109,7 @@ export default class ComposerPage extends LitElement {
       <div class="container m-auto">
         <div class="row fadeIn mt-3 p-2 block">
           <p class="mt-3">
-            Composable modules in your project appear here. Select a module to customize its features.          
+            Customizable modules in your project appear here. Select a module to customize its features.          
           </p>
         </div>
         <ul class="mt-3 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">

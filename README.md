@@ -74,7 +74,18 @@ Here are the locations of some important files:
 * Dapp Library: [packages/dapplib/src/dapp-lib.js](packages/dapplib/src/dapp-lib.js) 
 * Blockchain Interactions: [packages/dapplib/src/blockchain.js](packages/dapplib/src/blockchain.js)
 * Unit Tests: [packages/dapplib/tests](packages/dapplib/tests)
-* UI Test Harnesses: [packages/client/src/dapp/pages/harness](packages/client/src/dapp/pages/harness)
+* UI Test Harnesses: [packages/client/src/dapp/harness](packages/client/src/dapp/harness)
+
+///)
+
+///(language:cadence
+## File Locations
+Here are the locations of some important files:
+* Contract Code: [packages/dapplib/contracts](packages/dapplib/contracts)
+* Dapp Library: [packages/dapplib/src/dapp-lib.js](packages/dapplib/src/dapp-lib.js) 
+* Blockchain Interactions: [packages/dapplib/src/blockchain.js](packages/dapplib/src/blockchain.js)
+* Unit Tests: [packages/dapplib/tests](packages/dapplib/tests)
+* UI Test Harnesses: [packages/client/src/dapp/harness](packages/client/src/dapp/harness)
 
 ///)
 To view your dapp, open your browser to http://localhost:5000 for the DappStarter Workspace.

@@ -2,8 +2,8 @@
     "blocks": {
         "/blockchain/flow": true,
         "/blockchain/flow/cadence": true,
-        "/category/nft/core-composable_nft": true,
+        "/category/nft/core-custom_nft": true,
         "/framework/vanilla": true,
-        "/category/nft/core-composable_nft/template": "collectible"
+        "/category/nft/core-custom_nft/template": "collectible"
     }
 }

@@ -1,11 +1,11 @@
 import DappLib from "@decentology/dappstarter-dapplib";
-import DOM from "../../components/dom";
-import "../../components/action-card.js";
-import "../../components/action-button.js";
-import "../../components/text-widget.js";
-import "../../components/number-widget.js";
-import "../../components/account-widget.js";
-import "../../components/upload-widget.js";
+import DOM from "../components/dom";
+import "../components/action-card.js";
+import "../components/action-button.js";
+import "../components/text-widget.js";
+import "../components/number-widget.js";
+import "../components/account-widget.js";
+import "../components/upload-widget.js";
 import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { LitElement, html, customElement, property } from "lit-element";
 
@@ -27,6 +27,12 @@ export default class HarnessPage extends LitElement {
   }
   constructor(args) {
     super(args);
+    let page = localStorage.getItem('dappstarter-page');
+    if (page.includes('-')) {
+      setTimeout(() => {
+        this.setPageLoader(page);
+      }, 0);
+    }
   }
 
   getPages() {
@@ -35,6 +41,7 @@ export default class HarnessPage extends LitElement {
 
   handleClick = e => {
     e.preventDefault();
+    localStorage.setItem('dappstarter-page', e.target.dataset.link);
     this.setPageLoader(e.target.dataset.link);
   };
 
