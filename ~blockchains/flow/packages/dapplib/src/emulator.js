@@ -159,7 +159,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
     try {
       dappConfig = JSON.parse(fs.readFileSync(dappConfigFile, 'utf8'));
     }
-    catch(e) {
+    catch (e) {
       // Can be ignored as file will be regenerated
     }
     let queueItems = [];
@@ -174,14 +174,14 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
 
           // Ignore imported contracts in folders that
           // aren't explicitly in the 'folders' list
-          for(let d=0;d<deps.length;d++) {
+          for (let d = 0; d < deps.length; d++) {
             let iname = deps[d][0];
             if (iname !== null) {
               iname = iname.split('.')[0];
               if (!folders.includes(iname)) {
                 deps[d][0] = null;
               }
-            }            
+            }
           }
 
           queueItems = queueItems.concat(deps);
@@ -313,7 +313,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
       await generate(interactionsFolder, destFolder, 'transactions', dappConfig.contracts);
 
       if (mode === 'test') {
-        spawn.sync('npx', ['mocha', '--timeout', '10000', path.join(__dirname, '..', '..', 'dapplib', 'tests')], {
+        spawn.sync('npx', ['mocha', '--timeout', '20000', path.join(__dirname, '..', '..', 'dapplib', 'tests')], {
           stdio: 'inherit',
         });
       }
