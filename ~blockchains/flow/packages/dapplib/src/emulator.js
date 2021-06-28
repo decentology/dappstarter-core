@@ -122,7 +122,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
     // After all the project contracts are deployed, the call back runs this script file with a watch
     // on the interactions folder and an arg of 'transpile' causing processing to start here
 
-    transpile();
+    await transpile();
 
   }
 
@@ -156,7 +156,12 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
   async function processContractFolders(folders, runTranspiler) {
 
     let sourceFolder = path.join(__dirname, '..', '..', 'dapplib', 'contracts');
-    dappConfig = JSON.parse(fs.readFileSync(dappConfigFile, 'utf8'));
+    try {
+      dappConfig = JSON.parse(fs.readFileSync(dappConfigFile, 'utf8'));
+    }
+    catch(e) {
+      // Can be ignored as file will be regenerated
+    }
     let queueItems = [];
     let contracts = {};
 
@@ -203,9 +208,9 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
         }
       });
 
-      deployContracts(() => {
+      deployContracts(async () => {
         if (runTranspiler === true) {
-          transpile();
+          await transpile();
         }
       });
     });
@@ -251,7 +256,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
   }
 
 
-  async function deployContracts(callback) {
+  function deployContracts(callback) {
 
     let itemIndex = 0;
     let flow = new Flow(config);
@@ -296,7 +301,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
     }, BLOCK_INTERVAL);
   }
 
-  function transpile(runTest) {
+  async function transpile(runTest) {
     if (fs.existsSync(dappConfigFile)) {
       console.log('\n🎛   Transpiling scripts and transactions...');
       dappConfig = JSON.parse(fs.readFileSync(dappConfigFile, 'utf8'));
@@ -304,15 +309,13 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
       let interactionsFolder = path.join(__dirname, '..', '..', 'dapplib', 'interactions');
       let destFolder = __dirname;
 
-      generate(interactionsFolder, destFolder, 'scripts', dappConfig.contracts);
-      generate(interactionsFolder, destFolder, 'transactions', dappConfig.contracts);
+      await generate(interactionsFolder, destFolder, 'scripts', dappConfig.contracts);
+      await generate(interactionsFolder, destFolder, 'transactions', dappConfig.contracts);
 
       if (mode === 'test') {
-        spawn.sync(path.join(__dirname, '..', '..', '..', '..', 'node_modules', 'mocha', 'bin', 'mocha'), ['--timeout', '10000', path.join(__dirname, '..', '..', 'tests')], {
+        spawn.sync('npx', ['mocha', '--timeout', '10000', path.join(__dirname, '..', '..', 'dapplib', 'tests')], {
           stdio: 'inherit',
         });
-        fkill('flow');
-        fkill('node');
       }
     }
 
@@ -331,52 +334,54 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
     );
   }
 
-  function generate(interactionsFolder, destFolder, type, deployedContracts) {
+  async function generate(interactionsFolder, destFolder, type, deployedContracts) {
 
-    let prefix = TAB + TAB + TAB + TAB;
-    let isTransaction = type === 'transactions';
-    // Outermost class wrapper
-    let outSource = '// 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨' + NEWLINE;
-    outSource += '// ⚠️ THIS FILE IS AUTO-GENERATED WHEN packages/dapplib/interactions CHANGES' + NEWLINE;
-    outSource += '// DO **** NOT **** MODIFY CODE HERE AS IT WILL BE OVER-WRITTEN' + NEWLINE;
-    outSource += '// 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨' + NEWLINE + NEWLINE;
-    outSource += 'const fcl = require("@onflow/fcl");' + NEWLINE + NEWLINE;
-    outSource += 'module.exports = class Dapp' + (isTransaction ? 'Transactions' : 'Scripts') + ' {' + NEWLINE;
+    return new Promise((resolve, reject) => {
+      let prefix = TAB + TAB + TAB + TAB;
+      let isTransaction = type === 'transactions';
+      // Outermost class wrapper
+      let outSource = '// 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨' + NEWLINE;
+      outSource += '// ⚠️ THIS FILE IS AUTO-GENERATED WHEN packages/dapplib/interactions CHANGES' + NEWLINE;
+      outSource += '// DO **** NOT **** MODIFY CODE HERE AS IT WILL BE OVER-WRITTEN' + NEWLINE;
+      outSource += '// 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨' + NEWLINE + NEWLINE;
+      outSource += 'const fcl = require("@onflow/fcl");' + NEWLINE + NEWLINE;
+      outSource += 'module.exports = class Dapp' + (isTransaction ? 'Transactions' : 'Scripts') + ' {' + NEWLINE;
 
 
-    // Read the 'scripts' or 'transactions' folder as determined by 'type'
-    let sourceFolder = path.join(interactionsFolder, type);
-    let emitter = walk(sourceFolder, filePath => { });
+      // Read the 'scripts' or 'transactions' folder as determined by 'type'
+      let sourceFolder = path.join(interactionsFolder, type);
+      let emitter = walk(sourceFolder, filePath => { });
 
-    emitter.on('file', filePath => {
-      if (filePath.endsWith('.cdc')) {
-        let functionName = filePath.replace(sourceFolder + path.sep, '');
-        functionName = functionName.split(path.sep).join('_');
-        functionName = functionName.split('.')[0];
+      emitter.on('file', filePath => {
+        if (filePath.endsWith('.cdc')) {
+          let functionName = filePath.replace(sourceFolder + path.sep, '');
+          functionName = functionName.split(path.sep).join('_');
+          functionName = functionName.split('.')[0];
 
-        let code = fs.readFileSync(filePath, 'utf8');
+          let code = fs.readFileSync(filePath, 'utf8');
 
-        // Function name
-        outSource += NEWLINE + TAB + 'static ' + functionName + '() {' + NEWLINE;
+          // Function name
+          outSource += NEWLINE + TAB + 'static ' + functionName + '() {' + NEWLINE;
 
-        // All the code is added into a JS template literal so line breaks
-        // are preserved. We also need to inject imports at run-time which 
-        // a template literal enables quite easily
-        outSource += TAB + TAB + 'return fcl.' + (isTransaction ? 'transaction' : 'script') + '`' + NEWLINE;
-        outSource += Flow.replaceImportRefs(code, deployedContracts, prefix);
-        outSource += TAB + TAB + '`;';
-        outSource += NEWLINE + TAB + '}' + NEWLINE;
-      }
+          // All the code is added into a JS template literal so line breaks
+          // are preserved. We also need to inject imports at run-time which 
+          // a template literal enables quite easily
+          outSource += TAB + TAB + 'return fcl.' + (isTransaction ? 'transaction' : 'script') + '`' + NEWLINE;
+          outSource += Flow.replaceImportRefs(code, deployedContracts, prefix);
+          outSource += TAB + TAB + '`;';
+          outSource += NEWLINE + TAB + '}' + NEWLINE;
+        }
 
-    });
+      });
 
-    emitter.on('end', () => {
-      outSource += NEWLINE + '}' + NEWLINE;
+      emitter.on('end', () => {
+        outSource += NEWLINE + '}' + NEWLINE;
 
-      // Create dapp-*.js output file based on the type
-      fs.writeFileSync(path.join(destFolder, 'dapp-' + type + '.js'), outSource, 'utf8')
-      console.log(`\n    📑  Transpiled ${type} to dapp-${type}.js`);
-
+        // Create dapp-*.js output file based on the type
+        fs.writeFileSync(path.join(destFolder, 'dapp-' + type + '.js'), outSource, 'utf8')
+        console.log(`\n    📑  Transpiled ${type} to dapp-${type}.js`);
+        resolve();
+      });
     });
 
   }
