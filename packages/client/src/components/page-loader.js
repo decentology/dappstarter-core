@@ -23,7 +23,6 @@ export default class PageLoader extends LitElement {
   }
 
   async load(page, pages) {
-
     let pageItem = pages.find(item => item.name === page);
     if (!pageItem) {
       return;
@@ -50,14 +49,16 @@ export default class PageLoader extends LitElement {
       if (modulePage === 'dapp') {
         await import(`../pages/${modulePage}.js`);
       } else if (modulePage === 'harness') {
-        await import(`../pages/harness/${modulePage}.js`);
-      } else if (modulePage === 'composer') {
-        await import(`../pages/harness/${modulePage}.js`);
-      } else if (modulePage.indexOf('-composer') > -1) {
-        await import(`../pages/harness/${modulePage}.js`);
+        await import(`../harness/harness.js`);
+      } else if (modulePage === 'customizer') {
+        await import(`../components/customizer.js`);
+      } else if (modulePage.indexOf('-customizer') > -1) {
+        // Dynamically added
+        await import(`../harness/${modulePage}.js`);
         suffix = '';
       } else {
-        await import(`../pages/harness/${modulePage}-page.js`);
+        suffix = '-harness';
+        await import(`../harness/${modulePage}-harness.js`);
       }
       let pageName = modulePage.replace('_', '-') + suffix;
       this.pageContent = DOM.create(pageName, {

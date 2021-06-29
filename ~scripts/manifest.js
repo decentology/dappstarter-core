@@ -66,8 +66,8 @@ module.exports = class Manifest {
     static get PARAMETERS() {
         return 'parameters';
     }
-    static get COMPOSABLE() {
-        return 'composable';
+    static get CUSTOMIZABLE() {
+        return 'customizable';
     }
     static get MODULE() {
         return 'feature';

@@ -1,0 +1,8 @@
+{
+    "blocks": {
+        "/blockchain/flow": true,
+        "/blockchain/flow/cadence": true,
+        "/category/nft/core-sample": true,
+        "/framework/vanilla": true
+    }
+}

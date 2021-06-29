@@ -1,11 +1,10 @@
 
-const SHA3 = require('sha3').SHA3;
 const EC = require('elliptic').ec;
 const ec = new EC("p256")
 const rlp = require('rlp');
 const fcl = require('@onflow/fcl');
 const t = require('@onflow/types');
-
+const { Signer } = require('./signer.js');
 class Flow {
 
     static get Roles() {
@@ -37,6 +36,7 @@ class Flow {
     constructor(config) {
         this.serviceUri = config.httpUri;
         this.serviceWallet = config.serviceWallet;
+        this.testMode = config.testMode || false;
     }
 
     /* API */
@@ -46,7 +46,7 @@ class Flow {
           weight: 1 ... 1000 
       }
     */
-    async createAccount(keyInfo) {
+    async createAccount(keyInfo, tokens) {
         /*
            
         */
@@ -60,25 +60,67 @@ class Flow {
         });
 
         // Transaction code
-        let tx = fcl.transaction`
-                            transaction(publicKeys: [String]) {
-                                prepare(signer: AuthAccount) {
-                                    let acct = AuthAccount(payer: signer)
-                                    for key in publicKeys {
-                                        acct.addPublicKey(key.decodeHex())
-                                    }
-                                }
-                            }`;
-
+        let tx;
         // Transaction options
         // roleInfo can either be:
         // { [Flow.Roles.ALL]: xxxxxx }  
         // - OR - 
         // { [Flow.Roles.PROPOSER]: xxxxxx,  [Flow.Roles.AUTHORIZATIONS]: [ xxxxxx ],  [Flow.Roles.PAYER]: xxxxxx,}
-        let options = {
-            roleInfo: { [Flow.Roles.ALL]: this.serviceWallet.address },
-            args: [{ type: t.Array(t.String), value: publicKeys.map(o => o.encodedPublicKey) }],
-            gasLimit: 300
+        let options;
+
+        // If tokens (the number of Flow Token to give to an account on deployment)
+        // is provided
+        if (tokens !== undefined) {
+            tx = fcl.transaction`
+                                import FlowToken from 0x0ae53cb6e3f42a79
+                                import FungibleToken from 0xee82856bf20e2aa6
+                                transaction(publicKeys: [String], amount: UFix64) {
+                                    let tokenAdmin: &FlowToken.Administrator
+                                    let tokenReceiver: &{FungibleToken.Receiver}
+                                    prepare(signer: AuthAccount) {
+                                        let acct = AuthAccount(payer: signer)
+                                        for key in publicKeys {
+                                            acct.addPublicKey(key.decodeHex())
+                                        }
+
+                                        self.tokenAdmin = signer.borrow<&FlowToken.Administrator>(from: /storage/flowTokenAdmin)
+                                            ?? panic("Signer is not the token admin")
+
+                                        self.tokenReceiver = acct
+                                            .getCapability(/public/flowTokenReceiver)
+                                            .borrow<&{FungibleToken.Receiver}>()
+                                            ?? panic("Unable to borrow receiver reference")
+                                    }
+
+                                    execute {
+                                        let minter <- self.tokenAdmin.createNewMinter(allowedAmount: amount)
+                                        let mintedVault <- minter.mintTokens(amount: amount)
+
+                                        self.tokenReceiver.deposit(from: <-mintedVault)
+
+                                        destroy minter
+                                    }
+                                }`;
+            options = {
+                roleInfo: { [Flow.Roles.ALL]: this.serviceWallet.address },
+                args: [{ type: t.Array(t.String), value: publicKeys.map(o => o.encodedPublicKey) }, { value: tokens, type: t.UFix64 }],
+                gasLimit: 300
+            }
+        } else {
+            tx = fcl.transaction`
+                                transaction(publicKeys: [String]) {
+                                    prepare(signer: AuthAccount) {
+                                        let acct = AuthAccount(payer: signer)
+                                        for key in publicKeys {
+                                            acct.addPublicKey(key.decodeHex())
+                                        }
+                                    }
+                                }`;
+            options = {
+                roleInfo: { [Flow.Roles.ALL]: this.serviceWallet.address },
+                args: [{ type: t.Array(t.String), value: publicKeys.map(o => o.encodedPublicKey) }],
+                gasLimit: 300
+            }
         }
 
         // Use fcl to compose and submit the transaction
@@ -274,7 +316,7 @@ class Flow {
         // If the transaction is going to change state, it will require roleInfo to be populated
         if (options.roleInfo) {
 
-            let signer = new Signer(this.serviceWallet);
+            let signer = new Signer(this.serviceWallet, this.testMode);
             let roles = options.roleInfo;
 
             // The Proposer authorization is the only one that requires a sequenceNumber
@@ -342,86 +384,6 @@ class Flow {
 
 }
 
-class Signer {
-
-    constructor(serviceWallet) {
-        this.serviceWallet = serviceWallet;
-    }
-
-    async _getAuthorizingKey(address) {
-        let dappConfig;
-        try {
-            //delete require.cache[require.resolve('../dapp-config.json')];
-            dappConfig = require('./dapp-config.json');
-        } catch (e) {
-            dappConfig = {
-                wallets: [this.serviceWallet]
-            }
-        }
-
-        let selectedKey = 0; // TODO: This could be different
-        let wallet = null
-        if (address == this.serviceWallet.address) {
-            wallet = this.serviceWallet
-        } else {
-            wallet = dappConfig.wallets.find(o => address.indexOf(o.address) > -1);
-        }
-
-        let key = wallet.keys.find(k => k.keyId === selectedKey);
-
-        return {
-            privateKey: key.privateKey,
-            keyId: key.keyId
-        }
-    }
-
-    async authorize(accountInfo) {
-        let { privateKey, keyId } = await this._getAuthorizingKey(accountInfo.address);
-
-        return (account = {}) => {
-
-            // This function is passed as a param for each authorization requested
-            // Use currying to ensure that "account" is correctly hydrated for each
-            // authorization for which signingFunction is called
-            const __signingFunction = data => {
-                console.log(`\n    ✍️   Signing for account ${accountInfo.address}\n`)
-                return {
-                    tempId: accountInfo.address,
-                    addr: fcl.sansPrefix(accountInfo.address),
-                    keyId: keyId,
-                    signature: Signer.signMessage(privateKey, data.message)
-                }
-            }
-
-            let retVal = {
-                ...account,
-                tempId: accountInfo.address,
-                addr: fcl.sansPrefix(accountInfo.address),
-                keyId: keyId,
-                //                sequenceNum: accountInfo.keys[keyId].sequenceNumber,
-                signature: account.signature || null,
-                signingFunction: __signingFunction
-            }
-
-            return retVal;
-        }
-    }
-
-    static signMessage(privateKey, message) {
-        const key = ec.keyFromPrivate(Buffer.from(privateKey, "hex"));
-        const sha = new SHA3(256);
-        sha.update(Buffer.from(message, "hex"));
-        const digest = sha.digest();
-        const sig = key.sign(digest);
-        const n = 32; // half of signature length?
-        const r = sig.r.toArrayLike(Buffer, "be", n);
-        const s = sig.s.toArrayLike(Buffer, "be", n);
-        return Buffer.concat([r, s]).toString("hex")
-    }
-
-}
-
 module.exports = {
-    Flow: Flow,
-    Signer: Signer
+    Flow: Flow
 }
