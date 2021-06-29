@@ -1,4 +1,3 @@
-// Since emulator is reset we need to delete dapp-config and start over
 const fs = require('fs');
 const path = require('path');
 const waitOn = require('wait-on');
@@ -7,92 +6,74 @@ const fkill = require('fkill');
 const walk = require('walkdir');
 const toposort = require('toposort');
 const { Flow } = require('./flow');
-const networks = require('./flow-config.json');
+const flowConfig = require('./flow.json');
+
 const NEWLINE = '\n';
 const TAB = '\t';
-const BLOCK_INTERVAL = 200;
+const BLOCK_INTERVAL = 50;
+const MODE = {
+  DEFAULT: 'default',
+  DEPLOY: 'deploy',
+  TRANSPILE: 'transpile',
+  TEST: 'test'
+}
+const NETWORK_EMULATOR_KEY = 'emulator';
+const SCRIPT_NAME = 'rhythm.js';
 
-let config = networks.development.config;
-let chainContracts = {
-  'Flow.FlowFees': '0xe5a8b7f23e8b548f',
-  'Flow.FlowServiceAccount': '0xf8d6e0586b0a20c7',
-  'Flow.FlowStorageFees': '0xf8d6e0586b0a20c7',
-  'Flow.FlowToken': '0x0ae53cb6e3f42a79',
-  'Flow.FungibleToken': '0xee82856bf20e2aa6',
+const mode = process.argv.length > 2 ? process.argv[process.argv.length - 1].toLowerCase() : MODE.DEFAULT;
+const chainContracts = {};
+Object.keys(flowConfig.contracts).forEach((key) => {
+  chainContracts[key] = flowConfig.contracts[key].aliases[NETWORK_EMULATOR_KEY];
+});
+
+const emulator = flowConfig.emulators[mode === MODE.TEST ? MODE.TEST : MODE.DEFAULT];
+const serviceAccount = flowConfig.accounts[emulator.serviceAccount];
+const httpUri = 'http://localhost:8080';
+const serviceWallet = {
+  'address': '0x' + serviceAccount.address,
+  'keys': [
+    {
+      'privateKey': serviceAccount.keys,
+      'keyId': 0,
+      'weight': 1000
+    }  
+  ]  
 }
 
 const dappConfigFile = path.join(__dirname, 'dapp-config.json');
-let mode = 'emulate';
-if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
-  mode = 'deploy';
-} else if (process.argv[process.argv.length - 1].toLowerCase() === 'transpile') {
-  mode = 'transpile';
-} else if (process.argv[process.argv.length - 1].toLowerCase() === 'test') {
-  mode = 'test';
-}
 
 (async () => {
-  let accountCount = 3;
-  let keyCount = 4;
+  let accountCount = 5;
+  let keyCount = 2;
   let dappConfig = null;
   let pending = false;
   let queue = [];
   let tokens = 1000;
 
-  if ((mode === 'emulate') || (mode === 'test')) {
+  if ((mode === MODE.DEFAULT) || (mode === MODE.TEST)) {
+
+    // For testing, generate accounts etc. but don't
+    // update the dapp-config file
     if (fs.existsSync(dappConfigFile)) {
       fs.unlinkSync(dappConfigFile);
     }
 
-    let newServiceWallet = config.serviceWallet
-    newServiceWallet.address = "0x" + config.serviceWallet.address
     // Unpopulated dappConfig with service info only
     dappConfig = {
-      httpUri: config.httpUri,
+      httpUri,
       contracts: chainContracts,
-      deployAccountHints: {
-        'Project.Example': 1
-      },
       accounts: [],
-      serviceWallet: newServiceWallet,
+      serviceWallet: serviceWallet,
       contractWallet: null,
       wallets: [],
     };
 
-    try {
-      await fkill('flow');
-    } catch (e) { }
-    // Start the emulator
-    const emulator = spawn('npx', [
-      'flow',
-      'emulator',
-      'start',
-      '--init=true',
-      '--block-time=' + BLOCK_INTERVAL + 'ms',
-      '--persist=false',  // This is important, especially for testing
-      '--dbpath=./flowdb',
-      '--service-priv-key=' + dappConfig.serviceWallet.keys[0].privateKey,
-      '--service-sig-algo=ECDSA_P256',
-      '--service-hash-algo=SHA3_256',
-    ]);
-
-    emulator.stdout.on('data', (data) => {
-      let d = data.toString();
-      if (d.toString().indexOf('level=info msg="') > -1) {
-        console.log(d.toString().split('level=info msg="')[1].replace('"', ''));
-      } else {
-        console.log(d.toString());
-      }
-    });
-
-    emulator.stderr.on('data', (data) => {
-      console.log('\n' + data.toString());
-    });
-
-    console.log('\n' + '⏳  Waiting for Flow emulator to start...');
+    // Launch the Flow emulator with a different configuration based on
+    // emulate or test mode
+    await launchEmulator();
 
     let opts = {
-      resources: ['tcp:3569'],
+      resources: ['tcp:' + emulator.port],
     };
 
     // Once the emulator starts, create the test accounts
@@ -103,21 +84,34 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
     waitOn(opts).then(async () => {
       accountCount++; // Add an account to which non-project contracts will be deployed
 
-      spawn('npx', ['watch', `node ${path.join(__dirname, 'emulator.js')} deploy`, 'contracts/project'], { stdio: 'inherit' });
-      spawn('npx', ['watch', `node ${path.join(__dirname, 'emulator.js')} transpile`, 'interactions'], { stdio: 'inherit' });
-
       await createTestAccounts();
       updateConfiguration();
-      await processContractFolders(['Flow', 'Decentology', 'Project'], true);
+      processContractFolders(['Flow', 'Decentology'])
+        .then(() => {
+          if (mode === MODE.DEFAULT) {
+            spawn('npx', ['watch', `node ${path.join(__dirname, SCRIPT_NAME)} deploy`, 'contracts/project'], { stdio: 'inherit' });
+          } else if (mode === MODE.TEST) {
+            processContractFolders(['Project'])
+              .then(async() => {
+                await transpile();
+                spawn.sync('npx', ['mocha', '--timeout', '20000', path.join(__dirname, '..', '..', 'dapplib', 'tests')], {
+                  stdio: 'inherit',
+                });         
+              });
+          }    
+        });
     });
 
-  } else if (mode === 'deploy') {
+  } else if (mode === MODE.DEPLOY) {
 
     // After all the vendor contracts are deployed, the call back runs this script file with a watch
     // on the contracts folder and an arg of 'deploy' causing processing to start here
-    await processContractFolders(['Project'], true);
+    processContractFolders(['Project'])
+      .then(() => {
+        spawn('npx', ['watch', `node ${path.join(__dirname, SCRIPT_NAME)} transpile`, 'interactions'], { stdio: 'inherit' });
+      });
 
-  } else if (mode === 'transpile') {
+  } else if (mode === MODE.TRANSPILE) {
 
     // After all the project contracts are deployed, the call back runs this script file with a watch
     // on the interactions folder and an arg of 'transpile' causing processing to start here
@@ -126,8 +120,53 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
 
   }
 
+  async function launchEmulator() {
+
+    try {
+      if (mode === MODE.DEFAULT) {
+        await fkill('flow');
+      }
+    } catch (e) {
+      // In case it isn't already running
+    }
+
+    // Start the emulator
+    const emulatorInstance = spawn('npx', [
+      'flow',
+      'emulator',
+      'start',
+      '--config-path=./flow.json',
+      '--port=' + emulator.port,
+      '--init=true',
+      '--block-time=' + BLOCK_INTERVAL + 'ms',
+      '--persist=false',  // This is important, especially for testing
+      '--dbpath=./flowdb' + mode,
+      '--service-priv-key=' + serviceAccount.keys,
+      '--service-sig-algo=ECDSA_P256',
+      '--service-hash-algo=SHA3_256',
+    ]);
+
+    emulatorInstance.stdout.on('data', (data) => {
+      let d = data.toString();
+      if (d.toString().indexOf('level=info msg="') > -1) {
+        console.log(d.toString().split('level=info msg="')[1].replace('"', ''));
+      } else {
+        console.log(d.toString());
+      }
+    });
+
+    emulatorInstance.stderr.on('data', (data) => {
+      console.log('\n' + data.toString());
+    });
+
+    console.log('\n' + '⏳  Waiting for Flow emulator to start...');
+  }
+
   async function createTestAccounts() {
-    let flow = new Flow(config);
+    let flow = new Flow({
+      httpUri,
+      serviceWallet
+    });
     for (let a = 0; a < accountCount; a++) {
       let keyInfo = [];
       for (let k = 0; k < keyCount; k++) {
@@ -153,65 +192,66 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
     }
   }
 
-  async function processContractFolders(folders, runTranspiler) {
+  function processContractFolders(folders) {
 
-    let sourceFolder = path.join(__dirname, '..', '..', 'dapplib', 'contracts');
-    try {
-      dappConfig = JSON.parse(fs.readFileSync(dappConfigFile, 'utf8'));
-    }
-    catch (e) {
-      // Can be ignored as file will be regenerated
-    }
-    let queueItems = [];
-    let contracts = {};
-
-    let emitter = walk(sourceFolder, filePath => { });
-
-    emitter.on('file', filePath => {
-      for (let f = 0; f < folders.length; f++) {
-        if ((filePath.endsWith('.cdc')) && (filePath.indexOf(`/contracts/${folders[f]}/`) > -1)) {
-          let { code, contractNames, deps } = getContractDependencies(folders[f], filePath);
-
-          // Ignore imported contracts in folders that
-          // aren't explicitly in the 'folders' list
-          for (let d = 0; d < deps.length; d++) {
-            let iname = deps[d][0];
-            if (iname !== null) {
-              iname = iname.split('.')[0];
-              if (!folders.includes(iname)) {
-                deps[d][0] = null;
+    return new Promise((resolve, reject) => {
+      let sourceFolder = path.join(__dirname, '..', '..', 'dapplib', 'contracts');
+      try {
+        dappConfig = JSON.parse(fs.readFileSync(dappConfigFile, 'utf8'));
+      }
+      catch (e) {
+        // Can be ignored as file will be regenerated
+      }
+      let queueItems = [];
+      let contracts = {};
+  
+      let emitter = walk(sourceFolder, filePath => { });
+  
+      emitter.on('file', filePath => {
+        for (let f = 0; f < folders.length; f++) {
+          if ((filePath.endsWith('.cdc')) && (filePath.indexOf(`/contracts/${folders[f]}/`) > -1)) {
+            let { code, contractNames, deps } = getContractDependencies(folders[f], filePath);
+  
+            // Ignore imported contracts in folders that
+            // aren't explicitly in the 'folders' list
+            for (let d = 0; d < deps.length; d++) {
+              let iname = deps[d][0];
+              if (iname !== null) {
+                iname = iname.split('.')[0];
+                if (!folders.includes(iname)) {
+                  deps[d][0] = null;
+                }
               }
             }
+  
+            queueItems = queueItems.concat(deps);
+            contractNames.forEach((cname) => {
+              contracts[cname] = code;
+            })
+            break;
           }
-
-          queueItems = queueItems.concat(deps);
-          contractNames.forEach((cname) => {
-            contracts[cname] = code;
-          })
-          break;
-        }
-      }
-    });
-
-    emitter.on('end', () => {
-      let sorted = toposort(queueItems);
-      queue = [];
-
-      sorted.forEach((s) => {
-        if (s !== null) {
-          queue.push({
-            prefix: s.split('.')[0],
-            contractName: s.split('.')[1],
-            contract: contracts[s],
-            address: dappConfig.deployAccountHints[s] ? dappConfig.accounts[dappConfig.deployAccountHints[s]] : dappConfig.accounts[0]
-          });
         }
       });
-
-      deployContracts(async () => {
-        if (runTranspiler === true) {
-          await transpile();
-        }
+  
+      emitter.on('end', () => {
+        let sorted = toposort(queueItems);
+        queue = [];
+  
+        sorted.forEach((s) => {
+          if (s !== null) {
+            queue.push({
+              prefix: s.split('.')[0],
+              contractName: s.split('.')[1],
+              contract: contracts[s],
+              address: dappConfig.accounts[0]
+  //            address: dappConfig.deployAccountHints[s] ? dappConfig.accounts[dappConfig.deployAccountHints[s]] : dappConfig.accounts[0]
+            });
+          }
+        });
+  
+        deployContracts(async () => {
+          resolve();
+        });
       });
     });
   }
@@ -259,7 +299,10 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
   function deployContracts(callback) {
 
     let itemIndex = 0;
-    let flow = new Flow(config);
+    let flow = new Flow({
+      httpUri,
+      serviceWallet
+    });
     let handle = setInterval(async () => {
       if (pending) {
         return;
@@ -311,14 +354,7 @@ if (process.argv[process.argv.length - 1].toLowerCase() === 'deploy') {
 
       await generate(interactionsFolder, destFolder, 'scripts', dappConfig.contracts);
       await generate(interactionsFolder, destFolder, 'transactions', dappConfig.contracts);
-
-      if (mode === 'test') {
-        spawn.sync('npx', ['mocha', '--timeout', '20000', path.join(__dirname, '..', '..', 'dapplib', 'tests')], {
-          stdio: 'inherit',
-        });
-      }
     }
-
   }
 
 

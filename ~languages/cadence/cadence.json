@@ -75,9 +75,9 @@
           "*": {
             "scripts": {
               "clean": "rimraf -rf build && rimraf -rf dist",
-              "deploy": "node src/emulator deploy",
-              "dev": "node src/emulator",
-              "test": "node src/emulator test"
+              "deploy": "node src/rhythm deploy",
+              "dev": "node src/rhythm",
+              "test": "node src/rhythm test"
             }
           },
           "flow": {
