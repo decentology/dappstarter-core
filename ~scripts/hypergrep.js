@@ -901,7 +901,7 @@ module.exports = class Hypergrep {
 
 
     process(settings, callback) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             try {
                 let self = this;
                 let gracefulCompletion = true;
@@ -911,7 +911,14 @@ module.exports = class Hypergrep {
                 };
                 outputInfo[Manifest.BLOCKS] = {};
                 outputInfo[SWAP_PARAMETERS] = {};
-                let accountSeed = config[FIXED_OUTPUT_FOLDER_KEY] ? null : Hypergrep._generateFolderName();
+                let accountSeed = config[FIXED_OUTPUT_FOLDER_KEY];
+                let folderExists = accountSeed == null ? true : false;
+                while (folderExists) {
+                accountSeed = Hypergrep._generateFolderName();
+                folderExists = await fse.pathExists(
+                    path.join(self.targetFolder, accountSeed)
+                );
+                }
                 let accountInfo = self._generateAccounts(accountSeed);
 
                 outputInfo[SWAP_PARAMETERS][SWAP_ACCOUNTS] = accountInfo.accounts;
