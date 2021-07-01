@@ -217,6 +217,21 @@
                 }
             },
             {
+                "name": "foundation",
+                "title": "Foundations",
+                "description": "The complete foundation you need to build an amazing dapp.",
+                "imageUrl": "",
+                "help": {
+                    "title": "",
+                    "url": ""
+                },
+                "interface": {
+                    "hidden": false,
+                    "enabled": true,
+                    "children": "single"
+                }
+            },
+            {
                 "name": "file_storage",
                 "title": "File Storage",
                 "description": "Storing data on a blockchain is expensive so developers usually store a pointer to the data, called a hash, on the blockchain.",
@@ -244,21 +259,6 @@
                     "hidden": false,
                     "enabled": true,
                     "children": "multiple"
-                }
-            },
-            {
-                "name": "voting",
-                "title": "Voting",
-                "description": "Implement different voting systems.",
-                "imageUrl": "",
-                "help": {
-                    "title": "",
-                    "url": ""
-                },
-                "interface": {
-                    "hidden": false,
-                    "enabled": true,
-                    "children": "single"
                 }
             },
             {
