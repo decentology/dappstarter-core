@@ -12,6 +12,17 @@
                     "url": "https://www.decentology.com"
                 },
                 "folder": "dappstarter-modules-core"
+            },
+            {
+                "name": "dao_core",
+                "title": "Decentology DAO Modules",
+                "description": "DAO Modules created and maintained by Decentology",
+                "imageUrl": "",
+                "help": {
+                    "title": "Decentology Module Wiki",
+                    "url": "https://www.decentology.com"
+                },
+                "folder": "dappstarter-dao-core"
             }
         ]
     },
@@ -121,8 +132,7 @@
             "enabled": false,
             "children": "single"
         },
-        "children": [
-        ]
+        "children": []
     },
     {
         "name": "wallet-providers",
@@ -138,8 +148,7 @@
             "enabled": false,
             "children": "single"
         },
-        "children": [
-        ]
+        "children": []
     },
     {
         "name": "categories",

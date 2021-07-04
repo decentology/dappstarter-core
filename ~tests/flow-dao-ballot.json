@@ -1,0 +1,8 @@
+{
+    "blocks": {
+        "/blockchain/flow": true,
+        "/blockchain/flow/cadence": true,
+        "/category/nft/dao_core-ballot": true,
+        "/framework/vanilla": true
+    }
+}
