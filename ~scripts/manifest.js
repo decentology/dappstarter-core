@@ -155,7 +155,6 @@ module.exports = class Manifest {
     get(blockchain, language, category) {
         let self = this;
         let components = [...self.components];
-        console.log('Manifest', components)
         // Filter blockchain
         if (blockchain) {
             let blockchainIndex = components.findIndex(element => element.name === Manifest.BLOCKCHAINS);
