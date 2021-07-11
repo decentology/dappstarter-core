@@ -2,7 +2,7 @@
     "blocks": {
         "/blockchain/flow": true,
         "/blockchain/flow/cadence": true,
-        "/category/nft/core-pack_nft": true,
+        "/category/foundation/core-pack_nft": true,
         "/framework/vanilla": true
     }
 }

@@ -2,7 +2,7 @@
     "blocks": {
         "/blockchain/flow": true,
         "/blockchain/flow/cadence": true,
-        "/category/voting/core-ballot": true,
+        "/category/foundation/core-ballot": true,
         "/framework/vanilla": true
     }
 }
