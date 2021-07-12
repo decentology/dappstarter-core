@@ -44,7 +44,7 @@
         "path": "${categoryFolder}/${name}/rust/${name}-tests.js",
         "sequence": false
       },
-      "/packages/client/src/[harness-pages].js": {
+      "/packages/client/src/harness/[harness-pages].js": {
         "processor": "file-blocks",
         "path": "${categoryFolder}/${name}/rust/${name}-harness.js",
         "sequence": false
