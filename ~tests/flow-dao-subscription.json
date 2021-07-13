@@ -1,0 +1,8 @@
+{
+    "blocks": {
+        "/blockchain/flow": true,
+        "/blockchain/flow/cadence": true,
+        "/category/subscription/dao_core-subscription": true,
+        "/framework/vanilla": true
+    }
+}

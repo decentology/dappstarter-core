@@ -241,6 +241,21 @@
                 }
             },
             {
+                "name": "subscription",
+                "title": "Subscription",
+                "description": "Setup subscriptions with different periods and prices.",
+                "imageUrl": "",
+                "help": {
+                    "title": "",
+                    "url": ""
+                },
+                "interface": {
+                    "hidden": false,
+                    "enabled": true,
+                    "children": "single"
+                }
+            },
+            {
                 "name": "foundation",
                 "title": "Foundations",
                 "description": "The complete foundation you need to build an amazing dapp.",

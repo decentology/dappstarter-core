@@ -1,0 +1,8 @@
+{
+    "blocks": {
+        "/blockchain/flow": true,
+        "/blockchain/flow/cadence": true,
+        "/category/voting/dao_core-public_survey": true,
+        "/framework/vanilla": true
+    }
+}
