@@ -36,8 +36,8 @@ const serviceWallet = {
       'privateKey': serviceAccount.keys,
       'keyId': 0,
       'weight': 1000
-    }  
-  ]  
+    }
+  ]
 }
 
 const dappConfigFile = path.join(__dirname, 'dapp-config.json');
@@ -89,16 +89,16 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
       processContractFolders(['Flow', 'Decentology'])
         .then(() => {
           if (mode === MODE.DEFAULT) {
-            spawn('npx', ['watch', `node ${path.join(__dirname, SCRIPT_NAME)} deploy`, 'contracts/project'], { stdio: 'inherit' });
+            spawn('npx', ['watch', `node ${path.join(__dirname, SCRIPT_NAME)} deploy`, 'contracts/Project'], { stdio: 'inherit' });
           } else if (mode === MODE.TEST) {
             processContractFolders(['Project'])
-              .then(async() => {
+              .then(async () => {
                 await transpile();
                 spawn.sync('npx', ['mocha', '--timeout', '20000', path.join(__dirname, '..', '..', 'dapplib', 'tests')], {
                   stdio: 'inherit',
-                });         
+                });
               });
-          }    
+          }
         });
     });
 
@@ -204,14 +204,14 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
       }
       let queueItems = [];
       let contracts = {};
-  
+
       let emitter = walk(sourceFolder, filePath => { });
-  
+
       emitter.on('file', filePath => {
         for (let f = 0; f < folders.length; f++) {
           if ((filePath.endsWith('.cdc')) && (filePath.indexOf(`/contracts/${folders[f]}/`) > -1)) {
             let { code, contractNames, deps } = getContractDependencies(folders[f], filePath);
-  
+
             // Ignore imported contracts in folders that
             // aren't explicitly in the 'folders' list
             for (let d = 0; d < deps.length; d++) {
@@ -223,7 +223,7 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
                 }
               }
             }
-  
+
             queueItems = queueItems.concat(deps);
             contractNames.forEach((cname) => {
               contracts[cname] = code;
@@ -232,11 +232,11 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
           }
         }
       });
-  
+
       emitter.on('end', () => {
         let sorted = toposort(queueItems);
         queue = [];
-  
+
         sorted.forEach((s) => {
           if (s !== null) {
             queue.push({
@@ -244,11 +244,11 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
               contractName: s.split('.')[1],
               contract: contracts[s],
               address: dappConfig.accounts[0]
-  //            address: dappConfig.deployAccountHints[s] ? dappConfig.accounts[dappConfig.deployAccountHints[s]] : dappConfig.accounts[0]
+              //            address: dappConfig.deployAccountHints[s] ? dappConfig.accounts[dappConfig.deployAccountHints[s]] : dappConfig.accounts[0]
             });
           }
         });
-  
+
         deployContracts(async () => {
           resolve();
         });
