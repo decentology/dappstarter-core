@@ -21,7 +21,7 @@ testAccounts.map((account, index) => {
         .then((result) => {
             console.log(index, account, result)
             let balance = new BN(String(result));
-            let target = new BN('1000000000');
+            let target = new BN('10000000000');
             if (balance.lt(target)) {
                 console.log(`Faucet request for (${index}) ${account} (Current Balance: ${balance.toString()})`);
                 setTimeout(() => {
@@ -31,7 +31,7 @@ testAccounts.map((account, index) => {
                             json: {
                                 key: "3XT9XY8-AM4MBW8-NRB8RSX-H3HG2QJ",
                                 to: account,
-                                amount: 2000000000
+                                amount: 10000000000
                             },
                         }, (error, res, body) => {
                             console.log(error, res, body)
