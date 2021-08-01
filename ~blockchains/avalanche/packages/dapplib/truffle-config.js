@@ -24,8 +24,7 @@ module.exports = {
                 true, // share nonce
                 `m/44'/60'/0'/0/` // wallet HD path
             ),
-            gas: 3000000,
-            gasPrice: 470000000000,
+            gas: 8000000,
             network_id: '*',
             chainId: 43113,
             skipDryRun: true
