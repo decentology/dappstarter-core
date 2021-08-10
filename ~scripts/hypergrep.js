@@ -905,7 +905,12 @@ module.exports = class Hypergrep {
             try {
                 let self = this;
                 let gracefulCompletion = true;
-                let config = self._unflatten(settings);
+                let config
+                if (settings.blockchain) { //Support for flattened and standard JSON (pre-generated manifest.json)
+                    config = settings;
+                } else {
+                    config = self._unflatten(settings);
+                }
                 let outputInfo = {
                     manifest: self.getManifest(config[Manifest.BLOCKCHAIN], config[Manifest.LANGUAGE])
                 };
