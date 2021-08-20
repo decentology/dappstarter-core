@@ -1,8 +1,8 @@
 const {
-    Account,
     Connection,
     BpfLoader,
     BPF_LOADER_PROGRAM_ID,
+    Keypair,
     PublicKey,
     LAMPORTS_PER_SOL,
     SystemProgram,
@@ -25,7 +25,7 @@ class Solana {
     }
 
     static getSigningAccount(privateKey) {
-        return new Account(privateKey);
+        return new Keypair(privateKey);
     }
 
     async getAccountInfo(publicKey) {
@@ -48,7 +48,7 @@ class Solana {
 
         let self = this;
         let lamports = 1;
-        let account = new Account();
+        let account = new Keypair();
         
         console.log(`🤖 Account ${account.publicKey} created. Requesting Airdrop...`);
         await self.airDrop(Solana.getPublicKey(account.publicKey), lamports);
@@ -66,7 +66,7 @@ class Solana {
 
         let self = this;
         let lamports = options.lamports || 1000000;
-        let account = options.entropy ? new Account(options.entropy) : new Account();
+        let account = options.entropy ? new Keypair(options.entropy) : new Keypair();
         
         let retries = 10;
 
@@ -128,7 +128,7 @@ class Solana {
             }
         };
 
-        let programAccount = new Account();
+        let programAccount = new Keypair();
         await BpfLoader.load(
                                 self.connection,
                                 payerAccount,
@@ -142,7 +142,7 @@ class Solana {
         let transactionAccounts = [ payerAccount ];
         let transaction = new Transaction();
         for(let l=0; l<dataLayouts.length; l++) {
-            let stateAccount = new Account();
+            let stateAccount = new Keypair();
             transactionAccounts.push(stateAccount);
             let space = dataLayouts[l].layout.span;
             let lamports = await self.connection.getMinimumBalanceForRentExemption(
