@@ -87,7 +87,7 @@ export default class ActionButton extends LitElement {
       let resultNode = DappLib.getFormattedResultNode(retVal, this.return);
       this.fireClickEvent(retVal, resultNode);
     } catch (e) {
-      if (e.message.indexOf("run Out of Gas") > -1) {
+      if (e.message && e.message.indexOf("run Out of Gas") > -1) {
         e.message =
           "Can't access the blockchain. Check that access to it isn't blocked. During development this error usually means your test blockchain is not running or has test accounts that don't match the accounts in your development configuration.";
       }

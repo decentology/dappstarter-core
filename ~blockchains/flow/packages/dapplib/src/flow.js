@@ -222,14 +222,33 @@ class Flow {
         codeLines.forEach((line) => {
             let tokens = line.trim().split(' ');
             if (tokens[0] === 'import') {
-                let contractRef = tokens[tokens.length - 1];
+                let contractRef = ''
+                if (tokens[tokens.length - 1].includes('.cdc')) {
+                    let importSplit = tokens[tokens.length - 1].split('/')
+
+                    // Note that this `if` will never be the case if it's for
+                    // transactions or scripts so we don't have to worry about
+                    // prefix being null
+                    if (importSplit[importSplit.length - 2] == '".') {
+                        // This will get the name of the contract with prefix (ex. "Flow.FungibleToken")
+                        contractRef = prefix + "." + importSplit[importSplit.length - 1].replace('.cdc"', '');
+                    } else {
+                        // This will get the name of the contract with prefix (ex. "Flow.FungibleToken")
+                        contractRef = importSplit[importSplit.length - 2] + "." + importSplit[importSplit.length - 1].replace('.cdc"', '');
+                    }
+                } else {
+                    contractRef = tokens[tokens.length - 1];
+                }
+
                 if (deployedContracts[contractRef]) {
-                    updatedCode += prefix + line.replace(contractRef, deployedContracts[contractRef]) + NEWLINE;
+
+                    updatedCode += line.replace(tokens[tokens.length - 1], deployedContracts[contractRef]) + NEWLINE;
+
                 } else {
                     throw `Missing contract address for ${contractRef}. Perhaps it wasn't deployed?`;
                 }
             } else {
-                updatedCode += prefix + line + NEWLINE;
+                updatedCode += line + NEWLINE;
             }
         });
 
