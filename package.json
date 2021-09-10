@@ -8,9 +8,7 @@
     ]
   },
   "scripts": {
-    "start": "node generate stage",
-    "predevelop": "npx @decentology/dappstarter-cli-proxy",
-    "develop": "dappstarter develop"
+    "start": "node generate stage"
   },
   "dependencies": {
     "blakejs": "1.1.0",
