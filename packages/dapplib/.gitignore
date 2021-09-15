@@ -1,3 +1,9 @@
 dist/
 build/
 target/
+
+packages/dapplib/src/dapp-config.json
+packages/dapplib/src/dapp-scripts.json
+packages/dapplib/src/dapp-transactions.json
+
+yarn.lock
