@@ -10,7 +10,7 @@ const flowConfig = require('./flow.json');
 
 const NEWLINE = '\n';
 const TAB = '\t';
-const BLOCK_INTERVAL = 50;
+const BLOCK_INTERVAL = 0;
 const MODE = {
   DEFAULT: 'default',
   DEPLOY: 'deploy',
@@ -138,19 +138,25 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
       '--config-path=./flow.json',
       '--port=' + emulator.port,
       '--init=true',
-      // '--block-time=' + BLOCK_INTERVAL + 'ms',
+      '--block-time=' + BLOCK_INTERVAL + 'ms',
       '--persist=false',  // This is important, especially for testing
       '--dbpath=./flowdb' + mode,
       '--service-priv-key=' + serviceAccount.keys,
       '--service-sig-algo=ECDSA_P256',
       '--service-hash-algo=SHA3_256',
-      '-v'
+      mode == MODE.TEST ? '' : '-v'
     ]);
 
-    emulatorInstance.stdout.on('data', (data) => {
-      let d = data.toString().replace(/\\x1b/g, '\x1b').replace(/"/g, '').replace(/time=[0-9]{4}-[0-9]{2}-[a-zA-Z0-9]{5}:[0-9]{2}:[0-9]{2}-[0-9]{2}:[0-9]{2}/g, '').replace(/level=debug msg=/g, '').replace(/level=info msg=/g, '').replace(/level=warning msg=/g, '');
-      console.log(d)
-    });
+    if (mode != MODE.TEST) {
+      emulatorInstance.stdout.on('data', (data) => {
+        let d = data.toString().replace(/\\x1b/g, '\x1b').replace(/"/g, '').replace(/time=[0-9]{4}-[0-9]{2}-[a-zA-Z0-9]{5}:[0-9]{2}:[0-9]{2}-[0-9]{2}:[0-9]{2}/g, '').replace(/level=debug msg=/g, '').replace(/level=info msg=/g, '').replace(/level=warning msg=/g, '');
+        console.log(d)
+      });
+    } else {
+      emulatorInstance.stdout.on('data', (data) => {
+
+      });
+    }
 
     emulatorInstance.stderr.on('data', (data) => {
       console.log('\n' + data.toString());
