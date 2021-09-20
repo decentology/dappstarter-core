@@ -4,16 +4,16 @@
 			"port": 3569,
 			"serviceAccount": "emulator-account"
 		},
-        "test": {
+		"test": {
 			"port": 3570,
 			"serviceAccount": "emulator-account"
 		}
-
 	},
 	"contracts": {
 		"Flow.FlowFees": {
 			"aliases": {
-				"emulator": "0xe5a8b7f23e8b548f"
+				"emulator": "0xe5a8b7f23e8b548f",
+				"testnet": "0x912d5440f7e3769e"
 			}
 		},
 		"Flow.FlowServiceAccount": {
@@ -28,12 +28,19 @@
 		},
 		"Flow.FlowToken": {
 			"aliases": {
-				"emulator": "0x0ae53cb6e3f42a79"
+				"emulator": "0x0ae53cb6e3f42a79",
+				"testnet": "0x7e60df042a9c0868"
 			}
 		},
 		"Flow.FungibleToken": {
 			"aliases": {
-				"emulator": "0xee82856bf20e2aa6"
+				"emulator": "0xee82856bf20e2aa6",
+				"testnet": "0x9a0766d93b6608b7"
+			}
+		},
+		"Flow.NonFungibleToken": {
+			"aliases": {
+				"testnet": "0x631e88ae7f1d7c20"
 			}
 		}
 	},

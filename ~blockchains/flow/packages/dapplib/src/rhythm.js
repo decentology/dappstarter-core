@@ -10,7 +10,7 @@ const flowConfig = require('./flow.json');
 
 const NEWLINE = '\n';
 const TAB = '\t';
-const BLOCK_INTERVAL = 50;
+const BLOCK_INTERVAL = 0;
 const MODE = {
   DEFAULT: 'default',
   DEPLOY: 'deploy',
@@ -144,16 +144,19 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
       '--service-priv-key=' + serviceAccount.keys,
       '--service-sig-algo=ECDSA_P256',
       '--service-hash-algo=SHA3_256',
+      mode == MODE.TEST ? '' : '-v'
     ]);
 
-    emulatorInstance.stdout.on('data', (data) => {
-      let d = data.toString();
-      if (d.toString().indexOf('level=info msg="') > -1) {
-        console.log(d.toString().split('level=info msg="')[1].replace('"', ''));
-      } else {
-        console.log(d.toString());
-      }
-    });
+    if (mode != MODE.TEST) {
+      emulatorInstance.stdout.on('data', (data) => {
+        let d = data.toString().replace(/\\x1b/g, '\x1b').replace(/"/g, '').replace(/time=[0-9]{4}-[0-9]{2}-[a-zA-Z0-9]{5}:[0-9]{2}:[0-9]{2}-[0-9]{2}:[0-9]{2}/g, '').replace(/level=debug msg=/g, '').replace(/level=info msg=/g, '').replace(/level=warning msg=/g, '');
+        console.log(d)
+      });
+    } else {
+      emulatorInstance.stdout.on('data', (data) => {
+
+      });
+    }
 
     emulatorInstance.stderr.on('data', (data) => {
       console.log('\n' + data.toString());
@@ -210,20 +213,10 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
       emitter.on('file', filePath => {
         for (let f = 0; f < folders.length; f++) {
           if ((filePath.endsWith('.cdc')) && (filePath.indexOf(`/contracts/${folders[f]}/`) > -1)) {
+            // Gets all the dependencies for the contracts in this specific folder
             let { code, contractNames, deps } = getContractDependencies(folders[f], filePath);
 
-            // Ignore imported contracts in folders that
-            // aren't explicitly in the 'folders' list
-            for (let d = 0; d < deps.length; d++) {
-              let iname = deps[d][0];
-              if (iname !== null) {
-                iname = iname.split('.')[0];
-                if (!folders.includes(iname)) {
-                  deps[d][0] = null;
-                }
-              }
-            }
-
+            // Puts all the dependencies in a queueItems array to be sorted later
             queueItems = queueItems.concat(deps);
             contractNames.forEach((cname) => {
               contracts[cname] = code;
@@ -238,7 +231,9 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
         queue = [];
 
         sorted.forEach((s) => {
-          if (s !== null) {
+          // Do not put already deployed contracts into the queue
+          // because the queue will try to deploy them again
+          if (s !== null && !Object.keys(dappConfig.contracts).includes(s)) {
             queue.push({
               prefix: s.split('.')[0],
               contractName: s.split('.')[1],
@@ -274,7 +269,25 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
     while ((match = importRegex.exec(code)) !== null) {
       // Check if import is for a chain contract and skip
       if (!chainContracts[match.groups.import]) {
-        importRefs.push(match.groups.import);
+        // If the import is using a path
+        if (match.groups.import.includes('.cdc')) {
+          let importSplit = match.groups.import.split('/')
+          if (importSplit[importSplit.length - 2] == '".') {
+            // This will take a path that looks like "./FungibleToken.cdc" and come up with
+            // Flow.FungibleToken format by using the foldername that the contract is in
+            importRefs.push(contractType + "." + importSplit[importSplit.length - 1].replace('.cdc"', ''));
+          } else {
+            // This will take a path that looks like "../Flow/FungibleToken.cdc" and come up with
+            // Flow.FungibleToken format by using foldername right before the contract name in the path
+            importRefs.push(importSplit[importSplit.length - 2] + "." + importSplit[importSplit.length - 1].replace('.cdc"', ''));
+          }
+        }
+        // If the import is using the Project. or Flow. format
+        else {
+          // Simply push the Project. or Flow. format since that's
+          // how we name contracts anyway in dapp-config
+          importRefs.push(match.groups.import);
+        }
       }
     };
 
@@ -320,7 +333,7 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
       let item = queue[itemIndex];
 
       if (item !== null) {
-        item.contract = Flow.replaceImportRefs(item.contract, dappConfig.contracts);
+        item.contract = Flow.replaceImportRefs(item.contract, dappConfig.contracts, item.prefix);
         console.log(
           `\n🛠   Deploying ${item.contractName} to account ${item.address}`
         );
@@ -373,7 +386,6 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
   async function generate(interactionsFolder, destFolder, type, deployedContracts) {
 
     return new Promise((resolve, reject) => {
-      let prefix = TAB + TAB + TAB + TAB;
       let isTransaction = type === 'transactions';
       // Outermost class wrapper
       let outSource = '// 🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨🚨' + NEWLINE;
@@ -403,7 +415,7 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
           // are preserved. We also need to inject imports at run-time which 
           // a template literal enables quite easily
           outSource += TAB + TAB + 'return fcl.' + (isTransaction ? 'transaction' : 'script') + '`' + NEWLINE;
-          outSource += Flow.replaceImportRefs(code, deployedContracts, prefix);
+          outSource += Flow.replaceImportRefs(code, deployedContracts);
           outSource += TAB + TAB + '`;';
           outSource += NEWLINE + TAB + '}' + NEWLINE;
         }

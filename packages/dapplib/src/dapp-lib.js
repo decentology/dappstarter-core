@@ -1,17 +1,17 @@
 'use strict';
-const Blockchain = require( './blockchain');
-const dappConfig = require( './dapp-config.json');
-const ClipboardJS = require( 'clipboard');
+const Blockchain = require('./blockchain');
+const dappConfig = require('./dapp-config.json');
+const ClipboardJS = require('clipboard');
 const BN = require('bn.js'); // Required for injected code
 const manifest = require('../manifest.json');
 ///+import
 
 module.exports = class DappLib {
 
-///+functions
+    ///+functions
 
 
-/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DAPP LIBRARY  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
+    /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> DAPP LIBRARY  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
     static get DAPP_STATE_CONTRACT() {
         return 'dappStateContract'
@@ -64,40 +64,40 @@ module.exports = class DappLib {
     }
 
     static async addEventHandler(contract, event, params, callback) {
-            Blockchain.handleEvent({
-                config: DappLib.getConfig(),
-                contract: contract,
-                params: params || {}
-            }, 
-            event, 
+        Blockchain.handleEvent({
+            config: DappLib.getConfig(),
+            contract: contract,
+            params: params || {}
+        },
+            event,
             (error, result) => {
-                                if (error) {
-                                    callback({
-                                        event: event,
-                                        type: DappLib.DAPP_RESULT_ERROR,
-                                        label: 'Error Message',
-                                        result: error
-                                    });    
-                                } else {
-                                    callback({
-                                        event: event,
-                                        type: DappLib.DAPP_RESULT_OBJECT,
-                                        label: 'Event ' + event,
-                                        result: DappLib.getObjectNamedProperties(result)
-                                    });    
-                                }
-                            }
-            );
+                if (error) {
+                    callback({
+                        event: event,
+                        type: DappLib.DAPP_RESULT_ERROR,
+                        label: 'Error Message',
+                        result: error
+                    });
+                } else {
+                    callback({
+                        event: event,
+                        type: DappLib.DAPP_RESULT_OBJECT,
+                        label: 'Event ' + event,
+                        result: DappLib.getObjectNamedProperties(result)
+                    });
+                }
+            }
+        );
     }
 
     static getTransactionHash(t) {
         if (!t) { return ''; }
         let value = '';
-        if (typeof t === 'string') {                
+        if (typeof t === 'string') {
             value = t;
-        } else if (typeof t === 'object') {    
+        } else if (typeof t === 'object') {
             if (t.hasOwnProperty('transactionHash')) {
-                    value = t.transactionHash;       // Ethereum                
+                value = t.transactionHash;       // Ethereum                
             } else {
                 value = JSON.stringify(t);
             }
@@ -120,12 +120,12 @@ module.exports = class DappLib {
     }
 
     static formatAccount(a) {
-        return `<strong class="green accent-1 p-1 blue-grey-text number copy-target" title="${a}">${DappLib.toCondensed(a, 6, 4)}</strong>${ DappLib.addClippy(a)}`;
+        return `<strong class="green accent-1 p-1 blue-grey-text number copy-target" title="${a}">${DappLib.toCondensed(a, 6, 4)}</strong>${DappLib.addClippy(a)}`;
     }
 
     static formatTxHash(a) {
         let value = DappLib.getTransactionHash(a);
-        return `<strong class="teal lighten-5 p-1 blue-grey-text number copy-target" title="${value}">${DappLib.toCondensed(value, 6, 4)}</strong>${ DappLib.addClippy(value)}`;
+        return `<strong class="teal lighten-5 p-1 blue-grey-text number copy-target" title="${value}">${DappLib.toCondensed(value, 6, 4)}</strong>${DappLib.addClippy(value)}`;
     }
 
     static formatBoolean(a) {
@@ -150,14 +150,14 @@ module.exports = class DappLib {
 
     static formatObject(a) {
         let data = [];
-        let labels = [ 'Item', 'Value' ];
-        let keys = [ 'item', 'value' ];
-        let formatters = [ 'Strong', 'Text-20-5' ]; // 'Strong': Bold, 'Text-20-5': Compress a 20 character long string down to 5
+        let labels = ['Item', 'Value'];
+        let keys = ['item', 'value'];
+        let formatters = ['Strong', 'Text-20-5']; // 'Strong': Bold, 'Text-20-5': Compress a 20 character long string down to 5
         let reg = new RegExp('^\\d+$'); // only digits
-        for(let key in a) {
+        for (let key in a) {
             if (!reg.test(key)) {
                 data.push({
-                    item: key.substr(0,1).toUpperCase() + key.substr(1),
+                    item: key.substr(0, 1).toUpperCase() + key.substr(1),
                     value: a[key]
                 });
             }
@@ -171,17 +171,17 @@ module.exports = class DappLib {
 
         if (dataLabels) {
             output += '<thead><tr>';
-            for(let d=0; d<dataLabels.length; d++) {
+            for (let d = 0; d < dataLabels.length; d++) {
                 output += `<th scope="col">${dataLabels[d]}</th>`;
-            }    
+            }
             output += '</tr></thead>';
         }
         output += '<tbody>';
         h.map((item) => {
             output += '<tr>';
-            for(let d=0; d<dataFormatters.length; d++) {
+            for (let d = 0; d < dataFormatters.length; d++) {
                 let text = String(dataKeys && dataKeys[d] ? item[dataKeys[d]] : item);
-                let copyText =  dataKeys && dataKeys[d] ? item[dataKeys[d]] : item;
+                let copyText = dataKeys && dataKeys[d] ? item[dataKeys[d]] : item;
                 if (text.startsWith('<')) {
                     output += (d == 0 ? '<th scope="row">' : '<td>') + text + (d == 0 ? '</th>' : '</td>');
                 } else {
@@ -193,11 +193,11 @@ module.exports = class DappLib {
                         } else if (formatterFrags.length === 2) {
                             text = DappLib.toCondensed(text, Number(formatterFrags[1]));
                         }
-                        formatter = formatterFrags[0];    
+                        formatter = formatterFrags[0];
                     }
-                    output += (d == 0 ? '<th scope="row">' : '<td>') + DappLib[formatter](text, copyText) + (d == 0 ? '</th>' : '</td>');                        
+                    output += (d == 0 ? '<th scope="row">' : '<td>') + DappLib[formatter](text, copyText) + (d == 0 ? '</th>' : '</td>');
                 }
-            }    
+            }
             output += '</tr>';
         })
         output += '</tbody></table>';
@@ -207,7 +207,7 @@ module.exports = class DappLib {
     static getFormattedResultNode(retVal, key) {
 
         let returnKey = 'result';
-        if (key && (key !== null) && (key !== 'null') && (typeof(key) === 'string')) {
+        if (key && (key !== null) && (key !== 'null') && (typeof (key) === 'string')) {
             returnKey = key;
         }
         let formatted = '';
@@ -262,9 +262,9 @@ module.exports = class DappLib {
         }
 
         let resultNode = document.createElement('div');
-        resultNode.className = `note text-xs ${retVal.type === DappLib.DAPP_RESULT_ERROR ? 'bg-red-400' : 'bg-green-400'} m-3 p-3`; 
-        let closeMarkup = '<div class="float-right" onclick="this.parentNode.parentNode.removeChild(this.parentNode)" title="Dismiss" class="text-right mb-1 mr-2" style="cursor:pointer;">X</div>';    
-        resultNode.innerHTML = closeMarkup + `${retVal.type === DappLib.DAPP_RESULT_ERROR ? '☹️' : '👍️'} ` + (Array.isArray(retVal[returnKey]) ? 'Result' : retVal.label) + ': ' + formatted + DappLib.formatHint(retVal.hint);
+        resultNode.className = `note text-xs ${retVal.type === DappLib.DAPP_RESULT_ERROR ? 'bg-red-400' : 'bg-green-400'} m-3 p-3`;
+        let closeMarkup = '<div class="float-right" onclick="this.parentNode.parentNode.removeChild(this.parentNode)" title="Dismiss" class="text-right mb-1 mr-2" style="cursor:pointer;">X</div>';
+        resultNode.innerHTML = `<span class='text-xl break-words'>${closeMarkup} ${retVal.type === DappLib.DAPP_RESULT_ERROR ? '☹️' : '👍️'} ${(Array.isArray(retVal[returnKey]) ? 'Result' : retVal.label)} : ${formatted} ${DappLib.formatHint(retVal.hint)}</span>`
         // Wire-up clipboard copy
         new ClipboardJS('.copy-target', {
             text: function (trigger) {
@@ -278,14 +278,14 @@ module.exports = class DappLib {
     static getObjectNamedProperties(a) {
         let reg = new RegExp('^\\d+$'); // only digits
         let newObj = {};
-        for(let key in a) {
+        for (let key in a) {
             if (!reg.test(key)) {
                 newObj[key] = a[key];
             }
         }
         return newObj;
     }
-    
+
     static addClippy(data) {
         return `
         <svg data-copy="${data}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -327,7 +327,7 @@ module.exports = class DappLib {
             var n = code.toString(16);
             hex += n.length < 2 ? '0' + n : n;
         }
-        return hex + '0'.repeat(padding*2 - hex.length + 2);
+        return hex + '0'.repeat(padding * 2 - hex.length + 2);
     };
 
 
@@ -338,30 +338,30 @@ module.exports = class DappLib {
         if (hex.substring(0, 2) === '0x') {
             i = 2;
         }
-        for (; i < l; i+=2) {
+        for (; i < l; i += 2) {
             var code = parseInt(hex.substr(i, 2), 16);
             if (code === 0) continue; // this is added
             str += String.fromCharCode(code);
         }
         return str;
     };
-    
+
     static arrayToHex(bytes) {
         if (Array.isArray(bytes)) {
-            return '0x' + 
-                Array.prototype.map.call(bytes, function(byte) {
+            return '0x' +
+                Array.prototype.map.call(bytes, function (byte) {
                     return ('0' + (byte & 0xFF).toString(16)).slice(-2);
                 }).join('')
         } else {
             return bytes;
         }
     }
-    
+
     static hexToArray(hex) {
         if ((typeof hex === 'string') && (hex.beginsWith('0x'))) {
             let bytes = [];
             for (let i = 0; i < hex.length; i += 2) {
-              bytes.push(parseInt(hex.substr(i, 2), 16));
+                bytes.push(parseInt(hex.substr(i, 2), 16));
             }
             return bytes;
         } else {
@@ -375,7 +375,7 @@ module.exports = class DappLib {
             return s;
         } else {
             if (end) {
-                return `${s.substr(0, begin)}...${s.substr(s.length-end, end)}`;
+                return `${s.substr(0, begin)}...${s.substr(s.length - end, end)}`;
             } else {
                 return `${s.substr(0, begin)}...`;
             }
@@ -388,12 +388,12 @@ module.exports = class DappLib {
 
     // https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
     static getUniqueId() {
-        return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, function(c) {
+        return 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'.replace(/[x]/g, function (c) {
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
     }
-    
+
     static getConfig() {
         return dappConfig;
     }
@@ -406,7 +406,7 @@ module.exports = class DappLib {
     static getTestConfig(testDappStateContract, testDappContract, testAccounts) {
 
         return Object.assign(
-            {}, 
+            {},
             dappConfig,
             {
                 dappStateContractAddress: testDappStateContract.address,
@@ -425,7 +425,7 @@ module.exports = class DappLib {
                     testAccounts[7],
                     testAccounts[8]
                 ]
-///+test
+                ///+test
             }
         );
     }

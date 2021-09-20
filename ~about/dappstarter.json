@@ -1,315 +1,305 @@
 [
-    {
-        "name": "sources",
-        "children": [
-            {
-                "name": "core",
-                "title": "Decentology Modules",
-                "description": "Modules created and maintained by Decentology",
-                "imageUrl": "",
-                "help": {
-                    "title": "Decentology Module Wiki",
-                    "url": "https://www.decentology.com"
-                },
-                "folder": "dappstarter-modules-core"
-            }
-        ]
-    },
-    {
-        "name": "blockchains",
-        "title": "Blockchains",
-        "description": "Blockchains are the underlying technology for the decentralized web. If you aren't familiar with  the decentralized web, it's a good idea to <a href='https://www.decentology.com'>get some familiarity with how it works before you start.</a> There are numerous public and private blockchains (we will support many of them soon).",
+  {
+    "name": "sources",
+    "children": [
+      {
+        "name": "core",
+        "title": "Decentology Modules",
+        "description": "Modules created and maintained by Decentology",
         "imageUrl": "",
         "help": {
-            "title": "How to choose a blockchain.",
-            "url": "https://www.decentology.com"
+          "title": "Decentology Module Wiki",
+          "url": "https://www.decentology.com"
         },
-        "interface": {
-            "hidden": false,
-            "enabled": true,
-            "children": "single"
-        },
-        "children": [
-            "flow",
-            "solana",
-            "avalanche",
-            "conflux",
-            "ethereum",
-            "polygon"
-        ],
-        "targets": {
+        "folder": "dappstarter-modules-core"
+      }
+    ]
+  },
+  {
+    "name": "blockchains",
+    "title": "Blockchains",
+    "description": "Blockchains are the underlying technology for the decentralized web. If you aren't familiar with  the decentralized web, it's a good idea to <a href='https://www.decentology.com'>get some familiarity with how it works before you start.</a> There are numerous public and private blockchains (we will support many of them soon).",
+    "imageUrl": "",
+    "help": {
+      "title": "How to choose a blockchain.",
+      "url": "https://www.decentology.com"
+    },
+    "interface": {
+      "hidden": false,
+      "enabled": true,
+      "children": "single"
+    },
+    "children": [
+      "flow",
+      "solana",
+      "avalanche",
+      "conflux",
+      "ethereum",
+      "polygon"
+    ],
+    "targets": {
+      "*": {
+        "/package.json": {
+          "processor": "merge-json",
+          "framework": {
             "*": {
-                "/package.json": {
-                    "processor": "merge-json",
-                    "framework": {
-                        "*": {
-                            "private": true,
-                            "scripts": {
-                                "prestart": "port-precheck 5000 5001 5002",
-                                "start": "lerna run dev --no-sort --stream --parallel",
-                                "faucet": "lerna run faucet --scope=@decentology/dappstarter-dapplib --stream",
-                                "migrate": "lerna run deploy --scope=@decentology/dappstarter-dapplib --stream",
-                                "dapp": "lerna run dev --scope=@decentology/dappstarter-client --stream",
-                                "dapp:prod": "lerna run build:prod",
-                                "server": "lerna run dev --scope=@decentology/dappstarter-server --stream",
-                                "test": "lerna run test $npm_config_script --scope=@decentology/dappstarter-dapplib --stream",
-                                "dev": "npm start"
-                            },
-                            "dependencies": {
-                                "chalk": "^4.0.0",
-                                "detect-port": "^1.3.0",
-                                "lerna": "^3.21.0",
-                                "port-precheck": "https://github.com/decentology/port-precheck"
-                            }
-                        }
-                    },
-                    "blockchain": {}
-                }
+              "private": true,
+              "scripts": {
+                "prestart": "port-precheck 5000 5001 5002",
+                "start": "lerna run dev --no-sort --stream --parallel",
+                "faucet": "lerna run faucet --scope=@decentology/dappstarter-dapplib --stream",
+                "migrate": "lerna run deploy --scope=@decentology/dappstarter-dapplib --stream",
+                "dapp": "lerna run dev --scope=@decentology/dappstarter-client --stream",
+                "dapp:prod": "lerna run build:prod",
+                "server": "lerna run dev --scope=@decentology/dappstarter-server --stream",
+                "test": "lerna run test $npm_config_script --scope=@decentology/dappstarter-dapplib --stream",
+                "dev": "npm start",
+                "predevelop": "npx @decentology/dappstarter-cli-proxy",
+                "develop": "dappstarter develop"
+              },
+              "dependencies": {
+                "chalk": "^4.0.0",
+                "detect-port": "^1.3.0",
+                "lerna": "^3.21.0",
+                "port-precheck": "https://github.com/decentology/port-precheck"
+              }
             }
+          },
+          "blockchain": {}
         }
-    },
-    {
-        "name": "languages",
-        "title": "Languages",
-        "description": "Different blockchains use different languages. Some blockchains use one language while others use several languages.",
-        "imageUrl": "",
-        "help": {
-            "title": "Learn more about languages used for each blockchain.",
-            "url": "https://www.decentology.com"
-        },
-        "interface": {
-            "hidden": false,
-            "enabled": true,
-            "children": "single"
-        },
-        "children": [
-            "solidity",
-            "cadence",
-            "rust"
-        ]
-    },
-    {
-        "name": "frameworks",
-        "title": "Frameworks",
-        "description": "DappStarter includes a starter client app (optional; can be replaced) using Tailwind CSS and JavaScript. Choose which flavor of JavaScript you'd like the client app to use.",
-        "imageUrl": "",
-        "help": {
-            "title": "Learn more about building a front-end for your dapp.",
-            "url": "https://www.decentology.com"
-        },
-        "interface": {
-            "hidden": false,
-            "enabled": true,
-            "children": "single"
-        },
-        "children": [
-            "vanilla",
-            "react"
-        ]
-    },
-    {
-        "name": "storage-providers",
-        "title": "Storage Providers",
-        "description": "",
-        "imageUrl": "",
-        "help": {
-            "title": "Learn more about building a front-end for your dapp.",
-            "url": "https://www.decentology.com"
-        },
-        "interface": {
-            "hidden": true,
-            "enabled": false,
-            "children": "single"
-        },
-        "children": [
-        ]
-    },
-    {
-        "name": "wallet-providers",
-        "title": "Wallet Providers",
-        "description": "",
-        "imageUrl": "",
-        "help": {
-            "title": "Learn more about building a front-end for your dapp.",
-            "url": "https://www.decentology.com"
-        },
-        "interface": {
-            "hidden": true,
-            "enabled": false,
-            "children": "single"
-        },
-        "children": [
-        ]
-    },
-    {
-        "name": "categories",
-        "title": "Feature Categories",
-        "description": "",
-        "imageUrl": "",
-        "help": {
-            "title": "",
-            "url": ""
-        },
-        "interface": {
-            "hidden": false,
-            "enabled": true,
-            "children": "multiple"
-        },
-        "children": [
-            {
-                "name": "access_control",
-                "title": "Access Control",
-                "description": "Once a smart contract has been deployed, you cannot change your code. Access Control Modules give you granular control over who can manage your contracts and control their operation.",
-                "imageUrl": "",
-                "help": {
-                    "title": "",
-                    "url": ""
-                },
-                "interface": {
-                    "hidden": false,
-                    "enabled": true,
-                    "children": "multiple"
-                }
-            },
-            {
-                "name": "asset_value_tracking",
-                "title": "Asset and Value Tracking",
-                "description": "Create your own cryptocurrency tokens and track or trade digital assets. Tokens are divisible and one unit is not uniquely different from another unit of the same token (like currency). Collectibles are uniquely different‒ each unit of a collectible is different from any other (like trading cards).",
-                "imageUrl": "",
-                "help": {
-                    "title": "",
-                    "url": ""
-                },
-                "interface": {
-                    "hidden": false,
-                    "enabled": true,
-                    "children": "single"
-                }
-            },
-            {
-                "name": "common",
-                "title": "Common functionality for various modules",
-                "description": "",
-                "imageUrl": "",
-                "help": {
-                    "title": "",
-                    "url": ""
-                },
-                "interface": {
-                    "hidden": true,
-                    "enabled": false,
-                    "children": "single"
-                }
-            },
-            {
-                "name": "nft",
-                "title": "Non-fungible Tokens",
-                "description": "Create a non-fungible token for tracking unique assets associated with your dapp.",
-                "imageUrl": "",
-                "help": {
-                    "title": "",
-                    "url": ""
-                },
-                "interface": {
-                    "hidden": false,
-                    "enabled": true,
-                    "children": "single"
-                }
-            },
-            {
-                "name": "foundation",
-                "title": "Foundations",
-                "description": "The complete foundation you need to build an amazing dapp.",
-                "imageUrl": "",
-                "help": {
-                    "title": "",
-                    "url": ""
-                },
-                "interface": {
-                    "hidden": false,
-                    "enabled": true,
-                    "children": "single_required"
-                }
-            },
-            {
-                "name": "file_storage",
-                "title": "File Storage",
-                "description": "Storing data on a blockchain is expensive so developers usually store a pointer to the data, called a hash, on the blockchain.",
-                "imageUrl": "",
-                "help": {
-                    "title": "",
-                    "url": ""
-                },
-                "interface": {
-                    "hidden": false,
-                    "enabled": true,
-                    "children": "single"
-                }
-            },
-            {
-                "name": "collection",
-                "title": "Collection",
-                "description": "Many smart contracts require managing a collection of entities. Modules in this category provide solutions for different collection scenarios.",
-                "imageUrl": "",
-                "help": {
-                    "title": "",
-                    "url": ""
-                },
-                "interface": {
-                    "hidden": false,
-                    "enabled": true,
-                    "children": "multiple"
-                }
-            },
-            {
-                "name": "examples",
-                "title": "Examples",
-                "description": "Basic examples that help you get started.",
-                "imageUrl": "",
-                "help": {
-                    "title": "",
-                    "url": ""
-                },
-                "interface": {
-                    "hidden": false,
-                    "enabled": true,
-                    "children": "single"
-                }
-            },
-            {
-                "name": "onchain",
-                "title": "Onchain Modules",
-                "description": "Modules that integrate with existing contracts",
-                "imageUrl": "",
-                "help": {
-                    "title": "",
-                    "url": ""
-                },
-                "interface": {
-                    "hidden": false,
-                    "enabled": true,
-                    "children": "single"
-                }
-            }
-        ]
-    },
-    {
-        "name": "recipes",
-        "title": "Recipes",
-        "description": "Recipes are ready-made DappStarter projects based on popular choices",
-        "imageUrl": "",
-        "help": {
-            "title": "",
-            "url": ""
-        },
-        "interface": {
-            "hidden": false,
-            "enabled": true,
-            "children": "single"
-        },
-        "children": [
-            "eth-token-vanilla",
-            "flow-nft-vanilla"
-        ]
+      }
     }
+  },
+  {
+    "name": "languages",
+    "title": "Languages",
+    "description": "Different blockchains use different languages. Some blockchains use one language while others use several languages.",
+    "imageUrl": "",
+    "help": {
+      "title": "Learn more about languages used for each blockchain.",
+      "url": "https://www.decentology.com"
+    },
+    "interface": {
+      "hidden": false,
+      "enabled": true,
+      "children": "single"
+    },
+    "children": ["solidity", "cadence", "rust"]
+  },
+  {
+    "name": "frameworks",
+    "title": "Frameworks",
+    "description": "DappStarter includes a starter client app (optional; can be replaced) using Tailwind CSS and JavaScript. Choose which flavor of JavaScript you'd like the client app to use.",
+    "imageUrl": "",
+    "help": {
+      "title": "Learn more about building a front-end for your dapp.",
+      "url": "https://www.decentology.com"
+    },
+    "interface": {
+      "hidden": false,
+      "enabled": true,
+      "children": "single"
+    },
+    "children": ["vanilla", "react"]
+  },
+  {
+    "name": "storage-providers",
+    "title": "Storage Providers",
+    "description": "",
+    "imageUrl": "",
+    "help": {
+      "title": "Learn more about building a front-end for your dapp.",
+      "url": "https://www.decentology.com"
+    },
+    "interface": {
+      "hidden": true,
+      "enabled": false,
+      "children": "single"
+    },
+    "children": []
+  },
+  {
+    "name": "wallet-providers",
+    "title": "Wallet Providers",
+    "description": "",
+    "imageUrl": "",
+    "help": {
+      "title": "Learn more about building a front-end for your dapp.",
+      "url": "https://www.decentology.com"
+    },
+    "interface": {
+      "hidden": true,
+      "enabled": false,
+      "children": "single"
+    },
+    "children": []
+  },
+  {
+    "name": "categories",
+    "title": "Feature Categories",
+    "description": "",
+    "imageUrl": "",
+    "help": {
+      "title": "",
+      "url": ""
+    },
+    "interface": {
+      "hidden": false,
+      "enabled": true,
+      "children": "multiple"
+    },
+    "children": [
+      {
+        "name": "access_control",
+        "title": "Access Control",
+        "description": "Once a smart contract has been deployed, you cannot change your code. Access Control Modules give you granular control over who can manage your contracts and control their operation.",
+        "imageUrl": "",
+        "help": {
+          "title": "",
+          "url": ""
+        },
+        "interface": {
+          "hidden": false,
+          "enabled": true,
+          "children": "multiple"
+        }
+      },
+      {
+        "name": "asset_value_tracking",
+        "title": "Asset and Value Tracking",
+        "description": "Create your own cryptocurrency tokens and track or trade digital assets. Tokens are divisible and one unit is not uniquely different from another unit of the same token (like currency). Collectibles are uniquely different‒ each unit of a collectible is different from any other (like trading cards).",
+        "imageUrl": "",
+        "help": {
+          "title": "",
+          "url": ""
+        },
+        "interface": {
+          "hidden": false,
+          "enabled": true,
+          "children": "single"
+        }
+      },
+      {
+        "name": "common",
+        "title": "Common functionality for various modules",
+        "description": "",
+        "imageUrl": "",
+        "help": {
+          "title": "",
+          "url": ""
+        },
+        "interface": {
+          "hidden": true,
+          "enabled": false,
+          "children": "single"
+        }
+      },
+      {
+        "name": "nft",
+        "title": "Non-fungible Tokens",
+        "description": "Create a non-fungible token for tracking unique assets associated with your dapp.",
+        "imageUrl": "",
+        "help": {
+          "title": "",
+          "url": ""
+        },
+        "interface": {
+          "hidden": false,
+          "enabled": true,
+          "children": "single"
+        }
+      },
+      {
+        "name": "foundation",
+        "title": "Foundations",
+        "description": "The complete foundation you need to build an amazing dapp.",
+        "imageUrl": "",
+        "help": {
+          "title": "",
+          "url": ""
+        },
+        "interface": {
+          "hidden": false,
+          "enabled": true,
+          "children": "single_required"
+        }
+      },
+      {
+        "name": "file_storage",
+        "title": "File Storage",
+        "description": "Storing data on a blockchain is expensive so developers usually store a pointer to the data, called a hash, on the blockchain.",
+        "imageUrl": "",
+        "help": {
+          "title": "",
+          "url": ""
+        },
+        "interface": {
+          "hidden": false,
+          "enabled": true,
+          "children": "single"
+        }
+      },
+      {
+        "name": "collection",
+        "title": "Collection",
+        "description": "Many smart contracts require managing a collection of entities. Modules in this category provide solutions for different collection scenarios.",
+        "imageUrl": "",
+        "help": {
+          "title": "",
+          "url": ""
+        },
+        "interface": {
+          "hidden": false,
+          "enabled": true,
+          "children": "multiple"
+        }
+      },
+      {
+        "name": "examples",
+        "title": "Examples",
+        "description": "Basic examples that help you get started.",
+        "imageUrl": "",
+        "help": {
+          "title": "",
+          "url": ""
+        },
+        "interface": {
+          "hidden": false,
+          "enabled": true,
+          "children": "single"
+        }
+      },
+      {
+        "name": "onchain",
+        "title": "Onchain Modules",
+        "description": "Modules that integrate with existing contracts",
+        "imageUrl": "",
+        "help": {
+          "title": "",
+          "url": ""
+        },
+        "interface": {
+          "hidden": false,
+          "enabled": true,
+          "children": "single"
+        }
+      }
+    ]
+  },
+  {
+    "name": "recipes",
+    "title": "Recipes",
+    "description": "Recipes are ready-made DappStarter projects based on popular choices",
+    "imageUrl": "",
+    "help": {
+      "title": "",
+      "url": ""
+    },
+    "interface": {
+      "hidden": false,
+      "enabled": true,
+      "children": "single"
+    },
+    "children": ["eth-token-vanilla", "flow-nft-vanilla"]
+  }
 ]

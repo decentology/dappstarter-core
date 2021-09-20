@@ -1,3 +1,7 @@
 dist/
 build/
 target/
+
+src/dapp-config.json
+src/dapp-scripts.js
+src/dapp-transactions.js

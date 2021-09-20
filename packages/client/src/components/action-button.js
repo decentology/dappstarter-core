@@ -60,9 +60,12 @@ export default class ActionButton extends LitElement {
     // Capture values of all fields of interest
     let source = document.querySelector(this.source);
     let values = {};
+    
     let fields = this.fields.split(" ");
     fields.map(field => {
       if (field) {
+        // uses querySelector which finds the first one, and because it's
+        // just = instead of *=, it had to be an exact match
         let fieldElement = source.querySelector(`[data-field=${field}]`);
         if (fieldElement) {
           if (fieldElement.type === "checkbox") {
@@ -77,6 +80,37 @@ export default class ActionButton extends LitElement {
             }
             values[field] = fieldElement.value || "";
           }
+        } else {
+          if (source.querySelector(`[title="array-widget"]`)) {
+            // FOR ARRAY-WIDGETS
+          
+            // the *= means "includes" ${field}, so if field == arrayField
+            // then it will includes element with arrayField-0 and arrayField-1
+            let arrayElement = source.querySelectorAll(`[data-field*=${field}]`);
+           
+            let valuesArray = []
+            for (let value of arrayElement) {
+              valuesArray.push(value.value)
+            }
+            values[field] = valuesArray
+            console.log(values)
+          } else if (source.querySelector(`[title="dictionary-widget"]`)) {
+            // FOR DICTIONARY-WIDGETS
+          
+            // will look for the keys and values
+            let dictionaryElementKeys = source.querySelectorAll(`[data-field*=${field}-key]`);
+            let dictionaryElementValues = source.querySelectorAll(`[data-field*=${field}-value]`);
+            
+            let valuesObject = {}
+            for (let i = 0; i < dictionaryElementKeys.length; i++) {
+              let dictionaryElementKey = dictionaryElementKeys[i].value
+              let dictionaryElementValue = dictionaryElementValues[i].value
+              
+              valuesObject[dictionaryElementKey] = dictionaryElementValue
+            }
+            values[field] = valuesObject
+            console.log(values)
+          }
         }
       }
     });
@@ -87,7 +121,7 @@ export default class ActionButton extends LitElement {
       let resultNode = DappLib.getFormattedResultNode(retVal, this.return);
       this.fireClickEvent(retVal, resultNode);
     } catch (e) {
-      if (e.message.indexOf("run Out of Gas") > -1) {
+      if (e.message && e.message.indexOf("run Out of Gas") > -1) {
         e.message =
           "Can't access the blockchain. Check that access to it isn't blocked. During development this error usually means your test blockchain is not running or has test accounts that don't match the accounts in your development configuration.";
       }

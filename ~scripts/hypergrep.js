@@ -422,6 +422,34 @@ module.exports = class Hypergrep {
         let blockKeys = Object.keys(outputInfo[Manifest.BLOCKS]);
         let outputPath = path.join(targetFolder, 'workspace', 'customizer');
         let packagesPath = path.join(targetFolder, 'packages');
+
+        // Generate a default flow.json at the top-level root if
+        // cadence is selected as the language. This is for the
+        // Flow VSCode Extension to work properly.
+        if (outputInfo[Manifest.LANGUAGE].name === 'cadence') {
+            const rootFlowConfig = {
+                emulators: {
+                    default: {
+                        port: 3569,
+                        serviceAccount: "emulator-account"
+                    }
+                },
+                contracts: {},
+                networks: {
+                    emulator: "127.0.0.1: 3569",
+                    mainnet: "access.mainnet.nodes.onflow.org: 9000",
+                    testnet: "access.devnet.nodes.onflow.org: 9000"
+                },
+                accounts: {
+                    "emulator-account": {
+                        address: "f8d6e0586b0a20c7",
+                        key: "885c0760303d4dae348d84ff872e40370c467c680184495b6e5a54b726336aa3"
+                    }
+                },
+                deployments: {}
+            }
+            fse.writeFileSync(path.join(targetFolder, 'flow.json'), JSON.stringify(rootFlowConfig, null, '\t'))
+        }
         blockKeys.map((blockKey, index) => {
 
             self.log(3, 2, `Merging Block folder: ${blockKey}`);
@@ -905,7 +933,12 @@ module.exports = class Hypergrep {
             try {
                 let self = this;
                 let gracefulCompletion = true;
-                let config = self._unflatten(settings);
+                let config
+                if (settings.blockchain) { //Support for flattened and standard JSON (pre-generated manifest.json)
+                    config = settings;
+                } else {
+                    config = self._unflatten(settings);
+                }
                 let outputInfo = {
                     manifest: self.getManifest(config[Manifest.BLOCKCHAIN], config[Manifest.LANGUAGE])
                 };
@@ -914,10 +947,10 @@ module.exports = class Hypergrep {
                 let accountSeed = config[FIXED_OUTPUT_FOLDER_KEY];
                 let folderExists = accountSeed == null ? true : false;
                 while (folderExists) {
-                accountSeed = Hypergrep._generateFolderName();
-                folderExists = await fse.pathExists(
-                    path.join(self.targetFolder, accountSeed)
-                );
+                    accountSeed = Hypergrep._generateFolderName();
+                    folderExists = await fse.pathExists(
+                        path.join(self.targetFolder, accountSeed)
+                    );
                 }
                 let accountInfo = self._generateAccounts(accountSeed);
 
