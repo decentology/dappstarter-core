@@ -213,8 +213,42 @@ class Flow {
         }
     }
 
+    // takes a file path to a .cdc file and converts it to the
+    // Project.[contract name], Flow.[contract name], etc format
+    //
+    // if it receives a Project.[contract name] format, it simply
+    // returns it
+    static convertFilePath(prefix, contractFolders, filePath) {
+        if (!filePath.includes('.cdc')) {
+            return filePath
+        }
+
+        let contractRef = ''
+        let importSplit = filePath.split('/')
+        // start
+        let contractFolder = ''
+        let containsContractFolder = false
+        contractFolders.map(element => {
+            if (importSplit.includes(element)) {
+                containsContractFolder = true
+                contractFolder = element
+            }
+        })
+        if (!containsContractFolder) {
+            // This will take a path that looks like "./FungibleToken.cdc" and come up with
+            // Flow.FungibleToken format by using the foldername that the contract is in
+            contractRef = prefix + "." + importSplit[importSplit.length - 1].replace('.cdc"', '');
+        } else {
+            // This will take a path that looks like "../Flow/FungibleToken.cdc" and come up with
+            // Flow.FungibleToken format by using foldername right before the contract name in the path
+            contractRef = contractFolder + "." + importSplit[importSplit.length - 1].replace('.cdc"', '');
+        }
+
+        return contractRef
+    }
+
     // Substitute import placeholder with all known deployed contract addresses
-    static replaceImportRefs(code, deployedContracts, prefix) {
+    static replaceImportRefs(code, deployedContracts, prefix, contractFolders) {
         const NEWLINE = '\n';
         prefix = prefix ? prefix : '';
         let codeLines = code.split(NEWLINE);
@@ -222,23 +256,7 @@ class Flow {
         codeLines.forEach((line) => {
             let tokens = line.trim().split(' ');
             if (tokens[0] === 'import') {
-                let contractRef = ''
-                if (tokens[tokens.length - 1].includes('.cdc')) {
-                    let importSplit = tokens[tokens.length - 1].split('/')
-
-                    // Note that this `if` will never be the case if it's for
-                    // transactions or scripts so we don't have to worry about
-                    // prefix being null
-                    if (importSplit[importSplit.length - 2] == '".') {
-                        // This will get the name of the contract with prefix (ex. "Flow.FungibleToken")
-                        contractRef = prefix + "." + importSplit[importSplit.length - 1].replace('.cdc"', '');
-                    } else {
-                        // This will get the name of the contract with prefix (ex. "Flow.FungibleToken")
-                        contractRef = importSplit[importSplit.length - 2] + "." + importSplit[importSplit.length - 1].replace('.cdc"', '');
-                    }
-                } else {
-                    contractRef = tokens[tokens.length - 1];
-                }
+                let contractRef = this.convertFilePath(prefix, contractFolders, tokens[tokens.length - 1])
 
                 if (deployedContracts[contractRef]) {
 

@@ -61,6 +61,7 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
     // Unpopulated dappConfig with service info only
     dappConfig = {
       httpUri,
+      contractFolders: [],
       contracts: chainContracts,
       accounts: [],
       serviceWallet: serviceWallet,
@@ -205,6 +206,7 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
       catch (e) {
         // Can be ignored as file will be regenerated
       }
+      dappConfig.contractFolders = dappConfig.contractFolders.concat(folders)
       let queueItems = [];
       let contracts = {};
 
@@ -269,25 +271,7 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
     while ((match = importRegex.exec(code)) !== null) {
       // Check if import is for a chain contract and skip
       if (!chainContracts[match.groups.import]) {
-        // If the import is using a path
-        if (match.groups.import.includes('.cdc')) {
-          let importSplit = match.groups.import.split('/')
-          if (importSplit[importSplit.length - 2] == '".') {
-            // This will take a path that looks like "./FungibleToken.cdc" and come up with
-            // Flow.FungibleToken format by using the foldername that the contract is in
-            importRefs.push(contractType + "." + importSplit[importSplit.length - 1].replace('.cdc"', ''));
-          } else {
-            // This will take a path that looks like "../Flow/FungibleToken.cdc" and come up with
-            // Flow.FungibleToken format by using foldername right before the contract name in the path
-            importRefs.push(importSplit[importSplit.length - 2] + "." + importSplit[importSplit.length - 1].replace('.cdc"', ''));
-          }
-        }
-        // If the import is using the Project. or Flow. format
-        else {
-          // Simply push the Project. or Flow. format since that's
-          // how we name contracts anyway in dapp-config
-          importRefs.push(match.groups.import);
-        }
+        importRefs.push(Flow.convertFilePath(contractType, dappConfig.contractFolders, match.groups.import))
       }
     };
 
@@ -333,7 +317,7 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
       let item = queue[itemIndex];
 
       if (item !== null) {
-        item.contract = Flow.replaceImportRefs(item.contract, dappConfig.contracts, item.prefix);
+        item.contract = Flow.replaceImportRefs(item.contract, dappConfig.contracts, item.prefix, dappConfig.contractFolders);
         console.log(
           `\n🛠   Deploying ${item.contractName} to account ${item.address}`
         );
@@ -415,7 +399,7 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
           // are preserved. We also need to inject imports at run-time which 
           // a template literal enables quite easily
           outSource += TAB + TAB + 'return fcl.' + (isTransaction ? 'transaction' : 'script') + '`' + NEWLINE;
-          outSource += Flow.replaceImportRefs(code, deployedContracts);
+          outSource += Flow.replaceImportRefs(code, deployedContracts, null, dappConfig.contractFolders);
           outSource += TAB + TAB + '`;';
           outSource += NEWLINE + TAB + '}' + NEWLINE;
         }
