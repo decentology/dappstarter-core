@@ -81,7 +81,7 @@ export default class ActionButton extends LitElement {
             values[field] = fieldElement.value || "";
           }
         } else {
-          if (source.querySelector(`[title="array-widget"]`)) {
+          if (source.querySelector(`[title="array-widget-${field}"]`)) {
             // FOR ARRAY-WIDGETS
           
             // the *= means "includes" ${field}, so if field == arrayField
@@ -94,7 +94,7 @@ export default class ActionButton extends LitElement {
             }
             values[field] = valuesArray
             console.log(values)
-          } else if (source.querySelector(`[title="dictionary-widget"]`)) {
+          } else if (source.querySelector(`[title="dictionary-widget-${field}"]`)) {
             // FOR DICTIONARY-WIDGETS
           
             // will look for the keys and values
