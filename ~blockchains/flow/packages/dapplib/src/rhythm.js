@@ -132,8 +132,7 @@ const dappConfigFile = path.join(__dirname, 'dapp-config.json');
     }
 
     // Start the emulator
-    const emulatorInstance = spawn('npx', [
-      'flow',
+    const emulatorInstance = spawn('flow', [
       'emulator',
       'start',
       '--config-path=./flow.json',
