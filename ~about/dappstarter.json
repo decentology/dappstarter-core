@@ -18,7 +18,7 @@
   {
     "name": "blockchains",
     "title": "Blockchains",
-    "description": "Blockchains are the underlying technology for the decentralized web. If you aren't familiar with  the decentralized web, it's a good idea to <a href='https://www.decentology.com'>get some familiarity with how it works before you start.</a> There are numerous public and private blockchains (we will support many of them soon).",
+    "description": "Blockchains are the underlying technology for the decentralized web.",
     "imageUrl": "",
     "help": {
       "title": "How to choose a blockchain.",
@@ -30,11 +30,8 @@
       "children": "single"
     },
     "children": [
-      "flow",
-      "solana",
-      "avalanche",
-      "conflux",
       "ethereum",
+      "avalanche",
       "polygon"
     ],
     "targets": {
