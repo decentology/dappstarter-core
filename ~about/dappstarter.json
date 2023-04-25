@@ -32,7 +32,8 @@
     "children": [
       "ethereum",
       "avalanche",
-      "polygon"
+      "polygon",
+      "vulcan"
     ],
     "targets": {
       "*": {

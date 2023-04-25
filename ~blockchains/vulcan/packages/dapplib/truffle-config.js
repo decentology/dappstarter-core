@@ -1,0 +1,39 @@
+require('@babel/register');
+({
+    ignore: /node_modules/
+});
+require('@babel/polyfill');
+
+const HDWalletProvider = require('@truffle/hdwallet-provider');
+
+let mnemonic = 'PLACEHOLDER'; ///@{ "___test-mnemonic___": "PLACEHOLDER"}
+let testAccounts = null; ///@{ "___test-accounts___": "null"}
+let devUri = 'https://test-rpc.vulcanblockchain.com/';
+
+module.exports = {
+    testAccounts,
+    mnemonic,
+    networks: {
+        development: {
+            uri: devUri,
+            provider: () => new HDWalletProvider(
+                mnemonic,
+                devUri, // provider url
+                0, // address index
+                10, // number of addresses
+                true, // share nonce
+                `m/44'/60'/0'/0/` // wallet HD path
+            ),
+            gas: 2000000,
+            network_id: 14333,
+            confirmations: 1,
+            timeoutBlocks: 100,
+            skipDryRun: true
+        }
+    },
+    compilers: {
+        solc: {
+            version: '^0.5.11'
+        }
+    }
+};
