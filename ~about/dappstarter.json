@@ -148,6 +148,21 @@
     },
     "children": [
       {
+        "name": "rebasing",
+        "title": "Rebasing",
+        "description": "Modules for rebasing protocols such as Vulcan.",
+        "imageUrl": "",
+        "help": {
+          "title": "",
+          "url": ""
+        },
+        "interface": {
+          "hidden": false,
+          "enabled": true,
+          "children": "multiple"
+        }
+      },
+      {
         "name": "access_control",
         "title": "Access Control",
         "description": "Once a smart contract has been deployed, you cannot change your code. Access Control Modules give you granular control over who can manage your contracts and control their operation.",
