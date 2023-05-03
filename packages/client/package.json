@@ -15,7 +15,6 @@
   },
   "contributors": [
     "Nik Kalyani <nik@decentology.com> https://www.decentology.com",
-    "Jonathan Sheely <jon@decentology.com> https://www.decentology.com"
   ],
   "devDependencies": {
     "@babel/core": "^7.7.7",

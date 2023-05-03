@@ -17,8 +17,24 @@ module.exports = (env, argv) => {
       rules: [
         {
           test: /\.(js|jsx)$/,
-          use: "babel-loader",
-          exclude: /node_modules/
+          exclude: /node_modules/,
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ["@babel/preset-env", { "modules": false }],
+              "@babel/preset-react",
+            ],
+            plugins: [
+              [
+                "@babel/plugin-proposal-decorators",
+                {
+                  "legacy": true
+                }
+              ],
+              "@babel/plugin-proposal-class-properties",
+              "@babel/plugin-proposal-json-strings"
+            ]
+          }
         },
         {
           test: /\.css$/,

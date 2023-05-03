@@ -29,6 +29,7 @@ export const App: React.FC = () => {
   let network = ''; 
   const logo = (blockchain: String) => {
     switch(blockchain.toLowerCase()) {
+      case "vulcan": return "https://info.decentology.com/assets/blockchains/vulcan/vulcan-dappstarter.png";
       case "flow": return "https://info.decentology.com/assets/blockchains/flow/flow-dappstarter.png";
       case "ethereum": return "https://info.decentology.com/assets/blockchains/ethereum/ethereum-dappstarter.png";
       case "polygon": return "https://info.decentology.com/assets/blockchains/polygon/polygon-dappstarter.png";
@@ -122,7 +123,7 @@ export const App: React.FC = () => {
             </div>
           </div>
           <a
-            href="http://dappstarter.decentology.com"
+            href="http://dappstarter.dev"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -191,9 +192,6 @@ export const App: React.FC = () => {
           )}
         </div>
         <div className="main-footer">
-          <div className="docs">
-            <a href="https://support.decentology.com/">Support Documentation</a>
-          </div>
           <span className="footer-left">Powered by Decentology</span>
           <span className="footer-right">
             <a href="https://www.decentology.com">www.decentology.com</a>

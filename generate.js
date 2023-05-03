@@ -23,6 +23,8 @@ if (process.argv.length < 4) {
       stage = true;
       settings["__outputFolder"] = process.argv[3];
       console.log("Staging:", (stage ? "YES" : "NO"));
+    } else {
+      settings["__outputFolder"] = 'devdapp';
     }
   
     let hypergrep = new Hypergrep({

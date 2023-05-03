@@ -20,7 +20,6 @@
   },
   "scripts": {
     "prestart": "npm run build:css",
-    "start": "react-scripts start",
     "predev": "npm run build:css",
     "dev": "wait-on ../../packages/dapplib/src/dapp-config.json && react-scripts start",
     "build": "react-scripts build",
