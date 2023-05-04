@@ -16,9 +16,4 @@ request.post(
     if (error) {
         console.error(error);
     }
-    //console.log(`${account} statusCode ${index}: ${res.statusCode}`);
-    if (index === testAccounts.length - 1) {
-        process.exit(0);
-        
-    }
 })
