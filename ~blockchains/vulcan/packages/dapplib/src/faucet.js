@@ -4,7 +4,7 @@ const Web3 = require("web3");
 const BN = require('bn.js');
 
 let devUri = TruffleConfig.networks.development.uri;
-let faucetUri = 'https://api.faucet.matic.network/getTokens';
+let faucetUri = 'https://vul-faucet.vercel.app/api/getTokens';
 let testAccounts = TruffleConfig.networks.development.provider().addresses;
 
 
@@ -26,9 +26,7 @@ testAccounts.map((account, index) => {
                         faucetUri,
                         {
                         json: {
-                            network: "mumbai",
-                            address: account,
-                            token: "maticToken"
+                            address: account
                         },
                         }, (error, res, body) => {
                         if (error) {
@@ -42,6 +40,7 @@ testAccounts.map((account, index) => {
                     })
                 }, 1000);
             } else {
+                console.log(`Current Balance  ${account}: ${balance.toString()})`);
                 if (index === testAccounts.length - 1) {
                     process.exit(0);
                 }            
