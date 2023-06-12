@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
-pragma experimental ABIEncoderV2;
+pragma solidity 0.8.19;
 
 /********************************************************************************************/
 /*  This contract is the interface for DappState.sol functions used in Dapp.sol             */

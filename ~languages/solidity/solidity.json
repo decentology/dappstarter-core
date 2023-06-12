@@ -163,10 +163,9 @@
           "vulcan": {
             "scripts": {
               "dev": "run-p deploy",
-              "deploy": "wait-on faucet & truffle compile && truffle migrate --reset",
+              "deploy": "wait-on truffle compile && truffle migrate --reset",
               "test": "npx truffle test",
-              "faucet": "node ./src/faucet",
-              "postinstall": "node ./src/faucet"
+              "faucet": "node ./src/faucet"
             },
             "devDependencies": {
               "@truffle/hdwallet-provider": "^1.2.3",
