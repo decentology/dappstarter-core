@@ -163,7 +163,7 @@
           "vulcan": {
             "scripts": {
               "dev": "run-p deploy",
-              "deploy": "wait-on truffle compile && truffle migrate --reset",
+              "deploy": "truffle compile && truffle migrate --reset",
               "test": "npx truffle test",
               "faucet": "node ./src/faucet"
             },
