@@ -3,14 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.13.0",
     "@decentology/dappstarter-client": "^0.1.0",
     "@decentology/dappstarter-dapplib": "^0.1.0",
+    "@fortawesome/fontawesome-free": "^5.13.0",
     "@types/lodash-es": "^4.17.3",
     "@types/node": "^12.0.0",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "clsx": "^1.1.0",
+    "cross-env": "^7.0.3",
     "history": "^4.10.1",
     "lodash-es": "^4.17.15",
     "react": "^16.13.1",
@@ -21,7 +22,7 @@
   "scripts": {
     "prestart": "npm run build:css",
     "predev": "npm run build:css",
-    "dev": "wait-on ../../packages/dapplib/src/dapp-config.json && react-scripts start",
+    "dev": "wait-on ../../packages/dapplib/src/dapp-config.json && cross-env PORT=5000 CI=true SKIP_PREFLIGHT_CHECK=true react-scripts start",
     "build": "react-scripts build",
     "build:css": "tailwindcss build ./src/tailwind.css -o ./src/style.css",
     "eject": "react-scripts eject"
