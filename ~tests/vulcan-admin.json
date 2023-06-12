@@ -2,7 +2,7 @@
     "blocks": {
         "/blockchain/vulcan": true,
         "/blockchain/vulcan/solidity": true,
-        "/category/access_control/core-contract_access" : true, 
-        "/framework/vanilla": true
+        "/framework/vanilla": true,
+        "/category/access_control/core-administrator_role": true
     }
 }
