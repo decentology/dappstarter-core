@@ -7,7 +7,7 @@
     "title": "",
     "url": ""
   },
-  "blockchains": ["ethereum", "polygon", "vulcan", "avalanche"],
+  "blockchains": ["ethereum", "vulcan", "polygon"],
   "interface": {
     "hidden": false,
     "enabled": true,
